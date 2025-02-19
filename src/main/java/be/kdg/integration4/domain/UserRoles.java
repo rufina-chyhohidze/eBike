@@ -2,6 +2,7 @@ package be.kdg.integration4.domain;
 
 public enum UserRoles {
     CUSTOMER,
-    ADMINISTRATOR,
+    SYSTEM_ADMIN,
+    WORKSHOP_ADMIN,
     TECHNICIAN
 }
