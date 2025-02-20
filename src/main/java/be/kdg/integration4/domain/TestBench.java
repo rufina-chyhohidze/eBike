@@ -1,38 +1,22 @@
 package be.kdg.integration4.domain;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
 public class TestBench {
-    private int benchId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long benchId;
+
+    @OneToOne
     private Workshop workshop;
 
-    public TestBench() {
-    }
 
-    public TestBench(int benchId, Workshop workshop) {
-        this.benchId = benchId;
+    public TestBench(Workshop workshop) {
         this.workshop = workshop;
-    }
-
-    public int getBenchId() {
-        return benchId;
-    }
-
-    public void setBenchId(int benchId) {
-        this.benchId = benchId;
-    }
-
-    public Workshop getWorkshop() {
-        return workshop;
-    }
-
-    public void setWorkshop(Workshop workshop) {
-        this.workshop = workshop;
-    }
-
-    @Override
-    public String toString() {
-        return "TestBench{" +
-                "benchId=" + benchId +
-                ", workshop=" + workshop +
-                '}';
     }
 }

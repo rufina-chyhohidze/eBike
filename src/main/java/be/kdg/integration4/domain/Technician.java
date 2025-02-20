@@ -1,32 +1,34 @@
 package be.kdg.integration4.domain;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
 public class Technician extends User {
+
+    @OneToMany(fetch = FetchType.LAZY)
     private List<BikeReport> bikeReports;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
+
 
     public Technician(List<BikeReport> bikeReports, Workshop workshop) {
         this.bikeReports = bikeReports;
         this.workshop = workshop;
     }
 
-    public Technician(int id, String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop) {
-        super(id, name, email, password, userRoles);
+    public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop) {
+        super(name, email, password, userRoles);
         this.bikeReports = bikeReports;
         this.workshop = workshop;
-    }
-
-    public List<BikeReport> getBikeReports() {return bikeReports;}
-    public void setBikeReports(List<BikeReport> bikeReports) {this.bikeReports = bikeReports;}
-    public Workshop getWorkshop() {return workshop;}
-    public void setWorkshop(Workshop workshop) {this.workshop = workshop;}
-
-    @Override
-    public String toString() {
-        return "Technician{" +
-                "bikeReports=" + bikeReports +
-                ", workshop=" + workshop +
-                '}';
     }
 }

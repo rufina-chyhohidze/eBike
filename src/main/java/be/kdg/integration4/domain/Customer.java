@@ -1,8 +1,20 @@
 package be.kdg.integration4.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
-public class Customer extends User {
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
+public class Customer extends User{
     private int phoneNumber;
     private List<BikeReport> bikeReports;
 
@@ -11,22 +23,9 @@ public class Customer extends User {
         this.bikeReports = bikeReports;
     }
 
-    public Customer(int id, String name, String email, String password, UserRoles userRoles, int phoneNumber, List<BikeReport> bikeReports) {
-        super(id, name, email, password, userRoles);
+    public Customer(String name, String email, String password, UserRoles userRoles, int phoneNumber, List<BikeReport> bikeReports) {
+        super(name, email, password, userRoles);
         this.phoneNumber = phoneNumber;
         this.bikeReports = bikeReports;
-    }
-
-    public int getPhoneNumber() {return phoneNumber;}
-    public void setPhoneNumber(int phoneNumber) {this.phoneNumber = phoneNumber;}
-    public List<BikeReport> getBikeReports() {return bikeReports;}
-    public void setBikeReports(List<BikeReport> bikeReports) {this.bikeReports = bikeReports;}
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "phoneNumber=" + phoneNumber +
-                ", bikeReports=" + bikeReports +
-                '}';
     }
 }

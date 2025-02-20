@@ -1,49 +1,24 @@
 package be.kdg.integration4.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
+@Data
 public class Workshop {
-    private int workshopId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long workshopId;
     private String workshopName;
     private String workshopLocation;
 
-    public Workshop() {
-    }
-
-    public Workshop(int workshopId, String workshopName, String workshopLocation) {
-        this.workshopId = workshopId;
+    public Workshop(String workshopName, String workshopLocation) {
         this.workshopName = workshopName;
         this.workshopLocation = workshopLocation;
-    }
-
-    public int getWorkshopId() {
-        return workshopId;
-    }
-
-    public void setWorkshopId(int workshopId) {
-        this.workshopId = workshopId;
-    }
-
-    public String getWorkshopName() {
-        return workshopName;
-    }
-
-    public void setWorkshopName(String workshopName) {
-        this.workshopName = workshopName;
-    }
-
-    public String getWorkshopLocation() {
-        return workshopLocation;
-    }
-
-    public void setWorkshopLocation(String workshopLocation) {
-        this.workshopLocation = workshopLocation;
-    }
-
-    @Override
-    public String toString() {
-        return "Workshop{" +
-                "workshopId=" + workshopId +
-                ", workshopName='" + workshopName + '\'' +
-                ", workshopLocation='" + workshopLocation + '\'' +
-                '}';
     }
 }
