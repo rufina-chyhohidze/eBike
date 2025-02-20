@@ -20,7 +20,7 @@ public class BikeReport {
 
     private LocalDate reportDate;
 
-    private int score;
+    private Integer score;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<TestLine> testLines;

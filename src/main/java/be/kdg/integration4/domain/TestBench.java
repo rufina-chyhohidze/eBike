@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class TestBench {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long benchId;
+    private Integer benchId;
 
     @OneToOne
     private Workshop workshop;

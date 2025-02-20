@@ -14,8 +14,8 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
-public class Customer extends User{
-    private int phoneNumber;
+public class Customer extends User {
+    private Integer phoneNumber;
     private List<BikeReport> bikeReports;
 
     public Customer(int phoneNumber, List<BikeReport> bikeReports) {

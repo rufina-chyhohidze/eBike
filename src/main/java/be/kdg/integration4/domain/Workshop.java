@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class Workshop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long workshopId;
+    private Integer workshopId;
     private String workshopName;
-    private String workshopLocation;
+    private Location workshopLocation;
 
-    public Workshop(String workshopName, String workshopLocation) {
+    public Workshop(String workshopName, Location workshopLocation) {
         this.workshopName = workshopName;
         this.workshopLocation = workshopLocation;
     }
