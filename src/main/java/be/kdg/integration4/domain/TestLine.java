@@ -42,8 +42,26 @@ public class TestLine {
 
 
 
-    public TestLine(LocalDate dateTime, int batteryVoltage) {
+    public TestLine(LocalDateTime dateTime, Float batteryVoltage, Float batteryCurrent, Float batteryCapacity, Float batteryTemperature, Integer chargeStatus, Integer assistanceLevel, Float torqueCrank, Float bikeWheelSpeed, Integer cadence, Integer engineRPM, Float enginePower, Float wheelPower, Float rolTroque, Float loadCell, Float rol, Float horizontalInclinationSensor, Float verticalInclinationSensor, Integer loadPower, Boolean statusPlug) {
         this.dateTime = dateTime;
         this.batteryVoltage = batteryVoltage;
+        this.batteryCurrent = batteryCurrent;
+        this.batteryCapacity = batteryCapacity;
+        this.batteryTemperature = batteryTemperature;
+        this.chargeStatus = chargeStatus;
+        this.assistanceLevel = assistanceLevel;
+        this.torqueCrank = torqueCrank;
+        this.bikeWheelSpeed = bikeWheelSpeed;
+        this.cadence = cadence;
+        this.engineRPM = engineRPM;
+        this.enginePower = enginePower;
+        this.wheelPower = wheelPower;
+        this.rolTroque = rolTroque;
+        this.loadCell = loadCell;
+        this.rol = rol;
+        this.horizontalInclinationSensor = horizontalInclinationSensor;
+        this.verticalInclinationSensor = verticalInclinationSensor;
+        this.loadPower = loadPower;
+        this.statusPlug = statusPlug;
     }
 }
