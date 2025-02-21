@@ -13,7 +13,6 @@
 ### 1. To set up the DataBase:
 #### run the docker-compose.yml file
 ### 2. To execute the application, execute the gradlew bootRun command
-#### in the root directory of the project: (Web app will be running in port 8080 --> http://localhost:8080/)
 
    ```bash
    
