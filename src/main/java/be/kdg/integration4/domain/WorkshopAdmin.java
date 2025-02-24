@@ -8,13 +8,17 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;
 
-    public WorkshopAdmin(Workshop workshop) {
+//    public WorkshopAdmin(Workshop workshop) {
+//        this.workshop = workshop;
+//    }
+
+    public WorkshopAdmin(String name, String email, String password, UserRoles userRoles, Workshop workshop) {
+        super(name, email, password, userRoles);
         this.workshop = workshop;
     }
 }

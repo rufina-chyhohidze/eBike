@@ -10,7 +10,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 public class Technician extends User {
 
@@ -20,11 +19,6 @@ public class Technician extends User {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
 
-
-    public Technician(List<BikeReport> bikeReports, Workshop workshop) {
-        this.bikeReports = bikeReports;
-        this.workshop = workshop;
-    }
 
     public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop) {
         super(name, email, password, userRoles);

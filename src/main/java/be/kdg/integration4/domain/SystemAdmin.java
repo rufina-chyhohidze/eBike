@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 public class SystemAdmin extends User {
+
+    public SystemAdmin(String name, String email, String password, UserRoles userRoles) {
+        super(name, email, password, userRoles);
+    }
 }
