@@ -31,6 +31,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.apache.commons:commons-csv:1.10.0") // For CSV parsing
 }
 
 tasks.withType<Test> {
