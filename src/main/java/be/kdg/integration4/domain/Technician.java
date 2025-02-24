@@ -19,10 +19,13 @@ public class Technician extends User {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
 
+    private boolean approved;
 
-    public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop) {
+
+    public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop, boolean approved) {
         super(name, email, password, userRoles);
         this.bikeReports = bikeReports;
         this.workshop = workshop;
+        this.approved = approved;
     }
 }

@@ -12,13 +12,15 @@ import lombok.NoArgsConstructor;
 public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;
+    private boolean approved;
 
 //    public WorkshopAdmin(Workshop workshop) {
 //        this.workshop = workshop;
 //    }
 
-    public WorkshopAdmin(String name, String email, String password, UserRoles userRoles, Workshop workshop) {
+    public WorkshopAdmin(String name, String email, String password, UserRoles userRoles, Workshop workshop,boolean approved) {
         super(name, email, password, userRoles);
         this.workshop = workshop;
+        this.approved = approved;
     }
 }
