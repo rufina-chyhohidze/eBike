@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF to allow file uploads
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/csv/receive").permitAll() // Allow CSV uploads
+                        .requestMatchers("/api/csv/extract").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

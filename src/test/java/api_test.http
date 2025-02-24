@@ -7,3 +7,18 @@ Content-Type: text/csv
 
 < ./test.csv
 --boundary123--
+
+
+###
+
+POST http://localhost:8080/api/csv/extract
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="file"; filename="test.csv"
+Content-Type: text/csv
+
+< ./test.csv
+--boundary123--
+
+
