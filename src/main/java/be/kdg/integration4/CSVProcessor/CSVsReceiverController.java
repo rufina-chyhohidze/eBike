@@ -1,5 +1,6 @@
 package be.kdg.integration4.CSVProcessor;
 
+import be.kdg.integration4.domain.TestLine;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -46,20 +47,37 @@ public class CSVsReceiverController {
             // Now, prepare to parse the CSV with the found header
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(headerLine.split(",")));
 
-            List<String> records = new ArrayList<>();
+            List<TestLine> testLines = new ArrayList<>();
 
             for (CSVRecord record : csvParser) {
-                StringBuilder row = new StringBuilder();
-
-                // Loop through all column headers
-                for (String header : record.toMap().keySet()) {
-                    row.append(header).append(": ").append(record.get(header)).append(", ");
-                }
-
-                records.add(row.toString());
+                TestLine testLine = new TestLine(
+                        TestLine.parseDateTime(record.get("Date / Time")),
+                        Float.parseFloat(record.get("Battery Voltage (V)")),
+                        Float.parseFloat(record.get("Battery Current (A)")),
+                        Float.parseFloat(record.get("Battery Capacity (%)")),
+                        Float.parseFloat(record.get("Battery Temperature (°C)")),
+                        Integer.parseInt(record.get("Charge Status")),
+                        Integer.parseInt(record.get("Assistance level")),
+                        Float.parseFloat(record.get("Torque Crank (Nm)")),
+                        Float.parseFloat(record.get("Bike wheel speed (km/h)")),
+                        Integer.parseInt(record.get("Cadance (rpm)")),
+                        Integer.parseInt(record.get("Engine (rpm)")),
+                        Float.parseFloat(record.get("Engine Power (W)")),
+                        Float.parseFloat(record.get("Wheel Power (W)")),
+                        Float.parseFloat(record.get("Rol Troque (Nm)")),
+                        Float.parseFloat(record.get("Loadcell (N)")),
+                        Float.parseFloat(record.get("Rol (Hz)")),
+                        Float.parseFloat(record.get("Hozizontal inclination sensor")),
+                        Float.parseFloat(record.get("Vertical inclination sensor")),
+                        Integer.parseInt(record.get("Load Power (%)")),
+                        TestLine.parseStatusPlug(record.get("Status Plug"))
+                );
+                testLines.add(testLine);
             }
 
-            return ResponseEntity.ok("CSV Processed Successfully: " + records);
+            testLines.forEach(System.err::println);
+
+            return ResponseEntity.ok("CSV Processed Successfully: " + testLines);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error processing CSV: " + e.getMessage());
         }
@@ -67,7 +85,7 @@ public class CSVsReceiverController {
 }
 
 
-//
+//working:
 //package be.kdg.integration4.CSVProcessor;
 //
 //import org.apache.commons.csv.CSVFormat;
@@ -97,24 +115,32 @@ public class CSVsReceiverController {
 //        }
 //
 //        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-//            // Skip the initial rows before the header row
+//            // Read through the file to find the header row that starts with "Date / Time"
 //            String line;
+//            String headerLine = null;
 //            while ((line = reader.readLine()) != null) {
-//                // Check for the header row (you can adjust this based on the actual header content)
-//                if (line.startsWith("Date / Time")) {  // This is where your header starts
+//                // Check for the header row
+//                if (line.startsWith("Date / Time")) {
+//                    headerLine = line;
 //                    break;
 //                }
 //            }
 //
-//            // Now create CSVParser with the remaining content starting from the header row
-//            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+//            // If no header row is found, return an error
+//            if (headerLine == null) {
+//                return ResponseEntity.badRequest().body("Header row 'Date / Time' not found.");
+//            }
+//
+//            // Now, prepare to parse the CSV with the found header
+//            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(headerLine.split(",")));
 //
 //            List<String> records = new ArrayList<>();
 //
 //            for (CSVRecord record : csvParser) {
 //                StringBuilder row = new StringBuilder();
 //
-//                for (String header : record.toMap().keySet()) { // Loop through all column headers
+//                // Loop through all column headers
+//                for (String header : record.toMap().keySet()) {
 //                    row.append(header).append(": ").append(record.get(header)).append(", ");
 //                }
 //
@@ -126,5 +152,4 @@ public class CSVsReceiverController {
 //            return ResponseEntity.badRequest().body("Error processing CSV: " + e.getMessage());
 //        }
 //    }
-//
 //}
