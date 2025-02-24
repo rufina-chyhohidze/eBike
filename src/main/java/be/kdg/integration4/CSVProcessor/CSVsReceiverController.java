@@ -1,5 +1,6 @@
 package be.kdg.integration4.CSVProcessor;
 
+import be.kdg.integration4.domain.TestLine;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
