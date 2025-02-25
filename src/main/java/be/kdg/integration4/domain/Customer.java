@@ -13,14 +13,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Customer extends User {
-    private Integer phoneNumber;
+    private String phoneNumber;
 
-//    public Customer(int phoneNumber, List<BikeReport> bikeReports) {
-//        this.phoneNumber = phoneNumber;
-//        this.bikeReports = bikeReports;
-//    }
-
-    public Customer(String name, String email, String password, UserRoles userRoles) {
+    public Customer(String name, String email, String password, UserRoles userRoles, String phoneNumber) {
         super(name, email, password, userRoles);
         this.phoneNumber = phoneNumber;
     }
