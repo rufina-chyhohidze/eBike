@@ -22,7 +22,18 @@ public class BikeReport {
 
     private Integer score;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "testline_id")
     private List<TestLine> testLines;
 
+    public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
+    }
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Workshop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer workshopId;
+    private Long workshopId;
     private String workshopName;
     private Location workshopLocation;
 

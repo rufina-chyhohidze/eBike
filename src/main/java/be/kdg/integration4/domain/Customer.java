@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
 
 import java.util.List;
 
@@ -12,18 +13,10 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Customer extends User {
-    private Integer phoneNumber;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<BikeReport> bikeReports;
+    private String phoneNumber;
 
-//    public Customer(int phoneNumber, List<BikeReport> bikeReports) {
-//        this.phoneNumber = phoneNumber;
-//        this.bikeReports = bikeReports;
-//    }
-
-    public Customer(String name, String email, String password, UserRoles userRoles, int phoneNumber, List<BikeReport> bikeReports) {
+    public Customer(String name, String email, String password, UserRoles userRoles, String phoneNumber) {
         super(name, email, password, userRoles);
         this.phoneNumber = phoneNumber;
-        this.bikeReports = bikeReports;
     }
 }

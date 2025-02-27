@@ -13,9 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Technician extends User {
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<BikeReport> bikeReports;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
 
@@ -24,7 +21,6 @@ public class Technician extends User {
 
     public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop, boolean approved) {
         super(name, email, password, userRoles);
-        this.bikeReports = bikeReports;
         this.workshop = workshop;
         this.approved = approved;
     }

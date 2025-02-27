@@ -41,4 +41,7 @@ public class Bike {
     private int enginePowerNominal;
 
     private int engineTorque;
+
+    public Bike(String frameNumber, String type, String brand, LocalDate registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+    }
 }
