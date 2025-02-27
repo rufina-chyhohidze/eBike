@@ -23,4 +23,9 @@ public class WorkshopAdmin extends User {
         this.workshop = workshop;
         this.approved = approved;
     }
+
+    public WorkshopAdmin(String name, String email, String password, UserRoles role, Workshop workshop) {
+        super(name, email, password, role);
+        this.workshop = workshop;
+    }
 }
