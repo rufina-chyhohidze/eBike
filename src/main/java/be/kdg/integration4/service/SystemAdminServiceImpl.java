@@ -1,7 +1,6 @@
 package be.kdg.integration4.service;
 
 import be.kdg.integration4.domain.SystemAdmin;
-import be.kdg.integration4.domain.UserRoles;
 import be.kdg.integration4.repository.SystemAdminRepository;
 
 import java.util.List;
@@ -26,8 +25,8 @@ public class SystemAdminServiceImpl  implements SystemAdminService {
     }
 
     @Override
-    public SystemAdmin save(String name, String email, String password, UserRoles role) {
-        return repository.save(new SystemAdmin(name, email, password, role));
+    public SystemAdmin save(String name, String email, String password) {
+        return repository.save(new SystemAdmin(name, email, password));
     }
 
     @Override
