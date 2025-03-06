@@ -26,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(String name, String email, String password, UserRoles role, String phoneNumber) {
-        return repository.save(new Customer(name, email, password, role, phoneNumber));
+        return repository.save(new Customer(name, email, password, phoneNumber));
     }
 
     @Override

@@ -28,7 +28,7 @@ public class WorkshopAdminServiceImpl implements WorkshopAdminService {
 
     @Override
     public WorkshopAdmin save(String name, String email, String password, UserRoles role, Workshop workshop) {
-        return repository.save(new WorkshopAdmin(name, email, password, role, workshop));
+        return repository.save(new WorkshopAdmin(name, email, password, workshop));
     }
 
     @Override

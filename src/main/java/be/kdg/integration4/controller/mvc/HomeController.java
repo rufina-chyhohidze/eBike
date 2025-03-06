@@ -18,25 +18,25 @@ public class HomeController {
 //    public String home(Model model) {
 //        return "home";
 //    }
-@GetMapping("/")
-public String home(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @GetMapping("/")
+    public String home(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication != null) {
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String userRole = authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .map(role -> role.replace("ROLE_", "")) // Remove "ROLE_" prefix
-                .collect(Collectors.joining(", "));
+        if (authentication != null) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            String userRole = authorities.stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .map(role -> role.replace("ROLE_", "")) // Remove "ROLE_" prefix
+                    .collect(Collectors.joining(", "));
 
-        System.out.println("User Role: " + userRole); // Debugging
-        model.addAttribute("userRole", userRole);
-    } else {
-        System.out.println("No authentication found!"); // Debugging
-        model.addAttribute("userRole", "GUEST");
+            System.out.println("User Role: " + userRole); // Debugging
+            model.addAttribute("userRole", userRole);
+        } else {
+            System.out.println("No authentication found!"); // Debugging
+            model.addAttribute("userRole", "GUEST");
+        }
+
+        return "home"; // Loads home.html
     }
-
-    return "home"; // Loads home.html
-}
 }
 
