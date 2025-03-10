@@ -23,6 +23,11 @@ function setCustomerRadioSelected(role) {
 registerButton.addEventListener('click', registerCustomer);
 
 async function registerCustomer() {
+    if (roleSelected === undefined || null) {
+        alert("Please select a role");
+        return;
+    }
+
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');

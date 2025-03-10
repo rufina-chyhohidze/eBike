@@ -32,24 +32,6 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(
-            @RequestBody @Valid RegistrationDto registrationDto
-    ) {
-        System.err.println("Parameters received: " + registrationDto);
-        User userCreated;
-        if (registrationDto.role().equalsIgnoreCase("CUSTOMER")) {
-            userCreated = this.registrationService.createCustomer(registrationDto.name(), registrationDto.email(), registrationDto.phoneNumber(), registrationDto.phoneNumber());
-        } else if (registrationDto.role().equalsIgnoreCase("TECHNICIAN") || registrationDto.role().equalsIgnoreCase("WORKSHOP_ADMIN")) {
-            userCreated = this.registrationService.createStaff(registrationDto.name(), registrationDto.email(), registrationDto.password(), registrationDto.role(), registrationDto.workshopId());
-        } else return null;
-
-        System.err.println("User created: " + userCreated);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<String>> handleValidationError(MethodArgumentNotValidException ex) {
         List<String> errors = new ArrayList<>();
@@ -66,10 +48,12 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @PostMapping("customers")
+    @PostMapping("/customers")
     public ResponseEntity<UserOutputDto> registerCustomer(
             @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto
     ) {
+        log.info("Parameters received - Customer: {}", customerRegistrationDto);
+
         Customer customer = registrationService.createCustomer(customerRegistrationDto.name(),
                 customerRegistrationDto.email(),
                 customerRegistrationDto.password(),
@@ -77,10 +61,11 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customer.getId(), customer.getName(), customer.getEmail()));
     }
 
-    @PostMapping("staff")
+    @PostMapping("/staff")
     public ResponseEntity<UserOutputDto> registerStaffMember(
             @Valid @RequestBody StaffRegistrationDto staffRegistrationDto
     ) {
+        log.info("Parameters received - Staff: {}", staffRegistrationDto);
         User user = registrationService.createStaff(staffRegistrationDto.name(),
                 staffRegistrationDto.email(),
                 staffRegistrationDto.password(),
