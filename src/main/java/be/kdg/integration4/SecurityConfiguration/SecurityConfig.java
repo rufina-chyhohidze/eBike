@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+    /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -24,6 +25,8 @@ public class SecurityConfig {
                 .build();
     }
 
+     */
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -35,4 +38,16 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user);
     }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                )
+                .csrf(AbstractHttpConfigurer::disable); // Correct way to disable CSRF in Spring Security 6
+
+        return http.build();
+    }
+
 }

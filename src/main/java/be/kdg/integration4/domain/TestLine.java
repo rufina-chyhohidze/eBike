@@ -99,7 +99,177 @@ public class TestLine {
                 ", statusPlug=" + statusPlug +
                 '}';
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public Float getBatteryVoltage() {
+        return batteryVoltage;
+    }
+
+    public void setBatteryVoltage(Float batteryVoltage) {
+        this.batteryVoltage = batteryVoltage;
+    }
+
+    public Float getBatteryCurrent() {
+        return batteryCurrent;
+    }
+
+    public void setBatteryCurrent(Float batteryCurrent) {
+        this.batteryCurrent = batteryCurrent;
+    }
+
+    public Float getBatteryCapacity() {
+        return batteryCapacity;
+    }
+
+    public void setBatteryCapacity(Float batteryCapacity) {
+        this.batteryCapacity = batteryCapacity;
+    }
+
+    public Float getBatteryTemperature() {
+        return batteryTemperature;
+    }
+
+    public void setBatteryTemperature(Float batteryTemperature) {
+        this.batteryTemperature = batteryTemperature;
+    }
+
+    public Integer getChargeStatus() {
+        return chargeStatus;
+    }
+
+    public void setChargeStatus(Integer chargeStatus) {
+        this.chargeStatus = chargeStatus;
+    }
+
+    public Integer getAssistanceLevel() {
+        return assistanceLevel;
+    }
+
+    public void setAssistanceLevel(Integer assistanceLevel) {
+        this.assistanceLevel = assistanceLevel;
+    }
+
+    public Float getTorqueCrank() {
+        return torqueCrank;
+    }
+
+    public void setTorqueCrank(Float torqueCrank) {
+        this.torqueCrank = torqueCrank;
+    }
+
+    public Float getBikeWheelSpeed() {
+        return bikeWheelSpeed;
+    }
+
+    public void setBikeWheelSpeed(Float bikeWheelSpeed) {
+        this.bikeWheelSpeed = bikeWheelSpeed;
+    }
+
+    public Integer getCadence() {
+        return cadence;
+    }
+
+    public void setCadence(Integer cadence) {
+        this.cadence = cadence;
+    }
+
+    public Integer getEngineRPM() {
+        return engineRPM;
+    }
+
+    public void setEngineRPM(Integer engineRPM) {
+        this.engineRPM = engineRPM;
+    }
+
+    public Float getEnginePower() {
+        return enginePower;
+    }
+
+    public void setEnginePower(Float enginePower) {
+        this.enginePower = enginePower;
+    }
+
+    public Float getWheelPower() {
+        return wheelPower;
+    }
+
+    public void setWheelPower(Float wheelPower) {
+        this.wheelPower = wheelPower;
+    }
+
+    public Float getRolTroque() {
+        return rolTroque;
+    }
+
+    public void setRolTroque(Float rolTroque) {
+        this.rolTroque = rolTroque;
+    }
+
+    public Float getLoadCell() {
+        return loadCell;
+    }
+
+    public void setLoadCell(Float loadCell) {
+        this.loadCell = loadCell;
+    }
+
+    public Float getRol() {
+        return rol;
+    }
+
+    public void setRol(Float rol) {
+        this.rol = rol;
+    }
+
+    public Float getHorizontalInclinationSensor() {
+        return horizontalInclinationSensor;
+    }
+
+    public void setHorizontalInclinationSensor(Float horizontalInclinationSensor) {
+        this.horizontalInclinationSensor = horizontalInclinationSensor;
+    }
+
+    public Float getVerticalInclinationSensor() {
+        return verticalInclinationSensor;
+    }
+
+    public void setVerticalInclinationSensor(Float verticalInclinationSensor) {
+        this.verticalInclinationSensor = verticalInclinationSensor;
+    }
+
+    public Integer getLoadPower() {
+        return loadPower;
+    }
+
+    public void setLoadPower(Integer loadPower) {
+        this.loadPower = loadPower;
+    }
+
+    public Boolean getStatusPlug() {
+        return statusPlug;
+    }
+
+    public void setStatusPlug(Boolean statusPlug) {
+        this.statusPlug = statusPlug;
+    }
 }
+
+
 
 
 //package be.kdg.integration4.domain;
