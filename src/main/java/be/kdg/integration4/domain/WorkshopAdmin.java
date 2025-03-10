@@ -17,24 +17,15 @@ import java.util.List;
 public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;
-    private boolean approved = false;
 
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
-//    public WorkshopAdmin(Workshop workshop) {
-//        this.workshop = workshop;
-//    }
 
     public WorkshopAdmin(String name, String email, String password, Workshop workshop) {
         super(name, email, password);
         this.workshop = workshop;
     }
-
-//    public WorkshopAdmin(String name, String email, String password, UserRoles role, Workshop workshop) {
-//        super(name, email, password, role);
-//        this.workshop = workshop;
-//    }
 }

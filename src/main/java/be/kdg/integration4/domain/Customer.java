@@ -18,7 +18,7 @@ public class Customer extends User {
     private String phoneNumber;
 
     public Customer(String name, String email, String password, String phoneNumber) {
-        super(name, email, password);
+        super(name, email, password, true);
         this.phoneNumber = phoneNumber;
     }
 

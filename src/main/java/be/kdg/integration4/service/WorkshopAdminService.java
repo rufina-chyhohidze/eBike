@@ -9,7 +9,7 @@ public interface WorkshopAdminService {
 
     WorkshopAdmin findById(Long id);
 
-    WorkshopAdmin save(String name, String email, String password, UserRoles role, Workshop workshop);
+    WorkshopAdmin save(String name, String email, String password, UserRole role, Workshop workshop);
 
     void deleteById(Long id);
 }

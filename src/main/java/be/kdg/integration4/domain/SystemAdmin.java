@@ -1,8 +1,6 @@
 package be.kdg.integration4.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +16,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class SystemAdmin extends User {
-    public SystemAdmin(String name, String email, String password, UserRoles userRoles) {
-        super(name, email, password);
+    public SystemAdmin(String name, String email, String password) {
+        super(name, email, password, true);
     }
 
     @Override

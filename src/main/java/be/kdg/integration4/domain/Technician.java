@@ -21,8 +21,6 @@ public class Technician extends User {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
 
-    private boolean approved = false;
-
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
