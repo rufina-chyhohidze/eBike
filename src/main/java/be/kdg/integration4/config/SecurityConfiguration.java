@@ -20,9 +20,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+//                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
                         .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
                         .anyRequest().authenticated()
                 )

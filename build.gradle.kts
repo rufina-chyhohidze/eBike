@@ -34,6 +34,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.mapstruct:mapstruct:1.6.3")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 }
 
 tasks.withType<Test> {
