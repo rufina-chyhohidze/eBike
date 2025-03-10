@@ -74,7 +74,7 @@ public class RegistrationController {
                 customerRegistrationDto.email(),
                 customerRegistrationDto.password(),
                 customerRegistrationDto.phoneNumber());
-        return ResponseEntity.ok(new UserOutputDto(customer.getId(), customer.getName(), customer.getEmail()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customer.getId(), customer.getName(), customer.getEmail()));
     }
 
     @PostMapping("staff")
@@ -86,6 +86,6 @@ public class RegistrationController {
                 staffRegistrationDto.password(),
                 staffRegistrationDto.userRole(),
                 staffRegistrationDto.workshopId());
-        return ResponseEntity.ok(new UserOutputDto(user.getId(), user.getName(), user.getEmail()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(user.getId(), user.getName(), user.getEmail()));
     }
 }

@@ -48,22 +48,40 @@ async function registerCustomer() {
         "phoneNumber: " + phoneNumber + "\n" +
         "workshop: " + workshop + "\n");
 
-    const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            role: roleSelected,
-            name: name,
-            email: email,
-            password: password,
-            phoneNumber: null,
-            workshopId: workshop === undefined || null ? null : workshop,
-        })
-    });
-    if (response.status === 200) {
+    let response
+    if (roleSelected === "CUSTOMER") {
+        response = await fetch(`/api/customers`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                phoneNumber: phoneNumber,
+            })
+        });
+    } else {
+        response = await fetch(`/api/staff`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userRole: roleSelected,
+                name: name,
+                email: email,
+                password: password,
+                workshopId: workshop === undefined || null ? null : workshop,
+            })
+        });
+    }
+
+
+    if (response.status === 201) {
         window.location.href = "http://localhost:8080/login";
     } else {
         alert("Error registering.")
