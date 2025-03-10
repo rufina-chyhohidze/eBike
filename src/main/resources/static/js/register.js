@@ -55,6 +55,7 @@ async function registerCustomer() {
 
     let response
     if (roleSelected === "CUSTOMER") {
+        console.log("sending customer")
         response = await fetch(`/api/customers`, {
             method: 'POST',
             headers: {
@@ -69,6 +70,7 @@ async function registerCustomer() {
             })
         });
     } else {
+        console.log("sending staff")
         response = await fetch(`/api/staff`, {
             method: 'POST',
             headers: {
@@ -89,7 +91,7 @@ async function registerCustomer() {
     if (response.status === 201) {
         window.location.href = "http://localhost:8080/login";
     } else {
-        alert("Error registering.")
+        // showValidationErrors()
         clearForm();
     }
 }

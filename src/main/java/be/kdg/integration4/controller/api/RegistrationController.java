@@ -8,6 +8,7 @@ import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.User;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.service.RegistrationService;
+import io.micrometer.common.lang.Nullable;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,9 +50,13 @@ public class RegistrationController {
     }
 
     @PostMapping("/customers")
-    public ResponseEntity<UserOutputDto> registerCustomer(
-            @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto
+    public ResponseEntity<?> registerCustomer(
+            @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
+            BindingResult bindingResult
     ) {
+        ResponseEntity<?> errorFields = getErrorFields(bindingResult);
+        if (errorFields != null) return errorFields;
+
         log.info("Parameters received - Customer: {}", customerRegistrationDto);
 
         Customer customer = registrationService.createCustomer(customerRegistrationDto.name(),
@@ -62,9 +67,13 @@ public class RegistrationController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<UserOutputDto> registerStaffMember(
-            @Valid @RequestBody StaffRegistrationDto staffRegistrationDto
+    public ResponseEntity<?> registerStaffMember(
+            @Valid @RequestBody StaffRegistrationDto staffRegistrationDto,
+            BindingResult bindingResult
     ) {
+        ResponseEntity<?> errorFields = getErrorFields(bindingResult);
+        if (errorFields != null) return errorFields;
+
         log.info("Parameters received - Staff: {}", staffRegistrationDto);
         User user = registrationService.createStaff(staffRegistrationDto.name(),
                 staffRegistrationDto.email(),
@@ -72,5 +81,18 @@ public class RegistrationController {
                 staffRegistrationDto.userRole(),
                 staffRegistrationDto.workshopId());
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(user.getId(), user.getName(), user.getEmail()));
+    }
+
+    @Nullable
+    private ResponseEntity<?> getErrorFields(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errorFields = new ArrayList<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                log.info("Field: " + error.getField() + " - Error: " + error.getDefaultMessage());
+                errorFields.add(error.getField());
+            });
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorFields);
+        }
+        return null;
     }
 }

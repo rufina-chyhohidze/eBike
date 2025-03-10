@@ -22,7 +22,7 @@ function displayPhoneNumberInput() {
 function displayWorkshopInput() {
     phoneInputDiv.classList.add("d-none");
     workshopSelectDiv.classList.remove('d-none');
-    showWorkShopsInput()
+    void showWorkShopsInput()
 }
 
 async function showWorkShopsInput() {

@@ -10,7 +10,8 @@ public record StaffRegistrationDto(
         String name,
         @NotNull @Email
         String email,
-        @NotNull @Size(min = 8)
+        @NotNull
+//        @Size(min = 8)
         String password,
         @NotNull
         String userRole,
