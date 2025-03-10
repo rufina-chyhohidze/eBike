@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-gray-50 h-full flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+  <div class="flex items-center mb-6">
+    <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+    <h1 class="text-2xl font-semibold">eVALeBike</h1>
+  </div>
+
+  <ul class="space-y-6 flex-1">
+    <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
+      <i class="ph ph-wrench"></i> Dashboard
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-house"></i> Home
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-users"></i> Manage Employees
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-user-check"></i> Customer Management
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-clipboard-text"></i> Test Reports
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-user"></i> Account Settings
+    </li>
+    <li class="mt-auto">
+      <button class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+        <i class="ph ph-sign-out"></i> Logout
+      </button>
+    </li>
+  </ul>
+</aside>
+
+<!-- DASHBOARD -->
+<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
+  <!-- WORKSHOP ADMIN INFO -->
+  <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
+    <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Owner" class="w-24 h-24 rounded-full border-2 border-gray-300">
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-800">Alex Johnson</h2>
+      <p class="text-gray-600">Bike Store Owner</p>
+      <p class="text-gray-500">Workshop: <span class="font-semibold">Speedy Repairs</span></p>
+      <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="col-span-2 grid grid-cols-2 gap-6">
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+      <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Tests</h3>
+      <p class="text-3xl font-bold text-purple-500">245</p>
+      <p class="text-gray-300 text-sm">+15% from last month</p>
+    </div>
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+      <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Clients</h3>
+      <p class="text-3xl font-bold text-purple-500">98</p>
+      <p class="text-gray-300 text-sm">+10% from last month</p>
+    </div>
+  </div>
+
+  <!-- TEST BENCH ERRORS -->
+  <div class="bg-gray-100 shadow-lg rounded-3xl p-6 col-span-2 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
+      <i class="ph ph-warning"></i> Test Bench Errors
+    </h3>
+    <div class="flex gap-2 mb-4">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="errorSearch" placeholder="Search Error Code">
+      <button id="clearSearch" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
+        Clear
+      </button>
+    </div>
+    <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
+      <thead>
+      <tr class="bg-gray-200 text-gray-700">
+        <th class="p-3 text-left">Test ID</th>
+        <th class="p-3 text-left">Bike Model</th>
+        <th class="p-3 text-left">Error Code</th>
+        <th class="p-3 text-left">Error Description</th>
+        <th class="p-3 text-left">Date</th>
+      </tr>
+      </thead>
+      <tbody id="errorList">
+      <!-- Populated via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MANAGE USERS -->
+  <div class="bg-white shadow-lg rounded-3xl p-6 col-span-2 border border-gray-200">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        <i class="ph ph-users"></i> Manage Users
+      </h3>
+      <div class="flex gap-2">
+        <button id="showCustomers" class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100">
+          Customers
+        </button>
+        <button id="showTechnicians" class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100">
+          Technicians
+        </button>
+      </div>
+    </div>
+    <div class="flex gap-2 mb-4">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="customerId" placeholder="Enter Customer ID or Name">
+      <button id="clearSearchUsers" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
+        Clear
+      </button>
+    </div>
+    <table id="userTable" class="w-full border-collapse bg-white shadow-md rounded-3xl">
+      <thead>
+      <tr class="bg-gray-100 text-gray-700">
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Phone</th>
+      </tr>
+      </thead>
+      <tbody id="userList">
+      <!-- Populated via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- TEST REPORTS -->
+  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
+      <i class="ph ph-clipboard-text"></i> Previous Test Reports
+    </h3>
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Frame Number">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Bike Model">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Brand">
+    </div>
+    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
+      <thead>
+      <tr class="bg-gray-700 text-gray-100">
+        <th class="p-3 text-left">Frame Number</th>
+        <th class="p-3 text-left">Bike Model</th>
+        <th class="p-3 text-left">Brand</th>
+        <th class="p-3 text-left">Date</th>
+        <th class="p-3 text-left">Result</th>
+      </tr>
+      </thead>
+      <tbody id="reportList">
+      <!-- Populated via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+</main>
+<script src="../static/js/admin.js"></script>
+</body>
+</html>

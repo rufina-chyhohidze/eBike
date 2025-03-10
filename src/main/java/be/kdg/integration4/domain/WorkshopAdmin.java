@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -12,20 +17,15 @@ import lombok.NoArgsConstructor;
 public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;
-    private boolean approved;
 
-//    public WorkshopAdmin(Workshop workshop) {
-//        this.workshop = workshop;
-//    }
-
-    public WorkshopAdmin(String name, String email, String password, UserRoles userRoles, Workshop workshop,boolean approved) {
-        super(name, email, password, userRoles);
-        this.workshop = workshop;
-        this.approved = approved;
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
-    public WorkshopAdmin(String name, String email, String password, UserRoles role, Workshop workshop) {
-        super(name, email, password, role);
+    public WorkshopAdmin(String name, String email, String password, Workshop workshop) {
+        super(name, email, password);
         this.workshop = workshop;
     }
 }

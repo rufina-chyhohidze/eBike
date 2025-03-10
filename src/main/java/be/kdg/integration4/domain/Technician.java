@@ -4,24 +4,31 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @NoArgsConstructor
+@ToString
 public class Technician extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
 
-    private boolean approved;
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_TECHNICIAN"));
+    }
 
-
-    public Technician(String name, String email, String password, UserRoles userRoles, List<BikeReport> bikeReports, Workshop workshop, boolean approved) {
-        super(name, email, password, userRoles);
+    public Technician(String name, String email, String password, Workshop workshop) {
+        super(name, email, password);
         this.workshop = workshop;
-        this.approved = approved;
     }
 }

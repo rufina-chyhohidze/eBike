@@ -1,9 +1,6 @@
 package be.kdg.integration4.service;
 
-import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.SystemAdmin;
-import be.kdg.integration4.domain.UserRoles;
-import be.kdg.integration4.domain.Workshop;
 
 import java.util.List;
 
@@ -12,7 +9,7 @@ public interface SystemAdminService {
 
     SystemAdmin findById(Long id);
 
-    SystemAdmin save(String name, String email, String password, UserRoles role);
+    SystemAdmin save(String name, String email, String password);
 
     void deleteById(Long id);
 }

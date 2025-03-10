@@ -1,6 +1,6 @@
 package be.kdg.integration4.service;
 
-import be.kdg.integration4.domain.UserRoles;
+import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.domain.WorkshopAdmin;
 import be.kdg.integration4.repository.WorkshopAdminRepository;
@@ -27,8 +27,8 @@ public class WorkshopAdminServiceImpl implements WorkshopAdminService {
     }
 
     @Override
-    public WorkshopAdmin save(String name, String email, String password, UserRoles role, Workshop workshop) {
-        return repository.save(new WorkshopAdmin(name, email, password, role, workshop));
+    public WorkshopAdmin save(String name, String email, String password, UserRole role, Workshop workshop) {
+        return repository.save(new WorkshopAdmin(name, email, password, workshop));
     }
 
     @Override
