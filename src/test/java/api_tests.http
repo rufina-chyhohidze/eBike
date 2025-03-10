@@ -1,2 +1,17 @@
 GET http://localhost:8080/api/workshops
 Accept: application/json
+
+###
+
+POST http://localhost:8080/api/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "role": "ROLE_CUSTOMER",
+  "name": "Name",
+  "email": "customer@gmail.com",
+  "password": "password",
+  "phoneNumber": "123",
+  "workshopId": null
+}

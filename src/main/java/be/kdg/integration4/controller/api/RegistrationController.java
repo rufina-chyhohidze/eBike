@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.controller.api.dtos.RegistrationDto;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
@@ -20,8 +21,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("/api")
 public class RegistrationController {
 
@@ -29,6 +30,24 @@ public class RegistrationController {
 
     public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(
+            @RequestBody @Valid RegistrationDto registrationDto
+    ) {
+        System.err.println("Parameters received: " + registrationDto);
+        User userCreated;
+        if (registrationDto.role().equalsIgnoreCase("CUSTOMER")) {
+            userCreated = this.registrationService.createCustomer(registrationDto.name(), registrationDto.email(), registrationDto.phoneNumber(), registrationDto.phoneNumber());
+        } else if (registrationDto.role().equalsIgnoreCase("TECHNICIAN") || registrationDto.role().equalsIgnoreCase("WORKSHOP_ADMIN")) {
+            userCreated = this.registrationService.createStaff(registrationDto.name(), registrationDto.email(), registrationDto.password(), registrationDto.role(), registrationDto.workshopId());
+        } else return null;
+
+        System.err.println("User created: " + userCreated);
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

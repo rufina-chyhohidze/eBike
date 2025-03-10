@@ -86,10 +86,3 @@ async function showWorkShopsInput() {
           console.log("Error while fetching workshops");
       }
 }
-
-function requestExistingWorkShops() {
-
-}
-async function showCorrectInputs() {
-
-}
