@@ -34,7 +34,21 @@ public class BikeReport {
     @JoinColumn(name = "testline_id")
     private List<TestLine> testLines;
 
-    public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
+    public BikeReport(Bike bike, LocalDate reportDate, Integer score, Technician technician, Customer customer, List<TestLine> testLines) {
+        this.bike = bike;
+        this.reportDate = reportDate;
+        this.score = score;
+        this.technician = technician;
+        this.customer = customer;
+        this.testLines = testLines;
+    }
+
+    public BikeReport(Bike bike, LocalDate reportDate, Technician technician, Customer customer, List<TestLine> testLines) {
+        this.bike = bike;
+        this.reportDate = reportDate;
+        this.technician = technician;
+        this.customer = customer;
+        this.testLines = testLines;
     }
 }
 

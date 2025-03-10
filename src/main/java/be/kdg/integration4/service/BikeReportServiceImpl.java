@@ -1,7 +1,6 @@
 package be.kdg.integration4.service;
 
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.domain.*;
 import be.kdg.integration4.exceptions.CSVException;
 import be.kdg.integration4.repository.BikeReportRepository;
 import org.apache.commons.csv.CSVFormat;
@@ -16,7 +15,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BikeReportServiceImpl implements BikeReportService {
@@ -39,10 +40,10 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public void save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
-        BikeReport bikeReport = new BikeReport(id, bike, reportDate, score, technician, customer);
-        bikeReportRepository.save(bikeReport);
+    public void save(Bike bike, LocalDate reportDate, Integer score, Technician technician, Customer customer, List<TestLine> testLines) {
+        BikeReport bikeReport = new BikeReport(bike, reportDate, score, technician, customer, testLines);
     }
+
 
     @Override
     public void delete(Long id) {
@@ -50,7 +51,7 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public void csvConverter(MultipartFile file) {
+    public List<TestLine> csvConverter(MultipartFile file, BikeReport bikeReport) {
         if (file.isEmpty()) {
             throw new CSVException("CSV file is empty");
         }
@@ -105,57 +106,25 @@ public class BikeReportServiceImpl implements BikeReportService {
 
             testLines.forEach(System.err::println);
 
-        } catch (Exception e) {
-            throw new CSVException("CSV processing failed");
-        }
-
-        Map<String, String> extractedData = new LinkedHashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            List<String[]> rows = new ArrayList<>();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                rows.add(line.split(",", -1));
-            }
-
-            if (rows.size() < 4) {
-                throw new CSVException("....");
-            }
-
-            System.out.println(Arrays.toString(rows.get(4)));
-
-            extractedData.put("Workshop Name", rows.get(1)[2].trim());
-            extractedData.put("Workshop Location", rows.get(2)[2].trim() + ", " + rows.get(2)[3].trim());
-            extractedData.put("Testbench Number", rows.get(3)[2].trim());
-            extractedData.put("Review Date", rows.get(4)[2].trim());
-
-            extractedData.put("Mechanic Name", rows.get(1)[5].trim() + " " + rows.get(1)[6]);
-            extractedData.put("Bike Owner", rows.get(2)[5].trim() + " " + rows.get(2)[6]);
-
-            extractedData.put("Brand", rows.get(1)[9].trim());
-            extractedData.put("Bike Type", rows.get(2)[9].trim());
-            extractedData.put("Chassis Number", rows.get(3)[9].trim());
-            extractedData.put("Production Date", rows.get(4)[9].trim());
-
-            extractedData.put("Bike Size", rows.get(1)[11].trim());
-            extractedData.put("Mileage (km)", rows.get(2)[11].trim());
-            extractedData.put("Gear Type", rows.get(3)[11].trim());
-            extractedData.put("Engine Type", rows.get(4)[11].trim());
-
-            extractedData.put("Powertrain", rows.get(1)[13].trim());
-            extractedData.put("Accu Capacity (Wh)", rows.get(2)[13].trim());
-            extractedData.put("Max Support (%)", rows.get(3)[13].trim());
-
-
-            extractedData.put("Engine Power - Max (W)", rows.get(1)[15].trim());
-            extractedData.put("Engine Power - Nominal (W)", rows.get(2)[15].trim());
-            extractedData.put("Engine Torque (Nm)", rows.get(3)[15].trim());
+            bikeReport.setTestLines(testLines);
+            bikeReportRepository.save(bikeReport);
+            return bikeReport.getTestLines();
 
         } catch (Exception e) {
             throw new CSVException("CSV processing failed");
         }
 
-        //save(1, extractedData.get("Chassis Number"))
     }
+
+    public Map<String, Double> calculateAverages(List<TestLine> testLines) {
+        return Map.of(
+                "Battery Voltage (V)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryVoltage)),
+                "Battery Current (A)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryCurrent)),
+                "Battery Temperature (°C)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryTemperature)),
+                "Engine Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getEnginePower)),
+                "Wheel Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getWheelPower))
+        );
+    }
+
+
 }

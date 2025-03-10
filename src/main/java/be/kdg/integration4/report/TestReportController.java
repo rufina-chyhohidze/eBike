@@ -1,7 +1,10 @@
 package be.kdg.integration4.report;
 
+import be.kdg.integration4.domain.BikeReport;
 import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.service.BikeReportService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.Model;
@@ -13,21 +16,20 @@ import java.util.stream.Collectors;
 @Controller
 public class TestReportController {
 
-    @GetMapping("/report")
-    public String showReport(@RequestParam List<TestLine> testLines, Model model) {
-        Map<String, Double> averages = calculateAverages(testLines);
+    BikeReportService bikeReportService;
+
+    public TestReportController(BikeReportService bikeReportService) {
+        this.bikeReportService = bikeReportService;
+    }
+
+    @GetMapping("/report/{id}")
+    public String showReport(@PathVariable Long bikeReportId, Model model) {
+        BikeReport bikeReport = bikeReportService.findById(bikeReportId);
+        Map<String, Double> averages = bikeReportService.calculateAverages(bikeReport.getTestLines());
         model.addAttribute("averages", averages);
-        model.addAttribute("testLines", testLines);
+        model.addAttribute("testLines", bikeReport.getTestLines());
         return "report";
     }
 
-    private Map<String, Double> calculateAverages(List<TestLine> testLines) {
-        return Map.of(
-                "Battery Voltage (V)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryVoltage)),
-                "Battery Current (A)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryCurrent)),
-                "Battery Temperature (°C)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryTemperature)),
-                "Engine Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getEnginePower)),
-                "Wheel Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getWheelPower))
-        );
-    }
+
 }

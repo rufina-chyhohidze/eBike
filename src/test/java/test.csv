@@ -1,9 +1,3 @@
-,,,,,,,,,,,,,,,,,,,
-General,Name Workshop,E-bis ,,Name Mechanic,Rico,Van der Elst,Bike,Brand,Gazelle,Bike Size,M,Powertrain ,Belt,Engine power - max (W),600,,,,
-,Location Workshop,Mechelen ,Belgium,Name Bike Owner,Jonathan ,Put,,Type,Ultimate C380,Mileage (km),850,Accu Capacity (Wh),500,Engine power - nominal (W),250,,,,
-,Testbench Number,001,,,,,,Chassisnumber,VG2304K5111,Gear Type,Enviolo,Max Support (%),340,Engine torque (Nm),85,,,,
-,Review Date,8/30/2024,,,,,,Production Date,2022,Engine Type,Bosch Performance Speed,,,,,,,,
-,,,,,,,,,,,,,,,,,,,
 Date / Time,Battery Voltage (V),Battery Current (A),Battery Capacity (%),Battery Temperature (°C),Charge Status,Assistance level,Torque Crank (Nm),Bike wheel speed (km/h),Cadance (rpm),Engine (rpm),Engine Power (W),Wheel Power (W),Rol Troque (Nm),Loadcell (N),Rol (Hz),Hozizontal inclination sensor,Vertical inclination sensor,Load Power (%),Status Plug
 30/08/2024 10:38:27.215,32.734,6.930,74.600,51.962,0,4,1.851,20.90,55,1274,219.2,70.15,21.68,26.75,4092.25,50.75,-0.28,39,FALSE
 30/08/2024 10:38:27.953,32.676,7.012,74.603,53.127,0,4,1.842,21.00,55,1260,219.2,70.36,21.68,26.71,4108.80,50.64,-2.90,39,FALSE
