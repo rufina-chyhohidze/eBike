@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,8 +17,14 @@ import java.util.List;
 public class Customer extends User {
     private String phoneNumber;
 
-    public Customer(String name, String email, String password, UserRoles userRoles, String phoneNumber) {
-        super(name, email, password, userRoles);
+    public Customer(String name, String email, String password, String phoneNumber) {
+        super(name, email, password, true);
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
     }
 }
