@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    implementation("io.github.cdimascio:dotenv-java:2.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
