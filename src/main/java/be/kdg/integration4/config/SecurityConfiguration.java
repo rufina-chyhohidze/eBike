@@ -24,13 +24,14 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         auth -> auth
                         .requestMatchers("/api/customers", "api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/register", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
+                        .requestMatchers("/api/register", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
                         .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
+                        .failureUrl("/error")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
                         .permitAll()

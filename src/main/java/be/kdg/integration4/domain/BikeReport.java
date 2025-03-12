@@ -34,6 +34,18 @@ public class BikeReport {
     @JoinColumn(name = "testline_id")
     private List<TestLine> testLines;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bench_nr")
+    private TestBench testBench;
+
     public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
+    }
+
+    public BikeReport(Bike bike, LocalDate reportDate, Technician technician, Customer customer, TestBench testBench) {
+        this.bike = bike;
+        this.reportDate = reportDate;
+        this.technician = technician;
+        this.customer = customer;
+        this.testBench = testBench;
     }
 }
