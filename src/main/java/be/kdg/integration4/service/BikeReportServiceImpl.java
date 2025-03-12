@@ -1,16 +1,15 @@
 package be.kdg.integration4.service;
 
 import be.kdg.integration4.config.SecurityUtil;
-import be.kdg.integration4.domain.Customer;
-import be.kdg.integration4.domain.Technician;
-import be.kdg.integration4.domain.TestType;
-import be.kdg.integration4.domain.BikeReport;
+import be.kdg.integration4.domain.*;
 import be.kdg.integration4.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -65,5 +64,17 @@ public class BikeReportServiceImpl implements BikeReportService {
                 customerRepository.findByEmail(emailBikeOwner)
         );
     }
+
+    @Override
+    public Map<String, Double> calculateAverages(List<TestLine> testLines) {
+        return Map.of(
+                "Battery Voltage (V)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryVoltage)),
+                "Battery Current (A)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryCurrent)),
+                "Battery Temperature (°C)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryTemperature)),
+                "Engine Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getEnginePower)),
+                "Wheel Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getWheelPower))
+        );
+    }
+
 
 }

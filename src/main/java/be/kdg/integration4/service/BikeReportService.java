@@ -1,9 +1,11 @@
 package be.kdg.integration4.service;
 
 import be.kdg.integration4.domain.BikeReport;
+import be.kdg.integration4.domain.TestLine;
 import be.kdg.integration4.repository.BikeReportRepository;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BikeReportService {
 
@@ -16,4 +18,6 @@ public interface BikeReportService {
     void delete(Long id);
 
     void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber);
+
+    Map<String, Double> calculateAverages(List<TestLine> testLines);
 }

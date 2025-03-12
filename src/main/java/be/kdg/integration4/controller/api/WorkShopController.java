@@ -1,6 +1,6 @@
 package be.kdg.integration4.controller.api;
 
-import be.kdg.integration4.controller.api.dtos.CustomMapperImpl;
+import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.WorkShopDto;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.service.WorkshopService;
@@ -18,9 +18,9 @@ import java.util.List;
 public class WorkShopController {
 
     private final WorkshopService workshopService;
-    private final CustomMapperImpl customMapper;
+    private final CustomMapper customMapper;
 
-    public WorkShopController(WorkshopService workshopService, CustomMapperImpl customMapper) {
+    public WorkShopController(WorkshopService workshopService, CustomMapper customMapper) {
         this.workshopService = workshopService;
         this.customMapper = customMapper;
     }
