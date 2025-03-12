@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new be.kdg.integration4.websocket.TestStatusWebSocketHandler(testbenchApiService), "/ws/status")
+        registry.addHandler(new be.kdg.integration4.config.TestStatusWebSocketHandler(testbenchApiService), "/ws/status")
                 .setAllowedOrigins("*"); // Allow all origins, for CORS issues
     }
 }

@@ -14,10 +14,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/")
 public class HomeController {
-//    @GetMapping("/")
-//    public String home(Model model) {
-//        return "home";
-//    }
+
     @GetMapping("/")
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -29,10 +26,8 @@ public class HomeController {
                     .map(role -> role.replace("ROLE_", "")) // Remove "ROLE_" prefix
                     .collect(Collectors.joining(", "));
 
-            System.out.println("User Role: " + userRole); // Debugging
             model.addAttribute("userRole", userRole);
         } else {
-            System.out.println("No authentication found!"); // Debugging
             model.addAttribute("userRole", "GUEST");
         }
 
