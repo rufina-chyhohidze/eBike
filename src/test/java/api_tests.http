@@ -22,7 +22,7 @@ POST http://localhost:8080/api/start-test
 Content-Type: application/json
 
 {
-  "testbenchNumber": 123,
+  "testbenchNumber": 1,
   "testType": "Performance",
   "emailBikeOwner": "superadmin@email.com",
   "chassisNumber": "XYZ123456789",

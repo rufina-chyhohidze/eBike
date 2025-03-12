@@ -57,14 +57,13 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber) {
-        bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner)));
+        bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
         log.debug("Bike: {}, Date: {}, Technician: {}, Customer: {}",
                 bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null),
                 LocalDate.now(),
                 technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()),
                 customerRepository.findByEmail(emailBikeOwner)
         );
-
     }
 
 }

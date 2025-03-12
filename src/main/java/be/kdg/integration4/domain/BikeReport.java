@@ -41,10 +41,11 @@ public class BikeReport {
     public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
     }
 
-    public BikeReport(Bike bike, LocalDate reportDate, Technician technician, Customer customer) {
+    public BikeReport(Bike bike, LocalDate reportDate, Technician technician, Customer customer, TestBench testBench) {
         this.bike = bike;
         this.reportDate = reportDate;
         this.technician = technician;
         this.customer = customer;
+        this.testBench = testBench;
     }
 }

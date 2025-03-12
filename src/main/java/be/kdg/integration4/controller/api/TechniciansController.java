@@ -44,7 +44,7 @@ public class TechniciansController {
             );
         }
 
-        log.debug(test.toString());
+        log.debug(String.valueOf((long) test.getTestbenchNumber()));
 
 
 
