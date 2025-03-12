@@ -15,3 +15,35 @@ Accept: application/json
   "phoneNumber": "123",
   "workshopId": null
 }
+
+###
+
+POST http://localhost:8080/api/start-test
+Content-Type: application/json
+
+{
+  "testbenchNumber": 123,
+  "testType": "Performance",
+  "emailBikeOwner": "superadmin@email.com",
+  "chassisNumber": "XYZ123456789",
+  "bikeBrand": "Trek",
+  "bikeSize": "M",
+  "productionDate": 2020,
+  "type": "Mountain",
+  "powertrain": "Shimano",
+  "enginePowerMax": 500,
+  "mileage": 1000,
+  "accuCapacity": 500,
+  "enginePowerNominal": 400,
+  "gearType": "Manual",
+  "maxSupport": 30,
+  "engineTorque": 75,
+  "engineType": "Electric"
+}
+
+###
+
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+email=technician@email.com&password=password

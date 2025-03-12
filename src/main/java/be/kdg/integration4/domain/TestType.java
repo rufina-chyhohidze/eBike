@@ -1,6 +1,6 @@
 package be.kdg.integration4.domain;
 
-public enum AutomaticTest {
+public enum TestType {
     FULL_POWER_TEST,
     BATTERY_CAPACITY_TEST,
     TIRE_QUALITY_TEST,

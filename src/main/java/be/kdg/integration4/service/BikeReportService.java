@@ -14,4 +14,6 @@ public interface BikeReportService {
     void save(Long id, String bike, String reportDate, Integer score, String technician, String customer);
 
     void delete(Long id);
+
+    void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber);
 }
