@@ -41,4 +41,22 @@ public class Bike {
     private int enginePowerNominal;
 
     private int engineTorque;
+
+    public Bike(String frameNumber, String type, String brand, LocalDate registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+        this.frameNumber = frameNumber;
+        this.type = type;
+        this.brand = brand;
+        this.registrationDate = registrationDate;
+        this.productionDate = productionDate;
+        this.bikeSize = bikeSize;
+        this.milleage = milleage;
+        this.gearType = gearType;
+        this.engineType = engineType;
+        this.powertrain = powertrain;
+        this.accCapacity = accCapacity;
+        this.maxSupport = maxSupport;
+        this.enginePowerMax = enginePowerMax;
+        this.enginePowerNominal = enginePowerNominal;
+        this.engineTorque = engineTorque;
+    }
 }

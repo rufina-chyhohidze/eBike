@@ -1,5 +1,12 @@
 package be.kdg.integration4.service;
 
+import be.kdg.integration4.config.SecurityUtil;
+import be.kdg.integration4.domain.Customer;
+import be.kdg.integration4.domain.Technician;
+import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.domain.BikeReport;
+import be.kdg.integration4.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import be.kdg.integration4.domain.*;
 import be.kdg.integration4.exceptions.CSVException;
 import be.kdg.integration4.repository.BikeReportRepository;
@@ -16,16 +23,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BikeReportServiceImpl implements BikeReportService {
 
     private final BikeReportRepository bikeReportRepository;
+    private final TestBenchRepository testBenchRepository;
+    private final CustomerRepository customerRepository;
+    private final BikeService bikeService;
+    private final BikeRepository bikeRepository;
+    private final TechnicianRepository technicianRepository;
 
-    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository) {
         this.bikeReportRepository = bikeReportRepository;
+        this.testBenchRepository = testBenchRepository;
+        this.customerRepository = customerRepository;
+        this.bikeService = bikeService;
+        this.bikeRepository = bikeRepository;
+        this.technicianRepository = technicianRepository;
     }
 
 
@@ -40,8 +58,9 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public void save(Bike bike, LocalDate reportDate, Integer score, Technician technician, Customer customer, List<TestLine> testLines) {
-        BikeReport bikeReport = new BikeReport(bike, reportDate, score, technician, customer, testLines);
+    public void save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
+        BikeReport bikeReport = new BikeReport(id, bike, reportDate, score, technician, customer);
+        bikeReportRepository.save(bikeReport);
     }
 
 
@@ -50,7 +69,15 @@ public class BikeReportServiceImpl implements BikeReportService {
         bikeReportRepository.delete(findById(id));
     }
 
+
     @Override
+    public void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber) {
+        bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
+        log.debug("Bike: {}, Date: {}, Technician: {}, Customer: {}",
+                bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null),
+                LocalDate.now(),
+                technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()),
+                customerRepository.findByEmail(emailBikeOwner)
     public List<TestLine> csvConverter(MultipartFile file, BikeReport bikeReport) {
         if (file.isEmpty()) {
             throw new CSVException("CSV file is empty");

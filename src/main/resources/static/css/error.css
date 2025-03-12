@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Audiowide', sans-serif;
+    background: radial-gradient(circle, #36001f 0%, #1a0010 100%);
+    color: #ff005d;
+    overflow-x: hidden;
+}
+
+/* Centered Content Wrapper */
+.wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Error Symbol Styling */
+.error-symbol svg {
+    width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0.6;
+    animation: glow 3s infinite;
+}
+
+/* Error Code Style */
+h1 {
+    font-size: 140px;
+    margin: 0;
+    animation: flickerErrorCode 3s linear infinite;
+    text-shadow: 0px 0px 10px #ff005d;
+    z-index: 2;
+}
+
+/* Error Message Style */
+h2 {
+    font-size: 32px;
+    margin-top: 10px;
+    animation: flickerText 5s linear infinite;
+    z-index: 2;
+}
+
+/* Description Style */
+p {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #fff;
+    text-shadow: 0px 0px 4px #ff005d;
+    z-index: 2;
+}
+
+/* Footer Styling */
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    width: 100%;
+}
+
+/* Error Code Flicker Animation */
+@keyframes flickerErrorCode {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow: 0px 0px 10px #ff005d, 0px 0px 20px #ff005d;
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.5;
+    }
+}
+
+/* Error Message Flicker Animation */
+@keyframes flickerText {
+    0%, 19%, 21%, 23%, 60%, 65%, 100% {
+        text-shadow: 0px 0px 4px #ff005d;
+        opacity: 1;
+    }
+    20%, 22%, 63% {
+        text-shadow: none;
+        opacity: 0.3;
+    }
+}
+
+/* Glow Effect Animation */
+@keyframes glow {
+    0% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(-120deg); }
+    100% { filter: hue-rotate(0deg); }
+}
+
+/* Back to Home Button Styling */
+.home-button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #ff005d;
+    text-decoration: none;
+    border: 2px solid #ff005d;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-shadow: 0px 0px 5px #ff005d;
+    box-shadow: 0px 0px 8px #ff005d;
+}
+
+.home-button:hover {
+    background-color: #ff005d;
+    color: #1a0010;
+    text-shadow: none;
+    box-shadow: 0px 0px 15px #ff005d;
+}

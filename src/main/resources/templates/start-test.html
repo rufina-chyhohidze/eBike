@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bike Review Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<form th:action="@{/start-test}" method="post" th:object="${testDto}">
+  <label>Testbench Number</label>
+  <input type="number" placeholder="001">
+
+  <label>Test Type</label>
+  <select th:name="testType">
+    <option th:each="testType : ${testTypes}" th:value="${testType}" th:text="${testType}"></option>
+  </select>
+
+  <label>Email Bike Owner</label>
+  <input type="text" placeholder="hallo@email.com">
+
+  <label>Chassis Number</label>
+  <input type="text" placeholder="VG2304K5111">
+
+  <label>Bike Brand</label>
+  <input type="text" placeholder="Gazelle">
+
+  <label>Bike Size</label>
+  <select th:name="bikeSize">
+    <option th:each="size : ${bikeSizes}" th:value="${size}" th:text="${size}"></option>
+  </select>
+
+  <label>Production Date</label>
+  <input type="number" placeholder="2022" >
+
+  <label>Type</label>
+  <input type="text" placeholder="Ultimate C380">
+
+  <label>Powertrain</label>
+  <input type="text" value="Belt">
+
+  <label>Engine Power - Max (W)</label>
+  <input type="number" placeholder="600">
+
+  <label>Mileage (km)</label>
+  <input type="number" placeholder="850">
+
+  <label>Accu Capacity (Wh)</label>
+  <input type="number" placeholder="500">
+
+  <label>Engine Power - Nominal (W)</label>
+  <input type="number" placeholder="250">
+
+  <label>Gear Type</label>
+  <input type="text" placeholder="Enviolo">
+
+  <label>Max Support (%)</label>
+  <input type="number" placeholder="340">
+
+  <label>Engine Torque (Nm)</label>
+  <input type="number" placeholder="85">
+
+  <label>Engine Type</label>
+  <input type="text" placeholder="Bosch Performance Speed">
+
+  <button type="submit">Submit</button>
+</form>
+</body>
+</html>

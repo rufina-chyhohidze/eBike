@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body>
+<nav th:replace="~{fragments/fragments :: navbar}"></nav>
+
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-8 col-xl-9">
+                <div class="card text-black" style="border-radius: 25px;">
+                    <div class="card-body p-5">
+                        <div class="row g-0">
+
+                            <div class="col-md-6 order-1 order-md-1 d-flex align-items-center justify-content-center">
+                                <img src="/img/bike.jpg" class="img-fluid rounded" alt="Sample image" style="max-width: 100%; height: auto;">
+                            </div>
+
+                            <div class="col-md-6 order-2 order-md-2">
+                                <p class="text-center h1 fw-bold mb-4 mt-2">Login</p>
+
+                                <form class="mx-1 mx-md-4"  th:action="@{/login}" method="post">
+
+                                    <div class="d-flex flex-row align-items-center mb-3">
+                                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <input type="email" id="email" name="email" class="form-control" required/>
+                                            <label class="form-label" for="email">Your Email</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-3">
+                                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <input type="password" id="password" name="password" class="form-control" required />
+                                            <label class="form-label" for="password">Password</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check d-flex justify-content-center mb-3">
+                                        <input class="form-check-input me-2" type="checkbox" id="rememberMe" />
+                                        <label class="form-check-label" for="rememberMe">
+                                            Remember me
+                                        </label>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <button type="submit" class="btn btn-primary">Login</button>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <a href="/forgot-password" class="text-muted">Forgot password?</a> |
+                                        <a href="/register" class="text-primary">Sign up</a>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+
+
+</body>
+</html>

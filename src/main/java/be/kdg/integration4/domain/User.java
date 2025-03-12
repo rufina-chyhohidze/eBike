@@ -1,28 +1,41 @@
 package be.kdg.integration4.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class User {
+@Table(name = "profile")
+public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
     private String password;
-    private UserRoles userRoles;
+    private boolean approved = false;
 
-    public User(String name, String email, String password, UserRoles userRoles) {
+    @Override
+    public String getUsername() {
+        return email;
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.userRoles = userRoles;
+    }
+    public User(String name, String email, String password, boolean approved) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.approved = approved;
     }
 }
