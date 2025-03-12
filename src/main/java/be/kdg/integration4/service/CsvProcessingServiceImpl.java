@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class CsvProcessingServiceImpl implements CsvProcessingService {
-    public static List<TestLine> processCsvString(String csvContent) {
+    public List<TestLine> processCsvString(String csvContent) {
         List<TestLine> testLines = new ArrayList<>();
         String[] lines = csvContent.split("\\r?\\n");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSS");
@@ -46,15 +46,15 @@ public class CsvProcessingServiceImpl implements CsvProcessingService {
         return testLines;
     }
 
-    private static Float parseFloat(String value) {
+    private Float parseFloat(String value) {
         return value.isEmpty() ? null : Float.parseFloat(value);
     }
 
-    private static Integer parseInt(String value) {
+    private Integer parseInt(String value) {
         return value.isEmpty() ? null : Integer.parseInt(value);
     }
 
-    private static Boolean parseBoolean(String value) {
+    private Boolean parseBoolean(String value) {
         return "TRUE".equalsIgnoreCase(value);
     }
 }
