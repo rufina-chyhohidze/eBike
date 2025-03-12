@@ -3,12 +3,19 @@ package be.kdg.integration4.service;
 import be.kdg.integration4.domain.Bike;
 import be.kdg.integration4.domain.BikeSize;
 import be.kdg.integration4.repository.BikeRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class BikeServiceImpl implements BikeService{
     BikeRepository bikeRepository;
+
+    public BikeServiceImpl(BikeRepository bikeRepository) {
+        this.bikeRepository = bikeRepository;
+    }
+
     @Override
     public Bike findByFrameNumber(String frameNumber) {
          return bikeRepository.findBikeByFrameNumber(frameNumber).orElse(null);
