@@ -1,4 +1,4 @@
-package be.kdg.integration4.config;
+package be.kdg.integration4.websocket;
 
 import be.kdg.integration4.domain.TestStatus;
 import be.kdg.integration4.service.TestbenchApiService;
