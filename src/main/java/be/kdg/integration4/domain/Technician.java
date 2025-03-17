@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @ToString
+@DiscriminatorValue("Technician")
 public class Technician extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@DiscriminatorValue("WorkshopAdmin")
 public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;

@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Data
 @NoArgsConstructor
 @Table(name = "profile")
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

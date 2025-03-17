@@ -80,32 +80,32 @@ public class SecurityConfiguration {
 
 
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails superadmin = User.withDefaultPasswordEncoder()
-//                .username("superadmin@email.com")
-//                .password("password")
-//                .roles("SUPERADMIN")
-//                .build();
-//
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin@email.com")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//
-//        UserDetails technician = User.withDefaultPasswordEncoder()
-//                .username("technician@email.com")
-//                .password("password")
-//                .roles("TECHNICIAN")
-//                .build();
-//
-//        UserDetails customer = User.withDefaultPasswordEncoder()
-//                .username("customer@email.com")
-//                .password("password")
-//                .roles("CUSTOMER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(superadmin, admin, technician, customer);
-//    }
-}
+//Bean
+//public UserDetailsService userDetailsService() {
+//   UserDetails superadmin = User.withDefaultPasswordEncoder()
+//           .username("superadmin@email.com")
+//           .password("password")
+//           .roles("SUPERADMIN")
+//           .build();
+
+//UserDetails admin = User.withDefaultPasswordEncoder()
+//        .username("admin@email.com")
+//        .password("password")
+//        .roles("ADMIN")
+//        .build();
+
+   // UserDetails technician = User.withDefaultPasswordEncoder()
+   //         .username("technician@email.com")
+   //         .password("password")
+   //         .roles("TECHNICIAN")
+   //         .build();
+
+  //    UserDetails customer = User.withDefaultPasswordEncoder()
+  //            .username("customer@email.com")
+  //            .password("password")
+  //            .roles("CUSTOMER")
+  //            .build();
+
+     // return new InMemoryUserDetailsManager(superadmin,admin);
+  }
+//}
