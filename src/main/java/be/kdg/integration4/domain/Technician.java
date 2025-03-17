@@ -21,7 +21,7 @@ public class Technician extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
-
+    // TODO: change the role to the class name
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {

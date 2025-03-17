@@ -5,6 +5,6 @@ import be.kdg.integration4.domain.Location;
 public record WorkShopDto(
     Long workshopId,
     String workshopName,
-    Location location
+    Location workshopLocation
 ) {
 }

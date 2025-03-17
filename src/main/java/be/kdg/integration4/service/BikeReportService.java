@@ -2,8 +2,9 @@ package be.kdg.integration4.service;
 
 import be.kdg.integration4.domain.BikeReport;
 import be.kdg.integration4.domain.TestLine;
-import be.kdg.integration4.repository.BikeReportRepository;
+import be.kdg.integration4.domain.TestType;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,13 @@ public interface BikeReportService {
 
     List<BikeReport> findAll();
 
-    void save(Long id, String bike, String reportDate, Integer score, String technician, String customer);
+    BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer);
 
     void delete(Long id);
 
-    void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber);
+    BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber);
+
+    BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId);
 
     Map<String, Double> calculateAverages(List<TestLine> testLines);
 }

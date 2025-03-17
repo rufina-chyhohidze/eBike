@@ -40,7 +40,7 @@ async function showWorkShopsInput() {
           console.log("Successfully retrieved workshops");
 
           /**
-           * @type {[{workshopId:number, workshopName:string, location:string | null}]}
+           * @type {[{workshopId:number, workshopName:string, workshopsLocation:string | null}]}
            */
           const workShops = await response.json();
           let workShopsHtml = '';
