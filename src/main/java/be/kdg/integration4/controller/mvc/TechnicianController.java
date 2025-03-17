@@ -16,8 +16,13 @@ public class TechnicianController {
 
     @GetMapping("/start-test")
     public String startTest(Model model) {
-        model.addAttribute("sizes", sizes);
+        model.addAttribute("bikeSizes", sizes);
         model.addAttribute("testTypes", testTypes);
         return "start-test";
+    }
+
+    @GetMapping("/test/success")
+    public String testSuccess(Model model) {
+        return "test-success";
     }
 }

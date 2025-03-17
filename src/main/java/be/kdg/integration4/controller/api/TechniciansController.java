@@ -1,14 +1,18 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.domain.BikeReport;
 import be.kdg.integration4.domain.BikeSize;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.service.BikeReportService;
 import be.kdg.integration4.service.BikeService;
+import be.kdg.integration4.service.TestbenchApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -16,14 +20,17 @@ import java.time.LocalDate;
 public class TechniciansController {
     private final BikeReportService bikeReportService;
     private final BikeService bikeService;
+    private final TestbenchApiService testbenchApiService;
 
-    public TechniciansController(BikeReportService bikeReportService, BikeService bikeService) {
+    public TechniciansController(BikeReportService bikeReportService, BikeService bikeService, TestbenchApiService testbenchApiService) {
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
+        this.testbenchApiService = testbenchApiService;
     }
 
     @PostMapping("/start-test")
-    public ResponseEntity<String> startTest(@RequestBody TestDto test) {
+    //TODO: Add dto validation
+    public ResponseEntity<Map<String, String>> startTest(@RequestBody TestDto test) {
         if (bikeService.findByFrameNumber(test.getChassisNumber()) == null) {
             bikeService.save(
                     test.getChassisNumber(),
@@ -48,14 +55,20 @@ public class TechniciansController {
 
 
 
-        bikeReportService.save(
+        BikeReport report = bikeReportService.save(
                 (long) test.getTestbenchNumber(),
                 test.getTestType(),
                 test.getEmailBikeOwner(),
                 test.getChassisNumber()
         );
 
-        return ResponseEntity.ok("Test started successfully!");
+        String id = testbenchApiService.sendStartRequest(test.getTestType(), test.getAccuCapacity(), test.getMaxSupport(),
+                test.getEnginePowerMax(), test.getEnginePowerNominal(), test.getEngineTorque()).id();
+
+        testbenchApiService.saveApiRequest(report,id);
+        Map<String,String> response = new HashMap<>();
+        response.put("id", id);
+        return ResponseEntity.ok(response);
     }
 
 
