@@ -14,29 +14,31 @@ import java.util.List;
 @Controller
 @RequestMapping("/superadmin")
 public class ApprovalController {
-
     private final UserService userService;
 
     public ApprovalController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/pending-approvals")
-    public String viewPendingApprovals(Model model) {
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
         List<User> pendingUsers = userService.getUnapprovedUsers();
         model.addAttribute("pendingUsers", pendingUsers);
-        return "pending-approvals";
+        return "super-admin";
     }
 
     @PostMapping("/approve/{id}")
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
-        return "redirect:/superadmin/pending-approvals";
+        return "redirect:/superadmin/profile";
     }
 
     @PostMapping("/reject/{id}")
     public String rejectUser(@PathVariable Long id) {
         userService.rejectUser(id);
-        return "redirect:/superadmin/pending-approvals";
+        return "redirect:/superadmin/profile";
     }
+
+
 }

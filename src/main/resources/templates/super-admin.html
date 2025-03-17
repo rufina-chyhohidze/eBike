@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en " xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,22 +58,46 @@
   </div>
 
   <!-- APPROVE EMPLOYEES -->
-  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-2 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-2 text-gray-200">Approve Employees</h3>
-    <p class="text-gray-300 text-sm mb-4">Approve technicians and admins who have registered.</p>
-    <div class="space-y-2">
-      <div class="bg-gray-800 p-3 rounded-lg flex justify-between items-center">
-        <div>
-          <span class="text-white text-sm">Admin: John Doe</span><br>
-          <span class="text-gray-400 text-xs">Email: john.doe@example.com</span>
-        </div>
-        <div class="flex gap-2">
-          <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">Approve</button>
-          <button class="bg-gray-600 text-white px-3 py-1 rounded-lg hover:bg-gray-700 text-sm" data-modal-target="employee-details">View Details</button>
-        </div>
-      </div>
-    </div>
+  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 text-gray-200">Pending Approvals</h3>
+
+    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl text-sm">
+      <thead>
+      <tr class="bg-gray-700 text-gray-100">
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Role</th>
+        <th class="p-3 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${pendingUsers}" class="hover:bg-gray-700">
+        <td class="p-3 text-gray-200" th:text="${user.name}"></td>
+        <td class="p-3 text-gray-400" th:text="${user.email}"></td>
+        <td class="p-3 text-gray-400" th:text="${user.getAuthorities()}"></td>
+        <td class="p-3 flex gap-2">
+          <form th:action="@{/superadmin/approve/{id}(id=${user.id})}" method="post">
+            <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">
+              Approve
+            </button>
+          </form>
+          <form th:action="@{/superadmin/reject/{id}(id=${user.id})}" method="post">
+            <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">
+              Reject
+            </button>
+          </form>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(pendingUsers)}">
+        <td colspan="4" class="p-3 text-center text-gray-400">
+          No pending approvals found.
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+
+
 
   <!-- TEST BENCH ERRORS -->
   <div class="bg-gray-100 shadow-lg rounded-3xl p-4 col-span-2 border border-gray-200">
@@ -140,7 +164,7 @@
   </div>
 </main>
 
-<script src="../static/js/super-admin.js"></script>
+<script src="/js/super-admin.js"></script>
 
 </body>
 </html>
