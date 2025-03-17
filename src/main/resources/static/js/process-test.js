@@ -1,6 +1,9 @@
+const DOMAIN_NAME = "localhost:8080"
+
 const form = document.querySelector("form");
 const loadingDiv = document.getElementById("loading");
 const testFormDiv = document.getElementById("test-form");
+
 
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -28,7 +31,7 @@ form.addEventListener("submit", async function (e) {
     loadingDiv.classList.remove("d-none");
 
 
-    const socket = new WebSocket("ws://localhost:8080/ws/status");
+    const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/status`);
     socket.onopen = function () {
         socket.send(data.id); // Replace with actual test ID
     };
@@ -46,7 +49,7 @@ form.addEventListener("submit", async function (e) {
 });
 
 function retrieveReport(id) {
-    const socket = new WebSocket("ws://localhost:8080/ws/result");
+    const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/result`);
     socket.onopen = function () {
         socket.send(id);
     }
