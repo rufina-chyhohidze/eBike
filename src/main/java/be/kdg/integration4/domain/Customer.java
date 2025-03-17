@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@DiscriminatorValue("Customer")
 public class Customer extends User {
     private String phoneNumber;
 

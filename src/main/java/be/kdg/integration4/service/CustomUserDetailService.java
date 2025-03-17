@@ -1,5 +1,7 @@
 package be.kdg.integration4.service;
 
+import be.kdg.integration4.domain.Technician;
+import be.kdg.integration4.domain.WorkshopAdmin;
 import be.kdg.integration4.domain.User;
 import be.kdg.integration4.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +22,15 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
-        if (!user.isApproved()) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+
+        // Only WorkshopAdmin and Technician require approval
+        if (!user.isApproved() && (user instanceof WorkshopAdmin || user instanceof Technician)) {
             throw new DisabledException("Account not approved yet");
         }
 
         return user;
     }
+
 }
