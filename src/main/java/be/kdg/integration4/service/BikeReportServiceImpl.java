@@ -20,14 +20,16 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final CustomerRepository customerRepository;
     private final BikeService bikeService;
     private final BikeRepository bikeRepository;
+    private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
 
-    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TechnicianRepository technicianRepository) {
+    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TestLineRepository testLineRepository, TechnicianRepository technicianRepository) {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
         this.bikeService = bikeService;
         this.bikeRepository = bikeRepository;
+        this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
     }
 
@@ -43,9 +45,9 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public void save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
+    public BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
         BikeReport bikeReport = new BikeReport(id, bike, reportDate, score, technician, customer);
-        bikeReportRepository.save(bikeReport);
+        return bikeReportRepository.save(bikeReport);
     }
 
     @Override
@@ -55,14 +57,22 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
     @Override
-    public void save(Long testbenchNumber, String testType, String emailBikeOwner, String chassisNumber) {
-        bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
-        log.debug("Bike: {}, Date: {}, Technician: {}, Customer: {}",
-                bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null),
-                LocalDate.now(),
-                technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()),
-                customerRepository.findByEmail(emailBikeOwner)
-        );
+    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber) {
+        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
+    }
+
+    @Override
+    public BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId) {
+        BikeReport bikeReport = bikeReportRepository.findById(id).orElseThrow();
+        bikeReport.setBike(bikeRepository.findBikeByFrameNumber(chassisNumber).orElseThrow());
+        bikeReport.setReportDate(reportDate);
+        bikeReport.setScore(score);
+        bikeReport.setTechnician(technicianRepository.findByEmail(technician));
+        bikeReport.setCustomer(customerRepository.findByEmail(customer));
+        testLineRepository.saveAll(testLines);
+        bikeReport.setTestLines(testLines);
+        bikeReport.setTestBench(testBenchRepository.findById(benchId).orElseThrow());
+        return bikeReportRepository.save(bikeReport);
     }
 
     @Override

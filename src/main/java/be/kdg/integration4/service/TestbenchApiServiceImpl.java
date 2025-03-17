@@ -1,16 +1,18 @@
 package be.kdg.integration4.service;
 
+import be.kdg.integration4.domain.ApiRequest;
+import be.kdg.integration4.domain.BikeReport;
 import be.kdg.integration4.domain.TestStatus;
 import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.repository.ApiRequestRepository;
+import be.kdg.integration4.service.dtos.StartTestDto;
+import be.kdg.integration4.service.dtos.TestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TestbenchApiServiceImpl implements TestbenchApiService {
@@ -20,7 +22,10 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
     @Value("${workbench.apikey}")
     private String apiKey;
 
-    public TestbenchApiServiceImpl() {
+    private final ApiRequestRepository apiRequestRepository;
+
+    public TestbenchApiServiceImpl(ApiRequestRepository apiRequestRepository) {
+        this.apiRequestRepository = apiRequestRepository;
         this.restTemplate = new RestTemplate();
     }
 
@@ -74,5 +79,20 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(reportUrl, HttpMethod.GET, requestEntity, String.class);
         return Objects.requireNonNull(response.getBody());
+    }
+
+    @Override
+    public ApiRequest saveApiRequest(BikeReport bikeReport, String requestId) {
+        return apiRequestRepository.save(new ApiRequest(bikeReport, requestId));
+    }
+
+    @Override
+    public void deleteApiRequest(String requestId) {
+        apiRequestRepository.deleteApiRequestByTestId(requestId);
+    }
+
+    @Override
+    public ApiRequest getApiRequest(String requestId) {
+        return apiRequestRepository.findApiRequestByTestId(requestId).orElseThrow();
     }
 }

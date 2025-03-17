@@ -10,10 +10,11 @@ import java.util.List;
 
 @Service
 public class CsvProcessingServiceImpl implements CsvProcessingService {
+    @Override
     public List<TestLine> processCsvString(String csvContent) {
         List<TestLine> testLines = new ArrayList<>();
         String[] lines = csvContent.split("\\r?\\n");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         for (int i = 1; i < lines.length; i++) { // Skipping header
             String[] values = lines[i].split(",");

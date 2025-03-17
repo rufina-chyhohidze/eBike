@@ -1,4 +1,4 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.dtos;
 
 public record StartTestDto(
         String type,
