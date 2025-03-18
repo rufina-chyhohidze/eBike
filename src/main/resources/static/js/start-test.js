@@ -50,10 +50,4 @@ function showCustomer(customer) {
         </div>`;
 
         customerFoundItem = document.getElementById("customer-found-item");
-        customerFoundItem.addEventListener('click', event => handleCustomerClick(event, customer.email));
-}
-
-function handleCustomerClick(event, customerEmail) {
-    console.log("Clicked on customer");
-    console.log(customerEmail)
 }
