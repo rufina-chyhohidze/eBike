@@ -9,4 +9,6 @@ public interface UserService  {
     List<User> getUnapprovedUsers();
     void approveUser(Long userId);
     void rejectUser(Long userId);
+
+    User getUserByEmail(String email);
 }

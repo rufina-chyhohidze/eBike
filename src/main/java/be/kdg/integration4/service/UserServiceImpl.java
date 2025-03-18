@@ -5,6 +5,7 @@ import be.kdg.integration4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +32,11 @@ public class UserServiceImpl implements UserService {
     public void rejectUser(Long userId) {
         userRepository.deleteById(userId);
         log.debug("User with ID {} rejected and removed", userId);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }
