@@ -86,5 +86,15 @@ public class BikeReportServiceImpl implements BikeReportService {
         );
     }
 
+    @Override
+    public List<String> getFrameNumbersByCustomerId(Long customerId) {
+        return this.getBikeReportByCustomerId(customerId).stream().map(
+                bikeReport -> bikeReport.getBike().getFrameNumber()
+        ).collect(Collectors.toList());
+    }
 
+    @Override
+    public List<BikeReport> getBikeReportByCustomerId(Long customerId) {
+        return this.bikeReportRepository.getBikeReportByCustomerId(customerId);
+    }
 }

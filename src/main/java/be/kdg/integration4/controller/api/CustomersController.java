@@ -3,7 +3,9 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
+import be.kdg.integration4.domain.Bike;
 import be.kdg.integration4.domain.Customer;
+import be.kdg.integration4.service.BikeReportService;
 import be.kdg.integration4.service.BikeService;
 import be.kdg.integration4.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -20,12 +23,14 @@ import java.util.List;
 public class CustomersController {
     private final CustomerService customerService;
     private final CustomMapper customMapper;
+    private final BikeReportService bikeReportService;
     private final BikeService bikeService;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, BikeReportService bikeReportService, CustomMapper customMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
+        this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
     }
 
@@ -44,8 +49,14 @@ public class CustomersController {
     }
 
     @GetMapping("/bikes")
-    public ResponseEntity<List<BikeDto>> getCustomerBikes(@RequestParam String customerEmail) {
+    public ResponseEntity<List<BikeDto>> getCustomerBikes(@RequestParam Long customerId) {
+        List<String> frameNumbers = this.bikeReportService.getFrameNumbersByCustomerId(customerId);
+        log.debug("Frame numbers of bikes of customer with Id {}:  {}", customerId, frameNumbers);
+        List<Bike> customerBikes = frameNumbers.stream()
+                .map(this.bikeService::findByFrameNumber).toList();
+        log.debug("Found customer bikes: {}", customerBikes);
 
-        return null;
+        if (customerBikes.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikes));
     }
 }

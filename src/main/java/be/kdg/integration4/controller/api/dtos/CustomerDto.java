@@ -1,8 +1,8 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import org.mapstruct.Mapping;
 
 public record CustomerDto(
+        Integer id,
         String name,
         String email,
         String phoneNumber

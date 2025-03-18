@@ -45,7 +45,7 @@ async function fetchCustomer() {
 function showCustomer(customer) {
     customerFoundSection.innerHTML = '';
     /**
-     * @type { name:string, email:string, phoneNumber:string }
+     * @type { id:number, name:string, email:string, phoneNumber:string }
      */
     console.log(customer);
     customerFoundSection.innerHTML = `
@@ -59,10 +59,10 @@ function showCustomer(customer) {
 
     customerFoundItem = document.getElementById("customer-found-item");
 
-    showCustomerBikes(customer.email);
+    showCustomerBikes(customer.id);
 }
 
-async function showCustomerBikes(email) {
+async function showCustomerBikes(customerId) {
     // const response = await fetch(`/api/customers?email=${emailInput.value}`,
     //     {
     //         method: "GET",

@@ -53,3 +53,8 @@ email=technician@email.com&password=password
 
 GET http://localhost:8080/api/customers?email=customer@gmail.com
 Accept: application/json
+
+###
+
+GET http://localhost:8080/api/customers/bikes?customerId=17
+Accept: application/json

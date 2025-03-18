@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api.dtos;
 
+import be.kdg.integration4.domain.Bike;
 import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.Workshop;
 import org.mapstruct.Mapper;
@@ -14,6 +15,10 @@ public interface CustomMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phoneNumber", target = "phoneNumber")
     CustomerDto toCustomerDto(Customer customer);
+
+    BikeDto toBikeDto(Bike bike);
+    List<BikeDto> toBikeDtoList(List<Bike> bikeList);
+
     WorkShopDto toWorkShopDto(Workshop workshop);
     List<WorkShopDto> toWorkShopDtoList(List<Workshop> workshops);
 }

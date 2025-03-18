@@ -32,7 +32,7 @@ public class SecurityConfiguration {
 //                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/api/customers", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/api/customers", "/api/customers/bikes", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
                         .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
                         .anyRequest().authenticated()
