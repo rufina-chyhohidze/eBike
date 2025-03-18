@@ -1,5 +1,6 @@
 const DOMAIN_NAME = "localhost:8080"
 
+
 const form = document.querySelector("form");
 const loadingDiv = document.getElementById("loading");
 const testFormDiv = document.getElementById("test-form");

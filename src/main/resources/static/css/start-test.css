@@ -51,3 +51,56 @@ button:hover {
     font-size: 18px;
     color: #333;
 }
+
+
+/* Search customer section */
+main.customer-search-container {
+    max-width: 1000px;
+    margin: auto;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+.customer-email-area {
+    margin: auto;
+    width: 100%;
+    max-width: 800px;
+}
+.input-and-search {
+    display: flex;
+    gap: 10px;
+}
+.input-and-search > input {
+    flex-basis: 70%;
+    height: 3rem;
+}
+.input-and-search > button {
+    flex-basis: 30%;
+    height: 3rem;
+    margin-top: 5px;
+}
+.customer-found-test {
+    padding: 10px;
+    margin: 50px auto auto auto;
+    width: 100%;
+    max-width: 800px;
+    font-size: 16px;
+}
+.customer-found-item {
+    border: 1px solid black;
+    box-shadow: 5px 5px gray;
+    padding: 20px;
+    display: flex;
+}
+@media (max-width: 835px) {
+    .customer-found-test, .customer-found-item {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+@media (max-width: 700px) {
+    .customer-found-item {
+        font-size: 10px;
+        display: block;
+    }
+}

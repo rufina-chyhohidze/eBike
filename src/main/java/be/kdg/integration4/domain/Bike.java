@@ -58,5 +58,5 @@ public class Bike {
         this.enginePowerMax = enginePowerMax;
         this.enginePowerNominal = enginePowerNominal;
         this.engineTorque = engineTorque;
-    }
+    }//branch
 }

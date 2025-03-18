@@ -27,15 +27,18 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
 //                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/api/customers", "api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/register", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
+                        .requestMatchers("/api/customers", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
                         .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
                         .anyRequest().authenticated()
                 )
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
