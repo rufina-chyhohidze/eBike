@@ -26,14 +26,6 @@ public class SystemAdminController {
     public String adminDashboard(Model model, Principal principal) {
         String email = principal.getName();
         User user = userService.getUserByEmail(email);
-
-        if (user instanceof WorkshopAdmin) {
-            WorkshopAdmin admin = (WorkshopAdmin) user;
-            model.addAttribute("workshopName", admin.getWorkshop() != null ? admin.getWorkshop().getWorkshopName() : "No Workshop Assigned");
-        } else {
-            model.addAttribute("workshopName", "N/A");
-        }
-
         List<User> pendingUsers = userService.getUnapprovedUsers();
         model.addAttribute("pendingUsers", pendingUsers);
 
