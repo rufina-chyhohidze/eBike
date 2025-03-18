@@ -1,23 +1,52 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.domain.TestType;
-import be.kdg.integration4.domain.BikeSize;
+import be.kdg.integration4.domain.*;
+import be.kdg.integration4.service.BikeReportService;
+import be.kdg.integration4.service.CustomerService;
+import be.kdg.integration4.service.TechnicianService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/technician")
 public class TechnicianController {
     List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
     List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
+    private final TechnicianService technicianService;
+    private final CustomerService customerService;
+    private final BikeReportService bikeReportService;
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService) {
+        this.technicianService = technicianService;
+        this.customerService = customerService;
+        this.bikeReportService = bikeReportService;
+    }
+
+    @GetMapping("/{technicianId}")
+    public String dashboard(@PathVariable long technicianId, Model model) {
+        Technician technician = technicianService.findById(technicianId);
+
+        int totalReports = technicianService.getTotalReportsByTechnician(technicianId);
+
+        List<Customer> customers = customerService.findAll();
+        List<BikeReport> bikeReports = bikeReportService.findAll()
+                .stream()
+                .filter(report -> report.getTechnician().getId().equals(technicianId))
+                .collect(Collectors.toList());
+
+        model.addAttribute("totalReports", totalReports);
+        model.addAttribute("technician", technician);
+        model.addAttribute("customers", customers);
+        model.addAttribute("bikeReports", bikeReports);
         return "technician";
     }
 

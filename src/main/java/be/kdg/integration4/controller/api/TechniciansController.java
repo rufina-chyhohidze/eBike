@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.BikeSize;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.service.BikeReportService;
 import be.kdg.integration4.service.BikeService;
+import be.kdg.integration4.service.TechnicianService;
 import be.kdg.integration4.service.TestbenchApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
