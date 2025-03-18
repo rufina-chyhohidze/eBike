@@ -92,6 +92,10 @@ main.customer-search-container {
     padding: 20px;
     display: flex;
 }
+.customer-found-item:hover {
+    cursor: pointer;
+    box-shadow: none;
+}
 @media (max-width: 835px) {
     .customer-found-test, .customer-found-item {
         max-width: 100%;

@@ -36,7 +36,7 @@ public class CustomersController {
                     );
                 }).orElseGet(() -> {
                     log.error("Customer with email {} not found", email);
-                    return ResponseEntity.notFound().build();
+                    return ResponseEntity.noContent().build();
                 });
     }
 
