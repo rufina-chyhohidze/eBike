@@ -52,10 +52,34 @@ button:hover {
     color: #333;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap');
 
 /* Search customer section */
+.search-customer-title-area {
+    text-align: center;
+    margin-top: 20vh;
+    transition: all .3s ease;
+}
+.search-customer-title-area-up {
+    margin-top: 5vh;
+    transition: all .3s ease;
+}
+.search-customer-title-area h1, .search-customer-title-area h4 {
+    font-family: "Tektur", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+.search-customer-title-area h1 {
+    font-size: 60px;
+}
+.search-customer-title-area cite {
+    font-size: 22px;
+}
 main.customer-search-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: auto;
     width: 80%;
     justify-content: center;
@@ -63,6 +87,7 @@ main.customer-search-container {
 }
 .customer-email-area {
     margin: auto;
+    margin-top: 25px;
     width: 100%;
 }
 .input-and-search {
@@ -76,7 +101,8 @@ main.customer-search-container {
 .input-and-search > button {
     flex-basis: 30%;
     height: 3rem;
-    margin-top: 5px;
+    /* margin-top: 5px; */
+    border-radius: 5px;
 }
 .customer-found-test {
     margin: 20px auto auto auto;
@@ -111,44 +137,69 @@ main.customer-search-container {
     text-align: center !important;
     justify-content: center !important;
     align-items: center;
+    opacity: 0%;
+    transition: all .3s ease;
 }
-.card .bike-img {
-    padding-top: 10px;
-    /* border-bottom: gray 1px solid; */
-    width: 100%;
-    /* box-shadow: 0px 2px 3px gray; */
+.bike-section-show {
+    opacity: 100%;
+    transition: all .3s ease;
 }
-.pricing-card {
-    border: none;
-    border-radius: 15px;
-    transition: all 0.3s ease;
+.bikes-header {
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
 }
-.pricing-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+.bikes-header button {
+    flex-basis: 20%;
+    height: 50px;
+    font-size: 19px;
+    border-radius: 5px;
 }
-.pricing-header {
-    border-radius: 15px 15px 0 0;
-    padding: 2rem;
-}
-.pricing-features {
-    padding: 2rem;
-}
-.btn-custom {
-    border-radius: 50px;
-    padding: 0.75rem 2rem;
-    font-weight: 600;
+.bikes-header h2 {
+    flex-basis: 80%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
+    /* font-style: italic; */
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 25px;
+}
+.bike-img {
+    width: 100%;
+}
+.bike-detail-title {
+    padding: 20px;
+    font-weight: 500;
+    font-size: 20px;
 }
 .btn-custom:hover {
     transform: scale(1.05);
 }
+.bike-card {
+    min-width: 200px;
+    width: 250px;
+    height: auto;
+    max-height: 350px;
+}
 .bike-item {
     position: relative;
-    width: 300px !important;
+    width: 100% !important;
+    display: flex;
+    flex-wrap: wrap;
+    transition: all .3 ease;
+    /* border: 2px solid black; */
+    /* align-items: center; */
+    justify-content: center;
+    margin-bottom: 30px;
 }
-.bike-item:hover {
-    
+.bike-info {
+    min-width: 350px !important;
+    width: 700px;
+    margin-left: 14px;
+    transition: all .3s ease;
+}
+.bike-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transition: all .3s ease;
 }

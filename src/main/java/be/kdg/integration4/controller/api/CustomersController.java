@@ -4,6 +4,7 @@ import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.domain.Customer;
+import be.kdg.integration4.service.BikeService;
 import be.kdg.integration4.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,13 @@ import java.util.List;
 public class CustomersController {
     private final CustomerService customerService;
     private final CustomMapper customMapper;
+    private final BikeService bikeService;
 
     @Autowired
-    public CustomersController(CustomerService customerService, CustomMapper customMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
+        this.bikeService = bikeService;
     }
 
     @GetMapping

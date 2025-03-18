@@ -11,6 +11,9 @@
   <link rel="stylesheet" th:href="@{/css/start-test.css}" href="/static/css/start-test.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap" rel="stylesheet">
 
 <!--  <script type="module" th:src="@{/js/process-test.js}" src="/static/js/process-test.js"></script>-->
  <script type="module" th:src="@{/js/start-test.js}" src="/static/js/start-test.js"></script>
@@ -23,9 +26,18 @@
       <p class="message">Please don't close the page until the test is done</p>
     </div>
 
+
+
      <main class="customer-search-container">
+
+        <div class="search-customer-title-area" id="search-customer-title-area">
+          <h1>Start a test</h1>
+          <h4>Search for customer</h4>
+          <cite>Enter an email of a registered customer to start a test</cite>
+        </div>
+
           <div class="customer-email-area">
-                <label>Enter customer Email</label>
+                <!-- <label>Enter customer Email</label> -->
                 <div class="input-and-search">
                   <input id="emailBikeOwner" name="emailBikeOwner" type="text" placeholder="customer@gmail.com">
                   <button type="button" id="searchCustomer">Search</button>
@@ -33,122 +45,101 @@
           </div>
           <div class="customer-found-test" id="customer-found-test">
             <!--   Here JS inserts the found customer  -->
-            <div class="customer-found-item" id="customer-found-item">
-              <strong>Name:&nbsp;</strong> <span>${customer.name}</span>
-              &nbsp;&nbsp;&nbsp; <br/>
-              <strong>Email:&nbsp;</strong> <span>${customer.email}</span>
-              &nbsp;&nbsp;&nbsp; <br/>
-              <strong>Phone Number:&nbsp;</strong> <span>${customer.phoneNumber}</span>
-          </div>
+               
           </div>
 
-         <!-- <section> -->
-             <div id="customer-not-found" class="alert alert-danger" role="alert">
-                 Customer with email: <span id="customer-email-message"></span> not found.
-             </div>
-         <!-- </section> -->
-         <section>
-              <button>
-                  Add Bike 
-              </button>
-         </section>
+        <div id="customer-not-found" class="alert alert-danger" role="alert">
+            Customer with email: <span id="customer-email-message"></span> not found.
+        </div>
 
-        <div class="container bike-container">
-          <h2 class="text-center mb-5">Choose a Bike</h2>
+        <section class="container bike-container" id="bike-section">
+          
+          <div class="bikes-header">
+            <button type="button">
+              Add New Bike 
+            </button>
+            <h2 class="text-center mb-5" id="choose-bike-title">Choose a Bike</h2>
+          </div>
+
           <div class="row row-cols-1 row-cols-md-3 g-4">
 
             <!-- Bike Card -->
             <div class="col bike-item">
-              <div class="card h-100 pricing-card">
+              <div class="card h-100 bike-card">
                 <div class="text-center">
-                    <img class="bike-img" th:src="/img/ebike.png" src="/static/img/ebike.png" width="200px" alt="ebike">
+                    <img class="bike-img" th:src="@{/img/ebike.png}" src="/static/img/ebike.png" width="200px" alt="ebike">
                 </div>
                 <div class="card-body pricing-features">
                     <ol class="list-unstyled">
                         <li class="mb-3">
                             <strong>Frame Nr: </strong> <span>Frame</span>
                         </li>
-                        <li class="mb-3">
-                          <strong>Brand: </strong> <span>Brand</span>
-                        </li>
                     </ol>
                     <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Details</button>
                       <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
                     </div>
                   </div>
+              </div>
+              <div class="card bike-info">
+                    <h5 class="bike-detail-title">BIKE DETAILS</h5>
+                    <table>
+                      <thead>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><strong>Brand:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Type:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Engine Torque:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Registration Date:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Size:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Production Date:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Mileage:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Gear Type:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Engine Type:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Power Train:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Acc. Capacity:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Max. Support:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Max. Engine Power:</strong></td>
+                          <td>Elem 1</td>
+                          <td><strong>Nominal Engine Power:</strong></td>
+                          <td>Elem 1</td>
+                        </tr>
+                      </tbody>
+                    </table>
               </div>
             </div>
             <!-- END - Bike Card -->
 
-            <div class="col bike-item">
-              <div class="card h-100 pricing-card">
-                <div class="text-center">
-                    <img class="bike-img" th:src="/img/ebike.png" src="/static/img/ebike.png" width="200px" alt="ebike">
-                </div>
-                <div class="card-body pricing-features">
-                    <ol class="list-unstyled">
-                        <li class="mb-3">
-                            10 GB Storage
-                        </li>
-                        <li class="mb-3">
-                            2 Users
-                        </li>
-                    </ol>
-                    <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Details</button>
-                      <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-            <div class="col bike-item">
-              <div class="card h-100 pricing-card">
-                <div class="text-center">
-                    <img class="bike-img" th:src="/img/ebike.png" src="/static/img/ebike.png" width="200px" alt="ebike">
-                </div>
-                <div class="card-body pricing-features">
-                    <ol class="list-unstyled">
-                        <li class="mb-3">
-                            10 GB Storage
-                        </li>
-                        <li class="mb-3">
-                            2 Users
-                        </li>
-                    </ol>
-                    <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Details</button>
-                      <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-            <div class="col bike-item">
-              <div class="card h-100 pricing-card">
-                <div class="text-center">
-                    <img class="bike-img" th:src="/img/ebike.png" src="/static/img/ebike.png" width="200px" alt="ebike">
-                </div>
-                <div class="card-body pricing-features">
-                    <ol class="list-unstyled">
-                        <li class="mb-3">
-                            10 GB Storage
-                        </li>
-                        <li class="mb-3">
-                            2 Users
-                        </li>
-                    </ol>
-                    <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Details</button>
-                      <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
           </div>
-        </div>
+        </section>
      </main>
 
 
