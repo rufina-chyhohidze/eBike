@@ -23,4 +23,6 @@ public interface BikeReportService {
     BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId);
 
     Map<String, Double> calculateAverages(List<TestLine> testLines);
+    List<BikeReport> getAllReportsWithDetails();
+    //List<BikeReport> searchReports(String frameNumber, String customerName);
 }

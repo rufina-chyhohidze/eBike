@@ -94,6 +94,42 @@
     </table>
   </div>
 
+  <!-- PREVIOUS TEST REPORTS (Now directly under Pending Approvals) -->
+  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
+      <i class="ph ph-clipboard-text"></i> Previous Test Reports
+    </h3>
+
+    <!-- REPORTS TABLE -->
+    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl text-sm">
+      <thead>
+      <tr class="bg-gray-700 text-gray-100">
+        <th class="p-3 text-left">Report ID</th>
+        <th class="p-3 text-left">Bike Frame Number</th>
+        <th class="p-3 text-left">Report Date</th>
+        <th class="p-3 text-left">Score</th>
+        <th class="p-3 text-left">Technician</th>
+        <th class="p-3 text-left">Customer</th>
+        <th class="p-3 text-left">Test Bench</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="report : ${reports}" class="hover:bg-gray-700">
+        <td class="p-3 text-gray-200" th:text="${report.id}"></td>
+        <td class="p-3 text-gray-200" th:text="${report.bike.frameNumber}"></td>
+        <td class="p-3 text-gray-400" th:text="${report.reportDate}"></td>
+        <td class="p-3 text-gray-400" th:text="${report.score}"></td>
+        <td class="p-3 text-gray-400" th:text="${report.technician != null ? report.technician.name : 'N/A'}"></td>
+        <td class="p-3 text-gray-400" th:text="${report.customer != null ? report.customer.name : 'N/A'}"></td>
+        <td class="p-3 text-gray-400" th:text="${report.testBench != null ? report.testBench.benchId : 'N/A'}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(reports)}">
+        <td colspan="7" class="p-3 text-center text-gray-400">No test reports found.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- TEST BENCH ERRORS -->
   <div class="bg-gray-100 shadow-lg rounded-3xl p-4 col-span-2 border border-gray-200">
     <h3 class="text-xl font-semibold mb-3 flex items-center gap-2 text-gray-800">
@@ -128,18 +164,19 @@
     <h3 class="text-xl font-semibold mb-3 text-gray-800">Monthly Performance</h3>
     <canvas id="lineChart" class="h-32"></canvas>
   </div>
+<!--    &lt;!&ndash; SEARCH FILTERS &ndash;&gt;-->
+<!--    <form th:action="@{/superadmin/reports}" method="get" class="grid grid-cols-3 gap-4 mb-4">-->
+<!--      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm"-->
+<!--             type="text" name="frameNumber" placeholder="Frame Number">-->
 
-  <!-- TEST REPORTS -->
-  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
-      <i class="ph ph-clipboard-text"></i> Previous Test Reports
-    </h3>
-    <div class="grid grid-cols-3 gap-4 mb-4">
-      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm" type="text" placeholder="Frame Number">
-      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm" type="text" placeholder="Bike Model">
-      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm" type="text" placeholder="Brand">
-    </div>
-  </div>
+<!--      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm"-->
+<!--             type="text" name="customerName" placeholder="Customer Name">-->
+
+<!--      <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm">-->
+<!--        Search-->
+<!--      </button>-->
+<!--    </form>-->
+
 </main>
 
 <script src="/js/super-admin.js"></script>
