@@ -4,6 +4,8 @@ import be.kdg.integration4.domain.*;
 import be.kdg.integration4.service.BikeReportService;
 import be.kdg.integration4.service.CustomerService;
 import be.kdg.integration4.service.TechnicianService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +33,20 @@ public class TechnicianController {
         this.bikeReportService = bikeReportService;
     }
 
-    @GetMapping("/{technicianId}")
-    public String dashboard(@PathVariable long technicianId, Model model) {
-        Technician technician = technicianService.findById(technicianId);
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        int totalReports = technicianService.getTotalReportsByTechnician(technicianId);
+        String loggedInEmail = authentication.getName();
+
+        Technician technician = technicianService.findByEmail(loggedInEmail);
+
+        int totalReports = technicianService.getTotalReportsByTechnician(technician.getId());
 
         List<Customer> customers = customerService.findAll();
         List<BikeReport> bikeReports = bikeReportService.findAll()
                 .stream()
-                .filter(report -> report.getTechnician().getId().equals(technicianId))
+                .filter(report -> report.getTechnician().getId().equals(technician.getId()))
                 .collect(Collectors.toList());
 
         model.addAttribute("totalReports", totalReports);

@@ -44,4 +44,9 @@ public class TechnicianServiceImpl implements TechnicianService {
     public int getTotalReportsByTechnician(long technicianId) {
         return bikeReportRepository.countByTechnicianId(technicianId);
     }
+
+    @Override
+    public Technician findByEmail(String email) {
+        return technicianRepository.findByEmail(email);
+    }
 }
