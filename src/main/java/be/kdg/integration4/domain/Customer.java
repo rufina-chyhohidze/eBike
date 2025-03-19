@@ -17,6 +17,9 @@ import java.util.List;
 public class Customer extends User {
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "bikeOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bike> bikes;
+
     public Customer(String name, String email, String password, String phoneNumber) {
         super(name, email, password, true);
         this.phoneNumber = phoneNumber;

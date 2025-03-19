@@ -2,6 +2,8 @@ package be.kdg.integration4.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,10 @@ import java.time.LocalDate;
 public class Bike {
     @Id
     private String frameNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "bike_owner_id", nullable = false)
+    private Customer bikeOwner;
 
     private String type;
 
