@@ -1,8 +1,8 @@
-const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
-
 import { customerFound, showCustomerBikes } from "./start-test.js";
 
-const DOMAIN_NAME = "localhost:8080"
+const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
+
+
 
 
 const form = document.querySelector("form");
