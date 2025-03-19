@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.BikeSize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
@@ -28,8 +29,9 @@ public class TechnicianController {
         return "start-test";
     }
 
-    @GetMapping("/test/success")
-    public String testSuccess(Model model) {
+    @GetMapping("/test/success/{id}")
+    public String testSuccess(@PathVariable long id, Model model) {
+        model.addAttribute("id",id);
         return "test-success";
     }
 }
