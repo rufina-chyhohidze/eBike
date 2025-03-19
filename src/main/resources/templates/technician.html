@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technician Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="../static/js/technician.js"></script>
+    <script src="../static/js/technician.js" th:src="@{/js/technician.js}" type="module"></script>
 </head>
 <body class="bg-gray-50 h-full flex">
 
@@ -51,10 +51,10 @@
     <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
         <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Technician" class="w-24 h-24 rounded-full border-2 border-gray-300">
         <div>
-            <h2 class="text-2xl font-semibold text-gray-800">John Doe</h2>
+            <h2 class="text-2xl font-semibold text-gray-800" th:text="${technician.name}"></h2>
             <p class="text-gray-600">Certified Bike Technician</p>
-            <p class="text-gray-500">Workshop: <span class="font-semibold">Speedy Repairs</span></p>
-            <p class="text-gray-500">Total Bike Reports: <span class="font-semibold">35</span></p>
+<!--            <p class="text-gray-500">Workshop: <span class="font-semibold" th:text="${technician.workshop.workshopName}"></span></p>-->
+            <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>
             <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
         </div>
     </div>
@@ -99,7 +99,7 @@
                 Confirm bike stability
             </li>
         </ul>
-        <button class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</button>
+        <a th:href="@{/technician/start-test}" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</a>
     </div>
 
     <!-- CUSTOMER VERIFICATION -->
@@ -117,21 +117,18 @@
         <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-100 text-gray-700">
+                <th class="p-3 text-left">Customer ID</th>
                 <th class="p-3 text-left">Name</th>
                 <th class="p-3 text-left">Email</th>
                 <th class="p-3 text-left">Phone</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="bg-white border-b">
-                <td class="p-3">John Smith</td>
-                <td class="p-3">john@example.com</td>
-                <td class="p-3">123-456-7890</td>
-            </tr>
-            <tr class="bg-white border-b">
-                <td class="p-3">Jane Doe</td>
-                <td class="p-3">jane@example.com</td>
-                <td class="p-3">098-765-4321</td>
+            <tr th:each="customer : ${customers}" class="bg-white border-b">
+                <td th:text="${customer.id}" class="p-3"></td>
+                <td th:text="${customer.name}" class="p-3"></td>
+                <td th:text="${customer.email}" class="p-3"></td>
+                <td th:text="${customer.phoneNumber}" class="p-3"></td>
             </tr>
             </tbody>
         </table>
@@ -150,27 +147,22 @@
         <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-700 text-gray-100">
+                <th class="p-3 text-left">Report ID</th>
+                <th class="p-3 text-left">Report Date</th>
+                <th class="p-3 text-left">Customer ID</th>
                 <th class="p-3 text-left">Frame Number</th>
-                <th class="p-3 text-left">Bike Model</th>
-                <th class="p-3 text-left">Brand</th>
-                <th class="p-3 text-left">Date</th>
-                <th class="p-3 text-left">Result</th>
+<!--                <th class="p-3 text-left">Brand</th>-->
+                <th class="p-3 text-left">Bench ID</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="border-b">
-                <td class="p-3">1234</td>
-                <td class="p-3">Model X</td>
-                <td class="p-3">Brand A</td>
-                <td class="p-3">2024-02-24</td>
-                <td class="p-3 text-green-600">Pass</td>
-            </tr>
-            <tr class="border-b">
-                <td class="p-3">5678</td>
-                <td class="p-3">Model Y</td>
-                <td class="p-3">Brand B</td>
-                <td class="p-3">2024-02-23</td>
-                <td class="p-3 text-red-600">Fail</td>
+            <tr th:each="report : ${bikeReports}" class="border-b">
+                <td th:text="${report.id}" class="p-3"></td>
+                <td th:text="${report.reportDate}" class="p-3"></td>
+                <td th:text="${report.customer.id}" class="p-3"></td>
+                <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+<!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
+                <td th:text="${report.testBench.benchId}" class="p-3"></td>
             </tr>
             </tbody>
         </table>

@@ -1,5 +1,6 @@
 package be.kdg.integration4.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@DiscriminatorValue("SystemAdmin")
 public class SystemAdmin extends User {
     public SystemAdmin(String name, String email, String password) {
         super(name, email, password, true);

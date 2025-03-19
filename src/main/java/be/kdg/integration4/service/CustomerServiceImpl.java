@@ -3,9 +3,11 @@ package be.kdg.integration4.service;
 import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.repository.CustomerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
