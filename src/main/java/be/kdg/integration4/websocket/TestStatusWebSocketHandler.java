@@ -2,6 +2,8 @@ package be.kdg.integration4.websocket;
 
 import be.kdg.integration4.domain.TestStatus;
 import be.kdg.integration4.service.TestbenchApiService;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -11,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class TestStatusWebSocketHandler extends TextWebSocketHandler {
     private final TestbenchApiService testbenchApiService;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -27,6 +30,7 @@ public class TestStatusWebSocketHandler extends TextWebSocketHandler {
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 TestStatus status = testbenchApiService.checkTestStatus(testId);
+                log.info("Checking API");
                 session.sendMessage(new TextMessage("Status: " + status));
 
                 // Stop polling if the test is complete
@@ -35,7 +39,7 @@ public class TestStatusWebSocketHandler extends TextWebSocketHandler {
                     session.close(); // Close connection after completion
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error while checking API", e);
             }
         }, 0, 5, TimeUnit.SECONDS); // Check status every 5 seconds
     }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
+import java.util.List;
+
 @Repository
 public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     @Query("SELECT br FROM BikeReport br " +
@@ -29,4 +31,5 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     int countByTechnicianId(Long technicianId);
     @Query("SELECT br FROM BikeReport br LEFT JOIN FETCH br.testLines WHERE br.id = :id")
     BikeReport findByIdWithTestLines(Long id);
+    List<BikeReport> getBikeReportByCustomerId(Long customerId);
 }

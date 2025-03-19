@@ -63,8 +63,9 @@ public class TechnicianController {
         return "start-test";
     }
 
-    @GetMapping("/test/success")
-    public String testSuccess(Model model) {
+    @GetMapping("/test/success/{id}")
+    public String testSuccess(@PathVariable long id, Model model) {
+        model.addAttribute("id",id);
         return "test-success";
     }
 }

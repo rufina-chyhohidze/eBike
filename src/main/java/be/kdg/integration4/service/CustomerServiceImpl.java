@@ -6,6 +6,7 @@ import be.kdg.integration4.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -34,5 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Customer> findByEmailIgnoreCase(String email) {
+        return this.repository.findByEmailIgnoreCase(email);
     }
 }

@@ -27,13 +27,19 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
 //                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/api/customers", "api/staff", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                                .requestMatchers("/api/register", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
-                                .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
+                        .requestMatchers("/static/**", "/api/customers/**", "/api/save/bike", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
+                        .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
+                        .requestMatchers(
+                                "/static/**", "/css/**", "/js/**", "/img/**",  // Static resources
+                                "/api/customers/**", "/api/save/bike",        // API endpoints
+                                "/register", "/login"                         // Public pages
+                        ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

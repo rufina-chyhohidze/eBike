@@ -47,3 +47,13 @@ POST http://localhost:8080/login
 Content-Type: application/x-www-form-urlencoded
 
 email=tech@email.com&password=password
+
+###
+
+GET http://localhost:8080/api/customers?email=customer@gmail.com
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/customers/17/bikes
+Accept: application/json

@@ -18,6 +18,9 @@ import java.util.List;
 public class Customer extends User {
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "bikeOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bike> bikes;
+
     public Customer(String name, String email, String password, String phoneNumber) {
         super(name, email, password, true);
         this.phoneNumber = phoneNumber;
@@ -27,5 +30,14 @@ public class Customer extends User {
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+    }
+
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+//                ", bikes=" + bikes.size() +
+                '}';
     }
 }

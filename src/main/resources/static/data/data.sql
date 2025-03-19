@@ -9,3 +9,7 @@ VALUES ('Admin User',2, 'admin@example.com', '$2y$10$Ztympp4dswJV4XoYXx1UZeb0ebJ
 INSERT INTO profile (name, email, password, approved, dtype)
 VALUES ('Technician User', 'tech@example.com', '$2y$10$MzHvzeMB8q3MBAxxvPDtC.MkhilhjTOreMdvled9d3eaTAAf6.W2m', false, 'Technician');
 
+
+ALTER TABLE bike
+    ADD COLUMN bike_owner_id INTEGER DEFAULT 17 NOT NULL
+        CONSTRAINT customer_fk REFERENCES profile(id);

@@ -1,5 +1,9 @@
 const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
 
+import { customerFound, showCustomerBikes } from "./start-test.js";
+
+const DOMAIN_NAME = "localhost:8080"
+
 
 const form = document.querySelector("form");
 const loadingDiv = document.getElementById("loading");
@@ -15,9 +19,10 @@ form.addEventListener("submit", async function (e) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
+    jsonData["bikeOwnerId"] = document.getElementById("bikeOwnerId-form").value;
     console.log(jsonData)
 
-    const response = await fetch("/api/start-test", {
+    const response = await fetch("/api/save/bike", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -26,19 +31,35 @@ form.addEventListener("submit", async function (e) {
         body: JSON.stringify(jsonData)
     });
 
-    const data = await response.json();
+    if (response.ok) {
+        console.log("Bike successfully saved");
+        // close modal - bike creation modal should be closed when bike successfully created
+        const bikeModalCloseButton = document.getElementById("close-modal-bike-creation");
+        bikeModalCloseButton.click();
 
-    testFormDiv.classList.add("d-none");
-    loadingDiv.classList.remove("d-none");
+        clearAllInputsFromForm();
+        void showCustomerBikes(customerFound.id);
+    } else {
+        console.log("Error while saving bike: " + response.status);
+    }
+});
 
+function clearAllInputsFromForm() {
+    // Clear all input elements (text, number, etc.) and select elements
+    const elements = document.querySelectorAll('input, select');
+    elements.forEach(element => {
+        element.value = '';  // Clear the value of the element
+    });
+}
 
+function webSocketCheck(data) {
     const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/status`);
     socket.onopen = function () {
         socket.send(data.id); // Replace with actual test ID
     };
     socket.onmessage = function (event) {
         if (event.data.includes("Test completed")) {
-            alert("Test completed. You can now proceed.");
+            console.log("Test completed. You can now proceed.");
             socket.close();
             loadingDiv.classList.add("d-none");
             form.classList.remove("d-none");
@@ -46,23 +67,27 @@ form.addEventListener("submit", async function (e) {
         }
     };
 
-
-});
+}
 
 function retrieveReport(id) {
     const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/result`);
     socket.onopen = function () {
         socket.send(id);
     }
+
     socket.onmessage = function (event) {
-        if (event.data.includes("Report saved")) {
-            alert("Report saved");
-            socket.close();
-            window.location.href = "/test/success";
-        }
+        console.log("Report saved");
+        socket.close();
+        const reportId = event.data;
+        console.log("Report ID received: " + reportId);
+        window.location.href = `/technician/test/success/${reportId}`;
     }
 
 
+}
+
+export  {
+    webSocketCheck
 }
 
 
