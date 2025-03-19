@@ -7,8 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,12 +33,42 @@ public class BikeReportServiceImpl implements BikeReportService {
         this.bikeRepository = bikeRepository;
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
+
+        METRICS = new HashMap<>();
+        METRICS.put("Battery Voltage (V)", TestLine::getBatteryVoltage);
+        METRICS.put("Battery Current (A)", TestLine::getBatteryCurrent);
+        METRICS.put("Battery Temperature (°C)", TestLine::getBatteryTemperature);
+        METRICS.put("Engine Power (W)", TestLine::getEnginePower);
+        METRICS.put("Wheel Power (W)", TestLine::getWheelPower);
+        METRICS.put("Torque Crank (Nm)", TestLine::getTorqueCrank);
+        METRICS.put("Cadence (RPM)", TestLine::getCadence);
+        METRICS.put("Load Power (W)", TestLine::getLoadPower);
+        METRICS.put("Bike Wheel Speed (km/h)", TestLine::getBikeWheelSpeed);
+        METRICS.put("Engine RPM", TestLine::getEnginePower);  // Corrected to the appropriate method
+        METRICS.put("Roll Torque (Nm)", TestLine::getRolTroque);  // Corrected method name
+        METRICS.put("Loadcell (N)", TestLine::getLoadCell);
+        METRICS.put("Roll Hz", TestLine::getRol);  // Corrected method name
+        METRICS.put("Horizontal Inclination (°)", TestLine::getHorizontalInclinationSensor);
+        METRICS.put("Vertical Inclination (°)", TestLine::getVerticalInclinationSensor);
+        METRICS.put("Charge Status", TestLine::getChargeStatus);
+        METRICS.put("Assistance Level", TestLine::getAssistanceLevel);
+        METRICS.put("Status Plug", line -> line.getStatusPlug() ? 1.0 : 0.0);
     }
+
+    private final Map<String, ToDoubleFunction<TestLine>> METRICS;
+
+
+
 
 
     @Override
     public BikeReport findById(Long id) {
         return bikeReportRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public BikeReport findByIdWithTestlines(Long id) {
+        return bikeReportRepository.findByIdWithTestLines(id);
     }
 
     @Override
@@ -77,14 +109,13 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public Map<String, Double> calculateAverages(List<TestLine> testLines) {
-        return Map.of(
-                "Battery Voltage (V)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryVoltage)),
-                "Battery Current (A)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryCurrent)),
-                "Battery Temperature (°C)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getBatteryTemperature)),
-                "Engine Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getEnginePower)),
-                "Wheel Power (W)", testLines.stream().collect(Collectors.averagingDouble(TestLine::getWheelPower))
-        );
+        return METRICS.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> testLines.stream().collect(Collectors.averagingDouble(entry.getValue()))
+                ));
     }
+
 
 
 }

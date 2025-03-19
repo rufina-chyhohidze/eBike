@@ -2,9 +2,11 @@ package be.kdg.integration4.service;
 
 import be.kdg.integration4.domain.SystemAdmin;
 import be.kdg.integration4.repository.SystemAdminRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SystemAdminServiceImpl  implements SystemAdminService {
 
     private final SystemAdminRepository repository;

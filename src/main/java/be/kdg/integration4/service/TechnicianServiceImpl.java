@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
+import org.springframework.stereotype.Service;
 import be.kdg.integration4.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
