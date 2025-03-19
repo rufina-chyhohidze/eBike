@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@ToString
+//@ToString
 public class Technician extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,4 +31,6 @@ public class Technician extends User {
         super(name, email, password);
         this.workshop = workshop;
     }
+
+
 }

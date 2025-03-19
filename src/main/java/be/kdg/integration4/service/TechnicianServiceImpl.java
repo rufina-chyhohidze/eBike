@@ -4,9 +4,11 @@ import be.kdg.integration4.domain.Technician;
 import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.repository.TechnicianRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TechnicianServiceImpl implements TechnicianService {
     TechnicianRepository technicianRepository;
 
@@ -14,6 +16,7 @@ public class TechnicianServiceImpl implements TechnicianService {
     public Technician findById(Long id){
         return technicianRepository.findById(id).orElse(null);
     }
+
 
     @Override
     public List<Technician> findAll(){
