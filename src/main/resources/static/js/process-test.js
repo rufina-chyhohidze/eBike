@@ -40,27 +40,6 @@ form.addEventListener("submit", async function (e) {
     } else {
         console.log("Error while saving bike: " + response.status);
     }
-    // const data = await response.json();
-
-    // testFormDiv.classList.add("d-none");
-    // loadingDiv.classList.remove("d-none");
-
-
-    // const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/status`);
-    // socket.onopen = function () {
-    //     socket.send(data.id); // Replace with actual test ID
-    // };
-    // socket.onmessage = function (event) {
-    //     if (event.data.includes("Test completed")) {
-    //         alert("Test completed. You can now proceed.");
-    //         socket.close();
-    //         loadingDiv.classList.add("d-none");
-    //         form.classList.remove("d-none");
-    //         retrieveReport(data.id);
-    //     }
-    // };
-
-
 });
 
 function clearAllInputsFromForm() {
@@ -71,20 +50,42 @@ function clearAllInputsFromForm() {
     });
 }
 
+function webSocketCheck(data) {
+    const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/status`);
+    socket.onopen = function () {
+        socket.send(data.id); // Replace with actual test ID
+    };
+    socket.onmessage = function (event) {
+        if (event.data.includes("Test completed")) {
+            console.log("Test completed. You can now proceed.");
+            socket.close();
+            loadingDiv.classList.add("d-none");
+            form.classList.remove("d-none");
+            retrieveReport(data.id);
+        }
+    };
+
+}
+
 function retrieveReport(id) {
     const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/result`);
     socket.onopen = function () {
         socket.send(id);
     }
+
     socket.onmessage = function (event) {
-        if (event.data.includes("Report saved")) {
-            alert("Report saved");
-            socket.close();
-            window.location.href = "/test/success";
-        }
+        console.log("Report saved");
+        socket.close();
+        const reportId = event.data;
+        console.log("Report ID received: " + reportId);
+        window.location.href = `/technician/test/success/${reportId}`;
     }
 
 
+}
+
+export  {
+    webSocketCheck
 }
 
 

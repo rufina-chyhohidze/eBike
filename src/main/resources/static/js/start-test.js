@@ -1,3 +1,5 @@
+import {webSocketCheck} from "./process-test.js";
+
 const emailInput = document.getElementById("emailBikeOwner");
 const searchButton = document.getElementById("searchCustomer");
 const customerFoundSection = document.getElementById("customer-found-test");
@@ -7,12 +9,17 @@ const customerSearchArea = document.getElementById("search-customer-title-area")
 const bikeItemsSection = document.getElementById("bike-items-section");
 const noRegisteredBikes = document.getElementById("bikes-not-found");
 const startTestButton = document.getElementById("start-test");
-const testTypeInput = document.getElementById("test-type");
+const closeStartTestModalButton = document.getElementById("close-start-test-button");
+const testTypeInput = document.getElementById("testType");
 const testBenchNumberInput = document.getElementById("testBenchNumber");
+const loadingDiv = document.getElementById("loading");
+const mainStartTestPage = document.getElementById("test-start-page-main");
 const customerNotFoundSection = document.getElementById("customer-not-found");
 bikeSection.classList.add("bike-section-hide");
 noRegisteredBikes.style.display = "none";
 customerNotFoundSection.style.display = "none";
+loadingDiv.style.display = "none";
+mainStartTestPage.style.display = "block";
 
 let customerFound;
 let bikeFrameOfBikeSelected;
@@ -252,8 +259,22 @@ async function startTest() {
             "testType" : testTypeInput.value,
             "frameNumber" : bikeFrameOfBikeSelected,
         })
-    }
+     }
     );
+    if (response.status === 200) {
+        const data = await response.json();
+        /**
+         * @type {[{id:string}]}
+         */
+        console.log("Id received: " + data.id);
+        closeStartTestModalButton.click();
+        mainStartTestPage.style.display = "none";
+        loadingDiv.style.display = "block";
+
+        webSocketCheck(data);
+    } else {
+        console.log("Error: " + response.status);
+    }
 }
 
 export { customerFound, showCustomerBikes }
