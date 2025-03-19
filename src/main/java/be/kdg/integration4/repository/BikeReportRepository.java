@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import java.util.List;
 
+@Repository
 public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     @Query("SELECT br FROM BikeReport br " +
             "LEFT JOIN FETCH br.bike " +
@@ -22,4 +26,7 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
 //            "AND (:customerName IS NULL OR c.name LIKE %:customerName%)")
 //    List<BikeReport> searchReports(@Param("frameNumber") String frameNumber,
 //                                   @Param("customerName") String customerName);
+    int countByTechnicianId(Long technicianId);
+    @Query("SELECT br FROM BikeReport br LEFT JOIN FETCH br.testLines WHERE br.id = :id")
+    BikeReport findByIdWithTestLines(Long id);
 }

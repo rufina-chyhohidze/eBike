@@ -7,10 +7,13 @@ import be.kdg.integration4.domain.TestType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
 
 public interface BikeReportService {
 
     BikeReport findById(Long id);
+
+    BikeReport findByIdWithTestlines(Long id);
 
     List<BikeReport> findAll();
 
