@@ -61,85 +61,17 @@
             <h2 class="text-center mb-5" id="choose-bike-title">Choose a Bike</h2>
           </div>
 
-          <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="row row-cols-1 row-cols-md-3 g-4" id="bike-items-section">
 
-            <!-- Bike Card -->
-            <div class="col bike-item">
-              <div class="card h-100 bike-card">
-                <div class="text-center">
-                    <img class="bike-img" th:src="@{/img/ebike.png}" src="/static/img/ebike.png" width="200px" alt="ebike">
-                </div>
-                <div class="card-body pricing-features">
-                    <ol class="list-unstyled">
-                        <li class="mb-3">
-                            <strong>Frame Nr: </strong> <span>Frame</span>
-                        </li>
-                    </ol>
-                    <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
-                    </div>
-                  </div>
-              </div>
-              <div class="card bike-info">
-                    <h5 class="bike-detail-title">BIKE DETAILS</h5>
-                    <table>
-                      <thead>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><strong>Brand:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Type:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Engine Torque:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Registration Date:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Size:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Production Date:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Mileage:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Gear Type:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Engine Type:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Power Train:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Acc. Capacity:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Max. Support:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Max. Engine Power:</strong></td>
-                          <td>Elem 1</td>
-                          <td><strong>Nominal Engine Power:</strong></td>
-                          <td>Elem 1</td>
-                        </tr>
-                      </tbody>
-                    </table>
-              </div>
-            </div>
-            <!-- END - Bike Card -->
+            <!-- Here Bikes are inserted -->
 
           </div>
         </section>
+
+        <div id="bikes-not-found" class="alert alert-danger" role="alert">
+          This customer doesn't have any registered bikes.
+      </div>
+
      </main>
 
 

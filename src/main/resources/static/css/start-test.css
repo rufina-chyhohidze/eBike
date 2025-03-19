@@ -144,6 +144,9 @@ main.customer-search-container {
     opacity: 100%;
     transition: all .3s ease;
 }
+#bikes-not-found {
+    margin-top: -50px !important;
+}
 .bikes-header {
     margin-top: 25px;
     display: flex;

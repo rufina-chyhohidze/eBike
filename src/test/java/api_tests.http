@@ -56,5 +56,5 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/customers/bikes?customerId=17
+GET http://localhost:8080/api/customers/17/bikes
 Accept: application/json

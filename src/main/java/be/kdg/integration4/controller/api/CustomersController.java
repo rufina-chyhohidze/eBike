@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,15 +49,16 @@ public class CustomersController {
                 });
     }
 
-    @GetMapping("/bikes")
-    public ResponseEntity<List<BikeDto>> getCustomerBikes(@RequestParam Long customerId) {
+    @GetMapping("{customerId}/bikes")
+    public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
         List<String> frameNumbers = this.bikeReportService.getFrameNumbersByCustomerId(customerId);
         log.debug("Frame numbers of bikes of customer with Id {}:  {}", customerId, frameNumbers);
-        List<Bike> customerBikes = frameNumbers.stream()
-                .map(this.bikeService::findByFrameNumber).toList();
+        Set<Bike> customerBikes = frameNumbers.stream()
+                .map(this.bikeService::findByFrameNumber).collect(Collectors.toSet());
         log.debug("Found customer bikes: {}", customerBikes);
 
+
         if (customerBikes.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikes));
+        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikes.stream().toList()));
     }
 }
