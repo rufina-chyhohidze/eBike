@@ -26,3 +26,7 @@ new Chart(ctx2, {
         }]
     }
 });
+
+
+// CUSTOMER VERIFICATION SEARCH
+

@@ -15,4 +15,7 @@ public interface TechnicianService {
 
     void delete(Long id);
 
+    int getTotalReportsByTechnician(long technicianId);
+
+    Technician findByEmail(String email);
 }
