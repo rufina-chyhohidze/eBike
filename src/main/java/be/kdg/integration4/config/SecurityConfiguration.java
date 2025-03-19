@@ -42,9 +42,6 @@ public class SecurityConfiguration {
                         ).permitAll()
                                 .anyRequest().authenticated()
                 )
-
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -75,6 +72,9 @@ public class SecurityConfiguration {
                     log.info("Role detected: {}", authentication.getAuthorities());
                     response.sendRedirect("/technician/dashboard");
                     log.info("Logging into technician dashboard page");
+                } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SUPERADMIN"))) {
+                    log.debug("Logged into superadmin page");
+                    response.sendRedirect("/superadmin/profile");
                 } else {
                     response.sendRedirect("/");
                 }
@@ -88,33 +88,4 @@ public class SecurityConfiguration {
     }
 
 
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails superadmin = User.withDefaultPasswordEncoder()
-//                .username("superadmin@email.com")
-//                .password("password")
-//                .roles("SUPERADMIN")
-//                .build();
-//
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin@email.com")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//
-//        UserDetails technician = User.withDefaultPasswordEncoder()
-//                .username("technician@email.com")
-//                .password("password")
-//                .roles("TECHNICIAN")
-//                .build();
-//
-//        UserDetails customer = User.withDefaultPasswordEncoder()
-//                .username("customer@email.com")
-//                .password("password")
-//                .roles("CUSTOMER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(superadmin, admin, technician, customer);
-//    }
 }

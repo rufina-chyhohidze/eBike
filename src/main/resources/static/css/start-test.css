@@ -150,7 +150,7 @@ main.customer-search-container {
 }
 .bike-section-hide {
     opacity: 0%;
-    transition: all .3s ease;    
+    transition: all .3s ease;
 }
 .bike-section-show {
     opacity: 100%;

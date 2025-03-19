@@ -1,17 +1,15 @@
-package be.kdg.integration4.report;
+package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.domain.Metric;
 import be.kdg.integration4.service.BikeReportService;
+import be.kdg.integration4.service.BikeReportServiceImpl;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.ui.Model;
-import org.springframework.stereotype.Controller;
-import java.util.List;
+
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class TestReportController {
@@ -23,13 +21,17 @@ public class TestReportController {
     }
 
     @GetMapping("/report/{id}")
-    public String showReport(@PathVariable Long bikeReportId, Model model) {
-        BikeReport bikeReport = bikeReportService.findById(bikeReportId);
+    public String showReport(@PathVariable Long id, Model model) {
+        BikeReport bikeReport = bikeReportService.findByIdWithTestlines(id);
         Map<String, Double> averages = bikeReportService.calculateAverages(bikeReport.getTestLines());
         model.addAttribute("averages", averages);
         model.addAttribute("testLines", bikeReport.getTestLines());
+        model.addAttribute("metrics", Metric.values());
+        model.addAttribute("bike", bikeReport.getBike());
         return "report";
     }
+
+
 
 
 }

@@ -3,16 +3,29 @@ package be.kdg.integration4.service;
 import be.kdg.integration4.domain.Technician;
 import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
+import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
+import org.springframework.stereotype.Service;
+import be.kdg.integration4.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TechnicianServiceImpl implements TechnicianService {
     TechnicianRepository technicianRepository;
+    BikeReportRepository bikeReportRepository;
+    UserRepository userRepository;
+
+    public TechnicianServiceImpl(TechnicianRepository technicianRepository, BikeReportRepository bikeReportRepository, UserRepository userRepository) {
+        this.technicianRepository = technicianRepository;
+        this.bikeReportRepository = bikeReportRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Technician findById(Long id){
-        return technicianRepository.findById(id).orElse(null);
+        return userRepository.findTechnicianById(id).orElse(null);
     }
 
     @Override
@@ -26,5 +39,15 @@ public class TechnicianServiceImpl implements TechnicianService {
 
     @Override
     public void delete(Long id) {
+    }
+
+    @Override
+    public int getTotalReportsByTechnician(long technicianId) {
+        return bikeReportRepository.countByTechnicianId(technicianId);
+    }
+
+    @Override
+    public Technician findByEmail(String email) {
+        return technicianRepository.findByEmail(email);
     }
 }

@@ -4,9 +4,11 @@ import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.domain.WorkshopAdmin;
 import be.kdg.integration4.repository.WorkshopAdminRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class WorkshopAdminServiceImpl implements WorkshopAdminService {
 
     private final WorkshopAdminRepository repository;
