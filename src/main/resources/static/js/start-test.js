@@ -7,15 +7,26 @@ const customerSearchArea = document.getElementById("search-customer-title-area")
 const bikeItemsSection = document.getElementById("bike-items-section");
 const noRegisteredBikes = document.getElementById("bikes-not-found");
 const customerNotFoundSection = document.getElementById("customer-not-found");
-// bikeSection.classList.add("bike-section-hide");
+bikeSection.classList.add("bike-section-hide");
 noRegisteredBikes.style.display = "none";
 customerNotFoundSection.style.display = "none";
 
 let customerFound;
 let customerFoundItem;
 
+setButtonSearch();
+emailInput.addEventListener('input', setButtonSearch);
 searchButton.addEventListener('click', fetchCustomer);
 
+function setButtonSearch() {
+    if (emailInput.value === "") {
+        searchButton.disabled = true;
+        searchButton.style.opacity = "50%";
+    } else {
+        searchButton.disabled = false;
+        searchButton.style.opacity = "100%";
+    }
+}
 async function fetchCustomer() {
     const response = await fetch(`/api/customers?email=${emailInput.value}`,
         {
@@ -27,6 +38,8 @@ async function fetchCustomer() {
     });
 
     if (response.status === 200) {
+        bikeSection.classList.remove("bike-section-hide");
+        bikeSection.classList.add("bike-section-show");
         console.log(customerSearchArea)
         customerSearchArea.classList.add("search-customer-title-area-up");
         customerFound = await response.json();
@@ -138,7 +151,7 @@ function displayBikes(bikes) {
                         </li>
                     </ol>
                     <div class="text-center mt-4">
-                      <button type="button" class="btn btn-outline-primary btn-custom">Select</button>
+                      <button id="${bike.frameNumber}" type="button" class="btn btn-outline-primary btn-custom select-bike-button">Select</button>
                     </div>
                   </div>
               </div>
@@ -201,6 +214,19 @@ function displayBikes(bikes) {
         <!-- END - Bike Card -->
         `;
     }
+
+    setBikeSelectedButtons();
+}
+
+function setBikeSelectedButtons() {
+    const bikeSelectedButtons = [...document.getElementsByClassName("select-bike-button")];
+    bikeSelectedButtons.forEach(button => {
+        button.addEventListener("click", displayTestFormWithBikeSelected(button.id))
+    })
+}
+
+async function displayTestFormWithBikeSelected(bikeFrame) {
+    console.log("Bike Selected: " + bikeFrame);
 }
 
 export { customerFound, showCustomer }
