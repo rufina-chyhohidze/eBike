@@ -35,8 +35,6 @@
       <p class="message">Please don't close the page until the test is done</p>
     </div>
 
-
-
      <main class="customer-search-container">
 
         <div class="search-customer-title-area" id="search-customer-title-area">
@@ -171,11 +169,11 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
+
+
+<!-- Modal Section -->
 
      <!-- Modal to add a bike to customer -->
-
-       
     <div class="modal fade" style="width: 100%;"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" > <!-- aria-hidden="true" -->
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -183,9 +181,6 @@
             <h5 class="modal-title" id="exampleModalLabel">Add New Bike</h5>
           </div>
           <div class="modal-body" style="width: 100%;">
-            
-
-
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -194,7 +189,55 @@
         </div>
       </div>
     </div>
-      <!-- End modal to add bike to customer -->
+    <!-- End modal to add bike to customer -->
+
+    <!--  Modal Start Test - After Bike Selection  -->
+    <div class="modal fade" id="start-test-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Start Test</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="bike-selected-frame-title"></h4>
+                    <div class="test-inputs">
+                       <label>Test Type</label>
+                       <select required name="testType" id="testType" class="form-control">
+                           <option value="" disabled selected>Choose...</option>
+                           <option>STRESS</option>
+                           <option>EFFICIENCY</option>
+                           <option>MANUAL</option>
+                       </select>
+                       <label>TestBench Number</label>
+                       <input name="testBenchNumber" id="testBenchNumber" type="number" placeholder="001">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="start-test" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Start Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Hide this modal and show the first with the button below.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to first</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" data-bs-target="#start-test-modal" data-bs-toggle="modal">Open first modal</button>
+    <!--  END START TEST MODAL  -->
 
 
 
@@ -203,10 +246,6 @@
 <!--           <label>Testbench Number</label>-->
 <!--           <input name="testbenchNumber" type="number" placeholder="001">-->
 
-<!--           <label>Test Type</label>-->
-<!--           <select th:name="testType">-->
-<!--             <option th:each="testType : ${testTypes}" th:value="${testType}" th:text="${testType}"></option>-->
-<!--           </select>-->
 
 <!--           <label>Email Bike Owner</label>-->
 <!--           <input name="emailBikeOwner" type="text" placeholder="hallo@email.com">-->

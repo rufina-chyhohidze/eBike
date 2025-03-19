@@ -6,17 +6,22 @@ const bikeSection = document.getElementById("bike-section");
 const customerSearchArea = document.getElementById("search-customer-title-area");
 const bikeItemsSection = document.getElementById("bike-items-section");
 const noRegisteredBikes = document.getElementById("bikes-not-found");
+const startTestButton = document.getElementById("start-test");
+const testTypeInput = document.getElementById("test-type");
+const testBenchNumberInput = document.getElementById("testBenchNumber");
 const customerNotFoundSection = document.getElementById("customer-not-found");
 bikeSection.classList.add("bike-section-hide");
 noRegisteredBikes.style.display = "none";
 customerNotFoundSection.style.display = "none";
 
 let customerFound;
+let bikeFrameOfBikeSelected;
 let customerFoundItem;
 
 setButtonSearch();
 emailInput.addEventListener('input', setButtonSearch);
 searchButton.addEventListener('click', fetchCustomer);
+startTestButton.addEventListener('click', startTest);
 
 function setButtonSearch() {
     if (emailInput.value === "") {
@@ -85,7 +90,7 @@ function showCustomer() {
     void showCustomerBikes(customerFound.id);
 }
 
-export async function showCustomerBikes(customerId) {
+async function showCustomerBikes(customerId) {
     const response = await fetch(`/api/customers/${customerId}/bikes`,
         {
             method: "GET",
@@ -102,6 +107,7 @@ export async function showCustomerBikes(customerId) {
     } else if (response.status === 204) {
         bikeSection.classList.remove("bike-section-show");
         noRegisteredBikes.style.display = "block";
+        bikeItemsSection.innerHTML = "";
         console.log("No bikes found");
     } else {
         bikeSection.classList.remove("bike-section-show");
@@ -151,8 +157,8 @@ function displayBikes(bikes) {
                         </li>
                     </ol>
                     <div class="text-center mt-4">
-                      <button id="${bike.frameNumber}" type="button" class="btn btn-outline-primary btn-custom select-bike-button">Select</button>
-                    </div>
+                      <button id="${bike.frameNumber}" type="button" data-bs-target="#start-test-modal" data-bs-toggle="modal" class="btn btn-outline-primary btn-custom select-bike-button">Select</button>
+                      </div>
                   </div>
               </div>
               <div class="card bike-info">
@@ -225,8 +231,29 @@ function setBikeSelectedButtons() {
     })
 }
 
-async function displayTestFormWithBikeSelected(bikeFrame) {
+function displayTestFormWithBikeSelected(bikeFrame) {
     console.log("Bike Selected: " + bikeFrame);
+    bikeFrameOfBikeSelected = bikeFrame;
+
+    document.getElementById("bike-selected-frame-title").innerHTML = `Bike Frame Selected: ${bikeFrame}`;
 }
 
-export { customerFound, showCustomer }
+async function startTest() {
+    const response = await fetch("/api/start-test",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body : JSON.stringify({
+            "emailBikeOwner" : customerFound.email,
+            "testBenchNumber" : testBenchNumberInput.value,
+            "testType" : testTypeInput.value,
+            "frameNumber" : bikeFrameOfBikeSelected,
+        })
+    }
+    );
+}
+
+export { customerFound, showCustomerBikes }
