@@ -31,10 +31,10 @@ public class SecurityConfiguration {
 //                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/api/customers", "api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/register", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
-                        .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/api/customers", "api/staff", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers("/api/register", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
+                                .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
+                                .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -66,6 +66,9 @@ public class SecurityConfiguration {
                     log.info("Role detected: {}", authentication.getAuthorities());
                     response.sendRedirect("/technician/dashboard");
                     log.info("Logging into technician dashboard page");
+                } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SUPERADMIN"))) {
+                    log.debug("Logged into superadmin page");
+                    response.sendRedirect("/superadmin/profile");
                 } else {
                     response.sendRedirect("/");
                 }
@@ -79,33 +82,4 @@ public class SecurityConfiguration {
     }
 
 
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails superadmin = User.withDefaultPasswordEncoder()
-//                .username("superadmin@email.com")
-//                .password("password")
-//                .roles("SUPERADMIN")
-//                .build();
-//
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin@email.com")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//
-//        UserDetails technician = User.withDefaultPasswordEncoder()
-//                .username("technician@email.com")
-//                .password("password")
-//                .roles("TECHNICIAN")
-//                .build();
-//
-//        UserDetails customer = User.withDefaultPasswordEncoder()
-//                .username("customer@email.com")
-//                .password("password")
-//                .roles("CUSTOMER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(superadmin, admin, technician, customer);
-//    }
 }

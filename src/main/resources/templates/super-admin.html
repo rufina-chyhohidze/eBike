@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en " xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,9 +37,12 @@
       <i class="ph ph-user"></i> Account Settings
     </li>
     <li class="mt-auto">
-      <button class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-        <i class="ph ph-sign-out"></i> Logout
-      </button>
+
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+          <i class="ph ph-sign-out"></i> Logout
+        </button>
+      </form>
     </li>
   </ul>
 </aside>
@@ -47,32 +50,48 @@
 <!-- DASHBOARD -->
 <main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
   <!-- WORKSHOP ADMIN INFO -->
-  <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
-    <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Owner" class="w-24 h-24 rounded-full border-2 border-gray-300">
-    <div>
-      <h2 class="text-2xl font-semibold text-gray-800">Alex Johnson</h2>
-      <p class="text-gray-600">Bike Store Owner</p>
-      <p class="text-gray-500">Workshop: <span class="font-semibold">Speedy Repairs</span></p>
-      <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
-    </div>
+  <div class="bg-white shadow-lg rounded-3xl p-6 flex flex-col gap-4 col-span-2 border border-gray-200">
+    <h2 class="text-2xl font-semibold text-gray-800" th:text="${user.name}">User Name</h2>
+    <p class="text-gray-600" th:text="${user.email}">user@email.com</p>
+
+    <p class="text-gray-500">Role:
+      <span class="font-semibold" th:text="${user.getAuthorities()}">User Role</span>
+    </p>
+    <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
   </div>
 
-  <!-- APPROVE EMPLOYEES -->
-  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-2 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-2 text-gray-200">Approve Employees</h3>
-    <p class="text-gray-300 text-sm mb-4">Approve technicians and admins who have registered.</p>
-    <div class="space-y-2">
-      <div class="bg-gray-800 p-3 rounded-lg flex justify-between items-center">
-        <div>
-          <span class="text-white text-sm">Admin: John Doe</span><br>
-          <span class="text-gray-400 text-xs">Email: john.doe@example.com</span>
-        </div>
-        <div class="flex gap-2">
-          <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">Approve</button>
-          <button class="bg-gray-600 text-white px-3 py-1 rounded-lg hover:bg-gray-700 text-sm" data-modal-target="employee-details">View Details</button>
-        </div>
-      </div>
-    </div>
+  <!-- PENDING APPROVALS -->
+  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 text-gray-200">Pending Approvals</h3>
+
+    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl text-sm">
+      <thead>
+      <tr class="bg-gray-700 text-gray-100">
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Role</th>
+        <th class="p-3 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="pendingUser : ${pendingUsers}" class="hover:bg-gray-700">
+        <td class="p-3 text-gray-200" th:text="${pendingUser.name}"></td>
+        <td class="p-3 text-gray-400" th:text="${pendingUser.email}"></td>
+        <td class="p-3 text-gray-400" th:text="${pendingUser.getAuthorities()}"></td>
+        <td class="p-3 flex gap-2">
+          <form th:action="@{/superadmin/approve/{id}(id=${pendingUser.id})}" method="post">
+            <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">Approve</button>
+          </form>
+          <form th:action="@{/superadmin/reject/{id}(id=${pendingUser.id})}" method="post">
+            <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Reject</button>
+          </form>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(pendingUsers)}">
+        <td colspan="4" class="p-3 text-center text-gray-400">No pending approvals found.</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- TEST BENCH ERRORS -->
@@ -82,9 +101,7 @@
     </h3>
     <div class="flex gap-2 mb-3">
       <input class="p-2 border border-gray-300 rounded-lg w-3/4" type="text" id="errorSearch" placeholder="Search Error Code">
-      <button id="clearSearch" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 text-sm">
-        Clear
-      </button>
+      <button id="clearSearch" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 text-sm">Clear</button>
     </div>
     <table class="w-full border-collapse bg-white shadow-md rounded-3xl text-sm">
       <thead>
@@ -96,9 +113,7 @@
         <th class="p-2 text-left">Date</th>
       </tr>
       </thead>
-      <tbody id="errorList">
-      <!-- Populated via JavaScript -->
-      </tbody>
+      <tbody id="errorList"></tbody>
     </table>
   </div>
 
@@ -107,7 +122,8 @@
     <h3 class="text-xl font-semibold mb-3 text-gray-800">Test Statistics</h3>
     <canvas id="pieChart" class="h-32"></canvas>
   </div>
-<!--  LINE CHART -->
+
+  <!-- LINE CHART -->
   <div class="bg-white shadow-lg rounded-3xl p-4 col-span-1 border border-gray-200">
     <h3 class="text-xl font-semibold mb-3 text-gray-800">Monthly Performance</h3>
     <canvas id="lineChart" class="h-32"></canvas>
@@ -123,24 +139,9 @@
       <input class="p-2 border border-gray-300 rounded-lg w-full text-sm" type="text" placeholder="Bike Model">
       <input class="p-2 border border-gray-300 rounded-lg w-full text-sm" type="text" placeholder="Brand">
     </div>
-    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl text-sm">
-      <thead>
-      <tr class="bg-gray-700 text-gray-100">
-        <th class="p-3 text-left">Frame Number</th>
-        <th class="p-3 text-left">Bike Model</th>
-        <th class="p-3 text-left">Brand</th>
-        <th class="p-3 text-left">Date</th>
-        <th class="p-3 text-left">Result</th>
-      </tr>
-      </thead>
-      <tbody id="reportList">
-      <!-- Populated via JavaScript -->
-      </tbody>
-    </table>
   </div>
 </main>
 
-<script src="../static/js/super-admin.js"></script>
-
+<script src="/js/super-admin.js"></script>
 </body>
 </html>
