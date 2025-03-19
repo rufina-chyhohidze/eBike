@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.*;
 import be.kdg.integration4.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -75,6 +76,15 @@ public class BikeReportServiceImpl implements BikeReportService {
     public List<BikeReport> findAll() {
         return bikeReportRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<BikeReport> getAllReportsWithDetails() {
+        return bikeReportRepository.findAllWithDetails();
+    }
+
+//    public List<BikeReport> searchReports(String frameNumber, String customerName) {
+//        return bikeReportRepository.searchReports(frameNumber, customerName);
+//    }
 
     @Override
     public BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
