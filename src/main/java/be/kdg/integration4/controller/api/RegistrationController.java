@@ -1,13 +1,12 @@
 package be.kdg.integration4.controller.api;
 
-import be.kdg.integration4.controller.api.dtos.RegistrationDto;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
 import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.User;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
-import be.kdg.integration4.service.RegistrationService;
+import be.kdg.integration4.service.interfaces.RegistrationService;
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

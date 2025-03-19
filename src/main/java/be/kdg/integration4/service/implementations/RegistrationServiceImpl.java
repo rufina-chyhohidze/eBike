@@ -1,8 +1,9 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.*;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.*;
+import be.kdg.integration4.service.interfaces.RegistrationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

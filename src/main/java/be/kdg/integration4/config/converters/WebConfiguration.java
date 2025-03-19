@@ -1,4 +1,4 @@
-package be.kdg.integration4.config;
+package be.kdg.integration4.config.converters;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

@@ -4,18 +4,15 @@ import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.Customer;
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.BikeService;
-import be.kdg.integration4.service.CustomerService;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.BikeService;
+import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController

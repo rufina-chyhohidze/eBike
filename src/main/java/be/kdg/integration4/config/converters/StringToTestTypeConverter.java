@@ -1,6 +1,5 @@
-package be.kdg.integration4.config;
+package be.kdg.integration4.config.converters;
 
-import be.kdg.integration4.domain.TestStatus;
 import be.kdg.integration4.domain.TestType;
 import org.springframework.core.convert.converter.Converter;
 

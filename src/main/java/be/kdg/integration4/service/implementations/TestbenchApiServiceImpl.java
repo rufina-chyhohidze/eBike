@@ -1,4 +1,4 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.ApiRequest;
 import be.kdg.integration4.domain.BikeReport;
@@ -7,6 +7,7 @@ import be.kdg.integration4.domain.TestType;
 import be.kdg.integration4.repository.ApiRequestRepository;
 import be.kdg.integration4.service.dtos.StartTestDto;
 import be.kdg.integration4.service.dtos.TestDto;
+import be.kdg.integration4.service.interfaces.TestbenchApiService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

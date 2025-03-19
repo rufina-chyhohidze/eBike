@@ -1,4 +1,4 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.interfaces;
 
 import be.kdg.integration4.domain.BikeReport;
 import be.kdg.integration4.domain.TestLine;
@@ -7,7 +7,6 @@ import be.kdg.integration4.domain.TestType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.function.ToDoubleFunction;
 
 public interface BikeReportService {
 

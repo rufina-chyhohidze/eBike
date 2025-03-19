@@ -3,9 +3,7 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
 import be.kdg.integration4.controller.api.dtos.TestLineMapper;
 import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestLine;
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.BikeReportServiceImpl;
+import be.kdg.integration4.service.interfaces.BikeReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

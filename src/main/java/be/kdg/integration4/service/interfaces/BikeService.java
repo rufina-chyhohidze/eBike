@@ -1,11 +1,10 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.interfaces;
 
 import be.kdg.integration4.domain.Bike;
 import be.kdg.integration4.domain.BikeSize;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

@@ -1,8 +1,7 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.interfaces;
 
 import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.User;
-import be.kdg.integration4.domain.Workshop;
 
 
 public interface RegistrationService {

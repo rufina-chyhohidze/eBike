@@ -1,6 +1,7 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.service.interfaces.CsvProcessingService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

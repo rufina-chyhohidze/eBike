@@ -1,4 +1,4 @@
-package be.kdg.integration4.config;
+package be.kdg.integration4.config.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

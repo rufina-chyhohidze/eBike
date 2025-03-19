@@ -1,8 +1,10 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.config.SecurityUtil;
+import be.kdg.integration4.config.security.SecurityUtil;
 import be.kdg.integration4.domain.*;
 import be.kdg.integration4.repository.*;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.BikeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

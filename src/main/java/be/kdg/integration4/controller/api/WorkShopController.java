@@ -3,7 +3,7 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.WorkShopDto;
 import be.kdg.integration4.domain.Workshop;
-import be.kdg.integration4.service.WorkshopService;
+import be.kdg.integration4.service.interfaces.WorkshopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

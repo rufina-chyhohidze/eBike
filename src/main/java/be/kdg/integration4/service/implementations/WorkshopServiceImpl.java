@@ -1,7 +1,8 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.repository.WorkshopRepository;
+import be.kdg.integration4.service.interfaces.WorkshopService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,8 +1,9 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.Customer;
 import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.repository.CustomerRepository;
+import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

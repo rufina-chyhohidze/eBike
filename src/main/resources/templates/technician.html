@@ -38,9 +38,11 @@
             <i class="ph ph-user"></i> Account Settings
         </li>
         <li class="mt-auto">
-            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-                <i class="ph ph-sign-out"></i> Logout
-            </button>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
         </li>
     </ul>
 </aside>

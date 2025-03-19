@@ -1,13 +1,13 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.Technician;
 import be.kdg.integration4.domain.UserRole;
 import be.kdg.integration4.domain.Workshop;
 import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
+import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.stereotype.Service;
 import be.kdg.integration4.repository.UserRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

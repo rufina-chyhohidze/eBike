@@ -1,4 +1,4 @@
-package be.kdg.integration4.service;
+package be.kdg.integration4.service.interfaces;
 
 import be.kdg.integration4.domain.TestLine;
 
