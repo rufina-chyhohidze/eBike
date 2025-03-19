@@ -11,9 +11,9 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CustomMapper {
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "email", target = "email")
-    @Mapping(source = "phoneNumber", target = "phoneNumber")
+//    @Mapping(source = "name", target = "name")
+//    @Mapping(source = "email", target = "email")
+//    @Mapping(source = "phoneNumber", target = "phoneNumber")
     CustomerDto toCustomerDto(Customer customer);
 
     BikeDto toBikeDto(Bike bike);

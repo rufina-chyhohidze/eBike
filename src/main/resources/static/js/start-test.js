@@ -7,10 +7,11 @@ const customerSearchArea = document.getElementById("search-customer-title-area")
 const bikeItemsSection = document.getElementById("bike-items-section");
 const noRegisteredBikes = document.getElementById("bikes-not-found");
 const customerNotFoundSection = document.getElementById("customer-not-found");
+// bikeSection.classList.add("bike-section-hide");
 noRegisteredBikes.style.display = "none";
 customerNotFoundSection.style.display = "none";
 
-
+let customerFound;
 let customerFoundItem;
 
 searchButton.addEventListener('click', fetchCustomer);
@@ -31,6 +32,7 @@ async function fetchCustomer() {
         showCustomer(await response.json());
         customerNotFoundSection.style.display = "none";
     } else if (response.status === 204) {
+        bikeSection.classList.add("bike-section-hide");
         bikeSection.classList.remove("bike-section-show");
         customerSearchArea.classList.remove("search-customer-title-area-up");
         customerFoundSection.innerHTML = "";
@@ -38,6 +40,7 @@ async function fetchCustomer() {
         emailMessage.innerHTML = `${emailInput.value}`;
         console.log("Customer NOT FOUND");
     } else {
+        bikeSection.classList.add("bike-section-hide");
         bikeSection.classList.remove("bike-section-show");
         customerSearchArea.classList.remove("search-customer-title-area-up");
         customerFoundSection.innerHTML = "";
@@ -47,6 +50,7 @@ async function fetchCustomer() {
 }
 
 function showCustomer(customer) {
+    customerFound = customer;
     customerFoundSection.innerHTML = '';
     /**
      * @type { id:number, name:string, email:string, phoneNumber:string }

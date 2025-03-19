@@ -131,14 +131,26 @@ main.customer-search-container {
         display: block;
     }
 }
+@media (max-width: 1200px) {
+    main {
+        width: 100% !important;
+        padding: 10px;
+    }
+    .customer-email-area {
+        width: 70%;
+    }
+}
 
 /* Bikes - Cards */
 .bike-container {
     text-align: center !important;
     justify-content: center !important;
     align-items: center;
-    opacity: 0%;
     transition: all .3s ease;
+}
+.bike-section-hide {
+    opacity: 0%;
+    transition: all .3s ease;    
 }
 .bike-section-show {
     opacity: 100%;
@@ -178,26 +190,26 @@ main.customer-search-container {
 .btn-custom:hover {
     transform: scale(1.05);
 }
-.bike-card {
-    min-width: 200px;
-    width: 250px;
-    height: auto;
-    max-height: 350px;
-}
 .bike-item {
     position: relative;
     width: 100% !important;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     transition: all .3 ease;
     /* border: 2px solid black; */
     /* align-items: center; */
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 1em !important;
+}
+.bike-card {
+    min-width: 350px;
+    width: 25%;
+    height: auto;
+    max-height: 350px;
 }
 .bike-info {
     min-width: 350px !important;
-    width: 700px;
+    width: 70%;
     margin-left: 14px;
     transition: all .3s ease;
 }
@@ -205,4 +217,42 @@ main.customer-search-container {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     transition: all .3s ease;
+}
+@media (max-width: 1000px) {
+    .bike-img {
+        width: 200px;
+    }
+    .bike-item .bike-card {
+        width: 220px;
+    }
+    .bike-item .bike-info {
+        font-size: 10px;
+    }
+    .bikes-header button {
+        font-size: 85%;
+    }
+}
+@media (max-width: 800px) {
+    .bikes-header {
+        width: 80%;
+    }
+    .bike-item {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        display: block;
+        margin-bottom: 5em !important;
+    }
+    .bike-card {
+        width: 340px !important;
+        margin: auto;
+    }
+    .bike-info {
+        position: relative;
+        width: 100%;
+        margin: auto ;
+        /* margin: -100px auto auto auto; */
+        padding-bottom: 30px;
+        margin-bottom: 25px;
+    }
 }

@@ -11,9 +11,15 @@
   <link rel="stylesheet" th:href="@{/css/start-test.css}" href="/static/css/start-test.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Google font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap" rel="stylesheet">
+
+  <!-- Modal -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <!--  <script type="module" th:src="@{/js/process-test.js}" src="/static/js/process-test.js"></script>-->
  <script type="module" th:src="@{/js/start-test.js}" src="/static/js/start-test.js"></script>
@@ -39,7 +45,7 @@
           <div class="customer-email-area">
                 <!-- <label>Enter customer Email</label> -->
                 <div class="input-and-search">
-                  <input id="emailBikeOwner" name="emailBikeOwner" type="text" placeholder="customer@gmail.com">
+                  <input id="emailBikeOwner" name="emailBikeOwner" type="email" placeholder="customer@gmail.com" required>
                   <button type="button" id="searchCustomer">Search</button>
                 </div>
           </div>
@@ -55,8 +61,9 @@
         <section class="container bike-container" id="bike-section">
           
           <div class="bikes-header">
-            <button type="button">
-              Add New Bike 
+           <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-bike-modal">
+              Add New Bike
             </button>
             <h2 class="text-center mb-5" id="choose-bike-title">Choose a Bike</h2>
           </div>
@@ -73,6 +80,25 @@
       </div>
 
      </main>
+
+     <!-- Modal to add a bike to customer -->
+    <div class="modal fade" id="add-bike-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Bike</h5>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- End modal to add bike to customer -->
 
 
 
