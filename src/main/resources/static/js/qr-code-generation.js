@@ -1,6 +1,6 @@
 const idElement = document.getElementById("testId");
 
-const url = `http://localhost:8080/tests/${idElement.value}`;
+const url = `http://localhost:8080/report/${idElement.value}`;
 
 const qr = qrcode(0, 'L');
 qr.addData(url);

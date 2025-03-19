@@ -42,7 +42,7 @@ public class TestResultFetchWebSocketHandler extends TextWebSocketHandler {
                 report.getCustomer().getEmail(),
                 testLines,
                 report.getTestBench().getBenchId());
-        session.sendMessage(new TextMessage("Report saved"));
+        session.sendMessage(new TextMessage(String.valueOf(report.getId())));
         session.close();
     }
 }
