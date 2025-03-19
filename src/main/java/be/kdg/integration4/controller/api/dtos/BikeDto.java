@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.BikeSize;
 import java.time.LocalDate;
 
 public record BikeDto(
+        Long bikeOwnerId,
         String frameNumber,
         String type,
         String brand,

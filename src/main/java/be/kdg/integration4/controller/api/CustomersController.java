@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -52,17 +50,14 @@ public class CustomersController {
 
     @GetMapping("{customerId}/bikes")
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        List<String> frameNumbers = this.bikeReportService.getFrameNumbersByCustomerId(customerId);
-        log.debug("Frame numbers of bikes of customer with Id {}:  {}", customerId, frameNumbers);
-        Set<Bike> customerBikes = frameNumbers.stream()
-                .map(this.bikeService::findByFrameNumber)
-                .filter(Optional::isPresent).
-                map(Optional::get)
-                .collect(Collectors.toSet());
-        log.debug("Found customer bikes: {}", customerBikes);
-
-
-        if (customerBikes.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikes.stream().toList()));
+        final Set<Bike> customerBikes = this.bikeService.getBikesByOwnerId(customerId);
+        List<Bike> customerBikesList = new LinkedList<>(customerBikes);
+        if (customerBikes.isEmpty()) {
+            log.debug("Found customer bikes: {}", customerBikes);
+            return ResponseEntity.noContent().build();
+        }
+        Collections.sort(customerBikesList);
+        log.debug("No bikes found or customer with Id: {}", customerId);
+        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 }

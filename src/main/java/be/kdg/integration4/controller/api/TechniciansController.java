@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,9 +48,10 @@ public class TechniciansController {
         log.info("No errors: saving bike {}", bikeDto);
         this.bikeService.save(
                 bikeDto.frameNumber(),
+                bikeDto.bikeOwnerId(),
                 bikeDto.type(),
                 bikeDto.brand(),
-                LocalDate.now(),
+                LocalDateTime.now(),
                 LocalDate.of(bikeDto.productionDate().getYear(), 1, 1),
                 bikeDto.bikeSize(),
                 bikeDto.milleage(),
@@ -67,48 +69,48 @@ public class TechniciansController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/start-test")
-    //TODO: Add dto validation
-    public ResponseEntity<Map<String, String>> startTest(@RequestBody TestDto test) {
-        if (bikeService.findByFrameNumber(test.getChassisNumber()).isEmpty()) {
-            bikeService.save(
-                    test.getChassisNumber(),
-                    test.getType(),
-                    test.getBikeBrand(),
-                    LocalDate.now(),
-                    LocalDate.of(test.getProductionDate(), 1, 1),
-                    BikeSize.valueOf(test.getBikeSize()),
-                    test.getMileage(),
-                    test.getGearType(),
-                    test.getEngineType(),
-                    test.getPowertrain(),
-                    test.getAccuCapacity(),
-                    test.getMaxSupport(),
-                    test.getEnginePowerMax(),
-                    test.getEnginePowerNominal(),
-                    test.getEngineTorque()
-            );
-        }
-
-        log.debug(String.valueOf((long) test.getTestbenchNumber()));
-
-
-
-        BikeReport report = bikeReportService.save(
-                (long) test.getTestbenchNumber(),
-                test.getTestType(),
-                test.getEmailBikeOwner(),
-                test.getChassisNumber()
-        );
-
-        String id = testbenchApiService.sendStartRequest(test.getTestType(), test.getAccuCapacity(), test.getMaxSupport(),
-                test.getEnginePowerMax(), test.getEnginePowerNominal(), test.getEngineTorque()).id();
-
-        testbenchApiService.saveApiRequest(report,id);
-        Map<String,String> response = new HashMap<>();
-        response.put("id", id);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/start-test")
+//    //TODO: Add dto validation
+//    public ResponseEntity<Map<String, String>> startTest(@RequestBody TestDto test) {
+//        if (bikeService.findByFrameNumber(test.getChassisNumber()).isEmpty()) {
+//            bikeService.save(
+//                    test.getChassisNumber(),
+//                    test.getType(),
+//                    test.getBikeBrand(),
+//                    LocalDate.now(),
+//                    LocalDate.of(test.getProductionDate(), 1, 1),
+//                    BikeSize.valueOf(test.getBikeSize()),
+//                    test.getMileage(),
+//                    test.getGearType(),
+//                    test.getEngineType(),
+//                    test.getPowertrain(),
+//                    test.getAccuCapacity(),
+//                    test.getMaxSupport(),
+//                    test.getEnginePowerMax(),
+//                    test.getEnginePowerNominal(),
+//                    test.getEngineTorque()
+//            );
+//        }
+//
+//        log.debug(String.valueOf((long) test.getTestbenchNumber()));
+//
+//
+//
+//        BikeReport report = bikeReportService.save(
+//                (long) test.getTestbenchNumber(),
+//                test.getTestType(),
+//                test.getEmailBikeOwner(),
+//                test.getChassisNumber()
+//        );
+//
+//        String id = testbenchApiService.sendStartRequest(test.getTestType(), test.getAccuCapacity(), test.getMaxSupport(),
+//                test.getEnginePowerMax(), test.getEnginePowerNominal(), test.getEngineTorque()).id();
+//
+//        testbenchApiService.saveApiRequest(report,id);
+//        Map<String,String> response = new HashMap<>();
+//        response.put("id", id);
+//        return ResponseEntity.ok(response);
+//    }
 
 
 }

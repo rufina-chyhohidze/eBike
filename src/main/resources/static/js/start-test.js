@@ -29,7 +29,8 @@ async function fetchCustomer() {
     if (response.status === 200) {
         console.log(customerSearchArea)
         customerSearchArea.classList.add("search-customer-title-area-up");
-        showCustomer(await response.json());
+        customerFound = await response.json();
+        showCustomer();
         customerNotFoundSection.style.display = "none";
     } else if (response.status === 204) {
         bikeSection.classList.add("bike-section-hide");
@@ -49,28 +50,29 @@ async function fetchCustomer() {
     }
 }
 
-function showCustomer(customer) {
-    customerFound = customer;
+function showCustomer() {
     customerFoundSection.innerHTML = '';
     /**
      * @type { id:number, name:string, email:string, phoneNumber:string }
      */
-    console.log(customer);
+    console.log(customerFound);
     customerFoundSection.innerHTML = `
         <div class="customer-found-item" id="customer-found-item">
-            <strong>Name:&nbsp;</strong> <span>${customer.name}</span>
+            <strong>Name:&nbsp;</strong> <span>${customerFound.name}</span>
             &nbsp;&nbsp;&nbsp; <br/>
-            <strong>Email:&nbsp;</strong> <span>${customer.email}</span>
+            <strong>Email:&nbsp;</strong> <span>${customerFound.email}</span>
             &nbsp;&nbsp;&nbsp; <br/>
-            <strong>Phone Number:&nbsp;</strong> <span>${customer.phoneNumber}</span>
+            <strong>Phone Number:&nbsp;</strong> <span>${customerFound.phoneNumber}</span>
         </div>`;
 
+    const inputBikeOwnerID = document.getElementById("bikeOwnerId-form");
+    inputBikeOwnerID.value = customerFound.id;
     customerFoundItem = document.getElementById("customer-found-item");
 
-    showCustomerBikes(customer.id);
+    void showCustomerBikes(customerFound.id);
 }
 
-async function showCustomerBikes(customerId) {
+export async function showCustomerBikes(customerId) {
     const response = await fetch(`/api/customers/${customerId}/bikes`,
         {
             method: "GET",
@@ -96,13 +98,14 @@ async function showCustomerBikes(customerId) {
 }
 
 function displayBikes(bikes) {
-    console.log("displaying biks:")
+    console.log("Displaying Bikes:")
     console.log(bikes);
 
     bikeItemsSection.innerHTML = "";
 
     /**
      * @typedef {Object} BikeDTO
+     * @property {number} bikeOwnerId
      * @property {string} frameNumber
      * @property {string} type
      * @property {string} brand
@@ -199,3 +202,5 @@ function displayBikes(bikes) {
         `;
     }
 }
+
+export { customerFound, showCustomer }

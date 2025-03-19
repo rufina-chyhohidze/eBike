@@ -1,3 +1,5 @@
+import { customerFound, showCustomerBikes } from "./start-test.js";
+
 const DOMAIN_NAME = "localhost:8080"
 
 
@@ -15,6 +17,7 @@ form.addEventListener("submit", async function (e) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
+    jsonData["bikeOwnerId"] = document.getElementById("bikeOwnerId-form").value;
     console.log(jsonData)
 
     const response = await fetch("/api/save/bike", {
@@ -28,6 +31,12 @@ form.addEventListener("submit", async function (e) {
 
     if (response.ok) {
         console.log("Bike successfully saved");
+        // close modal - bike creation modal should be closed when bike successfully created
+        const bikeModalCloseButton = document.getElementById("close-modal-bike-creation");
+        bikeModalCloseButton.click();
+
+        clearAllInputsFromForm();
+        void showCustomerBikes(customerFound.id);
     } else {
         console.log("Error while saving bike: " + response.status);
     }
@@ -53,6 +62,14 @@ form.addEventListener("submit", async function (e) {
 
 
 });
+
+function clearAllInputsFromForm() {
+    // Clear all input elements (text, number, etc.) and select elements
+    const elements = document.querySelectorAll('input, select');
+    elements.forEach(element => {
+        element.value = '';  // Clear the value of the element
+    });
+}
 
 function retrieveReport(id) {
     const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/result`);

@@ -32,11 +32,17 @@ public class SecurityConfiguration {
 //                .cors()
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/api/customers/**", "/api/save/bike", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/static/**", "/api/customers/**", "/api/save/bike", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
                         .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/static/**", "/css/**", "/js/**", "/img/**",  // Static resources
+                                "/api/customers/**", "/api/save/bike",        // API endpoints
+                                "/register", "/login"                         // Public pages
+                        ).permitAll()
+                                .anyRequest().authenticated()
                 )
+
 //                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
 
                 .formLogin(form -> form

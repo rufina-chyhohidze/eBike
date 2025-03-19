@@ -6,16 +6,19 @@ import be.kdg.integration4.domain.Workshop;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.Named;
 
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CustomMapper {
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "email", target = "email")
-    @Mapping(source = "phoneNumber", target = "phoneNumber")
+//    @Mapping(source = "name", target = "name")
+//    @Mapping(source = "email", target = "email")
+//    @Mapping(source = "phoneNumber", target = "phoneNumber")
     CustomerDto toCustomerDto(Customer customer);
 
+//    @Mapping(source = "bikeOwner", target = "bikeOwnerId", qualifiedByName = "mapBikeOwnerId")
+    @Mapping(source = "bikeOwner.id", target = "bikeOwnerId")
     BikeDto toBikeDto(Bike bike);
     List<BikeDto> toBikeDtoList(List<Bike> bikeList);
 

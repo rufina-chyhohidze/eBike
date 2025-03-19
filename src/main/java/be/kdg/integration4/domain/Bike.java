@@ -8,11 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Bike {
+public class Bike implements Comparable<Bike> {
+
     @Id
     private String frameNumber;
 
@@ -24,7 +26,7 @@ public class Bike {
 
     private String brand;
 
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 
     private LocalDate productionDate;
 
@@ -48,8 +50,9 @@ public class Bike {
 
     private int engineTorque;
 
-    public Bike(String frameNumber, String type, String brand, LocalDate registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+    public Bike(String frameNumber, Customer bikeOwner, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
         this.frameNumber = frameNumber;
+        this.bikeOwner = bikeOwner;
         this.type = type;
         this.brand = brand;
         this.registrationDate = registrationDate;
@@ -64,5 +67,10 @@ public class Bike {
         this.enginePowerMax = enginePowerMax;
         this.enginePowerNominal = enginePowerNominal;
         this.engineTorque = engineTorque;
-    }//branch
+    }
+
+    @Override
+    public int compareTo(Bike bike) {
+        return bike.getRegistrationDate().compareTo(this.registrationDate);
+    }
 }

@@ -30,4 +30,13 @@ public class Customer extends User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
     }
+
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+//                ", bikes=" + bikes.size() +
+                '}';
+    }
 }
