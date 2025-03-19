@@ -12,5 +12,5 @@ public class TestDto {
     private int testBenchNumber;
     private TestType testType;
     private String emailBikeOwner;
-    private String chassisNumber;
+    private String frameNumber;
 }

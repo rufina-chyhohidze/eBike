@@ -76,10 +76,10 @@ public class TechniciansController {
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
                 test.getEmailBikeOwner(),
-                test.getChassisNumber()
+                test.getFrameNumber()
         );
 
-        Bike bike = bikeService.findByFrameNumber(test.getChassisNumber()).orElseThrow();
+        Bike bike = bikeService.findByFrameNumber(test.getFrameNumber()).orElseThrow();
 
         String id = testbenchApiService.sendStartRequest(test.getTestType(),
                 bike.getAccCapacity(),
