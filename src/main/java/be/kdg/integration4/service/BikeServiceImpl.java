@@ -3,10 +3,12 @@ package be.kdg.integration4.service;
 import be.kdg.integration4.domain.Bike;
 import be.kdg.integration4.domain.BikeSize;
 import be.kdg.integration4.repository.BikeRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BikeServiceImpl implements BikeService{
@@ -17,8 +19,8 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    public Bike findByFrameNumber(String frameNumber) {
-         return bikeRepository.findBikeByFrameNumber(frameNumber).orElse(null);
+    public Optional<Bike> findByFrameNumber(String frameNumber) {
+         return bikeRepository.findBikeByFrameNumber(frameNumber);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class BikeServiceImpl implements BikeService{
 
     @Override
     public void delete(String frameNumber) {
-        bikeRepository.delete(findByFrameNumber(frameNumber));
+        bikeRepository.delete(findByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
     }
 
 

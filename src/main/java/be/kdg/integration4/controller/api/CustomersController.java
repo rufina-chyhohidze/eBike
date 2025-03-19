@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,10 @@ public class CustomersController {
         List<String> frameNumbers = this.bikeReportService.getFrameNumbersByCustomerId(customerId);
         log.debug("Frame numbers of bikes of customer with Id {}:  {}", customerId, frameNumbers);
         Set<Bike> customerBikes = frameNumbers.stream()
-                .map(this.bikeService::findByFrameNumber).collect(Collectors.toSet());
+                .map(this.bikeService::findByFrameNumber)
+                .filter(Optional::isPresent).
+                map(Optional::get)
+                .collect(Collectors.toSet());
         log.debug("Found customer bikes: {}", customerBikes);
 
 
