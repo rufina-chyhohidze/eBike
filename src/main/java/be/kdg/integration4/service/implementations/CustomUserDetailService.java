@@ -1,6 +1,6 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.User;
+import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.DisabledException;

@@ -2,8 +2,8 @@ package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
-import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.BikeReport;
+import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;

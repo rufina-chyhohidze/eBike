@@ -1,5 +1,7 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.profile;
 
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.report.Bike;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +31,7 @@ public class Customer extends User {
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + UserRole.CUSTOMER));
     }
 
 

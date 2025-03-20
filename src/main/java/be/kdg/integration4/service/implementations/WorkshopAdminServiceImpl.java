@@ -1,8 +1,8 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.UserRole;
-import be.kdg.integration4.domain.Workshop;
-import be.kdg.integration4.domain.WorkshopAdmin;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.report.Workshop;
+import be.kdg.integration4.domain.profile.WorkshopAdmin;
 import be.kdg.integration4.repository.WorkshopAdminRepository;
 import be.kdg.integration4.service.interfaces.WorkshopAdminService;
 import org.springframework.stereotype.Service;

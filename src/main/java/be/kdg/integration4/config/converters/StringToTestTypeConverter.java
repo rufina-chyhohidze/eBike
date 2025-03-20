@@ -1,6 +1,6 @@
 package be.kdg.integration4.config.converters;
 
-import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.domain.enums.TestType;
 import org.springframework.core.convert.converter.Converter;
 
 public class StringToTestTypeConverter implements Converter<String, TestType> {

@@ -1,8 +1,8 @@
 package be.kdg.integration4.websocket;
 
-import be.kdg.integration4.domain.ApiRequest;
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.domain.report.ApiRequest;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CsvProcessingService;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;

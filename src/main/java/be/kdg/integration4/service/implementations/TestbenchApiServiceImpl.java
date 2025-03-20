@@ -1,9 +1,9 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.ApiRequest;
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestStatus;
-import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.domain.report.ApiRequest;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.enums.TestStatus;
+import be.kdg.integration4.domain.enums.TestType;
 import be.kdg.integration4.repository.ApiRequestRepository;
 import be.kdg.integration4.service.dtos.StartTestDto;
 import be.kdg.integration4.service.dtos.TestDto;

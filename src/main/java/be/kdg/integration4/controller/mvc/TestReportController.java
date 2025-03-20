@@ -1,7 +1,7 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.Metric;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.enums.Metric;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

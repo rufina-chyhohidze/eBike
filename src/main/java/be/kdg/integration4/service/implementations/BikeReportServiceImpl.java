@@ -1,7 +1,9 @@
 package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.config.security.SecurityUtil;
-import be.kdg.integration4.domain.*;
+import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
@@ -120,6 +122,7 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
+    //TODO: Do it with sql query instead
     public Map<String, Double> calculateAverages(List<TestLine> testLines) {
         return METRICS.entrySet().stream()
                 .collect(Collectors.toMap(

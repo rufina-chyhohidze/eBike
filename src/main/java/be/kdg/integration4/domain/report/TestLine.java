@@ -1,4 +1,4 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.report;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

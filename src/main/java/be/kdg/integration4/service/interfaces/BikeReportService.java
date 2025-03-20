@@ -1,8 +1,8 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.TestLine;
-import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.report.TestLine;
+import be.kdg.integration4.domain.enums.TestType;
 
 import java.time.LocalDate;
 import java.util.List;

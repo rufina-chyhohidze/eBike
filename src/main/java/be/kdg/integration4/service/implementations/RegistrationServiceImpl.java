@@ -1,6 +1,11 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.*;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.profile.WorkshopAdmin;
+import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.interfaces.RegistrationService;
@@ -57,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         return switch (userRole) {
-            case WORKSHOP_ADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
+            case ADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
             case TECHNICIAN -> technicianRepository.save(new Technician(name, email, passwordEncoder.encode(password), workshop));
             default -> throw new IllegalArgumentException("Invalid role: " + role);
         };

@@ -1,6 +1,6 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.SystemAdmin;
+import be.kdg.integration4.domain.profile.SystemAdmin;
 import be.kdg.integration4.repository.SystemAdminRepository;
 import be.kdg.integration4.service.interfaces.SystemAdminService;
 import org.springframework.stereotype.Service;

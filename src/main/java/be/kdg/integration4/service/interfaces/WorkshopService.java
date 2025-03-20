@@ -1,6 +1,6 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.Workshop;
+import be.kdg.integration4.domain.report.Workshop;
 
 import java.util.List;
 

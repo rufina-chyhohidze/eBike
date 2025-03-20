@@ -1,6 +1,6 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import be.kdg.integration4.domain.Location;
+import be.kdg.integration4.domain.enums.Location;
 
 public record WorkShopDto(
     Long workshopId,

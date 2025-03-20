@@ -1,8 +1,8 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.Technician;
-import be.kdg.integration4.domain.UserRole;
-import be.kdg.integration4.domain.Workshop;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
 import be.kdg.integration4.service.interfaces.TechnicianService;

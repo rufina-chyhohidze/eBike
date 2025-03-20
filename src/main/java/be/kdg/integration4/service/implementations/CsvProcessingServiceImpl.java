@@ -1,6 +1,6 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.TestLine;
+import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.service.interfaces.CsvProcessingService;
 import org.springframework.stereotype.Service;
 

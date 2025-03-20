@@ -1,5 +1,6 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.report;
 
+import be.kdg.integration4.domain.enums.Location;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

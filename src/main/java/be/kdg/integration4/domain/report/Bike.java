@@ -1,5 +1,7 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.report;
 
+import be.kdg.integration4.domain.enums.BikeSize;
+import be.kdg.integration4.domain.profile.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;

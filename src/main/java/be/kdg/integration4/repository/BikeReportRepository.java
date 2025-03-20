@@ -1,16 +1,11 @@
 package be.kdg.integration4.repository;
 
-import be.kdg.integration4.domain.BikeReport;
+import be.kdg.integration4.domain.report.BikeReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Query;
-import java.util.List;
-
-import java.util.List;
 
 @Repository
 public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {

@@ -1,7 +1,7 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.BikeSize;
+import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.domain.enums.BikeSize;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

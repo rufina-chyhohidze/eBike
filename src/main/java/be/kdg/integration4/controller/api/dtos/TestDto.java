@@ -1,6 +1,6 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import be.kdg.integration4.domain.TestType;
+import be.kdg.integration4.domain.enums.TestType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

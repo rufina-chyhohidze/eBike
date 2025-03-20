@@ -1,7 +1,7 @@
 package be.kdg.integration4.service.interfaces;
 
 
-import be.kdg.integration4.domain.User;
+import be.kdg.integration4.domain.profile.User;
 
 import java.util.List;
 

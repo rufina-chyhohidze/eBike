@@ -1,5 +1,7 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.report;
 
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

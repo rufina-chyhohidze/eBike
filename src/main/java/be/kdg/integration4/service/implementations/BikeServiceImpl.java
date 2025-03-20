@@ -1,7 +1,7 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.BikeSize;
+import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.repository.BikeRepository;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;

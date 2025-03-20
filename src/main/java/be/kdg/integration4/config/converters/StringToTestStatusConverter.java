@@ -1,6 +1,6 @@
 package be.kdg.integration4.config.converters;
 
-import be.kdg.integration4.domain.TestStatus;
+import be.kdg.integration4.domain.enums.TestStatus;
 import org.springframework.core.convert.converter.Converter;
 
 public class StringToTestStatusConverter implements Converter<String, TestStatus> {

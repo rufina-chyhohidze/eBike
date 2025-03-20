@@ -1,6 +1,6 @@
 package be.kdg.integration4.repository;
 
-import be.kdg.integration4.domain.ApiRequest;
+import be.kdg.integration4.domain.report.ApiRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

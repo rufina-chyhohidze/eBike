@@ -1,6 +1,10 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.domain.*;
+import be.kdg.integration4.domain.enums.BikeSize;
+import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.TechnicianService;

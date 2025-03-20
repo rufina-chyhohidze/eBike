@@ -1,6 +1,8 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.*;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.WorkshopAdmin;
+import be.kdg.integration4.domain.report.Workshop;
 
 import java.util.List;
 

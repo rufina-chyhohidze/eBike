@@ -1,6 +1,6 @@
 package be.kdg.integration4.websocket;
 
-import be.kdg.integration4.domain.TestStatus;
+import be.kdg.integration4.domain.enums.TestStatus;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;

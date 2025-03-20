@@ -1,4 +1,4 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.profile;
 
 import jakarta.persistence.*;
 import lombok.Data;

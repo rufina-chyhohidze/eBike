@@ -1,10 +1,10 @@
-package be.kdg.integration4.domain;
+package be.kdg.integration4.domain.profile;
 
+import be.kdg.integration4.domain.report.Workshop;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,20 +15,18 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@ToString
-@DiscriminatorValue("Technician")
-public class Technician extends User {
-
-    @ManyToOne(fetch = FetchType.LAZY)
+@DiscriminatorValue("WorkshopAdmin")
+public class WorkshopAdmin extends User {
+    @OneToOne
     private Workshop workshop;
-    // TODO: change the role to the class name
+
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_TECHNICIAN"));
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
-    public Technician(String name, String email, String password, Workshop workshop) {
+    public WorkshopAdmin(String name, String email, String password, Workshop workshop) {
         super(name, email, password);
         this.workshop = workshop;
     }
