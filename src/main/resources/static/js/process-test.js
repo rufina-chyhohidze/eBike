@@ -22,7 +22,7 @@ form.addEventListener("submit", async function (e) {
     jsonData["bikeOwnerId"] = document.getElementById("bikeOwnerId-form").value;
     console.log(jsonData)
 
-    const response = await fetch("/api/save/bike", {
+    const response = await fetch("/api/bikes", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

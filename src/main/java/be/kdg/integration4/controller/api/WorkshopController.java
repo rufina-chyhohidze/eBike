@@ -16,12 +16,12 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/workshops")
-public class WorkShopController {
+public class WorkshopController {
 
     private final WorkshopService workshopService;
     private final CustomMapper customMapper;
 
-    public WorkShopController(WorkshopService workshopService, CustomMapper customMapper) {
+    public WorkshopController(WorkshopService workshopService, CustomMapper customMapper) {
         this.workshopService = workshopService;
         this.customMapper = customMapper;
     }

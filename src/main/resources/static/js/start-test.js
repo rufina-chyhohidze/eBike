@@ -234,19 +234,19 @@ function displayBikes(bikes) {
 function setBikeSelectedButtons() {
     const bikeSelectedButtons = [...document.getElementsByClassName("select-bike-button")];
     bikeSelectedButtons.forEach(button => {
-        button.addEventListener("click", displayTestFormWithBikeSelected(button.id))
+        button.addEventListener("click", displayTestFormWithBikeSelected)
     })
 }
 
-function displayTestFormWithBikeSelected(bikeFrame) {
-    console.log("Bike Selected: " + bikeFrame);
-    bikeFrameOfBikeSelected = bikeFrame;
+function displayTestFormWithBikeSelected(e) {
+    console.log("Bike Selected: " + e.target.id);
+    bikeFrameOfBikeSelected = e.target.id;
 
-    document.getElementById("bike-selected-frame-title").innerHTML = `Bike Frame Selected: ${bikeFrame}`;
+    document.getElementById("bike-selected-frame-title").innerHTML = `Bike Frame Selected: ${e.target.id}`;
 }
 
 async function startTest() {
-    const response = await fetch("/api/start-test",
+    const response = await fetch("/api/reports",
     {
         method: "POST",
         headers: {
@@ -269,7 +269,7 @@ async function startTest() {
         console.log("Id received: " + data.id);
         closeStartTestModalButton.click();
         mainStartTestPage.style.display = "none";
-        loadingDiv.style.display = "block";
+        loadingDiv.classList.remove("d-none");
 
         webSocketCheck(data);
     } else {

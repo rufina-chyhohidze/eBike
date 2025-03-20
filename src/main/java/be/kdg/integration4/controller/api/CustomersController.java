@@ -20,14 +20,12 @@ import java.util.*;
 public class CustomersController {
     private final CustomerService customerService;
     private final CustomMapper customMapper;
-    private final BikeReportService bikeReportService;
     private final BikeService bikeService;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, BikeReportService bikeReportService, CustomMapper customMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
-        this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
     }
 
@@ -54,7 +52,7 @@ public class CustomersController {
             return ResponseEntity.noContent().build();
         }
         Collections.sort(customerBikesList);
-        log.debug("No bikes found or customer with Id: {}", customerId);
+        log.debug("No bikes found for customer with Id: {}", customerId);
         return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 }

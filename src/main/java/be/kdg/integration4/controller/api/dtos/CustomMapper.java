@@ -13,7 +13,7 @@ import java.util.List;
 public interface CustomMapper {
     CustomerDto toCustomerDto(Customer customer);
 
-//    @Mapping(source = "bikeOwner.id", target = "bikeOwnerId")
+    @Mapping(source = "bikeOwner.id", target = "bikeOwnerId")
     BikeDto toBikeDto(Bike bike);
     List<BikeDto> toBikeDtoList(List<Bike> bikeList);
 

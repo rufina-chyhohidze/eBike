@@ -25,11 +25,13 @@
     <script type="module" th:src="@{/js/start-test.js}"></script>
 
 </head>
-    <div id="loading">
-        <div class="spinner"></div>
-        <p class="message">Please don't close the page until the test is done</p>
+
+    <div id="loading" class="d-none d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="message mt-3 text-center">Please don't close the page until the test is done</p>
     </div>
-    <main id="test-start-page-main">
+
+<main id="test-start-page-main">
          <main class="customer-search-container">
             <div class="search-customer-title-area" id="search-customer-title-area">
               <h1>Start a test</h1>
@@ -201,10 +203,9 @@
                         <label for="testType">Test Type</label>
                         <select required name="testType" id="testType" class="form-control">
                             <option value="" disabled selected>Choose...</option>
-                            <option>STRESS</option>
-                            <option>EFFICIENCY</option>
-                            <option>MANUAL</option>
+                            <option th:each="type : ${testTypes}" th:value="${type}" th:text="${type}"></option>
                         </select>
+
 
                         <label for="testBenchNumber">TestBench Number</label>
                         <input name="testBenchNumber" id="testBenchNumber" type="number" class="form-control" placeholder="001">

@@ -22,8 +22,8 @@
                         <h1 class="fw-bold mb-4">Test Result Successfully Saved</h1>
                         <div id="qrcode" class="h-[100px] w-[100px]"></div>
                         <div class="d-flex justify-content-center">
-                            <a href="/test-history" class="btn btn-primary me-3">Test History</a>
-                            <a href="/start-test" class="btn btn-success">Start a New Test</a>
+                            <a href="/technician/dashboard" class="btn btn-primary me-3">Back to dashboard</a>
+                            <a th:href="@{/report/{id}(id=${id})}" class="btn btn-success">View report</a>
                         </div>
                     </div>
                 </div>
