@@ -1,10 +1,9 @@
 package be.kdg.integration4.repository;
 
-import be.kdg.integration4.domain.Customer;
+import be.kdg.integration4.domain.profile.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

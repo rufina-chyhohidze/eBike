@@ -1,8 +1,8 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.Customer;
-import be.kdg.integration4.domain.Workshop;
+import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.report.Workshop;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

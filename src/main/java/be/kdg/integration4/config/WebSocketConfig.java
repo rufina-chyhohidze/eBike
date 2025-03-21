@@ -1,8 +1,8 @@
 package be.kdg.integration4.config;
 
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.CsvProcessingService;
-import be.kdg.integration4.service.TestbenchApiService;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.CsvProcessingService;
+import be.kdg.integration4.service.interfaces.TestbenchApiService;
 import be.kdg.integration4.websocket.TestResultFetchWebSocketHandler;
 import be.kdg.integration4.websocket.TestStatusWebSocketHandler;
 import org.springframework.context.annotation.Configuration;

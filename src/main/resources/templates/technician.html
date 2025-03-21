@@ -26,7 +26,7 @@
             <i class="ph ph-house"></i> Home
         </li>
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-play-circle"></i> Start Test
+                <i class="ph ph-play-circle"></i><a href="/technician/start-test"> Start Test </a>
         </li>
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
             <i class="ph ph-user-check"></i> Customer Verification
@@ -38,9 +38,11 @@
             <i class="ph ph-user"></i> Account Settings
         </li>
         <li class="mt-auto">
-            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-                <i class="ph ph-sign-out"></i> Logout
-            </button>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
         </li>
     </ul>
 </aside>
@@ -153,6 +155,7 @@
                 <th class="p-3 text-left">Frame Number</th>
 <!--                <th class="p-3 text-left">Brand</th>-->
                 <th class="p-3 text-left">Bench ID</th>
+                <th class="p3 text-left"></th>
             </tr>
             </thead>
             <tbody>
@@ -163,6 +166,7 @@
                 <td th:text="${report.bike.frameNumber}" class="p-3"></td>
 <!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
                 <td th:text="${report.testBench.benchId}" class="p-3"></td>
+                <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>
             </tr>
             </tbody>
         </table>

@@ -3,19 +3,16 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
-import be.kdg.integration4.domain.Bike;
-import be.kdg.integration4.domain.Customer;
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.BikeService;
-import be.kdg.integration4.service.CustomerService;
+import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.BikeService;
+import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -23,14 +20,12 @@ import java.util.stream.Collectors;
 public class CustomersController {
     private final CustomerService customerService;
     private final CustomMapper customMapper;
-    private final BikeReportService bikeReportService;
     private final BikeService bikeService;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, BikeReportService bikeReportService, CustomMapper customMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
-        this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
     }
 
@@ -57,7 +52,7 @@ public class CustomersController {
             return ResponseEntity.noContent().build();
         }
         Collections.sort(customerBikesList);
-        log.debug("No bikes found or customer with Id: {}", customerId);
+        log.debug("No bikes found for customer with Id: {}", customerId);
         return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 }

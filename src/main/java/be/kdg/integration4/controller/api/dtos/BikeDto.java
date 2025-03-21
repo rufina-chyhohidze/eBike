@@ -1,6 +1,6 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import be.kdg.integration4.domain.BikeSize;
+import be.kdg.integration4.domain.enums.BikeSize;
 
 import java.time.LocalDate;
 

@@ -1,10 +1,9 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.domain.BikeReport;
-import be.kdg.integration4.domain.User;
-import be.kdg.integration4.domain.WorkshopAdmin;
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.UserService;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

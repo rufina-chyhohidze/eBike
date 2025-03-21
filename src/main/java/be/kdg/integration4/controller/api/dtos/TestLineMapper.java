@@ -1,7 +1,6 @@
 package be.kdg.integration4.controller.api.dtos;
 
-import be.kdg.integration4.domain.TestLine;
-import be.kdg.integration4.domain.Workshop;
+import be.kdg.integration4.domain.report.TestLine;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 

@@ -1,9 +1,13 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.domain.*;
-import be.kdg.integration4.service.BikeReportService;
-import be.kdg.integration4.service.CustomerService;
-import be.kdg.integration4.service.TechnicianService;
+import be.kdg.integration4.domain.enums.BikeSize;
+import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.CustomerService;
+import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,10 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
