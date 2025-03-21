@@ -2,6 +2,7 @@ package be.kdg.integration4.controller.mvc;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,10 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@Slf4j
 @ControllerAdvice
 public class CustomErrorController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomErrorController.class);
+
     @ExceptionHandler(Exception.class)
     public String handleError(HttpServletRequest request, Model model) {
         Object statusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
@@ -36,7 +38,7 @@ public class CustomErrorController {
             errorDescription = "Something went wrong with the server.";
         }
 
-        logger.debug("Error {}: {} - {}", errorCode, errorMessage, errorDescription);
+        log.debug("Error {}: {} - {}", errorCode, errorMessage, errorDescription);
 
         model.addAttribute("errorCode", errorCode);
         model.addAttribute("errorMessage", errorMessage);

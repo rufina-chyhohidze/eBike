@@ -22,9 +22,9 @@ POST http://localhost:8080/api/start-test
 Content-Type: application/json
 
 {
-  "testbenchNumber": 1,
-  "testType": "Performance",
-  "emailBikeOwner": "superadmin@email.com",
+  "testbenchNumber": 3,
+  "testType": "STRESS",
+  "emailBikeOwner": "cust@email.com",
   "chassisNumber": "XYZ123456789",
   "bikeBrand": "Trek",
   "bikeSize": "M",
@@ -46,4 +46,14 @@ Content-Type: application/json
 POST http://localhost:8080/login
 Content-Type: application/x-www-form-urlencoded
 
-email=technician@email.com&password=password
+email=tech@email.com&password=password
+
+###
+
+GET http://localhost:8080/api/customers?email=customer@gmail.com
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/customers/17/bikes
+Accept: application/json

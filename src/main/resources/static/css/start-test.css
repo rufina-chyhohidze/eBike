@@ -1,0 +1,256 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+form {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+}
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap');
+
+/* Search customer section */
+.search-customer-title-area {
+    text-align: center;
+    margin-top: 20vh;
+    transition: all .3s ease;
+}
+.search-customer-title-area-up {
+    margin-top: 5vh;
+    transition: all .3s ease;
+}
+.search-customer-title-area h1, .search-customer-title-area h4 {
+    font-family: "Tektur", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+.search-customer-title-area h1 {
+    font-size: 60px;
+}
+.search-customer-title-area cite {
+    font-size: 22px;
+}
+main.customer-search-container {
+    max-width: 1000px;
+    margin: auto;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+.customer-email-area {
+    margin: auto;
+    margin-top: 25px;
+    width: 100%;
+}
+.input-and-search {
+    display: flex;
+    gap: 10px;
+}
+.input-and-search > input {
+    flex-basis: 70%;
+    height: 3rem;
+}
+.input-and-search > button {
+    flex-basis: 30%;
+    height: 3rem;
+    /* margin-top: 5px; */
+    border-radius: 5px;
+}
+.customer-found-test {
+    margin: 20px auto auto auto;
+    width: 100%;
+    font-size: 16px;
+}
+.customer-found-item {
+    border: 1px solid black;
+    box-shadow: 5px 5px gray;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.customer-found-item:hover {
+    box-shadow: none;
+}
+@media (max-width: 835px) {
+    .customer-found-test, .customer-found-item {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+@media (max-width: 700px) {
+    .customer-found-item {
+        font-size: 10px;
+        display: block;
+    }
+}
+@media (max-width: 1200px) {
+    main {
+        width: 100% !important;
+        padding: 10px;
+    }
+    .customer-email-area {
+        width: 70%;
+    }
+}
+
+/* Bikes - Cards */
+.bike-container {
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center;
+    transition: all .3s ease;
+}
+.bike-section-hide {
+    opacity: 0%;
+    transition: all .3s ease;
+}
+.bike-section-show {
+    opacity: 100%;
+    transition: all .3s ease;
+}
+
+.bikes-header {
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.bikes-header button {
+    flex-basis: 20%;
+    height: 50px;
+    font-size: 19px;
+    border-radius: 5px;
+}
+.bikes-header h2 {
+    flex-basis: 80%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    /* font-style: italic; */
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 25px;
+}
+.bike-img {
+    width: 100%;
+}
+.bike-detail-title {
+    padding: 20px;
+    font-weight: 500;
+    font-size: 20px;
+}
+.btn-custom:hover {
+    transform: scale(1.05);
+}
+.bike-item {
+    position: relative;
+    width: 100% !important;
+    display: flex;
+    flex-wrap: nowrap;
+    transition: all .3 ease;
+    /* border: 2px solid black; */
+    /* align-items: center; */
+    justify-content: center;
+    margin-bottom: 1em !important;
+}
+.bike-card {
+    min-width: 350px;
+    width: 25%;
+    height: auto;
+    max-height: 350px;
+}
+.bike-info {
+    min-width: 350px !important;
+    width: 70%;
+    margin-left: 14px;
+    transition: all .3s ease;
+}
+.bike-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transition: all .3s ease;
+}
+@media (max-width: 1000px) {
+    .bike-img {
+        width: 200px;
+    }
+    .bike-item .bike-card {
+        width: 220px;
+    }
+    .bike-item .bike-info {
+        font-size: 10px;
+    }
+    .bikes-header button {
+        font-size: 85%;
+    }
+}
+@media (max-width: 800px) {
+    .bikes-header {
+        width: 80%;
+    }
+    .bike-item {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        display: block;
+        margin-bottom: 5em !important;
+    }
+    .bike-card {
+        width: 340px !important;
+        margin: auto;
+    }
+    .bike-info {
+        position: relative;
+        width: 100%;
+        margin: auto ;
+        /* margin: -100px auto auto auto; */
+        padding-bottom: 30px;
+        margin-bottom: 25px;
+    }
+}
