@@ -29,9 +29,9 @@ Run the `docker-compose.yml` file
   ```
 
 
-### 4. Populate the database:
+### 4. Database is automatically populated:
 
-Use `resources/static/data/data.sql`.
+With file located in: `resources/static/data/data.sql`.
 
 It will add four users to the database:
 
