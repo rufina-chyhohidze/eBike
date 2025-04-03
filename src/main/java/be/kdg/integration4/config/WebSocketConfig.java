@@ -16,18 +16,16 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final TestbenchApiService testbenchApiService;
     private final CsvProcessingService csvProcessingService;
-    private final BikeReportService bikeReportService;
 
-    public WebSocketConfig(TestbenchApiService testbenchApiService, CsvProcessingService csvProcessingService, BikeReportService bikeReportService) {
+    public WebSocketConfig(TestbenchApiService testbenchApiService, CsvProcessingService csvProcessingService) {
         this.testbenchApiService = testbenchApiService;
         this.csvProcessingService = csvProcessingService;
-        this.bikeReportService = bikeReportService;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new TestStatusWebSocketHandler(testbenchApiService), "/ws/status")
-                .addHandler(new TestResultFetchWebSocketHandler(testbenchApiService,csvProcessingService, bikeReportService), "/ws/result")
+                .addHandler(new TestResultFetchWebSocketHandler(testbenchApiService,csvProcessingService), "/ws/result")
                 .setAllowedOrigins("*"); // Allow all origins, for CORS issues
     }
 }
