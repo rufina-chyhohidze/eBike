@@ -19,20 +19,22 @@ import java.util.Objects;
 public class TestbenchApiServiceImpl implements TestbenchApiService {
 
     private final RestTemplate restTemplate;
+    private final HttpHeaders headers;
 
-    @Value("${workbench.apikey}")
-    private String apiKey;
+    @Value("${workbench.api.url}")
+    private String baseUrl;
 
     private final ApiRequestRepository apiRequestRepository;
 
-    public TestbenchApiServiceImpl(ApiRequestRepository apiRequestRepository) {
+    public TestbenchApiServiceImpl(RestTemplate restTemplate, HttpHeaders headers, ApiRequestRepository apiRequestRepository) {
+        this.restTemplate = restTemplate;
+        this.headers = headers;
         this.apiRequestRepository = apiRequestRepository;
-        this.restTemplate = new RestTemplate();
     }
 
     @Override
     public TestDto sendStartRequest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
-        String startTestUrl = "https://testbench.raoul.dev/api/test";
+        String startTestUrl = baseUrl + "/api/test";
         StartTestDto startTestDto = new StartTestDto(
                 testType.toString(),
                 batteryCapacity,
@@ -42,10 +44,6 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
                 engineTorque
         );
 
-        // Create headers with API key
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-API-KEY", apiKey); // Add API key to header
 
         HttpEntity<StartTestDto> requestEntity = new HttpEntity<>(startTestDto, headers);
 
@@ -59,9 +57,7 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
     @Override
     public TestStatus checkTestStatus(String id) {
 
-        String statusUrl = "https://testbench.raoul.dev/api/test/" + id;
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", apiKey);
+        String statusUrl = baseUrl + "/api/test/" + id;
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -74,9 +70,7 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
 
     @Override
     public String sendReportRequest(String id) {
-        String reportUrl = "https://testbench.raoul.dev/api/test/" + id + "/report";
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", apiKey);
+        String reportUrl = baseUrl + "/api/test/" + id + "/report";
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(reportUrl, HttpMethod.GET, requestEntity, String.class);
         return Objects.requireNonNull(response.getBody());
