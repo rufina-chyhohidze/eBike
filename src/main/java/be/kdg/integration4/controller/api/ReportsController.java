@@ -3,7 +3,6 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
-import be.kdg.integration4.controller.api.dtos.TestLineMapper;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.BikeReportService;
@@ -75,7 +74,7 @@ public class ReportsController {
 
         Bike bike = bikeService.findByFrameNumber(test.getFrameNumber()).orElseThrow();
 
-        String id = testbenchApiService.sendStartRequest(test.getTestType(),
+        String id = testbenchApiService.startTest(test.getTestType(),
                 bike.getAccCapacity(),
                 (int) Math.round(bike.getMaxSupport()),
                 bike.getEnginePowerMax(),
