@@ -21,10 +21,4 @@ public class SystemAdmin extends User {
     public SystemAdmin(String name, String email, String password) {
         super(name, email, password, true);
     }
-
-    @Override
-    @Transient
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_SUPERADMIN"));
-    }
 }

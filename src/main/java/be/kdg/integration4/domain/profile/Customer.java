@@ -29,13 +29,6 @@ public class Customer extends User {
     }
 
     @Override
-    @Transient
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + UserRole.CUSTOMER));
-    }
-
-
-    @Override
     public String toString() {
         return "Customer{" +
                 "phoneNumber='" + phoneNumber + '\'' +

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "profile")
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class User implements UserDetails {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,15 +19,6 @@ public abstract class User implements UserDetails {
     private String email;
     private String password;
     private boolean approved = false;
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-    @Override
-    public String getPassword() {
-        return password;
-    }
 
     public User(String name, String email, String password) {
         this.name = name;

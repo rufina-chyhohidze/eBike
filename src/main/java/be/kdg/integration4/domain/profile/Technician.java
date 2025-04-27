@@ -22,12 +22,6 @@ public class Technician extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Workshop workshop;
-    // TODO: change the role to the class name
-    @Override
-    @Transient
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_TECHNICIAN"));
-    }
 
     public Technician(String name, String email, String password, Workshop workshop) {
         super(name, email, password);

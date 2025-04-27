@@ -20,12 +20,6 @@ public class WorkshopAdmin extends User {
     @OneToOne
     private Workshop workshop;
 
-    @Override
-    @Transient
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
-
     public WorkshopAdmin(String name, String email, String password, Workshop workshop) {
         super(name, email, password);
         this.workshop = workshop;
