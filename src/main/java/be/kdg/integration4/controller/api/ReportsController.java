@@ -33,7 +33,7 @@ public class ReportsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<TestLineDto>> testLines(@PathVariable("id") String id) {
-        BikeReport bikeReport = bikeReportService.findByIdWithTestlines(Long.valueOf(id));
+        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(Long.valueOf(id));
         List<TestLineDto> testLines = bikeReport.getTestLines().stream()
                 .map(t -> new TestLineDto(
                         t.getId(),
@@ -72,7 +72,7 @@ public class ReportsController {
                 test.getFrameNumber()
         );
 
-        Bike bike = bikeService.findByFrameNumber(test.getFrameNumber()).orElseThrow();
+        Bike bike = bikeService.getByFrameNumber(test.getFrameNumber()).orElseThrow();
 
         String id = testbenchApiService.startTest(test.getTestType(),
                 bike.getAccCapacity(),

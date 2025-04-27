@@ -28,7 +28,7 @@ public class WorkshopController {
 
     @GetMapping
     public ResponseEntity<List<WorkShopDto>> getWorkShops() {
-        List<Workshop> workshops = this.workshopService.findAll();
+        List<Workshop> workshops = this.workshopService.getAll();
         log.info("Found {} workshops", workshops.size());
         if (workshops.isEmpty()) return ResponseEntity.noContent().build();
 

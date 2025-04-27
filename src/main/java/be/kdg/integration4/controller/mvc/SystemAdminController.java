@@ -29,7 +29,7 @@ public class SystemAdminController {
         List<User> pendingUsers = userService.getUnapprovedUsers();
         model.addAttribute("pendingUsers", pendingUsers);
 
-        List<BikeReport> reports = bikeReportService.getAllReportsWithDetails();
+        List<BikeReport> reports = bikeReportService.getAllWithDetails();
         model.addAttribute("reports", reports);
         model.addAttribute("user", user);
         return "super-admin";
