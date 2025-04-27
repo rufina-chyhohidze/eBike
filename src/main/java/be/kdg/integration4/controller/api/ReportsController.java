@@ -2,6 +2,7 @@ package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
+import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -64,7 +65,7 @@ public class ReportsController {
 
     @PostMapping
     //TODO: Add dto validation
-    public ResponseEntity<Map<String, String>> startTest(@RequestBody TestDto test) {
+    public ResponseEntity<TestIdDto> startTest(@RequestBody TestDto test) {
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
@@ -82,8 +83,6 @@ public class ReportsController {
                 bike.getEngineTorque()).id();
 
         testbenchApiService.saveApiRequest(report, id);
-        Map<String, String> response = new HashMap<>();
-        response.put("id", id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new TestIdDto(id));
     }
 }
