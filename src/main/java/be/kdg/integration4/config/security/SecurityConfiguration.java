@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import java.io.IOException;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -28,7 +30,6 @@ public class SecurityConfiguration {
                         auth -> auth
                         .requestMatchers("/static/**", "/api/customers/**", "/api/save/bike", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
-                        .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
                         .requestMatchers(
                                 "/static/**", "/css/**", "/js/**", "/img/**",  // Static resources
                                 "/api/customers/**", "/api/save/bike",        // API endpoints
@@ -42,7 +43,6 @@ public class SecurityConfiguration {
                         .failureUrl("/error")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
-                        .successHandler(customAuthenticationSuccessHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -55,26 +55,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-        return new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                Authentication authentication) throws IOException {
-                log.info("Authentication : Checking role");
-                if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TECHNICIAN"))) {
-                    log.info("Role detected: {}", authentication.getAuthorities());
-                    response.sendRedirect("/technician/dashboard");
-                    log.info("Logging into technician dashboard page");
-                } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SUPERADMIN"))) {
-                    log.debug("Logged into superadmin page");
-                    response.sendRedirect("/superadmin/profile");
-                } else {
-                    response.sendRedirect("/");
-                }
-            }
-        };
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

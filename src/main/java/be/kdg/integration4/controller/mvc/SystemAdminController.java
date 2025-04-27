@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.SystemAdminOnly;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.interfaces.BikeReportService;
@@ -23,6 +24,7 @@ public class SystemAdminController {
         this.bikeReportService = bikeReportService;
     }
     @GetMapping("/profile")
+    @SystemAdminOnly
     public String adminDashboard(Model model, Principal principal) {
         String email = principal.getName();
         User user = userService.getUserByEmail(email);
@@ -47,12 +49,14 @@ public class SystemAdminController {
 //    }
 
     @PostMapping("/approve/{id}")
+    @SystemAdminOnly
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
         return "redirect:/superadmin/profile";
     }
 
     @PostMapping("/reject/{id}")
+    @SystemAdminOnly
     public String rejectUser(@PathVariable Long id) {
         userService.rejectUser(id);
         return "redirect:/superadmin/profile";

@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.service.interfaces.BikeService;
 import jakarta.validation.Valid;
@@ -27,6 +28,7 @@ public class BikesController {
     }
 
     @PostMapping
+    @TechnicianOnly
     public ResponseEntity<Void> createNewBike(
             @RequestBody @Valid BikeDto bikeDto,
             BindingResult bindingResult
