@@ -9,6 +9,7 @@ import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +65,7 @@ public class ReportsController {
     }
 
     @PostMapping
-    //TODO: Add dto validation
-    public ResponseEntity<TestIdDto> startTest(@RequestBody TestDto test) {
+    public ResponseEntity<TestIdDto> startTest(@RequestBody @Valid TestDto test) {
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
