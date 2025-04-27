@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script th:src="@{/js/registration.js}" src="/static/js/registration.js" type="module"></script>
     <script th:src="@{/js/register.js}" src="/static/js/register.js" type="module"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 </head>
 <body>

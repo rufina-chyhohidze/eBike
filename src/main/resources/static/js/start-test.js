@@ -1,4 +1,5 @@
 import {webSocketCheck} from "./process-test.js";
+import {csrfHeader, csrfToken} from "./utils/csrf.js";
 
 const emailInput = document.getElementById("emailBikeOwner");
 const searchButton = document.getElementById("searchCustomer");
@@ -252,6 +253,7 @@ async function startTest() {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
+            [csrfHeader]: csrfToken
         },
         body : JSON.stringify({
             "emailBikeOwner" : customerFound.email,

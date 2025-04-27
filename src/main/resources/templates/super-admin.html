@@ -51,11 +51,11 @@
 <main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
   <!-- WORKSHOP WORSHOPADMIN INFO -->
   <div class="bg-white shadow-lg rounded-3xl p-6 flex flex-col gap-4 col-span-2 border border-gray-200">
-    <h2 class="text-2xl font-semibold text-gray-800" th:text="${user.name}">User Name</h2>
-    <p class="text-gray-600" th:text="${user.email}">user@email.com</p>
+    <h2 class="text-2xl font-semibold text-gray-800" th:text="${user.name()}">User Name</h2>
+    <p class="text-gray-600" th:text="${user.email()}">user@email.com</p>
 
     <p class="text-gray-500">Role:
-      <span class="font-semibold" th:text="${user.getAuthorities()}">User Role</span>
+      <span class="font-semibold" th:text="${user.role()}">User Role</span>
     </p>
     <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
   </div>
@@ -75,14 +75,14 @@
       </thead>
       <tbody>
       <tr th:each="pendingUser : ${pendingUsers}" class="hover:bg-gray-700">
-        <td class="p-3 text-gray-200" th:text="${pendingUser.name}"></td>
-        <td class="p-3 text-gray-400" th:text="${pendingUser.email}"></td>
-        <td class="p-3 text-gray-400" th:text="${pendingUser.getAuthorities()}"></td>
+        <td class="p-3 text-gray-200" th:text="${pendingUser.name()}"></td>
+        <td class="p-3 text-gray-400" th:text="${pendingUser.email()}"></td>
+        <td class="p-3 text-gray-400" th:text="${pendingUser.role()}"></td>
         <td class="p-3 flex gap-2">
-          <form th:action="@{/superadmin/approve/{id}(id=${pendingUser.id})}" method="post">
+          <form th:action="@{/superadmin/approve/{id}(id=${pendingUser.id()})}" method="post">
             <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">Approve</button>
           </form>
-          <form th:action="@{/superadmin/reject/{id}(id=${pendingUser.id})}" method="post">
+          <form th:action="@{/superadmin/reject/{id}(id=${pendingUser.id()})}" method="post">
             <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Reject</button>
           </form>
         </td>
