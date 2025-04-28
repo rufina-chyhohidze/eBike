@@ -8,29 +8,31 @@
     <link rel="stylesheet" th:href="@{/css/control.css}" href="/static/css/control.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-    <script th:src="@{/js/qr-code-generation.js}" type="module"></script>
+    <script th:src="@{/js/qr-code-generation.js}" type="module" defer></script>
+    <script th:src="@{/js/send-report.js}" type="module" defer></script>
 </head>
 <body>
 
-<section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-md-8 col-lg-8 col-xl-9">
-                <div class="card text-black" style="border-radius: 25px;">
-                    <div class="card-body p-5 text-center">
-                        <input type="hidden" id="testId" th:value="${id}"/>
-                        <h1 class="fw-bold mb-4">Test Result Successfully Saved</h1>
-                        <div id="qrcode" class="h-[100px] w-[100px]"></div>
-                        <div class="d-flex justify-content-center">
-                            <a href="/technician/dashboard" class="btn btn-primary me-3">Back to dashboard</a>
-                            <a th:href="@{/report/{id}(id=${id})}" class="btn btn-success">View report</a>
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-8 col-lg-8 col-xl-9">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-5 text-center">
+                            <input type="hidden" id="testId" th:value="${id}"/>
+                            <h1 class="fw-bold mb-4">Test Result Successfully Saved</h1>
+                            <div id="qrcode" class="h-[100px] w-[100px]"></div>
+                            <div class="d-flex justify-content-center">
+                                <a href="/technician/dashboard" class="btn btn-primary me-3">Back to dashboard</a>
+                                <a th:href="@{/report/{id}(id=${id})}" class="btn btn-success">View report</a>
+                            </div>
+                            <button type="button" th:id="${id}" class="report-id btn btn-primary me-3 mt-3">Send to customer email</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 </body>
 </html>

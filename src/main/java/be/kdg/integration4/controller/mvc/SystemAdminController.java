@@ -8,6 +8,7 @@ import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -66,7 +67,11 @@ public class SystemAdminController {
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
         String email = this.userService.getUserById(id).getEmail();
-        this.emailService.sendUserApprovalEmail(email);
+        try {
+            this.emailService.sendUserApprovalEmail(email);
+        } catch (Exception e) {
+            log.error("Unable to send user approved email: {}", e.getMessage());
+        }
         return "redirect:/superadmin/profile";
     }
 
@@ -74,6 +79,12 @@ public class SystemAdminController {
     @SystemAdminOnly
     public String rejectUser(@PathVariable Long id) {
         userService.rejectUser(id);
+        String email = this.userService.getUserById(id).getEmail();
+        try {
+            this.emailService.sendUserRejectedEmail(email);
+        } catch (Exception e) {
+            log.error("Unable to send user rejected email: {}", e.getMessage());
+        }
         return "redirect:/superadmin/profile";
     }
 

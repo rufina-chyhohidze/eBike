@@ -6,6 +6,7 @@ import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;
@@ -25,11 +26,18 @@ public class ReportsController {
     private final BikeReportService bikeReportService;
     private final BikeService bikeService;
     private final TestbenchApiService testbenchApiService;
+    private final EmailService emailService;
 
-    public ReportsController(BikeReportService bikeReportService, BikeService bikeService, TestbenchApiService testbenchApiService, CustomMapper customMapper) {
+    public ReportsController(
+            BikeReportService bikeReportService,
+            BikeService bikeService,
+            TestbenchApiService testbenchApiService,
+            EmailService emailService
+    ) {
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
         this.testbenchApiService = testbenchApiService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/{id}")
@@ -88,4 +96,21 @@ public class ReportsController {
         response.put("id", id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("{reportId}/send-to-customer")
+    public ResponseEntity<Void> sendReportURLToCustomer(
+            @PathVariable("reportId") Long reportId
+    ) {
+        try {
+            if (reportId == null) throw new Exception("Report id incorrect");
+            log.info("Sending report to customer email - reportId: {}", reportId);
+            this.emailService.sendReportURLToCustomer(reportId);
+        } catch (Exception e) {
+            log.error("Error sending report url to customer: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -7,4 +7,3 @@ qr.addData(url);
 qr.make();
 
 document.getElementById('qrcode').innerHTML = qr.createImgTag(10);
-
