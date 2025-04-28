@@ -5,6 +5,7 @@ import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
 import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
+import be.kdg.integration4.controller.api.dtos.mappers.CustomerDtoMapper;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
@@ -23,13 +24,15 @@ public class CustomersController {
     private final CustomMapper customMapper;
     private final BikeDtoMapper bikeDtoMapper;
     private final BikeService bikeService;
+    private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper, BikeDtoMapper bikeDtoMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper, BikeDtoMapper bikeDtoMapper, CustomerDtoMapper customerDtoMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
         this.bikeService = bikeService;
         this.bikeDtoMapper = bikeDtoMapper;
+        this.customerDtoMapper = customerDtoMapper;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class CustomersController {
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
-                        customMapper.toCustomerDto(customer)
+                        customerDtoMapper.toCustomerDto(customer)
                     );
                 }).orElseGet(() -> {
                     log.error("Customer with email {} not found", email);
