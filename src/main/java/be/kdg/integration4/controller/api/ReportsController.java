@@ -3,12 +3,14 @@ package be.kdg.integration4.controller.api;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
+import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,8 +67,7 @@ public class ReportsController {
 
     @PostMapping
     @TechnicianOnly
-    //TODO: Add dto validation
-    public ResponseEntity<Map<String, String>> startTest(@RequestBody TestDto test) {
+    public ResponseEntity<TestIdDto> startTest(@RequestBody @Valid TestDto test) {
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
@@ -84,8 +85,6 @@ public class ReportsController {
                 bike.getEngineTorque()).id();
 
         testbenchApiService.saveApiRequest(report, id);
-        Map<String, String> response = new HashMap<>();
-        response.put("id", id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new TestIdDto(id));
     }
 }
