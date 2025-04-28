@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
@@ -49,6 +50,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/customers")
+    @StaffOnly // Because now customer can be registered only by technician
     public ResponseEntity<?> registerCustomer(
             @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
             BindingResult bindingResult

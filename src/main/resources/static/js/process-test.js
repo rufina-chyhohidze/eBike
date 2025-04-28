@@ -1,4 +1,5 @@
 import { customerFound, showCustomerBikes } from "./start-test.js";
+import { csrfToken, csrfHeader } from './utils/csrf.js'
 
 const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
 
@@ -26,7 +27,8 @@ form.addEventListener("submit", async function (e) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Accept": "application/json",
+            [csrfHeader]: csrfToken
         },
         body: JSON.stringify(jsonData)
     });

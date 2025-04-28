@@ -1,3 +1,5 @@
+import {csrfHeader, csrfToken} from "./utils/csrf.js";
+
 let roleSelected;
 
 const customerRadio = document.getElementById('customer');
@@ -61,6 +63,7 @@ async function registerCustomer() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
             },
             body: JSON.stringify({
                 name: name,
@@ -76,6 +79,7 @@ async function registerCustomer() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
             },
             body: JSON.stringify({
                 userRole: roleSelected,

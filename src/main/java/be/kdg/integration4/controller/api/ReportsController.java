@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestIdDto;
@@ -65,6 +66,7 @@ public class ReportsController {
     }
 
     @PostMapping
+    @TechnicianOnly
     public ResponseEntity<TestIdDto> startTest(@RequestBody @Valid TestDto test) {
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),

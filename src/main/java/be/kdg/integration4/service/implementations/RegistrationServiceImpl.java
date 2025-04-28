@@ -62,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         return switch (userRole) {
-            case ADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
+            case WORSHOPADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
             case TECHNICIAN -> technicianRepository.save(new Technician(name, email, passwordEncoder.encode(password), workshop));
             default -> throw new IllegalArgumentException("Invalid role: " + role);
         };
