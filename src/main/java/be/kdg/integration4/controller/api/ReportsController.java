@@ -1,7 +1,7 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
-import be.kdg.integration4.controller.api.dtos.CustomMapper;
+import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
