@@ -1,49 +1,122 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>Test Report</title>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="module" src="/js/charts.js"></script>
-</head>
-<body class="container mt-4">
+<div class="mt-4">
+  <h2>Overview Test Results</h2>
+  <ul class="list-group">
 
-<h1 class="text-center mb-4">Test Report</h1>
-<div class="mb-3">
-  <p><strong>Chassis Number:</strong> <span th:text="${bike.getFrameNumber()}"></span></p>
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Actual Max Motor Power:</strong>
+      <span th:text="${overviewTest.maxMotorPower}"></span>
+      <span th:text="${overviewTest.getMaxMotorPowerUnit()}"></span>
+    </li>
+
+    <!-- Motor Power Deviation -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Motor Power Deviation:</strong>
+      <span th:text="${overviewTest.motorPowerDeviation}"></span>
+      <span th:text="${overviewTest.getMotorPowerDeviationUnit()}"></span>
+    </li>
+
+    <!-- Max Torque -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Max Torque:</strong>
+      <span th:text="${overviewTest.maxTorque}"></span>
+      <span th:text="${overviewTest.getMaxTorqueUnit()}"></span>
+    </li>
+
+    <!-- Max Motor Power -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Actual Max Motor Power:</strong>
+      <span th:text="${bike.getEnginePowerMax()}"></span>
+      <span th:text="${overviewTest.getMaxMotorPowerUnit()}"></span>
+    </li>
+
+    <!-- Torque Deviation -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Torque Deviation:</strong>
+      <span th:text="${overviewTest.torqueDeviation}"></span>
+      <span th:text="${overviewTest.getTorqueDeviationUnit()}"></span>
+    </li>
+
+    <!-- Max Support -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Max Support:</strong>
+      <span th:text="${overviewTest.maxSupport}"></span>
+      <span th:text="${overviewTest.getMaxSupportUnit()}"></span>
+    </li>
+
+    <!-- Support Deviation -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Support Deviation:</strong>
+      <span th:text="${overviewTest.supportDeviation}"></span>
+      <span th:text="${overviewTest.getSupportDeviationUnit()}"></span>
+    </li>
+
+    <!-- Max Wheel Power -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Max Wheel Power:</strong>
+      <span th:text="${overviewTest.maxWheelPower}"></span>
+      <span th:text="${overviewTest.getMaxWheelPowerUnit()}"></span>
+    </li>
+
+    <!-- Wheel Power Deviation -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Wheel Power Deviation:</strong>
+      <span th:text="${overviewTest.wheelPowerDeviation}"></span>
+      <span th:text="${overviewTest.getWheelPowerDeviationUnit()}"></span>
+    </li>
+
+    <!-- Score -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Score:</strong>
+      <span th:text="${overviewTest.score}"></span>
+      <span th:text="${overviewTest.getScoreUnit()}"></span>
+    </li>
+  </ul>
 </div>
 
-<h2 class="mb-3">Average Values</h2>
-<table class="table table-bordered table-striped">
-  <thead class="table-dark">
-  <tr>
-    <th>Metric</th>
-    <th>Average</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="entry : ${averages}">
-    <td th:text="${entry.key}"></td>
-    <td th:text="${#numbers.formatDecimal(entry.value, 1, 2)}"></td>
-  </tr>
-  </tbody>
-</table>
+<!-- Nominal Load Test Results -->
+<div class="mt-4">
+  <h2>Nominal Load Test Results</h2>
+  <ul class="list-group">
+    <!-- Continuous Load -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Continuous Load:</strong>
+      <span th:text="${nominalLoadTest.continuousLoad}"></span>
+      <span th:text="${nominalLoadTest.getContinuousLoadUnit()}"></span>
+    </li>
 
-<div class="d-flex align-items-center my-4">
-  <label for="metricSelector" class="me-2 fw-bold">Select Metric:</label>
-  <select id="metricSelector" class="form-select w-auto">
-    <option th:each="metric : ${metrics}"
-            th:value="${metric.getCamelCaseName()}"
-            th:text="${metric.getName()}"
-            th:data-metric="${metric.getMetric()}">
-    </option>
-  </select>
+    <!-- Temperature Increase -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Temperature Increase:</strong>
+      <span th:text="${nominalLoadTest.temperatureIncrease}"></span>
+      <span th:text="${nominalLoadTest.getTemperatureIncreaseUnit()}"></span>
+    </li>
+
+    <!-- Score -->
+    <li class="list-group-item d-flex justify-content-between">
+      <strong>Score:</strong>
+      <span th:text="${nominalLoadTest.score}"></span>
+      <span th:text="${nominalLoadTest.getScoreUnit()}"></span>
+    </li>
+  </ul>
 </div>
 
-<div class="d-flex justify-content-center">
-  <div id="metricChart" class="border rounded p-3 shadow bg-white" style="width: 900px; height: 500px;"></div>
+<div>
+  <strong>Available Capacity:</strong>
+  <span th:text="${batteryTest.availableCapacity}"></span>
+  <span th:text="${batteryTest.availableCapacityUnit}"></span>
+</div>
+<div>
+  <strong>Battery Health:</strong>
+  <span th:text="${batteryTest.batteryHealth}"></span>
+  <span th:text="${batteryTest.batteryHealthUnit}"></span>
+</div>
+<div>
+  <strong>Score:</strong>
+  <span th:text="${batteryTest.score}"></span>
+  <span th:text="${batteryTest.scoreUnit}"></span>
 </div>
 
-</body>
-</html>
+<p>Bearing health:
+  <span th:text="${bearingHealth.bearingStatus} ? 'Good' : 'Bad'"></span>
+</p>
+

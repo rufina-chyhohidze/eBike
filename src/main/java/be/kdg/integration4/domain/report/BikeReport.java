@@ -33,7 +33,7 @@ public class BikeReport {
     private Customer customer;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "testline_id")
+    @JoinColumn(name = "bikereport_id")
     private List<TestLine> testLines;
 
     @ManyToOne(fetch = FetchType.LAZY)

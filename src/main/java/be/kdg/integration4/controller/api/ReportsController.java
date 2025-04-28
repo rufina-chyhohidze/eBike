@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,7 +34,7 @@ public class ReportsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<TestLineDto>> testLines(@PathVariable("id") String id) {
-        BikeReport bikeReport = bikeReportService.findByIdWithTestlines(Long.valueOf(id));
+        BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(Long.valueOf(id));
         List<TestLineDto> testLines = bikeReport.getTestLines().stream()
                 .map(t -> new TestLineDto(
                         t.getId(),
@@ -53,7 +51,7 @@ public class ReportsController {
                         t.getEngineRPM(),
                         t.getEnginePower(),
                         t.getWheelPower(),
-                        t.getRolTroque(),
+                        t.getRolTorque(),
                         t.getLoadCell(),
                         t.getRol(),
                         t.getHorizontalInclinationSensor(),
