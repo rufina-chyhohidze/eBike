@@ -1,23 +1,20 @@
 package be.kdg.integration4.config.security;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+import be.kdg.integration4.controller.mvc.CustomAuthenticationFailureHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.io.IOException;
 
 @Slf4j
 @Configuration
@@ -39,7 +36,8 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .failureUrl("/error")
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                        //.failureUrl("/login?error")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
@@ -65,7 +63,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
