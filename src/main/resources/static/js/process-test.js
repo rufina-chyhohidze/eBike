@@ -1,5 +1,6 @@
 import { customerFound, showCustomerBikes } from "./start-test.js";
 import { csrfToken, csrfHeader } from './utils/csrf.js'
+import qrcodeGenerator from "./qr-code-generation.js";
 
 const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
 
@@ -82,7 +83,12 @@ function retrieveReport(id) {
         socket.close();
         const reportId = event.data;
         console.log("Report ID received: " + reportId);
-        window.location.href = `/technician/test/success/${reportId}`;
+        const resultSection = document.getElementById("result-section")
+        const loadingSection = document.getElementById("loading")
+        qrcodeGenerator();
+        loadingSection.classList.add("d-none");
+        resultSection.classList.remove("d-none");
+        // window.location.href = `/technician/test/success/${reportId}`;
     }
 
 

@@ -20,8 +20,12 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- QR code  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+
     <!-- Our js-->
     <script type="module" th:src="@{/js/process-test.js}"></script>
+    <script th:src="@{/js/qr-code-generation.js}" type="module"></script>
     <script type="module" th:src="@{/js/start-test.js}"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -32,6 +36,26 @@
         <div class="spinner-border text-primary" role="status"></div>
         <p class="message mt-3 text-center">Please don't close the page until the test is done</p>
     </div>
+<section class="d-none vh-100" id="result-section" style="background-color: #eee;">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-8 col-xl-9">
+                <div class="card text-black" style="border-radius: 25px;">
+                    <div class="card-body p-5 text-center">
+                        <input type="hidden" id="testId" th:value="${id}"/>
+                        <h1 class="fw-bold mb-4">Test Result Successfully Saved</h1>
+                        <div id="qrcode" class="h-[100px] w-[100px]"></div>
+                        <div class="d-flex justify-content-center">
+                            <a href="/technician/dashboard" class="btn btn-primary me-3">Back to dashboard</a>
+                            <a th:href="@{/report/{id}(id=${id})}" class="btn btn-success">View report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <main id="test-start-page-main">
          <main class="customer-search-container">
