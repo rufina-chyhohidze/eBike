@@ -1,9 +1,14 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.SystemAdminOnly;
+import be.kdg.integration4.controller.api.dtos.UserWithRolesDto;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/superadmin")
 public class SystemAdminController {
@@ -22,37 +28,44 @@ public class SystemAdminController {
         this.userService = userService;
         this.bikeReportService = bikeReportService;
     }
+
     @GetMapping("/profile")
-    public String adminDashboard(Model model, Principal principal) {
-        String email = principal.getName();
+    @SystemAdminOnly
+    public String adminDashboard(Model model, @AuthenticationPrincipal UserDetailsImpl principal) {
+        String email = principal.getUsername();
         User user = userService.getUserByEmail(email);
         List<User> pendingUsers = userService.getUnapprovedUsers();
-        model.addAttribute("pendingUsers", pendingUsers);
-
         List<BikeReport> reports = bikeReportService.getAllWithDetails();
+        model.addAttribute("pendingUsers",
+                pendingUsers.stream().map(
+                        usr -> new UserWithRolesDto(
+                                usr.getId(),
+                                usr.getName(),
+                                usr.getEmail(),
+                                usr.getClass().getSimpleName().toUpperCase()
+                        )
+                ).toList()
+        );
         model.addAttribute("reports", reports);
-        model.addAttribute("user", user);
+        model.addAttribute("user", new UserWithRolesDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getClass().getSimpleName().toUpperCase()
+        ));
         return "super-admin";
     }
 
-//    @GetMapping("/reports")
-//    public String viewReports(@RequestParam(required = false) String frameNumber,
-//                              @RequestParam(required = false) String customerName,
-//                              Model model) {
-//
-//        List<BikeReport> reports = bikeReportService.searchReports(frameNumber, customerName);
-//        model.addAttribute("reports", reports);
-//
-//        return "super-admin";
-//    }
 
     @PostMapping("/approve/{id}")
+    @SystemAdminOnly
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
         return "redirect:/superadmin/profile";
     }
 
     @PostMapping("/reject/{id}")
+    @SystemAdminOnly
     public String rejectUser(@PathVariable Long id) {
         userService.rejectUser(id);
         return "redirect:/superadmin/profile";

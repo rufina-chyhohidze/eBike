@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
@@ -29,6 +30,7 @@ public class CustomersController {
     }
 
     @GetMapping
+    @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email) {
         return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
@@ -43,6 +45,7 @@ public class CustomersController {
     }
 
     @GetMapping("{customerId}/bikes")
+    @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
         final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);

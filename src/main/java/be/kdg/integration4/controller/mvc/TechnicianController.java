@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.enums.TestType;
 import be.kdg.integration4.domain.profile.Customer;
@@ -36,6 +37,7 @@ public class TechnicianController {
     }
 
     @GetMapping("/dashboard")
+    @TechnicianOnly
     public String dashboard(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -59,6 +61,7 @@ public class TechnicianController {
     }
 
     @GetMapping("/start-test")
+    @TechnicianOnly
     public String startTest(Model model) {
         model.addAttribute("bikeSizes", sizes);
         model.addAttribute("testTypes", testTypes);
@@ -66,6 +69,7 @@ public class TechnicianController {
     }
 
     @GetMapping("/test/success/{id}")
+    @TechnicianOnly
     public String testSuccess(@PathVariable long id, Model model) {
         model.addAttribute("id",id);
         return "test-success";

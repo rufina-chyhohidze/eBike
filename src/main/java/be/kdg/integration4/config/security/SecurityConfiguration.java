@@ -5,6 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -15,9 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -26,14 +31,9 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/static/**", "/api/customers/**", "/api/save/bike", "/api/staff","/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/register", "/api/customer/email", "/api/start-test", "/register", "/login", "/css/**", "/js/**", "/img/**", "/api/workshops/**").permitAll()
-                        .requestMatchers("/").hasAnyRole("SUPERADMIN", "ADMIN", "TECHNICIAN", "CUSTOMER")
-                        .requestMatchers(
-                                "/static/**", "/css/**", "/js/**", "/img/**",  // Static resources
-                                "/api/customers/**", "/api/save/bike",        // API endpoints
-                                "/register", "/login"                         // Public pages
-                        ).permitAll()
+                                .requestMatchers("/static/**", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/staff").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/workshops").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -42,7 +42,6 @@ public class SecurityConfiguration {
                         .failureUrl("/error")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
-                        .successHandler(customAuthenticationSuccessHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -50,31 +49,23 @@ public class SecurityConfiguration {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/ws/**") // Only disable CSRF for WebSocket
+                )
+                .exceptionHandling(handling ->
+                        handling.authenticationEntryPoint(
+                                (request, response, authException) -> {
+                                    if (request.getRequestURI().startsWith("/api")) {
+                                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                                    } else {
+                                        log.debug("Forbidden: {}", request.getRequestURI());
+                                        response.sendRedirect("/login");
+                                    }
+                                }));
 
         return http.build();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-        return new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                Authentication authentication) throws IOException {
-                log.info("Authentication : Checking role");
-                if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TECHNICIAN"))) {
-                    log.info("Role detected: {}", authentication.getAuthorities());
-                    response.sendRedirect("/technician/dashboard");
-                    log.info("Logging into technician dashboard page");
-                } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SUPERADMIN"))) {
-                    log.debug("Logged into superadmin page");
-                    response.sendRedirect("/superadmin/profile");
-                } else {
-                    response.sendRedirect("/");
-                }
-            }
-        };
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
