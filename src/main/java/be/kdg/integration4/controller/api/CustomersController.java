@@ -2,10 +2,10 @@ package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
-import be.kdg.integration4.controller.api.dtos.CustomMapper;
+import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
+import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.domain.report.Bike;
-import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,15 @@ import java.util.*;
 public class CustomersController {
     private final CustomerService customerService;
     private final CustomMapper customMapper;
+    private final BikeDtoMapper bikeDtoMapper;
     private final BikeService bikeService;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper, BikeDtoMapper bikeDtoMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
         this.bikeService = bikeService;
+        this.bikeDtoMapper = bikeDtoMapper;
     }
 
     @GetMapping
@@ -56,6 +58,6 @@ public class CustomersController {
         }
         Collections.sort(customerBikesList);
         log.debug("No bikes found for customer with Id: {}", customerId);
-        return ResponseEntity.ok(customMapper.toBikeDtoList(customerBikesList.stream().toList()));
+        return ResponseEntity.ok(bikeDtoMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 }

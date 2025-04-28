@@ -1,6 +1,6 @@
 package be.kdg.integration4.controller.api;
 
-import be.kdg.integration4.controller.api.dtos.CustomMapper;
+import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.WorkShopDto;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.service.interfaces.WorkshopService;
