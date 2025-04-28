@@ -5,8 +5,10 @@ import be.kdg.integration4.controller.api.dtos.UserWithRolesDto;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.UserService;
+import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,11 +24,13 @@ import java.util.List;
 public class SystemAdminController {
 
     private final UserService userService;
+    private final EmailService emailService;
     private final BikeReportService bikeReportService;
 
-    public SystemAdminController(UserService userService, BikeReportService bikeReportService) {
+    public SystemAdminController(UserService userService, EmailService emailService, BikeReportService bikeReportService) {
         this.userService = userService;
         this.bikeReportService = bikeReportService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/profile")
@@ -61,6 +65,8 @@ public class SystemAdminController {
     @SystemAdminOnly
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
+        String email = this.userService.getUserById(id).getEmail();
+        this.emailService.sendUserApprovalEmail(email);
         return "redirect:/superadmin/profile";
     }
 
