@@ -1,11 +1,9 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.report.ApiRequest;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.enums.TestStatus;
 import be.kdg.integration4.domain.enums.TestType;
 import be.kdg.integration4.domain.report.TestLine;
-import be.kdg.integration4.repository.ApiRequestRepository;
 import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.TestLineRepository;
 import be.kdg.integration4.service.dtos.StartTestDto;
@@ -19,8 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Service
 @Slf4j
@@ -34,14 +30,12 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
     @Value("${workbench.api.url}")
     private String baseUrl;
 
-    private final ApiRequestRepository apiRequestRepository;
 
-    public TestbenchApiServiceImpl(RestTemplate restTemplate, HttpHeaders headers, BikeReportRepository bikeReportRepository, TestLineRepository testLineRepository, ApiRequestRepository apiRequestRepository) {
+    public TestbenchApiServiceImpl(RestTemplate restTemplate, HttpHeaders headers, BikeReportRepository bikeReportRepository, TestLineRepository testLineRepository) {
         this.restTemplate = restTemplate;
         this.headers = headers;
         this.bikeReportRepository = bikeReportRepository;
         this.testLineRepository = testLineRepository;
-        this.apiRequestRepository = apiRequestRepository;
     }
 
     @Override
@@ -90,24 +84,14 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
 
 
     @Override
-    public ApiRequest saveApiRequest(BikeReport bikeReport, String requestId) {
-        return apiRequestRepository.save(new ApiRequest(bikeReport, requestId));
-    }
-
-    @Override
-    public void deleteApiRequest(String requestId) {
-        apiRequestRepository.deleteApiRequestByTestId(requestId);
-    }
-
-    @Override
-    public ApiRequest getApiRequest(String requestId) {
-        return apiRequestRepository.findApiRequestByTestId(requestId).orElseThrow();
+    public BikeReport saveApiRequest(BikeReport bikeReport, String requestId) {
+        bikeReport.setTestId(requestId);
+        return bikeReportRepository.save(bikeReport);
     }
 
     @Override
     public Long fetchReportId(String testId, List<TestLine> testLines) {
-        ApiRequest apiRequest = this.getApiRequest(testId);
-        BikeReport report = apiRequest.getReport();
+        BikeReport report = bikeReportRepository.findByTestId(testId);
         testLineRepository.saveAll(testLines);
         report.setTestLines(testLines);
         bikeReportRepository.save(report);
