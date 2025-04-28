@@ -25,7 +25,6 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final BikeReportRepository bikeReportRepository;
     private final TestBenchRepository testBenchRepository;
     private final CustomerRepository customerRepository;
-    private final BikeService bikeService;
     private final BikeRepository bikeRepository;
     private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
@@ -34,7 +33,6 @@ public class BikeReportServiceImpl implements BikeReportService {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
-        this.bikeService = bikeService;
         this.bikeRepository = bikeRepository;
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
@@ -86,9 +84,6 @@ public class BikeReportServiceImpl implements BikeReportService {
         return bikeReportRepository.findAllWithDetails();
     }
 
-//    public List<BikeReport> searchReports(String frameNumber, String customerName) {
-//        return bikeReportRepository.searchReports(frameNumber, customerName);
-//    }
 
     @Override
     public BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
