@@ -85,10 +85,13 @@ function retrieveReport(id) {
         console.log("Report ID received: " + reportId);
         const resultSection = document.getElementById("result-section")
         const loadingSection = document.getElementById("loading")
+        const testIdElement = document.getElementById("testId")
+        const reportLinkElement = document.getElementById("report-link");
+        reportLinkElement.href= "/report/"+reportId;
+        testIdElement.value = reportId
         qrcodeGenerator();
         loadingSection.classList.add("d-none");
         resultSection.classList.remove("d-none");
-        // window.location.href = `/technician/test/success/${reportId}`;
     }
 
 
