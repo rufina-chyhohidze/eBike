@@ -20,12 +20,12 @@ public class WorkshopAdminServiceImpl implements WorkshopAdminService {
 
 
     @Override
-    public List<WorkshopAdmin> findAll() {
+    public List<WorkshopAdmin> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public WorkshopAdmin findById(Long id) {
+    public WorkshopAdmin getById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 

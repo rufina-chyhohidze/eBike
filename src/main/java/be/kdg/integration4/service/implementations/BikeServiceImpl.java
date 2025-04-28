@@ -25,29 +25,29 @@ public class BikeServiceImpl implements BikeService {
     }
 
     @Override
-    public Optional<Bike> findByFrameNumber(String frameNumber) {
+    public Optional<Bike> getByFrameNumber(String frameNumber) {
          return bikeRepository.findBikeByFrameNumber(frameNumber);
     }
 
     @Override
-    public Set<Bike> getBikesByOwnerId(Long ownerId) {
+    public Set<Bike> getAllByOwnerId(Long ownerId) {
         return this.bikeRepository.findBikesByBikeOwnerId(ownerId);
     }
 
     @Override
-    public List<Bike> findAll() {
+    public List<Bike> getAll() {
         return bikeRepository.findAll();
     }
 
     @Override
     public void save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
-        Bike bike = new Bike(frameNumber, this.customerService.findById(bikeOwnerID), type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
+        Bike bike = new Bike(frameNumber, this.customerService.getById(bikeOwnerID), type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
         bikeRepository.save(bike);
     }
 
     @Override
     public void delete(String frameNumber) {
-        bikeRepository.delete(findByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
+        bikeRepository.delete(getByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
     }
 
 

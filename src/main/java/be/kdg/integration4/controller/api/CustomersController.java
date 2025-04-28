@@ -5,7 +5,6 @@ import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.domain.report.Bike;
-import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ public class CustomersController {
     @GetMapping
     @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email) {
-        return this.customerService.findByEmailIgnoreCase(email)
+        return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
@@ -48,7 +47,7 @@ public class CustomersController {
     @GetMapping("{customerId}/bikes")
     @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        final Set<Bike> customerBikes = this.bikeService.getBikesByOwnerId(customerId);
+        final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);
         if (customerBikes.isEmpty()) {
             log.debug("Found customer bikes: {}", customerBikes);

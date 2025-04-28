@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
-    List<Customer> findAll();
+    List<Customer> getAll();
 
-    Customer findById(Long id);
+    Customer getById(Long id);
 
     Customer save(String name, String email, String password, UserRole role, String phoneNumber);
 
     void deleteById(Long id);
 
-    Optional<Customer> findByEmailIgnoreCase(String email);
+    Optional<Customer> getByEmailIgnoreCase(String email);
 }

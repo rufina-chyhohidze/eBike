@@ -17,12 +17,12 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public List<Workshop> findAll() {
+    public List<Workshop> getAll() {
         return this.workshopRepository.findAll();
     }
 
     @Override
-    public Workshop findById(Long id) {
+    public Workshop getById(Long id) {
         return this.workshopRepository.findById(id).orElse(null);
     }
 }
