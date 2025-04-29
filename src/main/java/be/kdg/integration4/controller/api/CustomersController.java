@@ -23,6 +23,7 @@ public class CustomersController {
     private final CustomerDtoMapper customMapper;
     private final BikeDtoMapper bikeMapper;
     private final BikeService bikeService;
+    private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
     public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper) {
@@ -35,11 +36,11 @@ public class CustomersController {
     @GetMapping
     @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email) {
-        return this.customerService.findByEmailIgnoreCase(email)
+        return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
-                        customMapper.toCustomerDto(customer)
+                        customerDtoMapper.toCustomerDto(customer)
                     );
                 }).orElseGet(() -> {
                     log.error("Customer with email {} not found", email);
@@ -50,7 +51,7 @@ public class CustomersController {
     @GetMapping("{customerId}/bikes")
     @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        final Set<Bike> customerBikes = this.bikeService.getBikesByOwnerId(customerId);
+        final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);
         if (customerBikes.isEmpty()) {
             log.debug("Found customer bikes: {}", customerBikes);

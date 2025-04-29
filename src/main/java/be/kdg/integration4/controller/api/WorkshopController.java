@@ -24,14 +24,15 @@ public class WorkshopController {
     public WorkshopController(WorkshopService workshopService, WorkshopDtoMapper customMapper) {
         this.workshopService = workshopService;
         this.customMapper = customMapper;
+        this.workshopDtoMapper = workshopDtoMapper;
     }
 
     @GetMapping
     public ResponseEntity<List<WorkShopDto>> getWorkShops() {
-        List<Workshop> workshops = this.workshopService.findAll();
+        List<Workshop> workshops = this.workshopService.getAll();
         log.info("Found {} workshops", workshops.size());
         if (workshops.isEmpty()) return ResponseEntity.noContent().build();
 
-        return ResponseEntity.ok(customMapper.toWorkShopDtoList(workshops));
+        return ResponseEntity.ok(workshopDtoMapper.toWorkShopDtoList(workshops));
     }
 }

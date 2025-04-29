@@ -40,6 +40,8 @@ public class BikeReport {
     @JoinColumn(name = "bench_nr")
     private TestBench testBench;
 
+    private String testId;
+
     public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
     }
 

@@ -21,7 +21,7 @@ public class TestReportController {
 
     @GetMapping("/report/{id}")
     public String showReport(@PathVariable Long id, Model model) {
-        BikeReport bikeReport = bikeReportService.findByIdWithTestlines(id);
+        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(id);
         Map<String, Double> averages = bikeReportService.calculateAverages(bikeReport.getTestLines());
         model.addAttribute("averages", averages);
         model.addAttribute("testLines", bikeReport.getTestLines());
