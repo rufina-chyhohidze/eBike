@@ -1,7 +1,6 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
-import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
@@ -15,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -28,7 +25,7 @@ public class ReportsController {
     private final BikeService bikeService;
     private final TestbenchApiService testbenchApiService;
 
-    public ReportsController(BikeReportService bikeReportService, BikeService bikeService, TestbenchApiService testbenchApiService, CustomMapper customMapper) {
+    public ReportsController(BikeReportService bikeReportService, BikeService bikeService, TestbenchApiService testbenchApiService) {
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
         this.testbenchApiService = testbenchApiService;
