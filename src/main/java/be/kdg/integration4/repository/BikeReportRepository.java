@@ -34,8 +34,10 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     FROM BikeReport br
     LEFT JOIN FETCH br.testLines
     LEFT JOIN FETCH br.bike
+    LEFT JOIN FETCH br.visualInspection
+    LEFT JOIN FETCH br.functionalTest
     WHERE br.id = :id
     """)
-    BikeReport findByIdWithTestLinesAndBike(@Param("id") Long id);
+    BikeReport findByIdWithTestLinesAndBikeAndVisualInspection(@Param("id") Long id);
     List<BikeReport> getBikeReportByCustomerId(Long customerId);
 }

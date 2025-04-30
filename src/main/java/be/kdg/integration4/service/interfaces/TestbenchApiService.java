@@ -8,10 +8,12 @@ import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.service.dtos.TestDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TestbenchApiService {
-    TestDto startTest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax,
-                      int enginePowerNominal, int engineTorque);
+
+    TestDto startTest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque);
+
     TestStatus checkTestStatus(String id);
 
     ApiRequest saveApiRequest(BikeReport bikeReport, String requestId);

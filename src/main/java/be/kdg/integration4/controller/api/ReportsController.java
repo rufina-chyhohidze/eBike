@@ -66,22 +66,29 @@ public class ReportsController {
     @PostMapping
     @TechnicianOnly
     public ResponseEntity<TestIdDto> startTest(@RequestBody @Valid TestDto test) {
+        System.out.println(">>> Incoming TestDto: " + test); // OR log.info
+        // Save the bike report with the visual inspection data
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
                 test.getEmailBikeOwner(),
-                test.getFrameNumber()
-        );
+                test.getFrameNumber(),
+                test.getVisualInspection(),
+                test.getFunctionalTest());
 
         Bike bike = bikeService.findByFrameNumber(test.getFrameNumber()).orElseThrow();
 
-        String id = testbenchApiService.startTest(test.getTestType(),
+        // Pass visual inspection data to the testbench API service (if required)
+        String id = testbenchApiService.startTest(
+                test.getTestType(),
                 bike.getAccCapacity(),
                 (int) Math.round(bike.getMaxSupport()),
                 bike.getEnginePowerMax(),
                 bike.getEnginePowerNominal(),
-                bike.getEngineTorque()).id();
+                bike.getEngineTorque()
+        ).id();
 
+        // Save the API request if necessary
         testbenchApiService.saveApiRequest(report, id);
         return ResponseEntity.ok(new TestIdDto(id));
     }

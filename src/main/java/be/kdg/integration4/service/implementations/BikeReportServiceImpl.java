@@ -1,6 +1,7 @@
 package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.config.security.SecurityUtil;
+import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -10,20 +11,15 @@ import be.kdg.integration4.service.dtos.*;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
-import java.time.Duration;
-import java.util.List;
 
 
 @Transactional
@@ -62,7 +58,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public BikeReport findByIdWithTestlinesAndBike(Long id) {
-        return bikeReportRepository.findByIdWithTestLinesAndBike(id);
+        return bikeReportRepository.findByIdWithTestLinesAndBikeAndVisualInspection(id);
     }
 
     @Override
@@ -245,10 +241,20 @@ public class BikeReportServiceImpl implements BikeReportService {
         bikeReportRepository.delete(findById(id));
     }
 
-
     @Override
     public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber) {
-        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
+        return null;
+    }
+
+    @Override
+    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection) {
+        return null;
+    }
+
+
+    @Override
+    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest) {
+        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
     }
 
     @Override

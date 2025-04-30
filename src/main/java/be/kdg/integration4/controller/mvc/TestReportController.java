@@ -1,5 +1,7 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.dtos.BatteryTestDTO;
 import be.kdg.integration4.service.dtos.BearingHealthDTO;
@@ -23,6 +25,7 @@ public class TestReportController {
     @GetMapping("/report/{id}")
     public String showReport(@PathVariable Long id, Model model) {
         BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(id);
+        model.addAttribute("bikeReport", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
         OverviewTestDTO overviewTest = bikeReportService.calculateOverviewTest(id);
         model.addAttribute("overviewTest", overviewTest);

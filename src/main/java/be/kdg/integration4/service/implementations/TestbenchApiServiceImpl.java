@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Service
 @Slf4j
@@ -53,8 +52,7 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
                 maxSupport,
                 enginePowerMax,
                 enginePowerNominal,
-                engineTorque
-        );
+                engineTorque);
 
 
         HttpEntity<StartTestDto> requestEntity = new HttpEntity<>(startTestDto, headers);

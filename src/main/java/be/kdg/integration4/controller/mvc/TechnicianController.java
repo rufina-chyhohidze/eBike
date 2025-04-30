@@ -1,8 +1,7 @@
 package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
-import be.kdg.integration4.domain.enums.BikeSize;
-import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -26,6 +25,8 @@ import java.util.stream.Collectors;
 public class TechnicianController {
     List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
     List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
+    List<InspectionCondition> conditions = Arrays.stream(InspectionCondition.values()).toList();
+
     private final TechnicianService technicianService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
@@ -65,6 +66,9 @@ public class TechnicianController {
     public String startTest(Model model) {
         model.addAttribute("bikeSizes", sizes);
         model.addAttribute("testTypes", testTypes);
+        model.addAttribute("conditions", conditions);
+        model.addAttribute("visualComponents", VisualInspectionComponents.values());
+        model.addAttribute("functionalComponents", FunctionalTestComponents.values());
         return "start-test";
     }
 

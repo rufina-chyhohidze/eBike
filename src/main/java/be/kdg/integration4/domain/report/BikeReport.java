@@ -1,5 +1,6 @@
 package be.kdg.integration4.domain.report;
 
+import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import jakarta.persistence.*;
@@ -7,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -40,6 +43,19 @@ public class BikeReport {
     @JoinColumn(name = "bench_nr")
     private TestBench testBench;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "visual_inspections", joinColumns = @JoinColumn(name = "id"))
+    @MapKeyColumn(name = "part")
+    @Column(name = "condition")
+    private Map<String, InspectionCondition> visualInspection;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "functional_test", joinColumns = @JoinColumn(name = "id"))
+    @MapKeyColumn(name = "part")
+    @Column(name = "condition")
+    private Map<String, InspectionCondition> functionalTest;
+
+
     public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
     }
 
@@ -50,4 +66,16 @@ public class BikeReport {
         this.customer = customer;
         this.testBench = testBench;
     }
+
+    public BikeReport(Bike bike, LocalDate now, Technician byEmail, Customer byEmail1, TestBench referenceById, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest) {
+        this.bike = bike;
+        this.reportDate = now;
+        this.technician = byEmail;
+        this.customer = byEmail1;
+        this.testBench = referenceById;
+        this.visualInspection = inspection;
+        this.functionalTest = functionalTest;
+    }
+
+
 }
