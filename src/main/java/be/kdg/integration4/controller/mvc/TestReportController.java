@@ -30,7 +30,13 @@ public class TestReportController {
         return "report";
     }
 
-
-
+    @GetMapping("/report/{id}/detailed")
+    public String showDetailedReport(@PathVariable Long id, Model model) {
+        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(id);
+        model.addAttribute("report", bikeReport);
+        model.addAttribute("bike", bikeReport.getBike());
+        model.addAttribute("metrics", Metric.values());
+        return "detailed-report";
+    }
 
 }
