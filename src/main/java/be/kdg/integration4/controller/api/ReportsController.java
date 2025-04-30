@@ -97,7 +97,7 @@ public class ReportsController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("{reportId}/send-to-customer")
+    @PostMapping("{reportId}/send-to-customer")
     public ResponseEntity<Void> sendReportURLToCustomer(
             @PathVariable("reportId") Long reportId
     ) {
