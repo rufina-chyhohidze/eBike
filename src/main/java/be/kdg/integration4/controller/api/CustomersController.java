@@ -23,7 +23,7 @@ public class CustomersController {
     private final CustomerDtoMapper customMapper;
     private final BikeDtoMapper bikeMapper;
     private final BikeService bikeService;
-    private final CustomerDtoMapper customerDtoMapper;
+   // private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
     public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper) {
@@ -40,7 +40,7 @@ public class CustomersController {
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
-                        customerDtoMapper.toCustomerDto(customer)
+                        customMapper.toCustomerDto(customer)
                     );
                 }).orElseGet(() -> {
                     log.error("Customer with email {} not found", email);
