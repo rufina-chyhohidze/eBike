@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,7 +37,13 @@ public class TestReportController {
         model.addAttribute("report", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
         model.addAttribute("metrics", Metric.values());
+
+        List<BikeReport> allReports = bikeReportService.getAll();
+        model.addAttribute("allReports", allReports);
+
         return "detailed-report";
     }
+
+
 
 }

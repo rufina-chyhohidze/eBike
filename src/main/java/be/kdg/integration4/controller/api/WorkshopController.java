@@ -24,7 +24,7 @@ public class WorkshopController {
     public WorkshopController(WorkshopService workshopService, WorkshopDtoMapper customMapper) {
         this.workshopService = workshopService;
         this.customMapper = customMapper;
-        //this.workshopDtoMapper = workshopDtoMapper;
+      //  this.workshopDtoMapper = workshopDtoMapper;
     }
 
     @GetMapping
