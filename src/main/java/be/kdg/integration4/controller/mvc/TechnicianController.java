@@ -74,4 +74,10 @@ public class TechnicianController {
         model.addAttribute("id",id);
         return "test-success";
     }
+
+    // TODO make sure this endpoint is properly secured and follows all the best practices.
+    @GetMapping("/register/customer")
+    public String testRegisterCustomer(Model model) {
+        return "register-customer";
+    }
 }

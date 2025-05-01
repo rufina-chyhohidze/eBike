@@ -8,7 +8,9 @@ import be.kdg.integration4.domain.profile.WorkshopAdmin;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.*;
+import be.kdg.integration4.service.dtos.CustomerDto;
 import be.kdg.integration4.service.interfaces.RegistrationService;
+import be.kdg.integration4.service.utils.PasswordGenerationUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +43,11 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 
     @Override
-    public Customer createCustomer(String name, String email, String password, String phoneNumber) {
+    public CustomerDto createCustomer(String name, String email, String phoneNumber) {
         this.checkIfUserExists(email);
-        return customerRepository.save(new Customer(name, email,
-                passwordEncoder.encode(password), phoneNumber));
+        String password = PasswordGenerationUtil.generatePassword(12);
+        return new CustomerDto(customerRepository.save(new Customer(name, email,
+                passwordEncoder.encode(password), phoneNumber)), password);
     }
 
     @Override
