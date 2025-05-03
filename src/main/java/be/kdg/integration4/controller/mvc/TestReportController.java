@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -21,7 +22,7 @@ public class TestReportController {
 
     @GetMapping("/report/{id}")
     public String showReport(@PathVariable Long id, Model model) {
-        BikeReport bikeReport = bikeReportService.findByIdWithTestlines(id);
+        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(id);
         Map<String, Double> averages = bikeReportService.calculateAverages(bikeReport.getTestLines());
         model.addAttribute("averages", averages);
         model.addAttribute("testLines", bikeReport.getTestLines());
@@ -30,6 +31,18 @@ public class TestReportController {
         return "report";
     }
 
+    @GetMapping("/report/{id}/detailed")
+    public String showDetailedReport(@PathVariable Long id, Model model) {
+        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(id);
+        model.addAttribute("report", bikeReport);
+        model.addAttribute("bike", bikeReport.getBike());
+        model.addAttribute("metrics", Metric.values());
+
+        List<BikeReport> allReports = bikeReportService.getAll();
+        model.addAttribute("allReports", allReports);
+
+        return "detailed-report";
+    }
 
 
 

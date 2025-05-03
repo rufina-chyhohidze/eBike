@@ -7,9 +7,9 @@ import be.kdg.integration4.domain.report.Workshop;
 import java.util.List;
 
 public interface TechnicianService {
-    Technician findById(Long id);
+    Technician getById(Long id);
 
-    List<Technician> findAll();
+    List<Technician> getAll();
 
     void save(Long id, String name, String email, String password, UserRole userRole, Workshop workshop);
 
@@ -17,5 +17,5 @@ public interface TechnicianService {
 
     int getTotalReportsByTechnician(long technicianId);
 
-    Technician findByEmail(String email);
+    Technician getByEmail(String email);
 }

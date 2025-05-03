@@ -2,9 +2,9 @@ package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
-import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
-import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
+import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
+import be.kdg.integration4.controller.api.dtos.mappers.CustomerDtoMapper;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
@@ -20,22 +20,23 @@ import java.util.*;
 @RequestMapping("/api/customers")
 public class CustomersController {
     private final CustomerService customerService;
-    private final CustomMapper customMapper;
-    private final BikeDtoMapper bikeDtoMapper;
+    private final CustomerDtoMapper customMapper;
+    private final BikeDtoMapper bikeMapper;
     private final BikeService bikeService;
+   // private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, CustomMapper customMapper, BikeDtoMapper bikeDtoMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
         this.bikeService = bikeService;
-        this.bikeDtoMapper = bikeDtoMapper;
+        this.bikeMapper = bikeMapper;
     }
 
     @GetMapping
     @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email) {
-        return this.customerService.findByEmailIgnoreCase(email)
+        return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
@@ -50,7 +51,7 @@ public class CustomersController {
     @GetMapping("{customerId}/bikes")
     @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        final Set<Bike> customerBikes = this.bikeService.getBikesByOwnerId(customerId);
+        final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);
         if (customerBikes.isEmpty()) {
             log.debug("Found customer bikes: {}", customerBikes);
@@ -58,6 +59,6 @@ public class CustomersController {
         }
         Collections.sort(customerBikesList);
         log.debug("No bikes found for customer with Id: {}", customerId);
-        return ResponseEntity.ok(bikeDtoMapper.toBikeDtoList(customerBikesList.stream().toList()));
+        return ResponseEntity.ok(bikeMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 }

@@ -25,7 +25,6 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final BikeReportRepository bikeReportRepository;
     private final TestBenchRepository testBenchRepository;
     private final CustomerRepository customerRepository;
-    private final BikeService bikeService;
     private final BikeRepository bikeRepository;
     private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
@@ -34,7 +33,6 @@ public class BikeReportServiceImpl implements BikeReportService {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
-        this.bikeService = bikeService;
         this.bikeRepository = bikeRepository;
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
@@ -67,28 +65,25 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
     @Override
-    public BikeReport findById(Long id) {
+    public BikeReport getById(Long id) {
         return bikeReportRepository.findById(id).orElse(null);
     }
 
     @Override
-    public BikeReport findByIdWithTestlines(Long id) {
+    public BikeReport getByIdWithTestlines(Long id) {
         return bikeReportRepository.findByIdWithTestLines(id);
     }
 
     @Override
-    public List<BikeReport> findAll() {
+    public List<BikeReport> getAll() {
         return bikeReportRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<BikeReport> getAllReportsWithDetails() {
+    public List<BikeReport> getAllWithDetails() {
         return bikeReportRepository.findAllWithDetails();
     }
 
-//    public List<BikeReport> searchReports(String frameNumber, String customerName) {
-//        return bikeReportRepository.searchReports(frameNumber, customerName);
-//    }
 
     @Override
     public BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
@@ -98,7 +93,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public void delete(Long id) {
-        bikeReportRepository.delete(findById(id));
+        bikeReportRepository.delete(getById(id));
     }
 
 
@@ -133,13 +128,13 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public List<String> getFrameNumbersByCustomerId(Long customerId) {
-        return this.getBikeReportByCustomerId(customerId).stream().map(
+        return this.getByCustomerId(customerId).stream().map(
                 bikeReport -> bikeReport.getBike().getFrameNumber()
         ).collect(Collectors.toList());
     }
 
     @Override
-    public List<BikeReport> getBikeReportByCustomerId(Long customerId) {
+    public List<BikeReport> getByCustomerId(Long customerId) {
         return this.bikeReportRepository.getBikeReportByCustomerId(customerId);
     }
 }

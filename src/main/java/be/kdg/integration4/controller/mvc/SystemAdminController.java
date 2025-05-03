@@ -41,6 +41,7 @@ public class SystemAdminController {
         String email = principal.getUsername();
         User user = userService.getUserByEmail(email);
         List<User> pendingUsers = userService.getUnapprovedUsers();
+        List<BikeReport> reports = bikeReportService.getAllWithDetails();
         model.addAttribute("pendingUsers",
                 pendingUsers.stream().map(
                         usr -> new UserWithRolesDto(
@@ -51,7 +52,6 @@ public class SystemAdminController {
                         )
                 ).toList()
         );
-        List<BikeReport> reports = bikeReportService.getAllReportsWithDetails();
         model.addAttribute("reports", reports);
         model.addAttribute("user", new UserWithRolesDto(
                 user.getId(),

@@ -43,12 +43,12 @@ public class TechnicianController {
 
         String loggedInEmail = authentication.getName();
 
-        Technician technician = technicianService.findByEmail(loggedInEmail);
+        Technician technician = technicianService.getByEmail(loggedInEmail);
 
         int totalReports = technicianService.getTotalReportsByTechnician(technician.getId());
 
-        List<Customer> customers = customerService.findAll();
-        List<BikeReport> bikeReports = bikeReportService.findAll()
+        List<Customer> customers = customerService.getAll();
+        List<BikeReport> bikeReports = bikeReportService.getAll()
                 .stream()
                 .filter(report -> report.getTechnician().getId().equals(technician.getId()))
                 .collect(Collectors.toList());

@@ -18,12 +18,12 @@ public class SystemAdminServiceImpl  implements SystemAdminService {
 
 
     @Override
-    public List<SystemAdmin> findAll() {
+    public List<SystemAdmin> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public SystemAdmin findById(Long id) {
+    public SystemAdmin getById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
