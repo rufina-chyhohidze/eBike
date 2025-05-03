@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.enums.TestType;
@@ -75,4 +76,9 @@ public class TechnicianController {
         return "test-success";
     }
 
+    @GetMapping("/register-customer")
+    @TechnicianOnly
+    public String testRegisterCustomer(Model model) {
+        return "register-customer";
+    }
 }

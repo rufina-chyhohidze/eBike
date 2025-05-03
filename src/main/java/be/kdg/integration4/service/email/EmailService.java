@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,16 @@ public class EmailService {
         helper.setText(htmlContent, true); // true = isHtml
         helper.setFrom(originMail);
 
+        mailSender.send(message);
+    }
+
+    public void sendCustomerRegistrationConfirmationEmail(String to, String name, String password) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Customer Registration Confirmation");
+        message.setText("Dear " + name + ", one of our technicians created an account for you. You can use this email " +
+                "and password: " + password + ". We recommend you to change password as soon as you login.");
+        message.setFrom(originMail);
         mailSender.send(message);
     }
 
