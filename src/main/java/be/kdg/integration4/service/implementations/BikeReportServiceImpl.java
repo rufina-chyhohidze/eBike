@@ -30,7 +30,6 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final BikeReportRepository bikeReportRepository;
     private final TestBenchRepository testBenchRepository;
     private final CustomerRepository customerRepository;
-    private final BikeService bikeService;
     private final BikeRepository bikeRepository;
     private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
@@ -39,7 +38,6 @@ public class BikeReportServiceImpl implements BikeReportService {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
-        this.bikeService = bikeService;
         this.bikeRepository = bikeRepository;
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
@@ -52,7 +50,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
     @Override
-    public BikeReport findById(Long id) {
+    public BikeReport getById(Long id) {
         return bikeReportRepository.findById(id).orElse(null);
     }
 
@@ -62,12 +60,12 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public List<BikeReport> findAll() {
+    public List<BikeReport> getAll() {
         return bikeReportRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<BikeReport> getAllReportsWithDetails() {
+    public List<BikeReport> getAllWithDetails() {
         return bikeReportRepository.findAllWithDetails();
     }
 
@@ -238,7 +236,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public void delete(Long id) {
-        bikeReportRepository.delete(findById(id));
+        bikeReportRepository.delete(getById(id));
     }
 
     @Override
@@ -273,13 +271,13 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public List<String> getFrameNumbersByCustomerId(Long customerId) {
-        return this.getBikeReportByCustomerId(customerId).stream().map(
+        return this.getByCustomerId(customerId).stream().map(
                 bikeReport -> bikeReport.getBike().getFrameNumber()
         ).collect(Collectors.toList());
     }
 
     @Override
-    public List<BikeReport> getBikeReportByCustomerId(Long customerId) {
+    public List<BikeReport> getByCustomerId(Long customerId) {
         return this.bikeReportRepository.getBikeReportByCustomerId(customerId);
     }
 }

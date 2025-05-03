@@ -5,12 +5,16 @@ import be.kdg.integration4.controller.api.dtos.UserWithRolesDto;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.UserService;
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,11 +26,13 @@ import java.util.List;
 public class SystemAdminController {
 
     private final UserService userService;
+    private final EmailService emailService;
     private final BikeReportService bikeReportService;
 
-    public SystemAdminController(UserService userService, BikeReportService bikeReportService) {
+    public SystemAdminController(UserService userService, EmailService emailService, BikeReportService bikeReportService) {
         this.userService = userService;
         this.bikeReportService = bikeReportService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/profile")
@@ -35,6 +41,7 @@ public class SystemAdminController {
         String email = principal.getUsername();
         User user = userService.getUserByEmail(email);
         List<User> pendingUsers = userService.getUnapprovedUsers();
+        List<BikeReport> reports = bikeReportService.getAllWithDetails();
         model.addAttribute("pendingUsers",
                 pendingUsers.stream().map(
                         usr -> new UserWithRolesDto(
@@ -45,7 +52,6 @@ public class SystemAdminController {
                         )
                 ).toList()
         );
-        List<BikeReport> reports = bikeReportService.getAllReportsWithDetails();
         model.addAttribute("reports", reports);
         model.addAttribute("user", new UserWithRolesDto(
                 user.getId(),
@@ -61,6 +67,12 @@ public class SystemAdminController {
     @SystemAdminOnly
     public String approveUser(@PathVariable Long id) {
         userService.approveUser(id);
+        String email = this.userService.getUserById(id).getEmail();
+        try {
+            this.emailService.sendUserApprovalEmail(email);
+        } catch (Exception e) {
+            log.error("Unable to send user approved email: {}", e.getMessage());
+        }
         return "redirect:/superadmin/profile";
     }
 
@@ -68,6 +80,12 @@ public class SystemAdminController {
     @SystemAdminOnly
     public String rejectUser(@PathVariable Long id) {
         userService.rejectUser(id);
+        String email = this.userService.getUserById(id).getEmail();
+        try {
+            this.emailService.sendUserRejectedEmail(email);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to send user rejected email: " + e.getMessage());
+        }
         return "redirect:/superadmin/profile";
     }
 

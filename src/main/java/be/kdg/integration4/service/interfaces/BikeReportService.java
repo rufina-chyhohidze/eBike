@@ -13,11 +13,11 @@ import java.util.Map;
 
 public interface BikeReportService {
 
-    BikeReport findById(Long id);
+    BikeReport getById(Long id);
 
     BikeReport findByIdWithTestlinesAndBike(Long id);
 
-    List<BikeReport> findAll();
+    List<BikeReport> getAll();
 
     BikeReport save(Long id, String bike, String reportDate, Integer score, String technician, String customer);
 
@@ -31,7 +31,7 @@ public interface BikeReportService {
 
     BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId);
 
-    List<BikeReport> getBikeReportByCustomerId(Long customerId);
+    List<BikeReport> getByCustomerId(Long customerId);
 
     List<String> getFrameNumbersByCustomerId(Long customerId);
     List<BikeReport> getAllReportsWithDetails();

@@ -6,6 +6,6 @@ import java.util.List;
 
 
 public interface WorkshopService {
-    List<Workshop> findAll();
-    Workshop findById(Long id);
+    List<Workshop> getAll();
+    Workshop getById(Long id);
 }
