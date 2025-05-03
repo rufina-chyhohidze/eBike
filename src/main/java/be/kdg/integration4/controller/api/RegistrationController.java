@@ -4,10 +4,9 @@ import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
-import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
-import be.kdg.integration4.service.dtos.CustomerDto;
+import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.RegistrationService;
 import io.micrometer.common.lang.Nullable;
@@ -65,13 +64,13 @@ public class RegistrationController {
 
         log.info("Parameters received - Customer: {}", customerRegistrationDto);
 
-        CustomerDto customerDto = registrationService.createCustomer(customerRegistrationDto.name(),
+        CustomerAndPasswordServiceDto customerAndPasswordServiceDto = registrationService.createCustomer(customerRegistrationDto.name(),
                 customerRegistrationDto.email(),
                 customerRegistrationDto.phoneNumber());
 
-        emailService.sendCustomerRegistrationConfirmationEmail(customerDto.customer().getEmail(), customerDto.customer().getName(), customerDto.password());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customerDto.customer().getId(), customerDto.customer().getName(),
-                customerDto.customer().getEmail()));
+        emailService.sendCustomerRegistrationConfirmationEmail(customerAndPasswordServiceDto.customer().getEmail(), customerAndPasswordServiceDto.customer().getName(), customerAndPasswordServiceDto.password());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customerAndPasswordServiceDto.customer().getId(), customerAndPasswordServiceDto.customer().getName(),
+                customerAndPasswordServiceDto.customer().getEmail()));
     }
 
     @PostMapping("/staff")
