@@ -1,8 +1,11 @@
 package be.kdg.integration4;
 
+import be.kdg.integration4.domain.enums.Location;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,27 @@ public class TestHelper {
     public WorkshopAdminRepository workshopAdminRepository;
     @Autowired
     public CustomerService customerService;
+
+    public User createTechnician(String name, String email, String password, Workshop workshop) {
+        return this.technicianRepository.save(
+                new Technician(
+                        name,
+                        email,
+                        password,
+                        workshop
+                )
+        );
+    }
+
+    public Workshop createWorkshop(String workshopName, Location workshopLocation) {
+        return this.workshopRepository.save(
+                new Workshop(
+                        workshopName,
+                        workshopLocation
+                )
+        );
+    }
+
 
     public User createCustomer(String name, String email, String password, String phoneNumber) {
         return this.customerService.save(

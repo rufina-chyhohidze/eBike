@@ -1,6 +1,5 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.enums.TestType;
