@@ -4,11 +4,17 @@ import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.report.ReportSetting;
+import be.kdg.integration4.service.implementations.ReportSettingServiceImpl;
+import be.kdg.integration4.service.implementations.TechnicianServiceImpl;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import be.kdg.integration4.service.interfaces.ReportSettingService;
 import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,11 +36,13 @@ public class TechnicianController {
     private final TechnicianService technicianService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
+    private final ReportSettingService reportSettingService;
 
-    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService) {
+    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, ReportSettingService reportSettingService) {
         this.technicianService = technicianService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
+        this.reportSettingService = reportSettingService;
     }
 
     @GetMapping("/dashboard")
@@ -78,4 +86,15 @@ public class TechnicianController {
         model.addAttribute("id",id);
         return "test-success";
     }
+
+    @GetMapping("/report-settings")
+    public String getReportSettingsPage(Model model, @AuthenticationPrincipal Technician user) {
+        // Assuming you want to display the settings for the logged-in technician
+        ReportSetting reportSetting = reportSettingService.getReportSettingsForTechnician(user);
+
+        model.addAttribute("reportSetting", reportSetting);
+
+        return "report-settings"; // This is the Thymeleaf template for the settings page
+    }
+
 }
