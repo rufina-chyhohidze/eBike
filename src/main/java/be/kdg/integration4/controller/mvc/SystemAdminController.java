@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -83,7 +84,7 @@ public class SystemAdminController {
         try {
             this.emailService.sendUserRejectedEmail(email);
         } catch (Exception e) {
-            log.error("Unable to send user rejected email: {}", e.getMessage());
+            throw new RuntimeException("Unable to send user rejected email: " + e.getMessage());
         }
         return "redirect:/superadmin/profile";
     }

@@ -86,7 +86,6 @@ public class EmailService {
                 </html>
                 """, reportId);
 
-//        sendHtmlEmail(report.getCustomer().getEmail(), "Bke Report", html);
-        sendHtmlEmail("anir@saddik.dev", "Bke Report", html);
+        sendHtmlEmail(report.getCustomer().getEmail(), "Bke Report", html);
     }
 }

@@ -8,7 +8,7 @@ async function sendReportToCustomer() {
     const reportId = sendReportToEmailButton.id;
     console.log("Sending report with Id: " + reportId + " - to customer");
 
-    const response = await fetch(`/api/reports/${reportId}/send-to-customer`, {
+    const response = await fetch(`/api/reports/${reportId}/customer`, {
         method: "POST",
         headers : {
             [csrfHeader]: csrfToken

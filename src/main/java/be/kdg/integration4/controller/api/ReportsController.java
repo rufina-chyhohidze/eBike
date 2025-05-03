@@ -1,7 +1,6 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
-import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
 import be.kdg.integration4.domain.report.Bike;
@@ -97,12 +96,14 @@ public class ReportsController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("{reportId}/send-to-customer")
+    // todo: handle codes in JS
+    @PostMapping("{reportId}/customer")
     public ResponseEntity<Void> sendReportURLToCustomer(
             @PathVariable("reportId") Long reportId
     ) {
         try {
-            if (reportId == null) throw new Exception("Report id incorrect");
+            if (reportId == null) return ResponseEntity.notFound().build();
+
             log.info("Sending report to customer email - reportId: {}", reportId);
             this.emailService.sendReportURLToCustomer(reportId);
         } catch (Exception e) {
