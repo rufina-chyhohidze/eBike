@@ -27,6 +27,18 @@
                             <div class="col-md-6 order-2 order-md-2">
                                 <p class="text-center h1 fw-bold mb-4 mt-2">Login</p>
 
+                                <div th:if="${param.approval}">
+                                <div class="alert alert-warning" role="alert">
+                                    Your account is pending approval by an administrator.
+                                </div>
+                            </div>
+
+                            <div th:if="${param.credentials}">
+                                <div class="alert alert-danger" role="alert">
+                                    Invalid email or password. Please try again.
+                                </div>
+                            </div>
+
                                 <form class="mx-1 mx-md-4"  th:action="@{/login}" method="post">
 
                                     <div class="d-flex flex-row align-items-center mb-3">

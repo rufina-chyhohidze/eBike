@@ -1,6 +1,5 @@
 package be.kdg.integration4.controller.api;
 
-import be.kdg.integration4.controller.api.dtos.mappers.CustomMapper;
 import be.kdg.integration4.controller.api.dtos.WorkShopDto;
 import be.kdg.integration4.controller.api.dtos.mappers.WorkshopDtoMapper;
 import be.kdg.integration4.domain.report.Workshop;
@@ -20,13 +19,12 @@ import java.util.List;
 public class WorkshopController {
 
     private final WorkshopService workshopService;
-    private final CustomMapper customMapper;
-    private final WorkshopDtoMapper workshopDtoMapper;
+    private final WorkshopDtoMapper customMapper;
 
-    public WorkshopController(WorkshopService workshopService, CustomMapper customMapper, WorkshopDtoMapper workshopDtoMapper) {
+    public WorkshopController(WorkshopService workshopService, WorkshopDtoMapper customMapper) {
         this.workshopService = workshopService;
         this.customMapper = customMapper;
-        this.workshopDtoMapper = workshopDtoMapper;
+      //  this.workshopDtoMapper = workshopDtoMapper;
     }
 
     @GetMapping
@@ -35,6 +33,6 @@ public class WorkshopController {
         log.info("Found {} workshops", workshops.size());
         if (workshops.isEmpty()) return ResponseEntity.noContent().build();
 
-        return ResponseEntity.ok(workshopDtoMapper.toWorkShopDtoList(workshops));
+        return ResponseEntity.ok(customMapper.toWorkShopDtoList(workshops));
     }
 }
