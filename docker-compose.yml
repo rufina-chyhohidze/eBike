@@ -11,6 +11,19 @@ services:
         ports:
             - '5055:5432'
         volumes:
-            - db-data:/var/lib/postgresql/data
+            - ebike-db:/var/lib/postgresql/data
+    postgres_ebike_test_db:
+        image: postgres:17.2-alpine
+        restart: always
+        environment:
+            POSTGRES_DB: 'ebike_test'
+            POSTGRES_USER: 'dev'
+            POSTGRES_PASSWORD: 'bike'
+        ports:
+            - '5065:5432'
+        volumes:
+            - ebike-test-db:/var/lib/postgresql/data
 volumes:
-    db-data:
+    ebike-db:
+    ebike-test-db:
+
