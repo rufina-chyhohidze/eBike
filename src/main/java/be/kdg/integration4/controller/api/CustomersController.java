@@ -26,12 +26,11 @@ public class CustomersController {
    // private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
-    public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper, CustomerDtoMapper customerDtoMapper) {
+    public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper) {
         this.customerService = customerService;
         this.customMapper = customMapper;
         this.bikeService = bikeService;
         this.bikeMapper = bikeMapper;
-        this.customerDtoMapper = customerDtoMapper;
     }
 
     @GetMapping
