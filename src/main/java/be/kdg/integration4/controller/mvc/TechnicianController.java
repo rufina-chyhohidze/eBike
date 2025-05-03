@@ -1,5 +1,6 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
@@ -97,4 +98,9 @@ public class TechnicianController {
         return "report-settings"; // This is the Thymeleaf template for the settings page
     }
 
+    @GetMapping("/register-customer")
+    @TechnicianOnly
+    public String testRegisterCustomer(Model model) {
+        return "register-customer";
+    }
 }
