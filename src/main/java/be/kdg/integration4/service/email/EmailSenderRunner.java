@@ -11,11 +11,12 @@
 //    private EmailService emailService;
 //
 //    // TODO: TO TEST ENTER YOUR REAL EMAIL HERE ADN RUN THE APP - U SHOULD RECEIVE AN EMAIL SHORTLY AFTER
-//    private String yourRealEmail = "anir@saddik.dev";
+//    private final String yourRealEmail = "anir@saddik.dev";
 //
 //    @Override
 //    public void run(String... args) throws Exception {
-//        emailService.sendEmail(yourRealEmail, "Test Subject", "Hello, this is a test email!");
+//        emailService.sendUserRejectedEmail("anirtraning@gmail.com");
+//        emailService.sendUserRejectedEmail(yourRealEmail);
 //    }
 //}
 //

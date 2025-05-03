@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/technician")
 public class TechnicianController {
-    List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
-    List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
+    private final List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
+    private final List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
     private final TechnicianService technicianService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
@@ -74,4 +74,5 @@ public class TechnicianController {
         model.addAttribute("id",id);
         return "test-success";
     }
+
 }
