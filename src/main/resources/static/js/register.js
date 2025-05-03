@@ -5,9 +5,7 @@ let roleSelected;
 const customerRadio = document.getElementById('customer');
 const workshopAdminRadio = document.getElementById('workshopAdmin');
 const technicianRadio = document.getElementById('technician');
-
 const registerButton = document.getElementById('register-button');
-
 
 
 function getWorkshopInput() {

@@ -40,4 +40,6 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     """)
     BikeReport findByIdWithTestLinesAndBikeAndVisualInspection(@Param("id") Long id);
     List<BikeReport> getBikeReportByCustomerId(Long customerId);
+
+    BikeReport findByTestId(String testId);
 }

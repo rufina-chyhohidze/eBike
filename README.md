@@ -18,6 +18,8 @@ Run the `docker-compose.yml` file
 
 ```env
     WORKBENCH_API_KEY=YOUR-API-KEY
+    MAIL_USERNAME=team18int4@gmail.com
+    MAIL_PASSWORD=rfxchlbkjwoazmjc
 ```
 
 ### 3. To execute the application, execute the gradlew bootRun command

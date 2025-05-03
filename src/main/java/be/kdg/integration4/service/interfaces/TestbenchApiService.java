@@ -1,6 +1,5 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.report.ApiRequest;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.enums.TestStatus;
 import be.kdg.integration4.domain.enums.TestType;
@@ -16,11 +15,7 @@ public interface TestbenchApiService {
 
     TestStatus checkTestStatus(String id);
 
-    ApiRequest saveApiRequest(BikeReport bikeReport, String requestId);
-
-    void deleteApiRequest(String requestId);
-
-    ApiRequest getApiRequest(String requestId);
+    BikeReport saveApiRequest(BikeReport bikeReport, String requestId);
 
     String fetchCsv(String id);
 

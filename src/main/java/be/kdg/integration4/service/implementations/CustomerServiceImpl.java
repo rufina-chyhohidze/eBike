@@ -19,12 +19,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<Customer> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Customer getById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> findByEmailIgnoreCase(String email) {
+    public Optional<Customer> getByEmailIgnoreCase(String email) {
         return this.repository.findByEmailIgnoreCase(email);
     }
 }
