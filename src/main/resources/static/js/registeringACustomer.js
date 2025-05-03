@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const registerButton = document.getElementById("register-button");
     const messageBox = document.getElementById("form-message");
 
-    registerButton.addEventListener("click", async () => {
+    registerButton.addEventListener("click", async (e) => {
+        e.preventDefault();
         const name = document.getElementById('name')?.value?.trim();
         const email = document.getElementById('email')?.value?.trim();
         const phoneNumber = document.getElementById('phoneNumber')?.value?.trim() || null;
@@ -31,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.status === 201) {
-                showMessage("Registration successful! Redirecting to login...", "green");
+                showMessage("Registration successful! Redirecting to dashboard...", "green");
                 setTimeout(() => {
-                    window.location.href = "/login";
+                    window.location.href = "/technocian/dashboard";
                 }, 1500);
             } else {
                 const error = await response.text();

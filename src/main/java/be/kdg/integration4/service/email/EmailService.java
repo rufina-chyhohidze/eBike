@@ -27,6 +27,16 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendCustomerRegistrationConfirmationEmail(String to, String name, String password) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Customer Registration Confirmation");
+        message.setText("Dear " + name + ", one of our technicians created an account for you. You can use this email " +
+                "and password: " + password + ". We recommend you to change password as soon as you login.");
+        message.setFrom(originMail);
+        mailSender.send(message);
+    }
+
     public void sendUserApprovalEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);

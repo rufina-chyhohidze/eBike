@@ -8,6 +8,7 @@ import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.service.dtos.CustomerDto;
+import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.RegistrationService;
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.Valid;
@@ -29,9 +30,11 @@ import java.util.NoSuchElementException;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final EmailService emailService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public RegistrationController(RegistrationService registrationService, EmailService emailService) {
         this.registrationService = registrationService;
+        this.emailService = emailService;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -66,8 +69,7 @@ public class RegistrationController {
                 customerRegistrationDto.email(),
                 customerRegistrationDto.phoneNumber());
 
-        // TODO: Send an email to a client with password
-
+        emailService.sendCustomerRegistrationConfirmationEmail(customerDto.customer().getEmail(), customerDto.customer().getName(), customerDto.password());
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customerDto.customer().getId(), customerDto.customer().getName(),
                 customerDto.customer().getEmail()));
     }
