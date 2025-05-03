@@ -26,13 +26,9 @@ public class ReportSettingsController {
         boolean success = reportSettingService.updateSetting(
                 settingsDto.settingName(), settingsDto.settingValue(), user);
 
-        System.out.println("before.2");
-
         if (success) {
-            System.out.println("worked");
             return ResponseEntity.noContent().build();
         } else {
-            System.out.println("didn't work");
             return ResponseEntity.notFound().build();
         }
     }

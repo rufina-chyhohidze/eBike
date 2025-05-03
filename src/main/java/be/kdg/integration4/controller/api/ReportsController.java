@@ -66,8 +66,6 @@ public class ReportsController {
     @PostMapping
     @TechnicianOnly
     public ResponseEntity<TestIdDto> startTest(@RequestBody @Valid TestDto test) {
-        System.out.println(">>> Incoming TestDto: " + test); // OR log.info
-        // Save the bike report with the visual inspection data
         BikeReport report = bikeReportService.save(
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
