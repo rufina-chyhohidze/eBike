@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Customer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script th:src="@{/js/registeringACustomer.js}" src="/static/js/register.js" type="module"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="bg-gray-50 h-full flex">
+
+<!-- SIDEBAR (reuse from dashboard) -->
+<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+    <div class="flex items-center mb-6">
+        <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+        <h1 class="text-2xl font-semibold">eVALeBike</h1>
+    </div>
+
+    <ul class="space-y-6 flex-1">
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-wrench"></i> <a href="/technician/dashboard">Dashboard</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-user-plus text-purple-500"></i> <a href="/technician/register/customer">Register Customer</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-play-circle"></i> <a href="/technician/start-test">Start Test</a>
+        </li>
+        <li class="mt-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 p-8 bg-white">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <i class="ph ph-user-plus"></i> Register New Customer
+        </h2>
+
+        <form id="register-form" class="space-y-6">
+            <div>
+                <label for="name" class="block mb-1 text-gray-700 font-medium">Full Name</label>
+                <input type="text" id="name" name="name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+            </div>
+
+            <div>
+                <label for="email" class="block mb-1 text-gray-700 font-medium">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+            </div>
+
+            <div>
+                <label for="phoneNumber" class="block mb-1 text-gray-700 font-medium">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+            </div>
+
+            <div id="form-message" style="margin-top: 1rem; font-weight: bold;"></div>
+
+
+            <div class="flex justify-end">
+                <button id="register-button" type="button" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                    Register Customer
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>
