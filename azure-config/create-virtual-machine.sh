@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install ssh-keygen (as it might not be in the Azure CLI image)
+apt-get update && apt-get install -y openssh-client
+
 mkdir -p ~/.ssh
 ssh-keygen -t ed25519 -f ~/.ssh/azure -C "team18" -N "" # Generate key with no passphrase
 
