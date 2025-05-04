@@ -3,7 +3,7 @@ package be.kdg.integration4.domain.enums;
 public enum InspectionCondition {
     VERY_BAD("- -"),
     BAD("-"),
-    NEUTRAL(" "),
+    NEUTRAL("/"),
     GOOD("+"),
     VERY_GOOD("++"),
     NOT_APPLICABLE("n.v.t");

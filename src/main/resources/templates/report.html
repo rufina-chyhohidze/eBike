@@ -9,9 +9,7 @@
 <body>
 <div class="container mt-4 mb-5">
   <h2 class="text-center mb-4">Bike Inspection Report</h2>
-  <p th:if="${compareReport == null}" class="text-danger text-center">⚠️ No comparison report loaded</p>
 
-  <!-- Comparison Dropdown -->
   <div class="text-center mb-4">
     <label for="compareId" class="form-label fw-bold">Compare With Report:</label>
     <select id="compareId" name="compareId" class="form-select">
@@ -29,7 +27,6 @@
   </form>
 
   <div class="row">
-    <!-- LEFT COLUMN -->
     <div class="col-md-6">
       <h5 class="bg-light p-2">Identification</h5>
       <table class="table table-sm table-bordered text-center align-middle">
@@ -66,12 +63,10 @@
           <td th:if="${compareReport != null}" th:text="${compareReport.bike.registrationDate}"
               th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'table-warning' : ''">Date</td>
         </tr>
-        <!-- Add rest: bikeSize, gearType, engineType, accCapacity, maxSupport -->
         </tbody>
       </table>
       </div>
 
-      <!-- Visual Inspection -->
       <div class="mb-4 border p-3">
         <h5 class="bg-light p-2">Visual Inspection</h5>
         <table class="table table-sm table-bordered text-center align-middle">
@@ -133,17 +128,7 @@
       </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
     <div class="col-md-6">
-      <!-- Motor Info -->
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Motor Information</h5>
-        <table class="table table-sm">
-          <tbody>
-          <tr><th>Max Support</th><td th:text="${bike.maxSupport + ' %'}">Max Support</td></tr>
-          </tbody>
-        </table>
-      </div>
 
       <!-- Test Summary -->
       <div class="mb-4 border p-3">
@@ -254,7 +239,6 @@
         </table>
       </div>
 
-      <!-- Functional Test -->
       <div class="mb-4 border p-3">
         <h5 class="bg-light p-2">Functional Test</h5>
         <table class="table table-sm table-bordered text-center align-middle">
@@ -290,8 +274,11 @@
           </tbody>
         </table>
       </div>
+      <div class="text-center mt-4">
+        <a th:href="@{/report/{id}/detailed(id=${id})}" class="btn btn-outline-secondary">View Visual Report</a>
+      </div>
     </div>
-  </div>
+    </div>
 
 <script>
   document.getElementById('compareId').addEventListener('change', function () {
