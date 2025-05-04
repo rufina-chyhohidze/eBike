@@ -1,12 +1,49 @@
 stages:
-  - login
+  - build
+  - test
 
-azure-login:
-  stage: login
-  image: mcr.microsoft.com/azure-cli
+build_stage:
+  stage: build
+  image: gradle:8.5-jdk21
   script:
-    - echo "🔐 Logging into Azure..."
-    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
-    - az account show && echo "✅ Azure login successful"
-    - chmod +x ./azure-config/create-virtual-machine.sh
-    - ./azure-config/create-virtual-machine.sh
+    - echo "Build app"
+    - ./gradlew clean build -x test
+    - echo "Finished building stage"
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+test:
+  stage: test
+  image: gradle:8.5-jdk21
+  services:
+    - name: postgres:17.2-alpine
+      alias: db
+  variables:
+    # point your test profile at the CI “db” service
+    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ebike_test
+    SPRING_DATASOURCE_USERNAME: dev
+    SPRING_DATASOURCE_PASSWORD: bike
+    SPRING_PROFILES_ACTIVE: test
+  script:
+    - echo "Testing..."
+    - ./gradlew test
+    - echo "Finished testing..."
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+
+
+#stages:
+#  - login
+#
+#azure-login:
+#  stage: login
+#  image: mcr.microsoft.com/azure-cli
+#  script:
+#    - echo "🔐 Logging into Azure..."
+#    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
+#    - az account show && echo "✅ Azure login successful"
+#    - chmod +x ./azure-config/create-virtual-machine.sh
+#    - ./azure-config/create-virtual-machine.sh

@@ -24,8 +24,9 @@ az vm create --name vm-team18-integration4 \
 --accept-term \
 --image 'almalinux:almalinux-x86_64:9-gen1:latest' \
 --admin-username team18 \
+--zone 2 \
 --public-ip-sku Standard \
---public-ip-address pip-vm-team18-integration4 \
+--public-ip-dns-name "team18-integration4" \
 --storage-sku Standard_LRS \
 --os-disk-name osdisk-vm-team18-integration4 \
 --accelerated-networking false \
