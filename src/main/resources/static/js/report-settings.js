@@ -1,4 +1,4 @@
-import { csrfToken, csrfHeader } from '/utils/csrf.js';
+import { csrfToken, csrfHeader } from './utils/csrf.js';
 
 async function changeSettings(settingName, settingValue) {
     const response = await fetch("/api/report-settings", {

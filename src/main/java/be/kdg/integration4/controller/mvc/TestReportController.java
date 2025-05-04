@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,27 +27,43 @@ public class TestReportController {
     }
 
     @GetMapping("/report/{id}")
-    public String showReport(@PathVariable Long id, Model model) {
+    public String showReport(@PathVariable Long id,
+                             @RequestParam(value = "compareId", required = false) Long compareId,
+                             Model model) {
+
         BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(id);
         model.addAttribute("bikeReport", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
-        OverviewTestDTO overviewTest = bikeReportService.calculateOverviewTest(id);
-        model.addAttribute("overviewTest", overviewTest);
-        NominalLoadTestDTO nominalLoadTest = bikeReportService.calculateNominalLoadTest(id);
-        model.addAttribute("nominalLoadTest", nominalLoadTest);
-        BatteryTestDTO batteryTest = bikeReportService.calculateBatteryTest(id);
-        model.addAttribute("batteryTest", batteryTest);
-        BearingHealthDTO healthBearing = bikeReportService.calculateBearingHealth(id);
-        model.addAttribute("bearingHealth", healthBearing);
+        model.addAttribute("id", id); // Needed for detailed report URL
+
+        // Main report tests
+        model.addAttribute("overviewTest", bikeReportService.calculateOverviewTest(id));
+        model.addAttribute("nominalLoadTest", bikeReportService.calculateNominalLoadTest(id));
+        model.addAttribute("batteryTest", bikeReportService.calculateBatteryTest(id));
+        model.addAttribute("bearingHealth", bikeReportService.calculateBearingHealth(id));
+
+        if (compareId != null) {
+            model.addAttribute("compareReport", bikeReportService.findByIdWithTestlinesAndBike(compareId));
+            model.addAttribute("overviewTestCo", bikeReportService.calculateOverviewTest(compareId));
+            model.addAttribute("nominalLoadTestCo", bikeReportService.calculateNominalLoadTest(compareId));
+            model.addAttribute("batteryTestCo", bikeReportService.calculateBatteryTest(compareId));
+            model.addAttribute("bearingHealthCo", bikeReportService.calculateBearingHealth(compareId));
+        }
+
+        model.addAttribute("allReports", bikeReportService.getAll());
+
         return "report";
     }
 
     @GetMapping("/report/{id}/detailed")
-    public String showDetailedReport(@PathVariable Long id, Model model) {
+    public String showDetailedReport(@PathVariable Long id,
+                                     Model model) {
         BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(id);
         model.addAttribute("report", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
         model.addAttribute("metrics", Metric.values());
+
+
 
         List<BikeReport> allReports = bikeReportService.getAll();
         model.addAttribute("allReports", allReports);
