@@ -5,12 +5,10 @@ import be.kdg.integration4.config.DotenvInitializer;
 import be.kdg.integration4.domain.enums.Location;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.Customer;
-import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.CustomerRepository;
-import be.kdg.integration4.repository.UserRepository;
 import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
 import be.kdg.integration4.service.interfaces.RegistrationService;
 import org.junit.jupiter.api.AfterEach;
@@ -62,7 +60,7 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void createCustomerShouldntAddCustomerIfCustomerWithThisEmailAlreadyExists() {
+    void createCustomerShouldNotAddCustomerIfCustomerWithThisEmailAlreadyExists() {
         testHelper.createCustomer("test", "test@test.com", "pass", "+3233333333");
         assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("test", "test@test.com", "+3233333333"));
         assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("differentName", "test@test.com", "+3233333333"));
@@ -90,7 +88,7 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void createStaffShouldntAddStaffIfStaffWithThisEmailAlreadyExists() {
+    void createStaffShouldNotAddStaffIfStaffWithThisEmailAlreadyExists() {
         testHelper.createTechnician("testTechnician", "technician@test.com","qwerty", this.workshop);
         testHelper.createWorkshopAdmin("testWorkshop", "workshop@test.com", "qwerty", this.workshop);
         assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("test", "technician@test.com", "pass", UserRole.TECHNICIAN.toString(), this.workshop.getWorkshopId()));

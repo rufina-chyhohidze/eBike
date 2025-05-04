@@ -1,0 +1,21 @@
+stages:
+  - login
+
+azure-login:
+  stage: login
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    # Build the Docker image using the Dockerfile in repo
+    - docker build -t azure-cli-auto-login ./azure-config
+
+    # Run the container with the credentials file mounted
+    - docker run --rm \
+        -v "$AZURE_LOGIN_CREDENTIALS:$AZURE_LOGIN_CREDENTIALS" \
+        -e AZURE_LOGIN_CREDENTIALS="$AZURE_LOGIN_CREDENTIALS" \
+        azure-cli-auto-login
+  tags:
+    - docker  # adjust based on your GitLab runner tag
