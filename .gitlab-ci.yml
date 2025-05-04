@@ -5,10 +5,9 @@ azure-login:
   stage: login
   image: mcr.microsoft.com/azure-cli:latest
   script:
-    - echo "Logging in to Azure..."
-    - echo "CLIENT_ID: $nameclientid"
-    - echo "CLIENT_SECRET: $nameclientsecret"
-    - echo "TENANT_ID: $nametenantid"
-    # Uncomment these for actual Azure login
-    # - az login --service-principal -u "$nameclientid" -p "$nameclientsecret" --tenant "$nametenantid"
-    # - az account show && echo "✅ Azure login successful" || echo "❌ Error logging in"
+    - echo "Logging in to Azure... with client id "
+    - echo "$nameclientid"
+    - echo " with clientsecret "
+    - echo "$nameclientsecret"
+    - echo " with tenantid "
+    - echo "$nametenantid"
