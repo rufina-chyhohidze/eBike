@@ -1,18 +1,19 @@
 stages:
-  - setup
+  - login
 
-azure-setup-vm:
-  stage: setup
-  image: mcr.microsoft.com/azure-cli:latest  # Debian-based with az CLI
+azure-login:
+  stage: login
+  image: ubuntu:22.04
   before_script:
     - apt-get update
-    - apt-get install -y openssh-client
+    - apt-get install -y curl openssh-client
+    - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
   script:
     - echo "🔐 Logging into Azure..."
     - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
     - az account show && echo "✅ Azure login successful"
-    - chmod +x ./azure-config/create-virtual-machine.sh
-    - ./azure-config/create-virtual-machine.sh
+#    - #chmod +x ./azure-config/create-virtual-machine.sh
+#    - #./azure-config/create-virtual-machine.sh
 
 
 #stages:
