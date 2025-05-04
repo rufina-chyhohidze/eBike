@@ -30,20 +30,16 @@ public class ReportSettingServiceImpl implements ReportSettingService {
 
     @Override
     public boolean updateSetting(String settingName, Double settingValue, Technician technician) {
-        // Retrieve the current settings for the logged-in technician
         ReportSetting reportSetting = reportSettingRepository.findByTechnician(technician)
                 .orElseThrow(() -> new RuntimeException("Settings not found"));
 
-        // Update the setting
         if ("horizontalVibration".equals(settingName)) {
             reportSetting.setHorizontalVibration(settingValue);
         } else if ("verticalVibration".equals(settingName)) {
             reportSetting.setVerticalVibration(settingValue);
-        } else {
-            return false; // If invalid setting name
         }
 
-        reportSettingRepository.save(reportSetting); // Save the updated settings
+        reportSettingRepository.save(reportSetting);
         return true;
     }
 }

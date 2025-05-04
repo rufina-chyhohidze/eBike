@@ -1,16 +1,20 @@
 import { csrfToken, csrfHeader } from './utils/csrf.js';
 
-async function changeSettings(settingName, settingValue) {
+function getCsrfToken() {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    return csrfToken;
+}
+
+async function changeSettings(settingsArray) {
+    const csrfToken = getCsrfToken(); // Fetch CSRF token just before sending the request
+
     const response = await fetch("/api/report-settings", {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             [csrfHeader]: csrfToken
         },
-        body: JSON.stringify({
-            settingName,
-            settingValue
-        })
+        body: JSON.stringify(settingsArray) // Send the array of settings
     });
 
     if (response.ok) {
@@ -21,9 +25,18 @@ async function changeSettings(settingName, settingValue) {
 }
 
 document.getElementById('submit').addEventListener('click', async () => {
-    const horizontal = document.getElementById('horizontalVibration').value;
-    const vertical = document.getElementById('verticalVibration').value;
+    let horizontal = document.getElementById('horizontalVibration').value;
+    let vertical = document.getElementById('verticalVibration').value;
 
-    await changeSettings("horizontalVibration", horizontal);
-    await changeSettings("verticalVibration", vertical);
+    horizontal = horizontal === "None" ? null : parseFloat(horizontal);
+    vertical = vertical === "None" ? null : parseFloat(vertical);
+
+    // Construct an array of settings to send
+    const settingsArray = [
+        { settingName: "horizontalVibration", settingValue: horizontal },
+        { settingName: "verticalVibration", settingValue: vertical }
+    ];
+
+    // Send the array of settings to the backend
+    await changeSettings(settingsArray);
 });
