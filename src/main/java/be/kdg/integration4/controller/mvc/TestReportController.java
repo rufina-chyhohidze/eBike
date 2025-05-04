@@ -1,6 +1,7 @@
 package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.domain.enums.FunctionalTestComponents;
+import be.kdg.integration4.domain.enums.Metric;
 import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.dtos.BatteryTestDTO;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Controller
 public class TestReportController {
@@ -40,7 +43,7 @@ public class TestReportController {
 
     @GetMapping("/report/{id}/detailed")
     public String showDetailedReport(@PathVariable Long id, Model model) {
-        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(id);
+        BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(id);
         model.addAttribute("report", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
         model.addAttribute("metrics", Metric.values());

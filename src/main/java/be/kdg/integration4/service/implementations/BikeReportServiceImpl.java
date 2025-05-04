@@ -56,7 +56,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public BikeReport findByIdWithTestlinesAndBike(Long id) {
-        return bikeReportRepository.findByIdWithTestLinesAndBikeAndVisualInspection(id);
+        return bikeReportRepository.findByIdWithTestLinesAndBikeAndVisualInspectionAndFunctionalTest(id);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Transactional(readOnly = true)
-    public List<BikeReport> getAllWithDetails() {
+    public List<BikeReport> getAllReportsWithDetails() {
         return bikeReportRepository.findAllWithDetails();
     }
 

@@ -55,6 +55,8 @@ public class BikeReport {
     @Column(name = "condition")
     private Map<String, InspectionCondition> functionalTest;
 
+    private String testId;
+
 
     public BikeReport(Long id, String bike, String reportDate, Integer score, String technician, String customer) {
     }
@@ -76,6 +78,8 @@ public class BikeReport {
         this.visualInspection = inspection;
         this.functionalTest = functionalTest;
     }
+
+
 
 
 }

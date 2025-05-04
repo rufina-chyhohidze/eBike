@@ -18,14 +18,12 @@ public class ReportSetting {
     private double horizontalVibration;
     private double verticalVibration;
 
-    // Constructors, getters, setters, etc.
 
     public ReportSetting(Technician technician) {
         this.technician = technician;
     }
 
-    public ReportSetting(Long id, Technician technician, double horizontalVibration, double verticalVibration) {
-        this.id = id;
+    public ReportSetting(Technician technician, double horizontalVibration, double verticalVibration) {
         this.technician = technician;
         this.horizontalVibration = horizontalVibration;
         this.verticalVibration = verticalVibration;
