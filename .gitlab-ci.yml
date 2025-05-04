@@ -6,8 +6,9 @@ azure-login:
   image: mcr.microsoft.com/azure-cli:latest
   script:
     - echo "Logging in to Azure..."
-    - echo "$CLIENT_ID"
-    - echo "$CLIENT_SECRET"
-    - echo "$TENANT_ID"
-#    - #az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID"
-#    - #az account show && echo "✅ Azure login successful" || echo "❌ Error logging in"
+    - echo "CLIENT_ID: $clientid"
+    - echo "CLIENT_SECRET: $clientsecret"
+    - echo "TENANT_ID: $tenantid"
+    # Uncomment for debugging
+    # - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID"
+    # - az account show && echo "✅ Azure login successful" || echo "❌ Error logging in"
