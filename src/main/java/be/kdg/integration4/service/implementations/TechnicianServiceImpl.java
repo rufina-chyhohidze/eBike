@@ -48,6 +48,6 @@ public class TechnicianServiceImpl implements TechnicianService {
 
     @Override
     public Technician getByEmail(String email) {
-        return technicianRepository.findByEmail(email);
+        return technicianRepository.findByEmail(email).orElseThrow();
     }
 }

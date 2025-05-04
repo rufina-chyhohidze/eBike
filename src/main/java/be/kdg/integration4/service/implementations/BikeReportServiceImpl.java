@@ -99,7 +99,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
     @Override
     public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber) {
-        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber)));
+        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()).orElseThrow(), customerRepository.findByEmailIgnoreCase(emailBikeOwner).orElseThrow(), testBenchRepository.getReferenceById(testbenchNumber)));
     }
 
     @Override
@@ -108,8 +108,8 @@ public class BikeReportServiceImpl implements BikeReportService {
         bikeReport.setBike(bikeRepository.findBikeByFrameNumber(chassisNumber).orElseThrow());
         bikeReport.setReportDate(reportDate);
         bikeReport.setScore(score);
-        bikeReport.setTechnician(technicianRepository.findByEmail(technician));
-        bikeReport.setCustomer(customerRepository.findByEmail(customer));
+        bikeReport.setTechnician(technicianRepository.findByEmail(technician).orElseThrow());
+        bikeReport.setCustomer(customerRepository.findByEmailIgnoreCase(customer).orElseThrow());
         testLineRepository.saveAll(testLines);
         bikeReport.setTestLines(testLines);
         bikeReport.setTestBench(testBenchRepository.findById(benchId).orElseThrow());

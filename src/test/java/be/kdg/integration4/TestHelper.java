@@ -5,9 +5,11 @@ import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.profile.WorkshopAdmin;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import be.kdg.integration4.service.interfaces.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,6 +67,16 @@ public class TestHelper {
                 password,
                 UserRole.CUSTOMER,
                 phoneNumber
+        );
+    }
+
+    public User createWorkshopAdmin(String name, String email, String password, Workshop workshop) {
+        return this.workshopAdminRepository.save( new WorkshopAdmin(
+                name,
+                email,
+                password,
+                workshop
+                )
         );
     }
 
