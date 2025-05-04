@@ -7,11 +7,13 @@ echo "Resource group created"
 
 
 mkdir -p ~/.ssh
-ssh-keygen -t ed25519 -f ~/.ssh/azure -C "team18" -N "" # Generate key with no passphrase
+#ssh-keygen -t ed25519 -f ~/.ssh/azure -C "team18" -N "" # Generate key with no passphrase
+echo "$PRIVATE_KEY" | base64 -d > ~/.ssh/azure
+echo "$PUBLIC_KEY" > ~/.ssh/azure.pub
+
 
 # Save the public key for attaching to Azure VM
-export SSH_PUBLIC_KEY=$(cat ~/.ssh/azure.pub)
-echo "$SSH_PUBLIC_KEY" # Optionally, you can output the public key for debugging purposes (remove in production)
+SSH_PUBLIC_KEY=$(cat ~/.ssh/azure.pub)
 
 # Optionally, echo the public key for debugging purposes
 echo "Generated SSH Public Key: $SSH_PUBLIC_KEY"
