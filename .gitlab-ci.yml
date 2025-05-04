@@ -17,5 +17,5 @@ azure-login:
         -v "$AZURE_LOGIN_CREDENTIALS:$AZURE_LOGIN_CREDENTIALS" \
         -e AZURE_LOGIN_CREDENTIALS="$AZURE_LOGIN_CREDENTIALS" \
         azure-cli-auto-login
-  tags:
+ # tags:
 # not tags needd    - docker  # adjust based on your GitLab runner tag
