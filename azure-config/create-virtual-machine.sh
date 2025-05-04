@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Install ssh-keygen (as it might not be in the Azure CLI image)
-apt-get update && apt-get install -y openssh-client
+# Create the resource group
+echo "Creating the resource group..."
+az group create --name rg-team18-integration4 --location westeurope
+echo "Resource group created"
+
 
 mkdir -p ~/.ssh
 ssh-keygen -t ed25519 -f ~/.ssh/azure -C "team18" -N "" # Generate key with no passphrase

@@ -1,25 +1,42 @@
 stages:
-  - login
-  - deploy
+  - setup
 
-image: mcr.microsoft.com/azure-cli:latest
-
-before_script:
-  - apt-get update
-  - apt-get install -y openssh-client  # for ssh-keygen
-  - az --version
-  - ssh-keygen -V  # confirm ssh is installed
-
-azure-login:
-  stage: login
+azure-setup-vm:
+  stage: setup
+  image: mcr.microsoft.com/azure-cli:latest  # Debian-based with az CLI
+  before_script:
+    - apt-get update
+    - apt-get install -y openssh-client
   script:
     - echo "🔐 Logging into Azure..."
     - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
     - az account show && echo "✅ Azure login successful"
+    - chmod +x ./azure-config/create-virtual-machine.sh
+    - ./azure-config/create-virtual-machine.sh
 
-deploy-vm:
-  stage: deploy
-  script:
-    - az group create --name rg-team18-integration4 --location westeurope
-    - chmod +x ./azure-config/create-virtual-machine.sh  # Make sure the script is executable
-    - ./azure-config/create-virtual-machine.sh  # Execute the script
+
+#stages:
+#  - login
+#  - deploy
+#
+#image: mcr.microsoft.com/azure-cli:latest
+#
+#before_script:
+#  - apt-get update
+#  - apt-get install -y openssh-client  # for ssh-keygen
+#  - az --version
+#  - ssh-keygen -V  # confirm ssh is installed
+#
+#azure-login:
+#  stage: login
+#  script:
+#    - echo "🔐 Logging into Azure..."
+#    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
+#    - az account show && echo "✅ Azure login successful"
+#
+#deploy-vm:
+#  stage: deploy
+#  script:
+#    -
+#    - chmod +x ./azure-config/create-virtual-machine.sh  # Make sure the script is executable
+#    - ./azure-config/create-virtual-machine.sh  # Execute the script
