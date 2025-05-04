@@ -104,15 +104,64 @@ function init() {
             }
         }
 
+        // const options = {
+        //     title: `Report ${reportId}` + (dataB.length?` vs ${compareSel.value}`:''),
+        //     hAxis: { title: `Time (every ${interval}s)` },
+        //     vAxes,
+        //     series,
+        //     curveType:'function',
+        //     legend:{ position:'bottom' },
+        //     backgroundColor:'#fff',
+        //     height:500
+        // };
         const options = {
-            title: `Report ${reportId}` + (dataB.length?` vs ${compareSel.value}`:''),
-            hAxis: { title: `Time (every ${interval}s)` },
+            title: `Report ${reportId}` + (dataB.length ? ` vs ${compareSel.value}` : ''),
+            titleTextStyle: {
+                fontSize: 20,
+                bold: true,
+                color: '#4B0082',
+                fontName: 'sans-serif'
+            },
+            hAxis: {
+                title: `Time (every ${interval}s)`,
+                titleTextStyle: { color: '#4B5563', italic: false },
+                textStyle: { color: '#6B7280' }
+            },
             vAxes,
             series,
-            curveType:'function',
-            legend:{ position:'bottom' },
-            backgroundColor:'#fff',
-            height:500
+            curveType: 'function',
+            legend: {
+                position: 'bottom',
+                textStyle: {
+                    color: '#4B5563',
+                    fontSize: 12,
+                    fontName: 'sans-serif'
+                }
+            },
+            backgroundColor: '#F9FAFB',
+            height: 600,
+            chartArea: {
+                left: '10%',
+                top: 60,
+                width: '85%',
+                height: '75%'
+            },
+            colors: ['#7C3AED', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444'],
+            lineWidth: 3,
+            pointSize: 5,
+            animation: {
+                startup: true,
+                duration: 800,
+                easing: 'out'
+            },
+            tooltip: {
+                textStyle: {
+                    color: '#111827',
+                    fontSize: 12
+                },
+                showColorCode: true,
+                isHtml: true
+            }
         };
 
         new google.visualization.LineChart(
