@@ -11,3 +11,6 @@ azure-login:
     - echo "$nameclientsecret"
     - echo " with tenantid "
     - echo "$nametenantid"
+    - az login --service-principal -u "$nameclientid" -p "$nameclientsecret" --tenant "$nametenantid"
+    - az account show && echo "✅ Azure login successful" || echo "❌ Error logging in"
+
