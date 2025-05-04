@@ -24,7 +24,7 @@ Content-Type: application/json
 {
   "testbenchNumber": 3,
   "testType": "STRESS",
-  "emailBikeOwner": "cust@email.com",
+  "emailBikeOwner": "customer@email.com",
   "chassisNumber": "XYZ123456789",
   "bikeBrand": "Trek",
   "bikeSize": "M",

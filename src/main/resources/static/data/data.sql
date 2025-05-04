@@ -21,3 +21,7 @@ VALUES ('Super John', 'superadmin@email.com', '$2a$12$d.M7PL2WzgPBZ7c9yHz9FOYj8p
 
 INSERT INTO bike (acc_capacity, bike_size, engine_power_max, engine_power_nominal, engine_torque, max_support, milleage, production_date, bike_owner_id, registration_date, brand, engine_type, frame_number, gear_type, powertrain, type)
 VALUES (250, 5, 400, 300, 500, 300, 1234, NOW(), 3, NOW(), 'TOYOTA', 'VOLVO', 'X45FERF', 'GEAR', 'POWERTRAIN', 'PRO');
+
+INSERT INTO report_setting (technician_id, horizontal_vibration, vertical_vibration)
+VALUES
+    (2, 1, 1)

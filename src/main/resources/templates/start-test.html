@@ -24,9 +24,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
     <!-- Our js-->
-    <script type="module" th:src="@{/js/process-test.js}"></script>
+    <script type="module" th:src="@{/js/process-test.js}" defer></script>
+    <script type="module" th:src="@{/js/start-test.js}" defer></script>
     <script th:src="@{/js/qr-code-generation.js}" type="module"></script>
-    <script type="module" th:src="@{/js/start-test.js}"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
@@ -106,7 +106,7 @@
     </main>
 
   <!-- Modal -->
-  <div class="modal fade" id="add-bike-modal" role="dialog">
+ <div class="modal fade" id="add-bike-modal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -214,17 +214,17 @@
     </div>
     <!-- End modal to add bike to customer -->
 
-    <!--  Modal Start Test - After Bike Selection  -->
-    <div class="modal fade" id="start-test-modal" tabindex="-1" aria-labelledby="exampleModalToggleLabel" >
-<!--        aria-hidden="true"-->
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+<div class="modal fade" id="start-test-modal" tabindex="-1" aria-labelledby="exampleModalToggleLabel">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Start Test</h1>
-                    <button type="button" id="close-start-test-button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <h4 id="bike-selected-frame-title"></h4>
+
                     <div class="test-inputs">
                         <label for="testType">Test Type</label>
                         <select required name="testType" id="testType" class="form-control">
@@ -232,16 +232,54 @@
                             <option th:each="type : ${testTypes}" th:value="${type}" th:text="${type}"></option>
                         </select>
 
-
                         <label for="testBenchNumber">TestBench Number</label>
                         <input name="testBenchNumber" id="testBenchNumber" type="number" class="form-control" placeholder="001">
                     </div>
+
+                    <hr />
+                    <!-- Visual Inspection -->
+                    <h5>Visual Inspection (Visuele inspectie)</h5>
+                    <p class="text-muted">Rate each part's condition:</p>
+
+                    <div th:each="component, iterStat : ${visualComponents}" class="mb-2">
+                        <label th:for="'inspectionComponent' + ${iterStat.index}" th:text="${component.name()}"></label>
+                        <select th:id="'inspectionComponent' + ${iterStat.index}"
+                                th:name="'inspectionComponent' + ${iterStat.index}"
+                                class="form-select inspection-component"
+                                th:attr="data-component-name=${component.name()}, data-component-type='visual'"
+                                required>
+                            <option value="" disabled selected>Select condition</option>
+                            <option th:each="condition : ${conditions}"
+                                    th:value="${condition.name()}"
+                                    th:text="${condition.getLabel()}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Functional Inspection -->
+                    <h5>Functional Inspection (Functionele inspectie)</h5>
+                    <p class="text-muted">Rate each part's condition:</p>
+
+                    <div th:each="component, iterStat : ${functionalComponents}" class="mb-2">
+                        <label th:for="'functionalComponent' + ${iterStat.index}" th:text="${component.name()}"></label>
+                        <select th:id="'functionalComponent' + ${iterStat.index}"
+                                th:name="'functionalComponent' + ${iterStat.index}"
+                                class="form-select inspection-component"
+                                th:attr="data-component-name=${component.name()}, data-component-type='functional'"
+                                required>
+                            <option value="" disabled selected>Select condition</option>
+                            <option th:each="condition : ${conditions}"
+                                    th:if="${condition.name() != 'VERY_GOOD' and condition.name() != 'VERY_BAD'}"
+                                    th:value="${condition.name()}"
+                                    th:text="${condition.getLabel()}"></option>
+                        </select>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="start-test">Start Test</button>
+                    <button type="button" class="btn btn-secondary" id="close-start-test-button" data-bs-dismiss="modal">Close</button>
                 </div>
-            </div>
         </div>
     </div>
-</main>
+</div>
 </html>
