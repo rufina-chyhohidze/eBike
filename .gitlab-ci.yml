@@ -8,3 +8,5 @@ azure-login:
     - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
     - az account show &>/dev/null && echo "✅ Azure login successful" || echo "❌ Error logging in"
     - az group create --name rg-team18-integration4 --location westeurope
+    - chmod +x ./azure-config/create-virtual-machine.sh  # Make sure the script is executable
+    - ./azure-config/create-virtual-machine.sh  # Execute the script

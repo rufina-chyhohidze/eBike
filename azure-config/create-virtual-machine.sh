@@ -29,13 +29,13 @@ az vm create --name vm-team18-integration4 \
 --tags 'ContactEmail=team18integration4@gmail.com'
 
 
-read -r -p "Do you want to destroy all resources? (yes to proceed, no to cancel): " response
-
-if [[ "$response" == "yes" || "$response" == "y" ]]; then
-  echo "Deleting resource groups... Please wait."
-  az group delete --yes --name rg-team18-integration4
-  az group delete --yes --name NetworkWatcherRG
-  echo "Resource groups have been deleted."
-else
-  echo "No resources were deleted. All created resources remain intact."
-fi
+#read -r -p "Do you want to destroy all resources? (yes to proceed, no to cancel): " response
+#
+#if [[ "$response" == "yes" || "$response" == "y" ]]; then
+#  echo "Deleting resource groups... Please wait."
+#  az group delete --yes --name rg-team18-integration4
+#  az group delete --yes --name NetworkWatcherRG
+#  echo "Resource groups have been deleted."
+#else
+#  echo "No resources were deleted. All created resources remain intact."
+#fi
