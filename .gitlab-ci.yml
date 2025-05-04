@@ -2,10 +2,14 @@ stages:
   - setup-vm
   - login
 
-# Build the custom Docker image
+# Use Docker-in-Docker for building images
 build-image:
   stage: setup-vm
+  image: docker:latest  # Use a Docker image that supports Docker-in-Docker
+  services:
+    - docker:19.03.12-dind  # Use Docker-in-Docker service
   script:
+    - docker info  # Check if Docker is running
     - docker build -t custom-azure-cli-image .
 
 azure-login:
