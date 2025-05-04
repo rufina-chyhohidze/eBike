@@ -1,6 +1,7 @@
 package be.kdg.integration4.service.interfaces;
 
 import be.kdg.integration4.domain.enums.InspectionCondition;
+import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.domain.enums.TestType;
@@ -43,7 +44,7 @@ public interface BikeReportService {
 
     BatteryTestDTO calculateBatteryTest(Long reportId);
 
-    BearingHealthDTO calculateBearingHealth(Long reportId);
+    BearingHealthDTO calculateBearingHealth(Long reportId, Technician user);
 
     FullTestReportDTO getFullTestReport(Long reportId);
 

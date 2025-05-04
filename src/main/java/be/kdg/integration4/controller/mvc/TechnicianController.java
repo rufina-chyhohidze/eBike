@@ -89,9 +89,14 @@ public class TechnicianController {
     }
 
     @GetMapping("/report-settings")
-    public String getReportSettingsPage(Model model, @AuthenticationPrincipal Technician user) {
-        // Assuming you want to display the settings for the logged-in technician
-        ReportSetting reportSetting = reportSettingService.getReportSettingsForTechnician(user);
+    public String getReportSettingsPage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String loggedInEmail = authentication.getName();
+
+        Technician technician = technicianService.getByEmail(loggedInEmail);
+
+        ReportSetting reportSetting = reportSettingService.getReportSettingsForTechnician(technician);
 
         model.addAttribute("reportSetting", reportSetting);
 

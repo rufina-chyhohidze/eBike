@@ -268,7 +268,7 @@
                                 required>
                             <option value="" disabled selected>Select condition</option>
                             <option th:each="condition : ${conditions}"
-                                    th:if="${condition.name() != 'VERY_GOOD' and condition.name() != 'VERY_BAD'}"
+                                    th:if="${condition.name() != 'VERY_GOOD' and condition.name() != 'VERY_BAD' and condition.name() != 'NEUTRAL'}"
                                     th:value="${condition.name()}"
                                     th:text="${condition.getLabel()}"></option>
                         </select>

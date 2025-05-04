@@ -3,6 +3,7 @@ package be.kdg.integration4.service.implementations;
 import be.kdg.integration4.config.security.SecurityUtil;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.TestLine;
@@ -10,6 +11,7 @@ import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.dtos.*;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
+import be.kdg.integration4.service.interfaces.ReportSettingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +35,16 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final BikeRepository bikeRepository;
     private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
+    private final ReportSettingService reportSettingService;
 
-    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TestLineRepository testLineRepository, TechnicianRepository technicianRepository) {
+    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TestLineRepository testLineRepository, TechnicianRepository technicianRepository, ReportSettingService reportSettingService) {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
         this.bikeRepository = bikeRepository;
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
-
+        this.reportSettingService = reportSettingService;
     }
 
 
@@ -131,6 +134,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
 
+    @Override
     public BatteryTestDTO calculateBatteryTest(Long reportId) {
         BikeReport report = bikeReportRepository.findById(reportId).orElseThrow();
 
@@ -188,14 +192,14 @@ public class BikeReportServiceImpl implements BikeReportService {
         return Duration.between(startTime, endTime);
     }
 
-
-    public BearingHealthDTO calculateBearingHealth(Long reportId) {
+    @Override
+    public BearingHealthDTO calculateBearingHealth(Long reportId, Technician user) {
         BikeReport report = bikeReportRepository.findById(reportId).orElseThrow();
 
         List<TestLine> testLines = testLineRepository.findByBikeReportId(reportId);
 
-        double goodVibrationThresholdHorizontal = 1.0;
-        double goodVibrationThresholdVertical = 1.2;
+        double goodVibrationThresholdHorizontal = reportSettingService.getReportSettingsForTechnician(user).getHorizontalVibration();
+        double goodVibrationThresholdVertical = reportSettingService.getReportSettingsForTechnician(user).getVerticalVibration();
 
         double maxHorizontalVibration = testLines.stream()
                 .mapToDouble(TestLine::getHorizontalInclinationSensor)
