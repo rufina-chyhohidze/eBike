@@ -1,5 +1,6 @@
 stages:
   - login
+#  - rg-and-vm-setup
 
 azure-login:
   stage: login
@@ -12,8 +13,13 @@ azure-login:
     - echo "🔐 Logging into Azure..."
     - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
     - az account show && echo "✅ Azure login successful"
-#    - #chmod +x ./azure-config/create-virtual-machine.sh
-#    - #./azure-config/create-virtual-machine.sh
+    - chmod +x ./azure-config/create-virtual-machine.sh
+    - ./azure-config/create-virtual-machine.sh
+
+#azure-rg-and-vm-setup:
+#  stage: rg-and-vm-setup
+#
+
 
 
 #stages:
