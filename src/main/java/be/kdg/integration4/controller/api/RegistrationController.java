@@ -4,9 +4,10 @@ import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
-import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
+import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
+import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.RegistrationService;
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.Valid;
@@ -28,9 +29,11 @@ import java.util.NoSuchElementException;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final EmailService emailService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public RegistrationController(RegistrationService registrationService, EmailService emailService) {
         this.registrationService = registrationService;
+        this.emailService = emailService;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -51,6 +54,7 @@ public class RegistrationController {
 
     @PostMapping("/customers")
     @StaffOnly // Because now customer can be registered only by technician
+    //TODO is there a way to return ResponseEntity<UserOutputDto> and is it a bad practice to use ? sign.
     public ResponseEntity<?> registerCustomer(
             @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
             BindingResult bindingResult
@@ -60,11 +64,13 @@ public class RegistrationController {
 
         log.info("Parameters received - Customer: {}", customerRegistrationDto);
 
-        Customer customer = registrationService.createCustomer(customerRegistrationDto.name(),
+        CustomerAndPasswordServiceDto customerAndPasswordServiceDto = registrationService.createCustomer(customerRegistrationDto.name(),
                 customerRegistrationDto.email(),
-                customerRegistrationDto.password(),
                 customerRegistrationDto.phoneNumber());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customer.getId(), customer.getName(), customer.getEmail()));
+
+        emailService.sendCustomerRegistrationConfirmationEmail(customerAndPasswordServiceDto.customer().getEmail(), customerAndPasswordServiceDto.customer().getName(), customerAndPasswordServiceDto.password());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customerAndPasswordServiceDto.customer().getId(), customerAndPasswordServiceDto.customer().getName(),
+                customerAndPasswordServiceDto.customer().getEmail()));
     }
 
     @PostMapping("/staff")

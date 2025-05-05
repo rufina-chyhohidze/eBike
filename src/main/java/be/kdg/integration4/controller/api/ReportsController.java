@@ -41,7 +41,7 @@ public class ReportsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<TestLineDto>> testLines(@PathVariable("id") String id) {
-        BikeReport bikeReport = bikeReportService.getByIdWithTestlines(Long.valueOf(id));
+        BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(Long.valueOf(id));
         List<TestLineDto> testLines = bikeReport.getTestLines().stream()
                 .map(t -> new TestLineDto(
                         t.getId(),
@@ -58,7 +58,7 @@ public class ReportsController {
                         t.getEngineRPM(),
                         t.getEnginePower(),
                         t.getWheelPower(),
-                        t.getRolTroque(),
+                        t.getRolTorque(),
                         t.getLoadCell(),
                         t.getRol(),
                         t.getHorizontalInclinationSensor(),
@@ -77,18 +77,23 @@ public class ReportsController {
                 (long) test.getTestBenchNumber(),
                 test.getTestType(),
                 test.getEmailBikeOwner(),
-                test.getFrameNumber()
-        );
+                test.getFrameNumber(),
+                test.getVisualInspection(),
+                test.getFunctionalTest());
 
         Bike bike = bikeService.getByFrameNumber(test.getFrameNumber()).orElseThrow();
 
-        String id = testbenchApiService.startTest(test.getTestType(),
+        // Pass visual inspection data to the testbench API service (if required)
+        String id = testbenchApiService.startTest(
+                test.getTestType(),
                 bike.getAccCapacity(),
                 (int) Math.round(bike.getMaxSupport()),
                 bike.getEnginePowerMax(),
                 bike.getEnginePowerNominal(),
-                bike.getEngineTorque()).id();
+                bike.getEngineTorque()
+        ).id();
 
+        // Save the API request if necessary
         testbenchApiService.saveApiRequest(report, id);
         return ResponseEntity.ok(new TestIdDto(id));
     }

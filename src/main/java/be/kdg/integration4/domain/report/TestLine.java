@@ -30,7 +30,7 @@ public class TestLine {
     private Integer engineRPM;
     private Float enginePower;
     private Float wheelPower;
-    private Float rolTroque;
+    private Float rolTorque;
     private Float loadCell;
     private Float rol;
     private Float horizontalInclinationSensor;
@@ -53,7 +53,7 @@ public class TestLine {
         this.engineRPM = engineRPM;
         this.enginePower = enginePower;
         this.wheelPower = wheelPower;
-        this.rolTroque = rolTroque;
+        this.rolTorque = rolTroque;
         this.loadCell = loadCell;
         this.rol = rol;
         this.horizontalInclinationSensor = horizontalInclinationSensor;

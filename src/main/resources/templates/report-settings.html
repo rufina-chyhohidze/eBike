@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script th:src="@{/js/report-settings.js}" src="/static/js/report-settings.js" type="module"></script>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+<body class="bg-gray-50 h-full flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+    <div class="flex items-center mb-6">
+        <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+        <h1 class="text-2xl font-semibold">eVALeBike</h1>
+    </div>
+
+    <ul class="space-y-6 flex-1">
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-wrench"></i><a href="/technician/dashboard">Dashboard</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-play-circle"></i><a href="/technician/start-test">Start Test</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-user-plus"></i><a href="/technician/register-customer">Register Customer</a>
+        </li>
+        <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
+            <i class="ph ph-clipboard-text"></i><a href="/technician/report-settings">Report Settings</a>
+        </li>
+        <li class="mt-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 p-8 bg-white">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <i class="ph ph-clipboard-text"></i> Report Settings
+        </h2>
+
+        <form id="report-settings-form" class="space-y-6">
+            <div>
+                <label for="horizontalVibration" class="block mb-1 text-gray-700 font-medium">Horizontal Vibration Range (Hz)</label>
+                <input type="number" id="horizontalVibration" name="horizontalVibration" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter horizontal vibration range" required>
+            </div>
+
+            <div>
+                <label for="verticalVibration" class="block mb-1 text-gray-700 font-medium">Vertical Vibration Range (Hz)</label>
+                <input type="number" id="verticalVibration" name="verticalVibration" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter vertical vibration range" required>
+            </div>
+
+            <div id="form-message" style="margin-top: 1rem; font-weight: bold;"></div>
+
+            <div class="flex justify-end">
+                <button id="submit" type="button" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                    Update Settings
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

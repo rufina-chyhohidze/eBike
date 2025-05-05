@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Bike Inspection Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+<div class="container mt-4 mb-5" >
+  <h2 class="text-center mb-4">Bike Inspection Report</h2>
+
+  <div class="text-center mb-4">
+    <label for="compareId" class="form-label fw-bold">Compare With Report:</label>
+    <select id="compareId" name="compareId" class="form-select">
+      <option value="">–– None ––</option>
+      <option th:each="r : ${allReports}"
+              th:value="${r.id}"
+              th:text="${r.bike.frameNumber + ' – ' + r.reportDate}">
+      </option>
+    </select>
+    <button id="compareButton" class="btn btn-primary mt-3" disabled>Compare</button>
+  </div>
+
+  <form id="compareForm" th:action="@{/report/{id}(id=${id})}" method="get">
+    <input type="hidden" id="compareIdHidden" name="compareId" value="">
+  </form>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="bg-light p-2">Identification</h5>
+      <table class="table table-sm table-bordered text-center align-middle">
+        <thead class="table-light">
+        <tr>
+          <th class="text-start">Field</th>
+          <th>Main</th>
+          <th th:if="${compareReport != null}">Report #[[${compareReport.id}]]</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th class="text-start">Brand</th>
+          <td th:text="${bike.brand}">Brand</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.brand}"
+              th:classappend="${bike.brand != compareReport.bike.brand} ? 'table-warning' : ''">Brand</td>
+        </tr>
+        <tr>
+          <th class="text-start">Frame Number</th>
+          <td th:text="${bike.frameNumber}">Frame Number</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.frameNumber}"
+              th:classappend="${bike.frameNumber != compareReport.bike.frameNumber} ? 'table-warning' : ''">Frame Number</td>
+        </tr>
+        <!-- Repeat for each field -->
+        <tr>
+          <th class="text-start">Type</th>
+          <td th:text="${bike.type}">Type</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.type}"
+              th:classappend="${bike.type != compareReport.bike.type} ? 'table-warning' : ''">Type</td>
+        </tr>
+        <tr>
+          <th class="text-start">Registration Date</th>
+          <td th:text="${bike.registrationDate}">Registration Date</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.registrationDate}"
+              th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'table-warning' : ''">Date</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mb-4 border p-3">
+      <h5 class="bg-light p-2">Visual Inspection</h5>
+      <table class="table table-sm table-bordered text-center align-middle">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2" class="text-start">Component</th>
+          <th colspan="6">Main</th>
+          <th th:if="${compareReport != null}" colspan="6">Compare</th>
+        </tr>
+        <tr>
+          <th>Very Bad</th>
+          <th>Bad</th>
+          <th>Neutral</th>
+          <th>Good</th>
+          <th>Very Good</th>
+          <th>N/A</th>
+          <th th:if="${compareReport != null}">Very Bad</th>
+          <th th:if="${compareReport != null}">Bad</th>
+          <th th:if="${compareReport != null}">Neutral</th>
+          <th th:if="${compareReport != null}">Good</th>
+          <th th:if="${compareReport != null}">Very Good</th>
+          <th th:if="${compareReport != null}">N/A</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${bikeReport.visualInspection}">
+          <td class="text-start" th:text="${entry.key}">Component</td>
+
+          <!-- Main report columns -->
+          <td th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'VERY_GOOD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+
+          <!-- Compare report columns -->
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'VERY_BAD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'BAD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'NEUTRAL' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'GOOD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'VERY_GOOD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.visualInspection[entry.key]?.name() == 'NOT_APPLICABLE' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+
+    <!-- Test Summary -->
+    <div class="mb-4 border p-3">
+      <h5 class="bg-light p-2">Test Summary</h5>
+      <table class="table table-sm table-bordered text-center align-middle">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2">Test</th>
+          <th colspan="2">Result</th>
+          <th colspan="2">Deviation</th>
+          <th rowspan="2">Unit</th>
+        </tr>
+        <tr>
+          <th>Main</th>
+          <th th:if="${compareReport != null}">Compare</th>
+          <th>Main</th>
+          <th th:if="${compareReport != null}">Compare</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Max Motor Power</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxMotorPower, 1, 2)}">Max</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxMotorPower, 1, 2)}"
+              th:classappend="${overviewTest.maxMotorPower != overviewTestCo.maxMotorPower} ? 'table-warning' : ''"></td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.motorPowerDeviation, 1, 2)}">Dev</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.motorPowerDeviation, 1, 2)}"
+              th:classappend="${overviewTest.motorPowerDeviation != overviewTestCo.motorPowerDeviation} ? 'table-warning' : ''"></td>
+          <td>W</td>
+        </tr>
+        <tr>
+          <td>Max Torque</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxTorque, 1, 2)}">Max</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxTorque, 1, 2)}"
+              th:classappend="${overviewTest.maxTorque != overviewTestCo.maxTorque} ? 'table-warning' : ''"></td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.torqueDeviation, 1, 2)}">Dev</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.torqueDeviation, 1, 2)}"
+              th:classappend="${overviewTest.torqueDeviation != overviewTestCo.torqueDeviation} ? 'table-warning' : ''"></td>
+          <td>Nm</td>
+        </tr>
+        <tr>
+          <td>Max Support</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxSupport, 1, 2)}">Max</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxSupport, 1, 2)}"
+              th:classappend="${overviewTest.maxSupport != overviewTestCo.maxSupport} ? 'table-warning' : ''"></td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.supportDeviation, 1, 2)}">Dev</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.supportDeviation, 1, 2)}"
+              th:classappend="${overviewTest.supportDeviation != overviewTestCo.supportDeviation} ? 'table-warning' : ''"></td>
+          <td>%</td>
+        </tr>
+        <tr>
+          <td>Max Wheel Power</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxWheelPower, 1, 2)}">Max</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxWheelPower, 1, 2)}"
+              th:classappend="${overviewTest.maxWheelPower != overviewTestCo.maxWheelPower} ? 'table-warning' : ''"></td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.wheelPowerDeviation, 1, 2)}">Dev</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.wheelPowerDeviation, 1, 2)}"
+              th:classappend="${overviewTest.wheelPowerDeviation != overviewTestCo.wheelPowerDeviation} ? 'table-warning' : ''"></td>
+          <td>W</td>
+        </tr>
+        <tr>
+          <td><strong>Score</strong></td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.score, 1, 2)}">Score</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.score, 1, 2)}"
+              th:classappend="${overviewTest.score != overviewTestCo.score} ? 'table-warning' : ''"></td>
+          <td colspan="2"></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nominal Load Test -->
+    <div class="mb-4 border p-3">
+      <h5 class="bg-light p-2">Nominal Load Test</h5>
+      <table class="table table-sm text-center">
+        <thead class="table-light">
+        <tr>
+          <th>Test</th>
+          <th>Main</th>
+          <th th:if="${compareReport != null}">Compare</th>
+          <th>Unit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Continuous Load</td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.continuousLoad, 1, 2)}">Load</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.continuousLoad, 1, 2)}"
+              th:classappend="${nominalLoadTest.continuousLoad != nominalLoadTestCo.continuousLoad} ? 'table-warning' : ''"></td>
+          <td>W</td>
+        </tr>
+        <tr>
+          <td>Temperature Rise</td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.temperatureIncrease, 1, 2)}">Temp</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.temperatureIncrease, 1, 2)}"
+              th:classappend="${nominalLoadTest.temperatureIncrease != nominalLoadTestCo.temperatureIncrease} ? 'table-warning' : ''"></td>
+          <td>°C/Wh</td>
+        </tr>
+        <tr>
+          <td><strong>Score</strong></td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.score, 1, 2)}">Score</td>
+          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.score, 1, 2)}"
+              th:classappend="${nominalLoadTest.score != nominalLoadTestCo.score} ? 'table-warning' : ''"></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Battery Test -->
+    <div class="mb-4 border rounded shadow-sm p-3">
+      <h5 class="bg-light px-3 py-2 rounded">🔋 Battery Test</h5>
+      <table class="table table-sm text-center mt-3">
+        <thead class="table-light">
+        <tr>
+          <th>Test</th>
+          <th>Main Result</th>
+          <th>Comparison</th>
+          <th>Unit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Capacity</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.availableCapacity, 1, 2)}">Cap</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.availableCapacity, 1, 2) : '-'}">Co Cap</td>
+          <td>Wh</td>
+        </tr>
+        <tr>
+          <td>Battery Health</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Health</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Health</td>
+          <td>#</td>
+        </tr>
+        <tr class="fw-bold">
+          <td>Score</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.score, 1, 2)}">Score</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.score, 1, 2) : '-'}">Co Score</td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Bearing Health -->
+    <div class="mb-4 border rounded shadow-sm p-3">
+      <h5 class="bg-light px-3 py-2 rounded">⚙️ Bearing Health</h5>
+      <div class="row text-center fs-5 mt-3">
+        <div class="col">
+          <div class="text-muted">Main</div>
+          <div th:text="${bearingHealth.bearingStatus} == true ? '✔ Good' : '✖ Bad'" class="fw-semibold text-success">✔ Good</div>
+        </div>
+        <div class="col">
+          <div class="text-muted">Comparison</div>
+          <div th:if="${bearingHealthCo != null}"
+               th:text="${bearingHealthCo.bearingStatus} == true ? '✔ Good' : '✖ Bad'"
+               class="fw-semibold text-success">✔ Good</div>
+          <div th:if="${bearingHealthCo == null}" class="text-muted">-</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="mb-4 border p-3">
+      <h5 class="bg-light p-2">Functional Test</h5>
+      <table class="table table-sm table-bordered text-center align-middle">
+        <thead class="table-light">
+        <tr>
+          <th rowspan="2" class="text-start">Component</th>
+          <th colspan="3">Main</th>
+          <th th:if="${compareReport != null}" colspan="3">Compare</th>
+        </tr>
+        <tr>
+          <th>-</th><th>+</th><th>N/A</th>
+          <th th:if="${compareReport != null}">-</th>
+          <th th:if="${compareReport != null}">+</th>
+          <th th:if="${compareReport != null}">N/A</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${bikeReport.functionalTest}">
+          <td class="text-start" th:text="${entry.key}">Component</td>
+          <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+          <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.functionalTest[entry.key]?.name() == 'BAD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.functionalTest[entry.key]?.name() == 'GOOD' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.functionalTest[entry.key]?.name() == 'NOT_APPLICABLE' ? '✔' : ''}"
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center mt-4">
+      <a th:href="@{/report/{id}/detailed(id=${id})}" class="btn btn-outline-secondary">View Visual Report</a>
+    </div>
+
+
+
+  </div>
+</div>
+
+<script>
+  document.getElementById('compareId').addEventListener('change', function () {
+    const selectedId = this.value;
+    const currentUrl = new URL(window.location.href);
+    if (selectedId) {
+      currentUrl.searchParams.set('compareId', selectedId);
+    } else {
+      currentUrl.searchParams.delete('compareId');
+    }
+    window.location.href = currentUrl.toString();
+  });
+</script>
+
+</body>
+</html>
