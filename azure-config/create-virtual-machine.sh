@@ -43,6 +43,9 @@ ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/build/libs/" "team18@$VM_IP":/home/team18/libs
 scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/docker-compose.yml" "team18@$VM_IP":/home/team18/libs
 
+echo "app properties: "
+cat "$CI_PROJECT_DIR/src/main/resources/application.properties"
+echo "finished app properties"
 
 echo "Opening port"
 #az vm open-port --port 8080 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
