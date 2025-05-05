@@ -8,6 +8,8 @@ echo "Resource group created"
 echo "Setting up ssh keys"
 mkdir -p ~/.ssh
 echo "$PRIVATE_KEY" | base64 -d > ~/.ssh/azure
+chmod 600 ~/.ssh/azure
+
 echo "$PUBLIC_KEY" > ~/.ssh/azure.pub
 echo "Finished setting up ssh keys"
 
