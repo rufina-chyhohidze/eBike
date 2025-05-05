@@ -35,6 +35,9 @@ VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-integration4 --name 
 echo "IP address of vm created: $VM_IP"
 
 echo "Uploading app to the VM..."
+# Add the VM to known hosts
+ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
+
 scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/build/libs/" "team18@$VM_IP":/home/team18/libs
 
 
