@@ -45,7 +45,8 @@ scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/docker-compose.yml" "team18@$VM_IP":/hom
 
 
 echo "Opening port"
-az vm open-port --port 8080 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
+#az vm open-port --port 8080 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
+az vm open-port --port 80 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
 echo "Port opened"
 
 
