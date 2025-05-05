@@ -27,7 +27,7 @@ EOF
   return 0
 }
 
-if az vm show --name vm-team18-integration4 --resource-group rg-team18-integrations4 --query "name" -o tsv 2>/dev/null | grep -q . ; then
+if az vm list --resource-group rg-team18-integration4 --query "[].name" -o tsv | grep vm-team18-integration4 ; then
   echo "VM exists"
   deletePreviousProjectInVm
 else
@@ -110,7 +110,7 @@ echo "exited vm"
 
 echo "Setting duck dns domain..."
 curl "https://www.duckdns.org/update?domains=team18-integration4&token=b4bb4460-f9d0-42fc-a063-e1dbadd11014&ip=$VM_IP"
-echo "Domain set, you can now access the website on this domain: http://team18-integration4.duckdns.org"
+echo "Domain set, you can now access the website on this domain: http://team18-integration4.duckdns.org/login"
 
 echo "Finished pipeline"
 ```
