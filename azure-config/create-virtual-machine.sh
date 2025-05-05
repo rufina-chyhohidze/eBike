@@ -44,7 +44,7 @@ scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/build/libs/" "team18@$VM_IP":/home/team1
 scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/docker-compose.yml" "team18@$VM_IP":/home/team18/libs
 
 echo "Sending https certificates"
-scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/certificatestosend/*" "team18@$VM_IP":/home/team18/libs/certificates
+scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/certificatestosend/" "team18@$VM_IP":/home/team18/libs/certificates
 
 #echo "app properties: "
 #cat "$CI_PROJECT_DIR/src/main/resources/application.properties"
