@@ -31,7 +31,7 @@ az vm create --name vm-team18-integration4 \
 --tags 'ContactEmail=team18integration4@gmail.com'
 echo "Virtual Machine Created"
 
-VM_IP=$(az vm show --name vm-team18-integration4 --resource-group rg-team18-integration4 --query "publicIpAddress" -o tsv)
+VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-integration4 --name vm-team18-integration4 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 echo "IP address of vm created: $VM_IP"
 
 echo "Uploading app to the VM..."
