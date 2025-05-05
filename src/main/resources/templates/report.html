@@ -25,7 +25,7 @@
         <tbody>
         <tr>
           <th class="text-start">Brand</th>
-          <td th:text="${bike.brand}">Brand</td>
+          <td th:text="${bike.getBikeModel().brand}">Brand</td>
         </tr>
         <tr>
           <th class="text-start">Frame Number</th>
@@ -33,7 +33,7 @@
         </tr>
         <tr>
           <th class="text-start">Type</th>
-          <td th:text="${bike.type}">Type</td>
+          <td th:text="${bike.getBikeModel().type}">Type</td>
         </tr>
         <tr>
           <th class="text-start">Registration Date</th>
