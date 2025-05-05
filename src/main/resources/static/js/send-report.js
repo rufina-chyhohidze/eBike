@@ -11,6 +11,8 @@ async function sendReportToCustomer() {
     const response = await fetch(`/api/reports/${reportId}/customer`, {
         method: "POST",
         headers : {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             [csrfHeader]: csrfToken
         }
     });

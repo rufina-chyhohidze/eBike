@@ -85,7 +85,7 @@ public class EmailService {
     }
 
     public void sendReportURLToCustomer(long reportId) throws MessagingException {
-        BikeReport report = this.bikeReportRepository.findById(reportId).orElseThrow(() -> new EntityNotFoundException("Report with id " + reportId + " - NOT FOUND"));
+        BikeReport report = this.bikeReportRepository.findByIdWithCustomer(reportId).orElseThrow(() -> new EntityNotFoundException("Report with id " + reportId + " - NOT FOUND"));
         String html = String.format("""
                 <html>
                     <body>

@@ -1,10 +1,15 @@
 package be.kdg.integration4.controller.api.dtos;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
+import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -26,4 +31,12 @@ public class TestDto {
     @Size(min = 5, max = 20, message = "Frame number must be between 5 and 20 characters")
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "Frame number must contain only alphanumeric characters")
     private String frameNumber;
+
+    @NotNull(message = "Visual inspection is required")
+    private Map<VisualInspectionComponents, InspectionCondition> visualInspection;
+
+    @NotNull(message = "Visual inspection is required")
+    private Map<FunctionalTestComponents, InspectionCondition> functionalTest;
+
+
 }
