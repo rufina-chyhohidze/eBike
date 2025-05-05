@@ -11,18 +11,66 @@ const form = document.querySelector("form");
 const loadingDiv = document.getElementById("loading");
 const testFormDiv = document.getElementById("test-form");
 
+const existingBikeModel = document.getElementById("existing-bike-model");
+// const brandEl = document.getElementById("brand")
+// const maxSupportEl = document.getElementById("maxSupport")
+// const sizeEl = document.getElementById("bikeSize")
+// const typeEl = document.getElementById("type")
+// const powertrainEl = document.getElementById("powertrain")
+// const enginePowerMaxEl = document.getElementById("enginePowerMax")
+// const engineTorqueEl = document.getElementById("engineTorque")
+// const enginePowerNominalEl = document.getElementById("enginePowerNominal")
+// const gearTypeEl = document.getElementById("gearType")
+// const engineTypeEl = document.getElementById("engineType")
+const bikeModelsResponse = await fetch("/api/bike-models")
+let bikeModels = {}
+if (bikeModelsResponse.ok) {
+    bikeModels = await bikeModelsResponse.json();
+    bikeModels.map(model => existingBikeModel.innerHTML += `
+    <option id="${model.id}" value="${model.id}">${model.brand} - ${model.type}</option>
+    `)
+}
+
+const immutableFields = Array.from(document.getElementsByClassName("immutable"));
+existingBikeModel.addEventListener("change", function (e) {
+
+    if (existingBikeModel.value == 0) {
+        immutableFields.map(el => el.classList.remove("d-none"))
+    } else {
+        immutableFields.map(el => el.classList.add("d-none"))
+    }
+})
 
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // Submit the form
     const formData = new FormData(form);
     const jsonData = {};
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
+
     jsonData["bikeOwnerId"] = document.getElementById("bikeOwnerId-form").value;
-    console.log(jsonData)
+
+    // Override fields from selected bike model if not "0"
+    const selectedModelId = existingBikeModel.value;
+    if (selectedModelId != "0") {
+        const selectedModel = bikeModels.find(model => model.id.toString() === selectedModelId);
+        if (selectedModel) {
+            jsonData["type"] = selectedModel.type;
+            jsonData["brand"] = selectedModel.brand;
+            jsonData["bikeSize"] = selectedModel.bikeSize;
+            jsonData["gearType"] = selectedModel.gearType;
+            jsonData["engineType"] = selectedModel.engineType;
+            jsonData["powertrain"] = selectedModel.powertrain;
+            jsonData["maxSupport"] = selectedModel.maxSupport;
+            jsonData["enginePowerMax"] = selectedModel.enginePowerMax;
+            jsonData["enginePowerNominal"] = selectedModel.enginePowerNominal;
+            jsonData["engineTorque"] = selectedModel.engineTorque;
+        }
+    }
+
+    console.log(jsonData);
 
     const response = await fetch("/api/bikes", {
         method: "POST",
@@ -36,7 +84,6 @@ form.addEventListener("submit", async function (e) {
 
     if (response.ok) {
         console.log("Bike successfully saved");
-        // close modal - bike creation modal should be closed when bike successfully created
         const bikeModalCloseButton = document.getElementById("close-modal-bike-creation");
         bikeModalCloseButton.click();
 
@@ -87,6 +134,8 @@ function retrieveReport(id) {
         const loadingSection = document.getElementById("loading")
         const testIdElement = document.getElementById("testId")
         const reportLinkElement = document.getElementById("report-link");
+        const customerEmailBtnElement = document.getElementById("customerEmailBtn");
+        customerEmailBtnElement.id = reportId;
         reportLinkElement.href= "/report/"+reportId;
         testIdElement.value = reportId
         qrcodeGenerator();

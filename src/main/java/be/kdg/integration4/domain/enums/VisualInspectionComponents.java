@@ -25,8 +25,7 @@ public enum VisualInspectionComponents {
     SADDLE
     */;
 
-    @Override
-    public String toString() {
+    public String getDisplayName() {
         String[] parts = name().toLowerCase().split("_");
         StringBuilder sb = new StringBuilder();
         for (String part : parts) {

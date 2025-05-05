@@ -1,6 +1,8 @@
 package be.kdg.integration4.service.interfaces;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.TestLine;
@@ -28,7 +30,7 @@ public interface BikeReportService {
 
     BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection);
 
-    BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest);
+    BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest);
 
     BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId);
 

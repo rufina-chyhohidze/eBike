@@ -1,8 +1,10 @@
 package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.config.security.SecurityUtil;
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -84,12 +86,12 @@ public class BikeReportServiceImpl implements BikeReportService {
         double measuredMaxTorque = testLines.stream().mapToDouble(TestLine::getRolTorque).max().orElse(0);
         double measuredMaxWheelPower = testLines.stream().mapToDouble(TestLine::getWheelPower).max().orElse(0);
 
-        double calculatedMaxSupport = (bike.getMaxSupport() * bike.getEnginePowerMax()) / measuredMaxEnginePower;
+        double calculatedMaxSupport = (bike.getBikeModel().getMaxSupport() * bike.getBikeModel().getEnginePowerMax()) / measuredMaxEnginePower;
 
-        double deviationEnginePower = ((measuredMaxEnginePower - bike.getEnginePowerMax()) / bike.getEnginePowerMax()) * 100;
-        double deviationTorque = ((measuredMaxTorque - bike.getEngineTorque()) / bike.getEngineTorque()) * 100;
-        double deviationMaxSupport = ((calculatedMaxSupport - bike.getMaxSupport()) / bike.getMaxSupport()) * 100;
-        double deviationWheelPower = ((measuredMaxWheelPower - bike.getEnginePowerMax()) / bike.getEnginePowerMax()) * 100;
+        double deviationEnginePower = ((measuredMaxEnginePower - bike.getBikeModel().getEnginePowerMax()) / bike.getBikeModel().getEnginePowerMax()) * 100;
+        double deviationTorque = ((measuredMaxTorque - bike.getBikeModel().getEngineTorque()) / bike.getBikeModel().getEngineTorque()) * 100;
+        double deviationMaxSupport = ((calculatedMaxSupport - bike.getBikeModel().getMaxSupport()) / bike.getBikeModel().getMaxSupport()) * 100;
+        double deviationWheelPower = ((measuredMaxWheelPower - bike.getBikeModel().getEnginePowerMax()) / bike.getBikeModel().getEnginePowerMax()) * 100;
 
         double averageDeviation = (deviationEnginePower + deviationTorque + deviationMaxSupport + deviationWheelPower) / 4.0;
         double overviewScore = 100 - Math.abs(averageDeviation);
@@ -148,9 +150,18 @@ public class BikeReportServiceImpl implements BikeReportService {
             return null;
         }
 
-        double availableCapacity = testLines.stream()
-                .mapToDouble(r -> r.getBatteryVoltage() * r.getBatteryCurrent() / 3600)
-                .sum();
+        double availableCapacity = 0.0;
+        for (int i = 1; i < testLines.size(); i++) {
+            var prev = testLines.get(i - 1);
+            var curr = testLines.get(i);
+
+            double avgPower = (prev.getBatteryVoltage() * prev.getBatteryCurrent() +
+                    curr.getBatteryVoltage() * curr.getBatteryCurrent()) / 2.0;
+
+            Duration duration = Duration.between(prev.getDateTime(), curr.getDateTime());
+            double durationHours = duration.toMillis() / 3600000.0;
+            availableCapacity += avgPower * durationHours;
+        }
 
         Double bikeBatteryCapacity = (double) report.getBike().getAccCapacity();
 
@@ -255,14 +266,14 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
     @Override
-    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest) {
-        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
+    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest) {
+        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
     }
 
     @Override
     public BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId) {
         BikeReport bikeReport = bikeReportRepository.findById(id).orElseThrow();
-        bikeReport.setBike(bikeRepository.findBikeByFrameNumber(chassisNumber).orElseThrow());
+        bikeReport.setBike(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElseThrow());
         bikeReport.setReportDate(reportDate);
         bikeReport.setScore(score);
         bikeReport.setTechnician(technicianRepository.findByEmail(technician));

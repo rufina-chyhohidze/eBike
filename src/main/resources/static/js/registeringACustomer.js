@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.status === 201) {
                 showMessage("Registration successful! Redirecting to dashboard...", "green");
                 setTimeout(() => {
-                    window.location.href = "/technocian/dashboard";
+                    window.location.href = "/technician/dashboard";
                 }, 1500);
             } else {
                 const error = await response.text();

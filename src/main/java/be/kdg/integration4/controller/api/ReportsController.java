@@ -95,10 +95,10 @@ public class ReportsController {
         String id = testbenchApiService.startTest(
                 test.getTestType(),
                 bike.getAccCapacity(),
-                (int) Math.round(bike.getMaxSupport()),
-                bike.getEnginePowerMax(),
-                bike.getEnginePowerNominal(),
-                bike.getEngineTorque()
+                (int) Math.round(bike.getBikeModel().getMaxSupport()),
+                bike.getBikeModel().getEnginePowerMax(),
+                bike.getBikeModel().getEnginePowerNominal(),
+                bike.getBikeModel().getEngineTorque()
         ).id();
 
         // Save the API request if necessary

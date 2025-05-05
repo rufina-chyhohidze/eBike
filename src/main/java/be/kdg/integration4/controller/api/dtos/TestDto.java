@@ -1,7 +1,9 @@
 package be.kdg.integration4.controller.api.dtos;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,11 +32,11 @@ public class TestDto {
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "Frame number must contain only alphanumeric characters")
     private String frameNumber;
 
-//    @NotNull(message = "Visual inspection is required")
-    private Map<String, InspectionCondition> visualInspection;
+    //@NotNull(message = "Visual inspection is required")
+    private Map<VisualInspectionComponents, InspectionCondition> visualInspection;
 
-//    @NotNull(message = "Visual inspection is required")
-    private Map<String, InspectionCondition> functionalTest;
+    //@NotNull(message = "Visual inspection is required")
+    private Map<FunctionalTestComponents, InspectionCondition> functionalTest;
 
 
 }

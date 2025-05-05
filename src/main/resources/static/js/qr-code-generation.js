@@ -1,7 +1,7 @@
 export default function qrcodeGenerator() {
     const idElement = document.getElementById("testId");
 
-    const url = `http://localhost:8080/report/${idElement.value}`;
+    const url = `http://team18-integration4.duckdns.org/report/${idElement.value}`;
 
     const qr = qrcode(0, 'L');
     qr.addData(url);
