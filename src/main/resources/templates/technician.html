@@ -121,7 +121,12 @@
                 <i class="ph ph-user-plus"></i> Register a customer
             </a>
         </div>
-        <input class="p-2 border border-gray-300 rounded-lg w-full mb-4" type="text" id="searchCustomerInput" placeholder="Enter Customer ID or Name">
+        <form method="get" th:action="@{/technician/dashboard}" class="mb-4">
+            <input class="p-2 border border-gray-300 rounded-lg w-full"
+                   type="text" name="filter" placeholder="Enter Customer ID or Name"
+                   th:value="${filter}">
+        </form>
+
         <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-100 text-gray-700">
@@ -132,6 +137,11 @@
             </tr>
             </thead>
             <tbody>
+            <tr th:if="${#lists.isEmpty(customers)}">
+                <td colspan="4" class="text-center text-gray-500 py-4">
+                    No customers found matching your search.
+                </td>
+            </tr>
             <tr th:each="customer : ${customers}" class="bg-white border-b">
                 <td th:text="${customer.id}" class="p-3"></td>
                 <td th:text="${customer.name}" class="p-3"></td>
