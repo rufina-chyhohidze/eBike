@@ -86,12 +86,12 @@ public class BikeReportServiceImpl implements BikeReportService {
         double measuredMaxTorque = testLines.stream().mapToDouble(TestLine::getRolTorque).max().orElse(0);
         double measuredMaxWheelPower = testLines.stream().mapToDouble(TestLine::getWheelPower).max().orElse(0);
 
-        double calculatedMaxSupport = (bike.getMaxSupport() * bike.getEnginePowerMax()) / measuredMaxEnginePower;
+        double calculatedMaxSupport = (bike.getBikeModel().getMaxSupport() * bike.getBikeModel().getEnginePowerMax()) / measuredMaxEnginePower;
 
-        double deviationEnginePower = ((measuredMaxEnginePower - bike.getEnginePowerMax()) / bike.getEnginePowerMax()) * 100;
-        double deviationTorque = ((measuredMaxTorque - bike.getEngineTorque()) / bike.getEngineTorque()) * 100;
-        double deviationMaxSupport = ((calculatedMaxSupport - bike.getMaxSupport()) / bike.getMaxSupport()) * 100;
-        double deviationWheelPower = ((measuredMaxWheelPower - bike.getEnginePowerMax()) / bike.getEnginePowerMax()) * 100;
+        double deviationEnginePower = ((measuredMaxEnginePower - bike.getBikeModel().getEnginePowerMax()) / bike.getBikeModel().getEnginePowerMax()) * 100;
+        double deviationTorque = ((measuredMaxTorque - bike.getBikeModel().getEngineTorque()) / bike.getBikeModel().getEngineTorque()) * 100;
+        double deviationMaxSupport = ((calculatedMaxSupport - bike.getBikeModel().getMaxSupport()) / bike.getBikeModel().getMaxSupport()) * 100;
+        double deviationWheelPower = ((measuredMaxWheelPower - bike.getBikeModel().getEnginePowerMax()) / bike.getBikeModel().getEnginePowerMax()) * 100;
 
         double averageDeviation = (deviationEnginePower + deviationTorque + deviationMaxSupport + deviationWheelPower) / 4.0;
         double overviewScore = 100 - Math.abs(averageDeviation);
@@ -273,7 +273,7 @@ public class BikeReportServiceImpl implements BikeReportService {
     @Override
     public BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId) {
         BikeReport bikeReport = bikeReportRepository.findById(id).orElseThrow();
-        bikeReport.setBike(bikeRepository.findBikeByFrameNumber(chassisNumber).orElseThrow());
+        bikeReport.setBike(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElseThrow());
         bikeReport.setReportDate(reportDate);
         bikeReport.setScore(score);
         bikeReport.setTechnician(technicianRepository.findByEmail(technician));

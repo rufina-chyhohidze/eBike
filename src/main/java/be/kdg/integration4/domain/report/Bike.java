@@ -2,10 +2,7 @@ package be.kdg.integration4.domain.report;
 
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.profile.Customer;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,51 +21,36 @@ public class Bike implements Comparable<Bike> {
     @JoinColumn(name = "bike_owner_id", nullable = false)
     private Customer bikeOwner;
 
-    private String type;
-
-    private String brand;
-
     private LocalDateTime registrationDate;
 
     private LocalDate productionDate;
 
-    private BikeSize bikeSize;
-
     private int milleage;
-
-    private String gearType;
-
-    private String engineType;
-
-    private String powertrain;
 
     private int accCapacity;
 
-    private double maxSupport;
-
-    private int enginePowerMax;
-
-    private int enginePowerNominal;
-
-    private int engineTorque;
+    @ManyToOne
+    private BikeModel bikeModel;
 
     public Bike(String frameNumber, Customer bikeOwner, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
         this.frameNumber = frameNumber;
         this.bikeOwner = bikeOwner;
-        this.type = type;
-        this.brand = brand;
+        BikeModel bikeModel = new BikeModel();
+        bikeModel.setType(type);
+        bikeModel.setBrand(brand);
         this.registrationDate = registrationDate;
         this.productionDate = productionDate;
-        this.bikeSize = bikeSize;
+        bikeModel.setBikeSize(bikeSize);
         this.milleage = milleage;
-        this.gearType = gearType;
-        this.engineType = engineType;
-        this.powertrain = powertrain;
+        bikeModel.setGearType(gearType);
+        bikeModel.setEngineType(engineType);
+        bikeModel.setPowertrain(powertrain);
         this.accCapacity = accCapacity;
-        this.maxSupport = maxSupport;
-        this.enginePowerMax = enginePowerMax;
-        this.enginePowerNominal = enginePowerNominal;
-        this.engineTorque = engineTorque;
+        bikeModel.setMaxSupport(maxSupport);
+        bikeModel.setEnginePowerMax(enginePowerMax);
+        bikeModel.setEnginePowerNominal(enginePowerNominal);
+        bikeModel.setEngineTorque(engineTorque);
+        this.bikeModel = bikeModel;
     }
 
     @Override

@@ -52,9 +52,9 @@
         <tbody>
         <tr>
           <th class="text-start">Brand</th>
-          <td th:text="${bike.brand}">Brand</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.brand}"
-              th:classappend="${bike.brand != compareReport.bike.brand} ? 'table-warning' : ''">Brand</td>
+          <td th:text="${bike.getBikeModel().brand}">Brand</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().brand}"
+              th:classappend="${bike.getBikeModel().brand != compareReport.bike.getBikeModel().brand} ? 'table-warning' : ''">Brand</td>
         </tr>
         <tr>
           <th class="text-start">Frame Number</th>
@@ -64,9 +64,9 @@
         </tr>
         <tr>
           <th class="text-start">Type</th>
-          <td th:text="${bike.type}">Type</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.type}"
-              th:classappend="${bike.type != compareReport.bike.type} ? 'table-warning' : ''">Type</td>
+          <td th:text="${bike.getBikeModel().type}">Type</td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().type}"
+              th:classappend="${bike.getBikeModel().type != compareReport.bike.getBikeModel().type} ? 'table-warning' : ''">Type</td>
         </tr>
         <tr>
           <th class="text-start">Registration Date</th>
