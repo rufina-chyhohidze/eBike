@@ -19,7 +19,7 @@ public record BikeDto(
         @NotBlank(message = "Brand is required")
         String brand,
 
-        @NotNull(message = "Registration date is required")
+//        @NotNull(message = "Registration date is required")
         @PastOrPresent(message = "Registration date must be in the past or present")
         LocalDate registrationDate,
 

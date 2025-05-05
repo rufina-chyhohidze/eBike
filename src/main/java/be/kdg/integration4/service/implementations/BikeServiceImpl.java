@@ -2,10 +2,11 @@ package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.enums.BikeSize;
+import be.kdg.integration4.domain.report.BikeModel;
+import be.kdg.integration4.repository.BikeModelRepository;
 import be.kdg.integration4.repository.BikeRepository;
 import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.service.interfaces.BikeService;
-import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +19,23 @@ import java.util.Set;
 @Service
 public class BikeServiceImpl implements BikeService {
     private final BikeRepository bikeRepository;
+    private final BikeModelRepository bikeModelRepository;
     private final CustomerRepository customerRepository;
 
-    public BikeServiceImpl(BikeRepository bikeRepository, CustomerRepository customerRepository) {
+    public BikeServiceImpl(BikeRepository bikeRepository, BikeModelRepository bikeModelRepository, CustomerRepository customerRepository) {
         this.bikeRepository = bikeRepository;
+        this.bikeModelRepository = bikeModelRepository;
         this.customerRepository = customerRepository;
     }
 
     @Override
     public Optional<Bike> getByFrameNumber(String frameNumber) {
-         return bikeRepository.findBikeByFrameNumber(frameNumber);
+         return bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber);
     }
 
     @Override
     public Set<Bike> getAllByOwnerId(Long ownerId) {
-        return this.bikeRepository.findBikesByBikeOwnerId(ownerId);
+        return this.bikeRepository.findBikesWithBikeModelByBikeOwnerId(ownerId);
     }
 
     @Override
@@ -43,12 +46,18 @@ public class BikeServiceImpl implements BikeService {
     @Override
     public void save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
         Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
+        bikeModelRepository.save(bike.getBikeModel());
         bikeRepository.save(bike);
     }
 
     @Override
     public void delete(String frameNumber) {
         bikeRepository.delete(getByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
+    }
+
+    @Override
+    public List<BikeModel> getAllBikeModels() {
+        return bikeModelRepository.findAll();
     }
 
 

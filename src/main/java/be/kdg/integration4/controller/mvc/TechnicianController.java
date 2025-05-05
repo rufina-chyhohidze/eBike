@@ -2,15 +2,20 @@ package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
-import be.kdg.integration4.domain.enums.BikeSize;
-import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.domain.report.ReportSetting;
+import be.kdg.integration4.service.implementations.ReportSettingServiceImpl;
+import be.kdg.integration4.service.implementations.TechnicianServiceImpl;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import be.kdg.integration4.service.interfaces.ReportSettingService;
 import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,16 +30,20 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/technician")
 public class TechnicianController {
-    private final List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
-    private final List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
+    List<BikeSize> sizes = Arrays.stream(BikeSize.values()).toList();
+    List<TestType> testTypes = Arrays.stream(TestType.values()).toList();
+    List<InspectionCondition> conditions = Arrays.stream(InspectionCondition.values()).toList();
+
     private final TechnicianService technicianService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
+    private final ReportSettingService reportSettingService;
 
-    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService) {
+    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, ReportSettingService reportSettingService) {
         this.technicianService = technicianService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
+        this.reportSettingService = reportSettingService;
     }
 
     @GetMapping("/dashboard")
@@ -66,6 +75,9 @@ public class TechnicianController {
     public String startTest(Model model) {
         model.addAttribute("bikeSizes", sizes);
         model.addAttribute("testTypes", testTypes);
+        model.addAttribute("conditions", conditions);
+        model.addAttribute("visualComponents", VisualInspectionComponents.values());
+        model.addAttribute("functionalComponents", FunctionalTestComponents.values());
         return "start-test";
     }
 
@@ -74,6 +86,21 @@ public class TechnicianController {
     public String testSuccess(@PathVariable long id, Model model) {
         model.addAttribute("id",id);
         return "test-success";
+    }
+
+    @GetMapping("/report-settings")
+    public String getReportSettingsPage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String loggedInEmail = authentication.getName();
+
+        Technician technician = technicianService.getByEmail(loggedInEmail);
+
+        ReportSetting reportSetting = reportSettingService.getReportSettingsForTechnician(technician);
+
+        model.addAttribute("reportSetting", reportSetting);
+
+        return "report-settings"; // This is the Thymeleaf template for the settings page
     }
 
     @GetMapping("/register-customer")
