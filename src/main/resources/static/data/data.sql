@@ -19,9 +19,25 @@ VALUES ('John Doe', 'customer@email.com', '$2a$12$8kZmT8ZhlW9v3BH8azVAFOYitx65Sz
 INSERT INTO profile (name, email, password, approved, dtype)
 VALUES ('Super John', 'superadmin@email.com', '$2a$12$d.M7PL2WzgPBZ7c9yHz9FOYj8pNfFb0mILrqd56Qm5FChA7mQMn/m', true, 'SystemAdmin');
 
-INSERT INTO bike (acc_capacity, bike_size, engine_power_max, engine_power_nominal, engine_torque, max_support, milleage, production_date, bike_owner_id, registration_date, brand, engine_type, frame_number, gear_type, powertrain, type)
-VALUES (250, 5, 400, 300, 500, 300, 1234, NOW(), 3, NOW(), 'TOYOTA', 'VOLVO', 'X45FERF', 'GEAR', 'POWERTRAIN', 'PRO');
+-- Insert into bike_model (must be done before referencing in bike)
+INSERT INTO bike_model (
+    id, type, brand, bike_size, gear_type, engine_type, powertrain,
+    max_support, engine_power_max, engine_power_nominal, engine_torque
+)
+VALUES (
+           1000000, 'PRO', 'TOYOTA', 1, 'GEAR', 'VOLVO', 'POWERTRAIN',
+           300, 400, 300, 500
+       );
 
+-- Insert into bike (frame_number as primary key, link to bike_model and customer)
+INSERT INTO bike (
+    frame_number, bike_owner_id, registration_date, production_date,
+    milleage, acc_capacity, bike_model_id
+)
+VALUES (
+           'X45FERF', 3, '2024-01-01 10:00:00', '2024-01-01',
+           1234, 250, 1000000
+       );
 INSERT INTO report_setting (technician_id, horizontal_vibration, vertical_vibration)
 VALUES
     (2, 1, 1)

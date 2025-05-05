@@ -110,7 +110,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Create new bike</h4>
         </div>
         <div class="modal-body">
             <!-- Form -->
@@ -120,23 +120,26 @@
                 <div class="col-md-4">
                     <input name="bikeOwnerId" type="hidden" value="-1" id="bikeOwnerId-form">
 
-
+                    <label for="existing-bike-model">Select bike model</label>
+                    <select id="existing-bike-model">
+                        <option value="0" selected>Create new</option>
+                    </select>
                   <label>Chassis Number</label>
                   <input name="frameNumber" type="text" class="form-control" placeholder="VG2304K5111">
 
-                  <label>Bike Brand</label>
-                  <input name="brand" type="text" class="form-control" placeholder="Gazelle">
+                  <label class="immutable">Bike Brand</label>
+                  <input name="brand" id="brand" type="text" class="form-control immutable" placeholder="Gazelle">
 
                   <label>Production Date</label>
                   <input name="productionDate" type="date" class="form-control" placeholder="2020-01-01">
 
-                  <label>Max Support (%)</label>
-                  <input name="maxSupport" type="number" class="form-control" placeholder="340">
+                  <label class="immutable">Max Support (%)</label>
+                  <input name="maxSupport" id="maxSupport" type="number" class="form-control immutable" placeholder="340">
                 </div>
 
                 <div class="col-md-4">
-                  <label>Bike Size</label>
-                  <select name="bikeSize" class="form-control">
+                  <label class="immutable">Bike Size</label>
+                  <select name="bikeSize" id="bikeSize" class="form-control immutable">
                      <option value="" selected disabled>Choose size...</option>
                      <option value="XXS">XXS</option>
                      <option value="XS">XS</option>
@@ -148,17 +151,17 @@
                      <option value="XXXL">XXXL</option>
                   </select>
 
-                  <label>Type</label>
-                  <input name="type" type="text" class="form-control" placeholder="Ultimate C380">
+                  <label class="immutable">Type</label>
+                  <input name="type" type="text" id="type" class="form-control immutable" placeholder="Ultimate C380">
 
-                  <label>Powertrain</label>
-                  <input name="powertrain" type="text" class="form-control" value="Belt">
+                  <label class="immutable">Powertrain</label>
+                  <input name="powertrain" type="text" id="powertrain" class="form-control immutable" value="Belt">
 
-                  <label>Engine Power - Max (W)</label>
-                  <input name="enginePowerMax" type="number" class="form-control" placeholder="600">
+                  <label class="immutable">Engine Power - Max (W)</label>
+                  <input name="enginePowerMax" type="number" id="enginePowerMax" class="form-control immutable" placeholder="600">
 
-                  <label>Engine Torque (Nm)</label>
-                  <input name="engineTorque" type="number" class="form-control" placeholder="85">
+                  <label class="immutable">Engine Torque (Nm)</label>
+                  <input name="engineTorque" type="number" id="engineTorque" class="form-control immutable" placeholder="85">
                 </div>
 
                 <div class="col-md-4">
@@ -168,14 +171,14 @@
                   <label>Accu Capacity (Wh)</label>
                   <input name="accCapacity" type="number" class="form-control" placeholder="500">
 
-                  <label>Engine Power - Nominal (W)</label>
-                  <input name="enginePowerNominal" type="number" class="form-control" placeholder="250">
+                  <label class="immutable">Engine Power - Nominal (W)</label>
+                  <input name="enginePowerNominal" type="number" class="form-control immutable" placeholder="250">
 
-                  <label>Gear Type</label>
-                  <input name="gearType" type="text" class="form-control" placeholder="Enviolo">
+                  <label class="immutable">Gear Type</label>
+                  <input name="gearType" type="text" class="form-control immutable" placeholder="Enviolo">
 
-                  <label>Engine Type</label>
-                  <input name="engineType" type="text" class="form-control" placeholder="Bosch Performance Speed">
+                  <label class="immutable">Engine Type</label>
+                  <input name="engineType" type="text" class="form-control immutable" placeholder="Bosch Performance Speed">
                 </div>
               </div>
 
