@@ -4,10 +4,18 @@ stages:
   - build
   - test
 
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  DB_USER: dev
+  DB_PASSWORD: bike
+  DB_NAME: ebike_test
+
 build:
   stage: build
   script:
+    - echo "========== BUILD STAGE =========="
     - gradle clean build -x test
+    - echo "Build completed successfully."
   artifacts:
     paths:
       - build/libs/*.jar
@@ -18,16 +26,30 @@ test:
     - name: postgres:17.2-alpine
       alias: db
   variables:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ebike_test
-    SPRING_DATASOURCE_USERNAME: dev
-    SPRING_DATASOURCE_PASSWORD: bike
+    POSTGRES_DB: $DB_NAME
+    POSTGRES_USER: $DB_USER
+    POSTGRES_PASSWORD: $DB_PASSWORD
     SPRING_PROFILES_ACTIVE: test
+    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
+    SPRING_DATASOURCE_USERNAME: $DB_USER
+    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
   script:
+    - echo "========== TEST STAGE =========="
+    - echo "Waiting 15s for Postgres to be ready..."
+    - sleep 15
+    - echo "Testing with DB URL: $SPRING_DATASOURCE_URL"
     - gradle test
   artifacts:
     when: always
     reports:
       junit: build/test-results/test/TEST-*.xml
+
+
+
+
+
+
+# i need:
 
 
 #stages:
