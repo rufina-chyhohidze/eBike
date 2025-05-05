@@ -96,6 +96,7 @@ echo "Domain set, you can now access the website on this domain: http://team18-i
 echo "Finished pipeline"
 
 ```
+sudo ss -tuln | grep :443
 
 
 
