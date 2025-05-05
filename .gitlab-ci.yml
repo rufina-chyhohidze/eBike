@@ -3,6 +3,7 @@ image: gradle:8.5-jdk21
 stages:
   - build
   - test
+  - deploy
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -10,7 +11,7 @@ variables:
   DB_PASSWORD: bike
   DB_NAME: ebike_test
 
-build:
+build_application:
   stage: build
   script:
     - echo "========== BUILD STAGE =========="
@@ -20,7 +21,7 @@ build:
     paths:
       - build/libs/*.jar
 
-test:
+test_application:
   stage: test
   services:
     - name: postgres:17.2-alpine
@@ -45,6 +46,15 @@ test:
     reports:
       junit: build/test-results/test/TEST-*.xml
 
+deploy_application:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli
+  script:
+    - echo "🔐 Logging into Azure..."
+    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
+    - az account show && echo "✅ Azure login successful"
+    - chmod +x ./azure-config/create-virtual-machine.sh
+    - ./azure-config/create-virtual-machine.sh
 
 
 
