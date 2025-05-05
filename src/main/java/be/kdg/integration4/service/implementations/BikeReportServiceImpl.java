@@ -1,8 +1,10 @@
 package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.config.security.SecurityUtil;
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -148,9 +150,18 @@ public class BikeReportServiceImpl implements BikeReportService {
             return null;
         }
 
-        double availableCapacity = testLines.stream()
-                .mapToDouble(r -> r.getBatteryVoltage() * r.getBatteryCurrent() / 3600)
-                .sum();
+        double availableCapacity = 0.0;
+        for (int i = 1; i < testLines.size(); i++) {
+            var prev = testLines.get(i - 1);
+            var curr = testLines.get(i);
+
+            double avgPower = (prev.getBatteryVoltage() * prev.getBatteryCurrent() +
+                    curr.getBatteryVoltage() * curr.getBatteryCurrent()) / 2.0;
+
+            Duration duration = Duration.between(prev.getDateTime(), curr.getDateTime());
+            double durationHours = duration.toMillis() / 3600000.0;
+            availableCapacity += avgPower * durationHours;
+        }
 
         Double bikeBatteryCapacity = (double) report.getBike().getAccCapacity();
 
@@ -255,7 +266,7 @@ public class BikeReportServiceImpl implements BikeReportService {
 
 
     @Override
-    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest) {
+    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest) {
         return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumber(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
     }
 

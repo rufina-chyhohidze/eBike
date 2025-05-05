@@ -1,7 +1,9 @@
 package be.kdg.integration4.controller.api.dtos;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,10 +33,10 @@ public class TestDto {
     private String frameNumber;
 
     @NotNull(message = "Visual inspection is required")
-    private Map<String, InspectionCondition> visualInspection;
+    private Map<VisualInspectionComponents, InspectionCondition> visualInspection;
 
     @NotNull(message = "Visual inspection is required")
-    private Map<String, InspectionCondition> functionalTest;
+    private Map<FunctionalTestComponents, InspectionCondition> functionalTest;
 
 
 }
