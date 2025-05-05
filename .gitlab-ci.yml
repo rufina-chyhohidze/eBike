@@ -1,34 +1,29 @@
+image: gradle:8.5-jdk21
+
 stages:
   - build
   - test
 
-build_stage:
+build:
   stage: build
-  image: gradle:8.5-jdk21
   script:
-    - echo "Build app"
-    - ./gradlew clean build -x test
-    - echo "Finished building stage"
+    - gradle clean build -x test
   artifacts:
     paths:
       - build/libs/*.jar
 
 test:
   stage: test
-  image: gradle:8.5-jdk21
   services:
     - name: postgres:17.2-alpine
       alias: db
   variables:
-    # point your test profile at the CI “db” service
     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ebike_test
     SPRING_DATASOURCE_USERNAME: dev
     SPRING_DATASOURCE_PASSWORD: bike
     SPRING_PROFILES_ACTIVE: test
   script:
-    - echo "Testing..."
-    - ./gradlew test
-    - echo "Finished testing..."
+    - gradle test
   artifacts:
     when: always
     reports:
