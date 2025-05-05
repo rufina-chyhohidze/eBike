@@ -1,6 +1,11 @@
 const ctx1 = document.getElementById('testsChart').getContext('2d');
 const ctx2 = document.getElementById('clientsChart').getContext('2d');
 
+const searchCustomerInput = document.getElementById('searchCustomerInput');
+searchCustomerInput.addEventListener("input", () => {
+
+});
+
 new Chart(ctx1, {
     type: 'line',
     data: {

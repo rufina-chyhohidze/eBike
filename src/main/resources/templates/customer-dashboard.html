@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="../static/js/customer.js" th:src="@{/js/customer.js}" type="module"></script>
+</head>
+<body class="bg-gray-50 h-full flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+    <!-- LOGO -->
+    <div class="flex items-center mb-6">
+        <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+        <h1 class="text-2xl font-semibold">eVALeBike</h1>
+    </div>
+
+    <ul class="space-y-6 flex-1">
+        <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
+            <i class="ph ph-house"></i><a href="/customer/dashboard">Dashboard</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+            <i class="ph ph-clipboard-text"></i><a href="/customer/reports">My Reports</a>
+        </li>
+        <li class="mt-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</aside>
+
+<!-- DASHBOARD -->
+<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
+    <!-- CUSTOMER INFO -->
+    <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
+        <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Customer" class="w-24 h-24 rounded-full border-2 border-gray-300">
+        <div>
+            <h2 class="text-2xl font-semibold text-gray-800" th:text="${customer.name}"></h2>
+            <p class="text-gray-600">Customer</p>
+            <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>
+        </div>
+    </div>
+
+    <!-- CUSTOMER STATS -->
+    <div class="col-span-2 grid grid-cols-2 gap-6">
+        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+            <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Bikes</h3>
+            <p class="text-3xl font-bold text-purple-500" th:text="${totalBikes}"></p>
+        </div>
+        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+            <h3 class="text-xl font-semibold mb-2 text-gray-200">Latest Report</h3>
+            <p class="text-3xl font-bold text-purple-500" th:text="${latestReportDate}"></p>
+        </div>
+    </div>
+
+    <!-- TEST REPORTS -->
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
+            <i class="ph ph-clipboard-text"></i> My Bike Reports
+        </h3>
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="frameNumberSearch" placeholder="Frame Number">
+            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="bikeModelSearch" placeholder="Bike Model">
+            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="reportDateSearch" placeholder="Report Date">
+        </div>
+        <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
+            <thead>
+            <tr class="bg-gray-700 text-gray-100">
+                <th class="p-3 text-left">Report ID</th>
+                <th class="p-3 text-left">Report Date</th>
+                <th class="p-3 text-left">Frame Number</th>
+                <th class="p-3 text-left">Bench ID</th>
+                <th class="p3 text-left"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="report : ${bikeReports}" class="border-b">
+                <td th:text="${report.id}" class="p-3"></td>
+                <td th:text="${report.reportDate}" class="p-3"></td>
+                <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+                <td th:text="${report.testBench.benchId}" class="p-3"></td>
+                <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">View Report</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>
