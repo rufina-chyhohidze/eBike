@@ -264,10 +264,17 @@ public class BikeReportServiceImpl implements BikeReportService {
         return null;
     }
 
-
     @Override
     public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest) {
-        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
+        return bikeReportRepository.save(new BikeReport(
+                bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElse(null),
+                LocalDate.now(),
+                technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()).orElse(null),
+                customerRepository.findByEmail(emailBikeOwner).orElse(null),
+                testBenchRepository.getReferenceById(testbenchNumber),
+                inspection,
+                functionalTest
+        ));
     }
 
     @Override
@@ -276,13 +283,33 @@ public class BikeReportServiceImpl implements BikeReportService {
         bikeReport.setBike(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElseThrow());
         bikeReport.setReportDate(reportDate);
         bikeReport.setScore(score);
-        bikeReport.setTechnician(technicianRepository.findByEmail(technician));
-        bikeReport.setCustomer(customerRepository.findByEmail(customer));
+        bikeReport.setTechnician(technicianRepository.findByEmail(technician).orElseThrow());  // Use orElseThrow to ensure it's not null
+        bikeReport.setCustomer(customerRepository.findByEmail(customer).orElseThrow());  // Use orElseThrow to ensure it's not null
         testLineRepository.saveAll(testLines);
         bikeReport.setTestLines(testLines);
         bikeReport.setTestBench(testBenchRepository.findById(benchId).orElseThrow());
         return bikeReportRepository.save(bikeReport);
     }
+
+
+//    @Override
+//    public BikeReport save(Long testbenchNumber, TestType testType, String emailBikeOwner, String chassisNumber, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest) {
+//        return bikeReportRepository.save(new BikeReport(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElse(null), LocalDate.now(), technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername()), customerRepository.findByEmail(emailBikeOwner), testBenchRepository.getReferenceById(testbenchNumber), inspection, functionalTest));
+//    }
+
+//    @Override
+//    public BikeReport update(Long id, String chassisNumber, LocalDate reportDate, Integer score, String technician, String customer, List<TestLine> testLines, Long benchId) {
+//        BikeReport bikeReport = bikeReportRepository.findById(id).orElseThrow();
+//        bikeReport.setBike(bikeRepository.findBikeByFrameNumberWithBikeModel(chassisNumber).orElseThrow());
+//        bikeReport.setReportDate(reportDate);
+//        bikeReport.setScore(score);
+//        bikeReport.setTechnician(technicianRepository.findByEmail(technician));
+//        bikeReport.setCustomer(customerRepository.findByEmail(customer));
+//        testLineRepository.saveAll(testLines);
+//        bikeReport.setTestLines(testLines);
+//        bikeReport.setTestBench(testBenchRepository.findById(benchId).orElseThrow());
+//        return bikeReportRepository.save(bikeReport);
+//    }
 
     @Override
     public List<String> getFrameNumbersByCustomerId(Long customerId) {
