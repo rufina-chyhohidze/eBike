@@ -37,7 +37,8 @@ test:
     - echo "========== TEST STAGE =========="
     - echo "Waiting 15s for Postgres to be ready..."
     - sleep 15
-    - echo "Testing with DB URL: $SPRING_DATASOURCE_URL"
+    - echo "Testing with DB URL"
+    - echo "$SPRING_DATASOURCE_URL"
     - gradle test
   artifacts:
     when: always
