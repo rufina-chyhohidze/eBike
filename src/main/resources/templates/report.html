@@ -39,6 +39,42 @@
           <th class="text-start">Registration Date</th>
           <td th:text="${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}"></td>
         </tr>
+        <tr>
+          <th class="text-start">Size</th>
+          <td th:text="${bike.bikeSize}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Acc Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Type</th>
+          <td th:text="${bike.engineType}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Gear Type</th>
+          <td th:text="${bike.gearType}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Accu Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Support</th>
+          <td th:text="${bike.maxSupport}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Engine Power</th>
+          <td th:text="${bike.enginePowerMax}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Nominal Engine Power</th>
+          <td th:text="${bike.enginePowerNominal}"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Torque</th>
+          <td th:text="${bike.engineTorque}"></td>
+        </tr>
         </tbody>
       </table>
 

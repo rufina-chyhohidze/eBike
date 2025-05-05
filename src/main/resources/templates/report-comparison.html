@@ -62,7 +62,6 @@
           <td th:if="${compareReport != null}" th:text="${compareReport.bike.frameNumber}"
               th:classappend="${bike.frameNumber != compareReport.bike.frameNumber} ? 'table-warning' : ''">Frame Number</td>
         </tr>
-        <!-- Repeat for each field -->
         <tr>
           <th class="text-start">Type</th>
           <td th:text="${bike.type}">Type</td>
@@ -71,17 +70,69 @@
         </tr>
         <tr>
           <th class="text-start">Registration Date</th>
-          <td th:text="${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}"></td>
+          <td th:text="${bike.registrationDate != null} ? ${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"></td>
           <td th:if="${compareReport != null}"
-              th:text="${compareReport.bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}"
-              th:classappend="${compareReport.getBike().registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}">
-            Date
-          </td>
+              th:text="${compareReport.bike.registrationDate != null} ? ${compareReport.bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"
+              th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'table-warning' : ''">Date</td>
         </tr>
-
+        <tr>
+          <th class="text-start">Size</th>
+          <td th:text="${bike.bikeSize}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeSize}"
+              th:classappend="${bike.bikeSize != compareReport.bike.bikeSize} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Acc Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Type</th>
+          <td th:text="${bike.engineType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineType}"
+              th:classappend="${bike.engineType != compareReport.bike.engineType} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Gear Type</th>
+          <td th:text="${bike.gearType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.gearType}"
+              th:classappend="${bike.gearType != compareReport.bike.gearType} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Accu Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Support</th>
+          <td th:text="${bike.maxSupport}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.maxSupport}"
+              th:classappend="${bike.maxSupport != compareReport.bike.maxSupport} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Engine Power</th>
+          <td th:text="${bike.enginePowerMax}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerMax}"
+              th:classappend="${bike.enginePowerMax != compareReport.bike.enginePowerMax} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Nominal Engine Power</th>
+          <td th:text="${bike.enginePowerNominal}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerNominal}"
+              th:classappend="${bike.enginePowerNominal != compareReport.bike.enginePowerNominal} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Torque</th>
+          <td th:text="${bike.engineTorque}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineTorque}"
+              th:classappend="${bike.engineTorque != compareReport.bike.engineTorque} ? 'table-warning' : ''"></td>
+        </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
     <div class="mb-4 border p-3">
       <h5 class="bg-light p-2">Visual Inspection</h5>
