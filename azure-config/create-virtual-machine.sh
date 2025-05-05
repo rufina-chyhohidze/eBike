@@ -1,9 +1,13 @@
 #!/bin/bash
 
 # Create the resource group
-echo "Creating the resource group..."
-az group create --name rg-team18-integration4 --location westeurope
-echo "Resource group created"
+if [ "$(az group exists --name rg-team18-integration4)" == "true" ]; then
+  echo "Resource group exists, skipping creation"
+else
+  echo "Creating the resource group..."
+  az group create --name rg-team18-integration4 --location westeurope
+  echo "Resource group created"
+fi
 
 echo "Setting up ssh keys"
 mkdir -p ~/.ssh
@@ -13,25 +17,40 @@ chmod 600 ~/.ssh/azure
 echo "$PUBLIC_KEY" > ~/.ssh/azure.pub
 echo "Finished setting up ssh keys"
 
-echo "Creating Virtual Machine"
-az vm create --name vm-team18-integration4 \
---resource-group rg-team18-integration4 \
---size Standard_B2s \
---accept-term \
---image 'almalinux:almalinux-x86_64:9-gen1:latest' \
---admin-username team18 \
---public-ip-sku Standard \
---public-ip-address pip-vm-team18-integration4 \
---storage-sku Standard_LRS \
---os-disk-name osdisk-vm-team18-integration4 \
---accelerated-networking false \
---data-disk-delete-option delete \
---os-disk-delete-option delete \
---ssh-key-value ~/.ssh/azure.pub \
---nsg nsg-team18-integration4 \
---vnet-name vnet-team18-integration4 \
---tags 'ContactEmail=team18integration4@gmail.com'
-echo "Finished creating Virtual Machine"
+function deletePreviousProjectInVm() {
+
+ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
+  sudo su
+  rm -r /home/team18/libs/
+EOF
+  echo "Deleted old app resources"
+  return 0
+}
+
+if az vm show --name vm-team18-integration4 --resource-group rg-team18-integrations4 --query "name" -o tsv 2>/dev/null | grep -q . ; then
+  echo "VM exists"
+  deletePreviousProjectInVm
+else
+  echo "Creating Virtual Machine"
+  az vm create --name vm-team18-integration4 \
+  --resource-group rg-team18-integration4 \
+  --size Standard_B2s \
+  --accept-term \
+  --image 'almalinux:almalinux-x86_64:9-gen1:latest' \
+  --admin-username team18 \
+  --public-ip-sku Standard \
+  --public-ip-address pip-vm-team18-integration4 \
+  --storage-sku Standard_LRS \
+  --os-disk-name osdisk-vm-team18-integration4 \
+  --accelerated-networking false \
+  --data-disk-delete-option delete \
+  --os-disk-delete-option delete \
+  --ssh-key-value ~/.ssh/azure.pub \
+  --nsg nsg-team18-integration4 \
+  --vnet-name vnet-team18-integration4 \
+  --tags 'ContactEmail=team18integration4@gmail.com'
+  echo "Finished creating Virtual Machine"
+fi
 
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-integration4 --name vm-team18-integration4 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 echo "IP address of vm created: $VM_IP"
@@ -79,7 +98,7 @@ ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
     export MAIL_USERNAME=team18int4@gmail.com
     export MAIL_PASSWORD=rfxchlbkjwoazmjc
 
-    sudo dnf install -y java-21-openjdk
+    dnf install -y java-21-openjdk
 
     nohup java -jar Integration4-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
 
@@ -94,7 +113,6 @@ curl "https://www.duckdns.org/update?domains=team18-integration4&token=b4bb4460-
 echo "Domain set, you can now access the website on this domain: http://team18-integration4.duckdns.org"
 
 echo "Finished pipeline"
-
 ```
 
 
