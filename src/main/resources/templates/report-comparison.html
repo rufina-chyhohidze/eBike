@@ -77,9 +77,9 @@
         </tr>
         <tr>
           <th class="text-start">Size</th>
-          <td th:text="${bike.bikeSize}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeSize}"
-              th:classappend="${bike.bikeSize != compareReport.bike.bikeSize} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.bikeSize}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.bikeSize}"
+              th:classappend="${bike.bikeModel.bikeSize != compareReport.bike.bikeModel.bikeSize} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Acc Capacity</th>
@@ -89,15 +89,15 @@
         </tr>
         <tr>
           <th class="text-start">Engine Type</th>
-          <td th:text="${bike.engineType}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineType}"
-              th:classappend="${bike.engineType != compareReport.bike.engineType} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.engineType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineType}"
+              th:classappend="${bike.bikeModel.engineType != compareReport.bike.bikeModel.engineType} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Gear Type</th>
-          <td th:text="${bike.gearType}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.gearType}"
-              th:classappend="${bike.gearType != compareReport.bike.gearType} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.gearType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.gearType}"
+              th:classappend="${bike.bikeModel.gearType != compareReport.bike.bikeModel.gearType} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Accu Capacity</th>
@@ -107,27 +107,27 @@
         </tr>
         <tr>
           <th class="text-start">Max Support</th>
-          <td th:text="${bike.maxSupport}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.maxSupport}"
-              th:classappend="${bike.maxSupport != compareReport.bike.maxSupport} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.maxSupport}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.maxSupport}"
+              th:classappend="${bike.bikeModel.maxSupport != compareReport.bike.bikeModel.maxSupport} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Max Engine Power</th>
-          <td th:text="${bike.enginePowerMax}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerMax}"
-              th:classappend="${bike.enginePowerMax != compareReport.bike.enginePowerMax} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.enginePowerMax}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerMax}"
+              th:classappend="${bike.bikeModel.enginePowerMax != compareReport.bike.bikeModel.enginePowerMax} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Nominal Engine Power</th>
-          <td th:text="${bike.enginePowerNominal}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerNominal}"
-              th:classappend="${bike.enginePowerNominal != compareReport.bike.enginePowerNominal} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerNominal}"
+              th:classappend="${bike.bikeModel.enginePowerNominal != compareReport.bike.bikeModel.enginePowerNominal} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Engine Torque</th>
-          <td th:text="${bike.engineTorque}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineTorque}"
-              th:classappend="${bike.engineTorque != compareReport.bike.engineTorque} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeModel.engineTorque}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineType}"
+              th:classappend="${bike.bikeModel.engineTorque != compareReport.bike.bikeModel.engineTorque} ? 'table-warning' : ''"></td>
         </tr>
         </tbody>
       </table>

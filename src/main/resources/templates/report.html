@@ -41,7 +41,7 @@
         </tr>
         <tr>
           <th class="text-start">Size</th>
-          <td th:text="${bike.bikeSize}"></td>
+          <td th:text="${bike.bikeModel.bikeSize}"></td>
         </tr>
         <tr>
           <th class="text-start">Acc Capacity</th>
@@ -49,11 +49,11 @@
         </tr>
         <tr>
           <th class="text-start">Engine Type</th>
-          <td th:text="${bike.engineType}"></td>
+          <td th:text="${bike.bikeModel.engineType}"></td>
         </tr>
         <tr>
           <th class="text-start">Gear Type</th>
-          <td th:text="${bike.gearType}"></td>
+          <td th:text="${bike.bikeModel.gearType}"></td>
         </tr>
         <tr>
           <th class="text-start">Accu Capacity</th>
@@ -61,19 +61,19 @@
         </tr>
         <tr>
           <th class="text-start">Max Support</th>
-          <td th:text="${bike.maxSupport}"></td>
+          <td th:text="${bike.bikeModel.maxSupport}"></td>
         </tr>
         <tr>
           <th class="text-start">Max Engine Power</th>
-          <td th:text="${bike.enginePowerMax}"></td>
+          <td th:text="${bike.bikeModel.enginePowerMax}"></td>
         </tr>
         <tr>
           <th class="text-start">Nominal Engine Power</th>
-          <td th:text="${bike.enginePowerNominal}"></td>
+          <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
         </tr>
         <tr>
           <th class="text-start">Engine Torque</th>
-          <td th:text="${bike.engineTorque}"></td>
+          <td th:text="${bike.bikeModel.engineTorque}"></td>
         </tr>
         </tbody>
       </table>
