@@ -40,7 +40,7 @@ echo "Uploading app to the VM..."
 # Add the VM to known hosts
 ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 
-scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/build/libs/" "team18@$VM_IP":/home/team18/libs
+scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/build/libs/" "team18@$VM_IP":/home/team18
 scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/docker-compose.yml" "team18@$VM_IP":/home/team18/libs
 
 echo "app properties: "
@@ -69,6 +69,8 @@ ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
     newgrp docker
     docker compose up -d
 
+    sudo su
+
     export WORKBENCH_API_KEY=b9f55fa7-279f-4314-b781-e319b385c463
     export MAIL_USERNAME=team18int4@gmail.com
     export MAIL_PASSWORD=rfxchlbkjwoazmjc
@@ -76,6 +78,8 @@ ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
     sudo dnf install -y java-21-openjdk
 
     nohup java -jar Integration4-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+
+    exit
 
     echo "App running"
 EOF
