@@ -52,7 +52,7 @@ deploy_application:
   script:
     - echo "🔐 Logging into Azure..."
     - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
-    - az account show && echo "✅ Azure login successful"
+    - az account show &>/dev/null && echo "✅ Azure login successful"
     - chmod +x ./azure-config/create-virtual-machine.sh
     - ./azure-config/create-virtual-machine.sh
 
