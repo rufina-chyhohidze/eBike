@@ -134,6 +134,8 @@ function retrieveReport(id) {
         const loadingSection = document.getElementById("loading")
         const testIdElement = document.getElementById("testId")
         const reportLinkElement = document.getElementById("report-link");
+        const customerEmailBtnElement = document.getElementById("customerEmailBtn");
+        customerEmailBtnElement.id = reportId;
         reportLinkElement.href= "/report/"+reportId;
         testIdElement.value = reportId
         qrcodeGenerator();
