@@ -77,6 +77,12 @@ ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
 EOF
 echo "exited vm"
 
+echo "Setting duck dns domain..."
+curl "https://www.duckdns.org/update?domains=team18-integration4&token=b4bb4460-f9d0-42fc-a063-e1dbadd11014&ip=$VM_IP"
+echo "Domain set, you can now access the website on this domain: http://team18-integration4.duckdns.org"
+
+echo "Finished pipeline"
+
 ```
 
 
