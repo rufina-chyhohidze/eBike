@@ -71,7 +71,7 @@ ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
 
     sudo dnf install -y java-21-openjdk
 
-    java -jar Integration4-0.0.1-SNAPSHOT.jar
+    nohup java -jar Integration4-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
 
     echo "App running"
 EOF
