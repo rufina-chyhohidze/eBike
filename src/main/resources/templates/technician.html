@@ -20,26 +20,30 @@
 
     <ul class="space-y-6 flex-1">
         <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
-            <i class="ph ph-wrench"></i> Dashboard
+            <i class="ph ph-wrench"></i><a href="/technician/dashboard">Dashboard</a>
         </li>
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-house"></i> Home
-        </li>
+<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
+<!--            <i class="ph ph-house"></i> Home-->
+<!--        </li>-->
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
                 <i class="ph ph-play-circle"></i><a href="/technician/start-test"> Start Test </a>
         </li>
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-user-plus text-purple-500"></i> <a href="/technician/register-customer">Register Customer</a>
+            <i class="ph ph-user-plus"></i> <a href="/technician/register-customer">Register Customer</a>
         </li>
+<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
+<!--            <i class="ph ph-user-check"></i> Customer Verification-->
+<!--        </li>-->
+<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
+<!--            <i class="ph ph-clipboard-text"></i> Test Reports-->
+<!--        </li>-->
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-user-check"></i> Customer Verification
+            <i class="ph ph-clipboard-text"></i><a href="/technician/report-settings">Report settings</a>
         </li>
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-clipboard-text"></i> Test Reports
-        </li>
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-user"></i> Account Settings
-        </li>
+
+        <!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
+<!--            <i class="ph ph-user"></i> Account Settings-->
+<!--        </li>-->
         <li class="mt-auto">
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
@@ -66,59 +70,58 @@
 
     <!-- TECHNICIAN STATS -->
     <div class="col-span-2 grid grid-cols-2 gap-6">
-        <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
             <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Tests</h3>
-            <p class="text-3xl font-bold text-purple-500">245</p>
+            <p class="text-3xl font-bold text-purple-500" th:text="${totalReports}"></p>
             <p class="text-gray-300 text-sm">+15% from last month</p>
-            <canvas id="testsChart" class="mt-4"></canvas>
+<!--            <canvas id="testsChart" class="mt-4"></canvas>-->
         </div>
-        <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
             <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Clients</h3>
-            <p class="text-3xl font-bold text-purple-500">98</p>
+            <p class="text-3xl font-bold text-purple-500" th:text="${totalClients}"></p>
             <p class="text-gray-300 text-sm">+10% from last month</p>
-            <canvas id="clientsChart" class="mt-4"></canvas>
+<!--            <canvas id="clientsChart" class="mt-4"></canvas>-->
         </div>
     </div>
 
     <!-- START A TEST -->
-    <div class="bg-gray-100 shadow-lg rounded-3xl p-6 col-span-1 border border-gray-200">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
-            <i class="ph ph-play-circle"></i> Start a Test
-        </h3>
-        <p class="mb-2 text-gray-600">Perform a visual bike inspection before starting the test.</p>
-        <ul class="pl-0 mb-4">
-            <li class="flex items-center gap-2">
-                <input type="checkbox" id="tireCondition" class="mr-2">
-                Check tire condition
-            </li>
-            <li class="flex items-center gap-2">
-                <input type="checkbox" id="brakeFunction" class="mr-2">
-                Ensure brakes are functioning
-            </li>
-            <li class="flex items-center gap-2">
-                <input type="checkbox" id="batteryConnections" class="mr-2">
-                Verify battery and electrical connections
-            </li>
-            <li class="flex items-center gap-2">
-                <input type="checkbox" id="bikeStability" class="mr-2">
-                Confirm bike stability
-            </li>
-        </ul>
-        <a th:href="@{/technician/start-test}" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</a>
-    </div>
+<!--    <div class="bg-gray-100 shadow-lg rounded-3xl p-6 col-span-1 border border-gray-200">-->
+<!--        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-800">-->
+<!--            <i class="ph ph-play-circle"></i> Start a Test-->
+<!--        </h3>-->
+<!--        <p class="mb-2 text-gray-600">Perform a visual bike inspection before starting the test.</p>-->
+<!--        <ul class="pl-0 mb-4">-->
+<!--            <li class="flex items-center gap-2">-->
+<!--                <input type="checkbox" id="tireCondition" class="mr-2">-->
+<!--                Check tire condition-->
+<!--            </li>-->
+<!--            <li class="flex items-center gap-2">-->
+<!--                <input type="checkbox" id="brakeFunction" class="mr-2">-->
+<!--                Ensure brakes are functioning-->
+<!--            </li>-->
+<!--            <li class="flex items-center gap-2">-->
+<!--                <input type="checkbox" id="batteryConnections" class="mr-2">-->
+<!--                Verify battery and electrical connections-->
+<!--            </li>-->
+<!--            <li class="flex items-center gap-2">-->
+<!--                <input type="checkbox" id="bikeStability" class="mr-2">-->
+<!--                Confirm bike stability-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        <a th:href="@{/technician/start-test}" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</a>-->
+<!--    </div>-->
 
     <!-- CUSTOMER VERIFICATION -->
-    <div class="bg-white shadow-lg rounded-3xl p-6 col-span-3 relative border border-gray-200">
+    <div class="bg-white shadow-lg rounded-3xl p-6 col-span-4 relative border border-gray-200">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                <i class="ph ph-user-check"></i> Customer Verification
+                <i class="ph ph-user-check"></i> Customer List
             </h3>
-            <button class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100 flex items-center gap-2">
-                <i class="ph ph-user-plus"></i> Add Member
-            </button>
+            <a href="/technician/register-customer" class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100 flex items-center gap-2">
+                <i class="ph ph-user-plus"></i> Register a customer
+            </a>
         </div>
-        <input class="p-2 border border-gray-300 rounded-lg w-full mb-4" type="text" id="customerId" placeholder="Enter Customer ID or Name">
-        <button class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100 w-full mb-4">Check Customer</button>
+        <input class="p-2 border border-gray-300 rounded-lg w-full mb-4" type="text" id="searchCustomerInput" placeholder="Enter Customer ID or Name">
         <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-100 text-gray-700">
@@ -145,9 +148,9 @@
             <i class="ph ph-clipboard-text"></i> Previous Test Reports
         </h3>
         <div class="grid grid-cols-3 gap-4 mb-4">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Frame Number">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Bike Model">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" placeholder="Brand">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="frameNumberSearch" type="text" placeholder="Frame Number">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="bikeModelSearch" type="text" placeholder="Bike Model">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="reportDateSearch" type="text" placeholder="Brand">
         </div>
         <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
             <thead>

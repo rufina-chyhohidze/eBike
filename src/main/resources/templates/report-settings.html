@@ -6,7 +6,7 @@
     <title>Report Settings</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="../static/js/report-settings.js" th:src="@{/js/report-settings.js}" type="module"></script>
+    <script th:src="@{/js/report-settings.js}" src="/static/js/report-settings.js" type="module"></script>
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
@@ -21,19 +21,16 @@
 
     <ul class="space-y-6 flex-1">
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-wrench"></i> Dashboard
+            <i class="ph ph-wrench"></i><a href="/technician/dashboard">Dashboard</a>
         </li>
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-house"></i> Home
+            <i class="ph ph-play-circle"></i><a href="/technician/start-test">Start Test</a>
         </li>
         <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-play-circle"></i><a href="/technician/start-test"> Start Test </a>
+            <i class="ph ph-user-plus"></i><a href="/technician/register-customer">Register Customer</a>
         </li>
         <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
-            <i class="ph ph-clipboard-text"></i> Report Settings
-        </li>
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-user"></i> Account Settings
+            <i class="ph ph-clipboard-text"></i><a href="/technician/report-settings">Report Settings</a>
         </li>
         <li class="mt-auto">
             <form th:action="@{/logout}" method="post">
@@ -46,34 +43,32 @@
 </aside>
 
 <!-- MAIN CONTENT -->
-<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
-    <!-- REPORT SETTINGS -->
-    <div class="bg-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
-        <h3 class="text-xl font-semibold mb-4 text-gray-800">Report Settings</h3>
+<main class="flex-1 p-8 bg-white">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <i class="ph ph-clipboard-text"></i> Report Settings
+        </h2>
 
-        <!-- Form to Update Horizontal and Vertical Vibration Range -->
-            <div class="space-y-6">
-                <!-- Horizontal Vibration Range -->
-                <div class="flex items-center justify-between">
-                    <label for="horizontalVibration" class="text-gray-700">Horizontal Vibration Range (Hz)</label>
-                    <input type="number" id="horizontalVibration" name="horizontalVibration" class="p-2 border border-gray-300 rounded-lg w-2/3" placeholder="Enter horizontal vibration range" required>
-                </div>
-
-                <!-- Vertical Vibration Range -->
-                <div class="flex items-center justify-between">
-                    <label for="verticalVibration" class="text-gray-700">Vertical Vibration Range (Hz)</label>
-                    <input type="number" id="verticalVibration" name="verticalVibration" class="p-2 border border-gray-300 rounded-lg w-2/3" placeholder="Enter vertical vibration range" required>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="mt-4">
-                    <button id="submit" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">
-                        Update Settings
-                    </button>
-                </div>
+        <form id="report-settings-form" class="space-y-6">
+            <div>
+                <label for="horizontalVibration" class="block mb-1 text-gray-700 font-medium">Horizontal Vibration Range (Hz)</label>
+                <input type="number" id="horizontalVibration" name="horizontalVibration" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter horizontal vibration range" required>
             </div>
-    </div>
 
+            <div>
+                <label for="verticalVibration" class="block mb-1 text-gray-700 font-medium">Vertical Vibration Range (Hz)</label>
+                <input type="number" id="verticalVibration" name="verticalVibration" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter vertical vibration range" required>
+            </div>
+
+            <div id="form-message" style="margin-top: 1rem; font-weight: bold;"></div>
+
+            <div class="flex justify-end">
+                <button id="submit" type="button" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                    Update Settings
+                </button>
+            </div>
+        </form>
+    </div>
 </main>
 
 </body>

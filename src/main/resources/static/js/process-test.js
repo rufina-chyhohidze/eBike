@@ -1,4 +1,4 @@
-import { customerFound, showCustomerBikes } from "./start-test.js";
+import { customerFound, showCustomerBikes } from "./startmine.js";
 import { csrfToken, csrfHeader } from './utils/csrf.js'
 import qrcodeGenerator from "./qr-code-generation.js";
 
@@ -139,8 +139,8 @@ function retrieveReport(id) {
         reportLinkElement.href= "/report/"+reportId;
         testIdElement.value = reportId
         qrcodeGenerator();
-        loadingSection.classList.add("d-none");
-        resultSection.classList.remove("d-none");
+        loadingSection.classList.add("hidden");
+        resultSection.classList.remove("hidden");
     }
 
 

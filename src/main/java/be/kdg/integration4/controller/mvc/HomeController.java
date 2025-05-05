@@ -36,6 +36,10 @@ public class HomeController {
                 return "redirect:/technician/dashboard";
             } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.SYSTEMADMIN))) {
                 return "redirect:/superadmin/profile";
+            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.WORSHOPADMIN))) {
+                return "redirect:/workshopadmin/dashboard";
+            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.CUSTOMER))) {
+                return "redirect:/customer/dashboard";
             }
         } else {
             model.addAttribute("userRole", "GUEST");

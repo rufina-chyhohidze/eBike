@@ -7,6 +7,6 @@ export default function qrcodeGenerator() {
     qr.addData(url);
     qr.make();
 
-    document.getElementById('qrcode').innerHTML = qr.createImgTag(10);
+    document.getElementById('qrcode').innerHTML = qr.createImgTag(100);
 
 }

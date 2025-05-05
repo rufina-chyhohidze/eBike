@@ -32,10 +32,10 @@ public class TestDto {
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "Frame number must contain only alphanumeric characters")
     private String frameNumber;
 
-    @NotNull(message = "Visual inspection is required")
+    //@NotNull(message = "Visual inspection is required")
     private Map<VisualInspectionComponents, InspectionCondition> visualInspection;
 
-    @NotNull(message = "Visual inspection is required")
+    //@NotNull(message = "Visual inspection is required")
     private Map<FunctionalTestComponents, InspectionCondition> functionalTest;
 
 

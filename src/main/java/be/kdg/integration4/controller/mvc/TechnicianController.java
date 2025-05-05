@@ -64,6 +64,7 @@ public class TechnicianController {
                 .collect(Collectors.toList());
 
         model.addAttribute("totalReports", totalReports);
+        model.addAttribute("totalClients", customers.size());
         model.addAttribute("technician", technician);
         model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);

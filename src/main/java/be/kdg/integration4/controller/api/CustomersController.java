@@ -1,19 +1,25 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
 import be.kdg.integration4.controller.api.dtos.mappers.CustomerDtoMapper;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -61,4 +67,27 @@ public class CustomersController {
         log.debug("No bikes found for customer with Id: {}", customerId);
         return ResponseEntity.ok(bikeMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
+
+//    @GetMapping
+//    @TechnicianOnly
+//    public ResponseEntity<List<Customer>> filterCustomers(@RequestParam(required = false) String search) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loggedInEmail = authentication.getName();
+//        Technician technician = technicianService.getByEmail(loggedInEmail);
+//
+//        List<Customer> customers = customerService.getAll();
+//
+//        if (search != null && !search.isEmpty()) {
+//            String searchLower = search.toLowerCase();
+//            customers = customers.stream()
+//                    .filter(customer ->
+//                            String.valueOf(customer.getId()).contains(searchLower) ||
+//                                    customer.getName().toLowerCase().contains(searchLower) ||
+//                                    customer.getEmail().toLowerCase().contains(searchLower) ||
+//                                    (customer.getPhoneNumber() != null && customer.getPhoneNumber().toLowerCase().contains(searchLower)))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        return ResponseEntity.ok(customers);
+//    }
 }
