@@ -247,7 +247,7 @@
                     <p class="text-muted">Rate each part's condition:</p>
 
                     <div th:each="component, iterStat : ${visualComponents}" class="mb-2">
-                        <label th:for="'inspectionComponent' + ${iterStat.index}" th:text="${component.name()}"></label>
+                        <label th:for="'inspectionComponent' + ${iterStat.index}" th:text="${component.displayName}"></label>
                         <select th:id="'inspectionComponent' + ${iterStat.index}"
                                 th:name="'inspectionComponent' + ${iterStat.index}"
                                 class="form-select inspection-component"
@@ -265,7 +265,7 @@
                     <p class="text-muted">Rate each part's condition:</p>
 
                     <div th:each="component, iterStat : ${functionalComponents}" class="mb-2">
-                        <label th:for="'functionalComponent' + ${iterStat.index}" th:text="${component.name()}"></label>
+                        <label th:for="'functionalComponent' + ${iterStat.index}" th:text="${component.displayName}"></label>
                         <select th:id="'functionalComponent' + ${iterStat.index}"
                                 th:name="'functionalComponent' + ${iterStat.index}"
                                 class="form-select inspection-component"

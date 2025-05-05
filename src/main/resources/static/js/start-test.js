@@ -249,6 +249,7 @@ function displayTestFormWithBikeSelected(e) {
 async function startTest() {
     const inspection = {};
     const functionalTest = {};
+
     document.querySelectorAll(".inspection-component").forEach(select => {
         const componentType = select.getAttribute("data-component-type");
         const componentName = select.getAttribute("data-component-name");
@@ -256,10 +257,13 @@ async function startTest() {
 
         if (!componentName || !value) return;
 
+        // For visual components (visual inspection)
         if (componentType === "visual") {
-            inspection[componentName.toLowerCase()] = value;
-        } else if (componentType === "functional") {
-            functionalTest[componentName.toLowerCase()] = value;
+            inspection[componentName] = value;  // Use the exact component name without toLowerCase()
+        }
+        // For functional components (functional test)
+        else if (componentType === "functional") {
+            functionalTest[componentName] = value;  // Same, use the exact component name
         }
     });
 
@@ -283,9 +287,6 @@ async function startTest() {
 
     if (response.status === 200) {
         const data = await response.json();
-        /**
-         * @type {[{id:string}]}
-         */
         console.log("Id received: " + data.id);
 
         // Close the modal and show loading screen
@@ -298,7 +299,6 @@ async function startTest() {
     } else {
         console.log("Error: " + response.status);
     }
-
 }
 
 export { customerFound, showCustomerBikes }

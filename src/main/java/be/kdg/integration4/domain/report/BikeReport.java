@@ -1,6 +1,8 @@
 package be.kdg.integration4.domain.report;
 
+import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
+import be.kdg.integration4.domain.enums.VisualInspectionComponents;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import jakarta.persistence.*;
@@ -47,13 +49,13 @@ public class BikeReport {
     @CollectionTable(name = "visual_inspections", joinColumns = @JoinColumn(name = "id"))
     @MapKeyColumn(name = "part")
     @Column(name = "condition")
-    private Map<String, InspectionCondition> visualInspection;
+    private Map<VisualInspectionComponents, InspectionCondition> visualInspection;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "functional_test", joinColumns = @JoinColumn(name = "id"))
     @MapKeyColumn(name = "part")
     @Column(name = "condition")
-    private Map<String, InspectionCondition> functionalTest;
+    private Map<FunctionalTestComponents, InspectionCondition> functionalTest;
 
     private String testId;
 
@@ -69,7 +71,7 @@ public class BikeReport {
         this.testBench = testBench;
     }
 
-    public BikeReport(Bike bike, LocalDate now, Technician byEmail, Customer byEmail1, TestBench referenceById, Map<String, InspectionCondition> inspection, Map<String, InspectionCondition> functionalTest) {
+    public BikeReport(Bike bike, LocalDate now, Technician byEmail, Customer byEmail1, TestBench referenceById, Map<VisualInspectionComponents, InspectionCondition> inspection, Map<FunctionalTestComponents, InspectionCondition> functionalTest) {
         this.bike = bike;
         this.reportDate = now;
         this.technician = byEmail;

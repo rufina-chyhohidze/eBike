@@ -6,6 +6,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="/js/report-comparison.js"></script>
+
 
 </head>
 <body>
@@ -28,6 +30,14 @@
     <input type="hidden" id="compareIdHidden" name="compareId" value="">
   </form>
 
+  <div class="text-center mb-3" th:if="${compareReport != null}">
+    <p>
+      <strong>Main Report:</strong> ID #[[${id}]], Bike #[[${bike.frameNumber}]]<br>
+      <strong>Compared With:</strong> ID #[[${compareReport.id}]], Bike #[[${compareReport.bike.frameNumber}]]
+    </p>
+  </div>
+
+
   <div class="row">
     <div class="col-md-6">
       <h5 class="bg-light p-2">Identification</h5>
@@ -36,7 +46,7 @@
         <tr>
           <th class="text-start">Field</th>
           <th>Main</th>
-          <th th:if="${compareReport != null}">Report #[[${compareReport.id}]]</th>
+          <th th:if="${compareReport != null}">Comparison</th>
         </tr>
         </thead>
         <tbody>
@@ -52,7 +62,6 @@
           <td th:if="${compareReport != null}" th:text="${compareReport.bike.frameNumber}"
               th:classappend="${bike.frameNumber != compareReport.bike.frameNumber} ? 'table-warning' : ''">Frame Number</td>
         </tr>
-        <!-- Repeat for each field -->
         <tr>
           <th class="text-start">Type</th>
           <td th:text="${bike.getBikeModel().type}">Type</td>
@@ -61,13 +70,69 @@
         </tr>
         <tr>
           <th class="text-start">Registration Date</th>
-          <td th:text="${bike.registrationDate}">Registration Date</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.registrationDate}"
+          <td th:text="${bike.registrationDate != null} ? ${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"></td>
+          <td th:if="${compareReport != null}"
+              th:text="${compareReport.bike.registrationDate != null} ? ${compareReport.bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"
               th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'table-warning' : ''">Date</td>
+        </tr>
+        <tr>
+          <th class="text-start">Size</th>
+          <td th:text="${bike.bikeSize}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeSize}"
+              th:classappend="${bike.bikeSize != compareReport.bike.bikeSize} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Acc Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Type</th>
+          <td th:text="${bike.engineType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineType}"
+              th:classappend="${bike.engineType != compareReport.bike.engineType} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Gear Type</th>
+          <td th:text="${bike.gearType}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.gearType}"
+              th:classappend="${bike.gearType != compareReport.bike.gearType} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Accu Capacity</th>
+          <td th:text="${bike.accCapacity}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Support</th>
+          <td th:text="${bike.maxSupport}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.maxSupport}"
+              th:classappend="${bike.maxSupport != compareReport.bike.maxSupport} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Max Engine Power</th>
+          <td th:text="${bike.enginePowerMax}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerMax}"
+              th:classappend="${bike.enginePowerMax != compareReport.bike.enginePowerMax} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Nominal Engine Power</th>
+          <td th:text="${bike.enginePowerNominal}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.enginePowerNominal}"
+              th:classappend="${bike.enginePowerNominal != compareReport.bike.enginePowerNominal} ? 'table-warning' : ''"></td>
+        </tr>
+        <tr>
+          <th class="text-start">Engine Torque</th>
+          <td th:text="${bike.engineTorque}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.engineTorque}"
+              th:classappend="${bike.engineTorque != compareReport.bike.engineTorque} ? 'table-warning' : ''"></td>
         </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
     <div class="mb-4 border p-3">
       <h5 class="bg-light p-2">Visual Inspection</h5>
@@ -76,7 +141,7 @@
         <tr>
           <th rowspan="2" class="text-start">Component</th>
           <th colspan="6">Main</th>
-          <th th:if="${compareReport != null}" colspan="6">Compare</th>
+          <th th:if="${compareReport != null}" colspan="6">Comparison</th>
         </tr>
         <tr>
           <th>Very Bad</th>
@@ -95,7 +160,7 @@
         </thead>
         <tbody>
         <tr th:each="entry : ${bikeReport.visualInspection}">
-          <td class="text-start" th:text="${entry.key}">Component</td>
+          <td class="text-start" th:text="${entry.key.displayName}">Component</td>
 
           <!-- Main report columns -->
           <td th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
@@ -145,9 +210,9 @@
         </tr>
         <tr>
           <th>Main</th>
-          <th th:if="${compareReport != null}">Compare</th>
+          <th th:if="${compareReport != null}">Comparison</th>
           <th>Main</th>
-          <th th:if="${compareReport != null}">Compare</th>
+          <th th:if="${compareReport != null}">Comparison</th>
         </tr>
         </thead>
         <tbody>
@@ -211,7 +276,7 @@
         <tr>
           <th>Test</th>
           <th>Main</th>
-          <th th:if="${compareReport != null}">Compare</th>
+          <th th:if="${compareReport != null}">Comparison</th>
           <th>Unit</th>
         </tr>
         </thead>
@@ -264,12 +329,12 @@
           <td>Battery Health</td>
           <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Health</td>
           <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Health</td>
-          <td>#</td>
+          <td>%</td>
         </tr>
         <tr class="fw-bold">
           <td>Score</td>
-          <td th:text="${#numbers.formatDecimal(batteryTest.score, 1, 2)}">Score</td>
-          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.score, 1, 2) : '-'}">Co Score</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Score</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Score</td>
           <td></td>
         </tr>
         </tbody>
@@ -304,7 +369,7 @@
         <tr>
           <th rowspan="2" class="text-start">Component</th>
           <th colspan="3">Main</th>
-          <th th:if="${compareReport != null}" colspan="3">Compare</th>
+          <th th:if="${compareReport != null}" colspan="3">Comparison</th>
         </tr>
         <tr>
           <th>-</th><th>+</th><th>N/A</th>
@@ -315,7 +380,7 @@
         </thead>
         <tbody>
         <tr th:each="entry : ${bikeReport.functionalTest}">
-          <td class="text-start" th:text="${entry.key}">Component</td>
+          <td class="text-start" th:text="${entry.key.displayName}">Component</td>
           <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
           <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
           <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
@@ -340,19 +405,5 @@
 
   </div>
 </div>
-
-<script>
-  document.getElementById('compareId').addEventListener('change', function () {
-    const selectedId = this.value;
-    const currentUrl = new URL(window.location.href);
-    if (selectedId) {
-      currentUrl.searchParams.set('compareId', selectedId);
-    } else {
-      currentUrl.searchParams.delete('compareId');
-    }
-    window.location.href = currentUrl.toString();
-  });
-</script>
-
 </body>
 </html>
