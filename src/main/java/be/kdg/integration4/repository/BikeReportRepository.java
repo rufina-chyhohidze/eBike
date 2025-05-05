@@ -43,6 +43,13 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
     List<BikeReport> getBikeReportByCustomerId(Long customerId);
 
     BikeReport findByTestId(String testId);
-    Optional<BikeReport> findById(Long id);
+
+    @Query("""
+        SELECT br FROM BikeReport br
+        LEFT JOIN FETCH br.customer
+        WHERE br.id = :id
+    """
+    )
+    Optional<BikeReport> findByIdWithCustomer(Long id);
 
 }
