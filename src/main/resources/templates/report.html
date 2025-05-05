@@ -202,11 +202,11 @@
           <tr>
             <td>BatteryHealth</td>
             <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Charge Cycles</td>
-            <td>#</td>
+            <td>%</td>
           </tr>
           <tr>
             <td><strong>Score</strong></td>
-            <td th:text="${#numbers.formatDecimal(batteryTest.score, 0, 'COMMA', 2, 'POINT')}">Score</td>
+            <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Score</td>
             <td></td>
           </tr>
           </tbody>

@@ -329,12 +329,12 @@
           <td>Battery Health</td>
           <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Health</td>
           <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Health</td>
-          <td>#</td>
+          <td>%</td>
         </tr>
         <tr class="fw-bold">
           <td>Score</td>
-          <td th:text="${#numbers.formatDecimal(batteryTest.score, 1, 2)}">Score</td>
-          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.score, 1, 2) : '-'}">Co Score</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Score</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Score</td>
           <td></td>
         </tr>
         </tbody>
