@@ -154,13 +154,32 @@
 
     <!-- TEST REPORTS -->
     <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
+        <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">
             <i class="ph ph-clipboard-text"></i> Previous Test Reports
         </h3>
-        <div class="grid grid-cols-3 gap-4 mb-4">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="frameNumberSearch" type="text" placeholder="Frame Number">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="bikeModelSearch" type="text" placeholder="Bike Model">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="reportDateSearch" type="text" placeholder="Brand">
+
+        <!-- Centering the form -->
+        <div class="flex justify-center">
+            <form method="get" th:action="@{/technician/dashboard}"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">
+                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                       name="frameNumber"
+                       type="text"
+                       placeholder="Frame Number"
+                       th:value="${frameNumber}">
+                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                       name="engineType"
+                       type="text"
+                       placeholder="Engine Type"
+                       th:value="${engineType}">
+
+                <div class="sm:col-span-2 flex justify-center">
+                    <button type="submit"
+                            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                        Search
+                    </button>
+                </div>
+            </form>
         </div>
         <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
             <thead>
@@ -169,7 +188,8 @@
                 <th class="p-3 text-left">Report Date</th>
                 <th class="p-3 text-left">Customer ID</th>
                 <th class="p-3 text-left">Frame Number</th>
-<!--                <th class="p-3 text-left">Brand</th>-->
+                <th class="p-3 text-left">Engine Type</th>
+                <!--                <th class="p-3 text-left">Brand</th>-->
                 <th class="p-3 text-left">Bench ID</th>
                 <th class="p3 text-left"></th>
             </tr>
@@ -180,6 +200,7 @@
                 <td th:text="${report.reportDate}" class="p-3"></td>
                 <td th:text="${report.customer.id}" class="p-3"></td>
                 <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+                <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
 <!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
                 <td th:text="${report.testBench.benchId}" class="p-3"></td>
                 <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>

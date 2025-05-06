@@ -49,5 +49,6 @@ public interface BikeReportService {
     BearingHealthDTO calculateBearingHealth(Long reportId, Technician user);
 
     FullTestReportDTO getFullTestReport(Long reportId);
+    List<BikeReport> getReportsWithDetailsForTechnician(Long techId);
 
 }
