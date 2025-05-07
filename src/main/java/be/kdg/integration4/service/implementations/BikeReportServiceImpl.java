@@ -295,4 +295,8 @@ public class BikeReportServiceImpl implements BikeReportService {
     public List<BikeReport> getByCustomerId(Long customerId) {
         return this.bikeReportRepository.getBikeReportByCustomerId(customerId);
     }
+    public List<BikeReport> getReportsWithDetailsForTechnician(Long techId) {
+        return bikeReportRepository.findAllByTechnicianWithDetails(techId);
+    }
+
 }
