@@ -30,37 +30,37 @@ VALUES ('Super John', 'superadmin@email.com', '$2a$12$d.M7PL2WzgPBZ7c9yHz9FOYj8p
 
 -- Insert into bike_model (must be done before referencing in bike)
 INSERT INTO bike_model (
-    id, type, brand, bike_size, gear_type, engine_type, powertrain,
+    id, type, brand, gear_type, engine_type, powertrain,
     max_support, engine_power_max, engine_power_nominal, engine_torque
 )
 VALUES (
-           1000000, 'PRO', 'TOYOTA', 1, 'GEAR', 'VOLVO', 'POWERTRAIN',
+           1000000, 'PRO', 'TOYOTA', 'GEAR', 'VOLVO', 'POWERTRAIN',
            300, 400, 300, 500
        );
 INSERT INTO bike_model (
-    id, type, brand, bike_size, gear_type, engine_type, powertrain,
+    id, type, brand, gear_type, engine_type, powertrain,
     max_support, engine_power_max, engine_power_nominal, engine_torque
 )
 VALUES (
-           1000001, 'PRO', 'RUFINA', 1, 'GEAR', 'RUFINA', 'POWERTRAIN',
+           1000001, 'PRO', 'RUFINA', 'GEAR', 'RUFINA', 'POWERTRAIN',
            300, 400, 300, 500
        );
 
 -- Insert into bike (frame_number as primary key, link to bike_model and customer)
 INSERT INTO bike (
-    frame_number, bike_owner_id, registration_date, production_date,
+    frame_number, bike_owner_id,bike_size, registration_date, production_date,
     milleage, acc_capacity, bike_model_id
 )
 VALUES (
-           'X45FERF', 3, '2024-01-01 10:00:00', '2024-01-01',
+           'X45FERF', 3, 1,'2024-01-01 10:00:00', '2024-01-01',
            1234, 250, 1000000
        );
 INSERT INTO bike (
-    frame_number, bike_owner_id, registration_date, production_date,
+    frame_number, bike_owner_id, bike_size, registration_date, production_date,
     milleage, acc_capacity, bike_model_id
 )
 VALUES (
-           'R123456', 3, '2024-01-01 10:00:00', '2024-01-01',
+           'R123456', 3,1, '2024-01-01 10:00:00', '2024-01-01',
            1234, 250, 1000001
        );
 

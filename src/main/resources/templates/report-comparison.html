@@ -77,9 +77,9 @@
         </tr>
         <tr>
           <th class="text-start">Size</th>
-          <td th:text="${bike.bikeModel.bikeSize}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.bikeSize}"
-              th:classappend="${bike.bikeModel.bikeSize != compareReport.bike.bikeModel.bikeSize} ? 'table-warning' : ''"></td>
+          <td th:text="${bike.bikeSize}"></td>
+          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeSize}"
+              th:classappend="${bike.bikeSize != compareReport.bike.bikeSize} ? 'table-warning' : ''"></td>
         </tr>
         <tr>
           <th class="text-start">Acc Capacity</th>

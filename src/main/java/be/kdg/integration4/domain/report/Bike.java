@@ -27,6 +27,9 @@ public class Bike implements Comparable<Bike> {
 
     private int milleage;
 
+    private BikeSize bikeSize;
+
+
     private int accCapacity;
 
     @ManyToOne
@@ -50,7 +53,7 @@ public class Bike implements Comparable<Bike> {
         bikeModel.setBrand(brand);
         this.registrationDate = LocalDateTime.now();
         this.productionDate = productionDate;
-        bikeModel.setBikeSize(bikeSize);
+        this.bikeSize = bikeSize;
         this.milleage = milleage;
         bikeModel.setGearType(gearType);
         bikeModel.setEngineType(engineType);

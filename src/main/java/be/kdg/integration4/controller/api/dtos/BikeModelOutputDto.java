@@ -9,8 +9,6 @@ public record BikeModelOutputDto(
 
          String brand,
 
-         BikeSize bikeSize,
-
          String gearType,
 
          String engineType,
