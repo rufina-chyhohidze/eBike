@@ -58,11 +58,11 @@ button:hover {
 .search-customer-title-area {
     text-align: center;
     margin-top: 20vh;
-    transition: all .3s ease;
+    transition: margin-top 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .search-customer-title-area-up {
     margin-top: 5vh;
-    transition: all .3s ease;
+    transition: margin-top 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .search-customer-title-area h1, .search-customer-title-area h4 {
     font-family: "Tektur", sans-serif;

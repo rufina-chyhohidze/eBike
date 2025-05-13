@@ -53,6 +53,7 @@ async function fetchCustomer() {
     if (response.status === 200) {
         bikeSection.classList.remove("bike-section-hide");
         bikeSection.classList.add("bike-section-show");
+        bikeSection.classList.remove("hidden")
         console.log(customerSearchArea)
         customerSearchArea.classList.add("search-customer-title-area-up");
         customerFound = await response.json();
@@ -61,6 +62,7 @@ async function fetchCustomer() {
     } else if (response.status === 204) {
         bikeSection.classList.add("bike-section-hide");
         bikeSection.classList.remove("bike-section-show");
+        bikeSection.classList.add("hidden")
         customerSearchArea.classList.remove("search-customer-title-area-up");
         customerFoundSection.innerHTML = "";
         customerNotFoundSection.style.display = "block";
@@ -110,11 +112,12 @@ async function showCustomerBikes(customerId) {
     if (response.status === 200) {
         bikeSection.classList.add("bike-section-show");
         noRegisteredBikes.style.display = "none";
-
+        bikeSection.classList.remove("hidden")
         displayBikes(await response.json());
     } else if (response.status === 204) {
         bikeSection.classList.remove("bike-section-show");
         noRegisteredBikes.style.display = "block";
+        bikeSection.classList.add("hidden")
         bikeItemsSection.innerHTML = "";
         console.log("No bikes found");
     } else {
