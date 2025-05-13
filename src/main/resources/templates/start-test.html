@@ -222,69 +222,73 @@
 
                     <div>
                         <label for="existing-bike-model" class="block text-sm font-medium text-gray-700">Select bike model</label>
-                        <select id="existing-bike-model">
+                        <select id="existing-bike-model" class="w-full p-3 mb-4 border border-gray-300 rounded-lg">
                             <option value="0" selected>Create new bike</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Chassis Number</label>
-                        <input name="frameNumber" type="text" class="form-input w-full" placeholder="VG2304K5111">
+                        <input name="frameNumber"
+                               class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               type="text" placeholder="VG2304K5111">
                     </div>
 
-
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Bike Size</label>
+                        <select name="bikeSize" class="w-full p-3 mb-4 border border-gray-300 rounded-lg">
+                            <option value="" selected disabled>Choose size...</option>
+                            <th:block th:each="size : ${bikeSizes}">
+                                <option th:value="${size}" th:text="${size}"></option>
+                            </th:block>
+                        </select>
+                    </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Mileage (km)</label>
-                        <input name="milleage" type="number" class="form-input w-full" placeholder="850">
+                        <input name="milleage" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="850">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Accu Capacity (Wh)</label>
-                        <input name="accCapacity" type="number" class="form-input w-full" placeholder="500">
+                        <input name="accCapacity" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="500">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Production Date</label>
-                        <input name="productionDate" type="date" class="form-input w-full" placeholder="2020-01-01">
+                        <input name="productionDate" type="date"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="2020-01-01">
                     </div>
                 </div>
 
                 <!-- Column 2 -->
                 <div class="space-y-4 immutable transition-all duration-500 ease-in-out opacity-100 scale-100">
-                    <div class="immutable">
-                        <label class="block text-sm font-medium text-gray-700">Bike Size</label>
-                        <select name="bikeSize" class="form-input w-full">
-                            <option value="" selected disabled>Choose size...</option>
-                            <option value="XXS">XXS</option>
-                            <option value="XS">XS</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                            <option value="XXXL">XXXL</option>
-                        </select>
-                    </div>
+
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Type</label>
-                        <input name="type" type="text" class="form-input w-full" placeholder="Ultimate C380">
+                        <input name="type" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Ultimate C380">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Powertrain</label>
-                        <input name="powertrain" type="text" class="form-input w-full" value="Belt">
+                        <input name="powertrain" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               value="Belt">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Engine Power - Max (W)</label>
-                        <input name="enginePowerMax" type="number" class="form-input w-full" placeholder="600">
+                        <input name="enginePowerMax" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="600">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Engine Torque (Nm)</label>
-                        <input name="engineTorque" type="number" class="form-input w-full" placeholder="85">
+                        <input name="engineTorque" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="85">
                     </div>
                 </div>
 
@@ -293,27 +297,32 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Bike Brand</label>
-                        <input name="brand" type="text" class="form-input w-full" placeholder="Gazelle">
+                        <input name="brand" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Gazelle">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Max Support (%)</label>
-                        <input name="maxSupport" type="number" class="form-input w-full" placeholder="340">
+                        <input name="maxSupport" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="340">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Engine Power - Nominal (W)</label>
-                        <input name="enginePowerNominal" type="number" class="form-input w-full" placeholder="250">
+                        <input name="enginePowerNominal" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="250">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Gear Type</label>
-                        <input name="gearType" type="text" class="form-input w-full" placeholder="Enviolo">
+                        <input name="gearType" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Enviolo">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Engine Type</label>
-                        <input name="engineType" type="text" class="form-input w-full" placeholder="Bosch Performance Speed">
+                        <input name="engineType" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Bosch Performance Speed">
                     </div>
                 </div>
             </div>

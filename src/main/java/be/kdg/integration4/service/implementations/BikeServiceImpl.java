@@ -46,7 +46,7 @@ public class BikeServiceImpl implements BikeService {
     @Override
     public Bike save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque, Long bikeModelId) {
         if (bikeModelId != null) {
-            Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), milleage, accCapacity, productionDate, bikeModelRepository.findById(bikeModelId).orElseThrow());
+            Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), bikeSize, milleage, accCapacity, productionDate, bikeModelRepository.findById(bikeModelId).orElseThrow());
             bikeRepository.save(bike);
             return bike;
         }
