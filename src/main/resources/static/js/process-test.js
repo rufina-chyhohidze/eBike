@@ -7,21 +7,12 @@ const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${windo
 
 
 
-const form = document.querySelector("form");
+const form = document.getElementById("newBikeForm");
 const loadingDiv = document.getElementById("loading");
 const testFormDiv = document.getElementById("test-form");
-
+const newBikeFormGrid = document.getElementById("newBikeFormGrid");
 const existingBikeModel = document.getElementById("existing-bike-model");
-// const brandEl = document.getElementById("brand")
-// const maxSupportEl = document.getElementById("maxSupport")
-// const sizeEl = document.getElementById("bikeSize")
-// const typeEl = document.getElementById("type")
-// const powertrainEl = document.getElementById("powertrain")
-// const enginePowerMaxEl = document.getElementById("enginePowerMax")
-// const engineTorqueEl = document.getElementById("engineTorque")
-// const enginePowerNominalEl = document.getElementById("enginePowerNominal")
-// const gearTypeEl = document.getElementById("gearType")
-// const engineTypeEl = document.getElementById("engineType")
+
 const bikeModelsResponse = await fetch("/api/bike-models")
 let bikeModels = {}
 if (bikeModelsResponse.ok) {
@@ -31,15 +22,38 @@ if (bikeModelsResponse.ok) {
     `)
 }
 
-const immutableFields = Array.from(document.getElementsByClassName("immutable"));
-existingBikeModel.addEventListener("change", function (e) {
-
-    if (existingBikeModel.value == 0) {
-        immutableFields.map(el => el.classList.remove("d-none"))
+const immutableFields = document.querySelectorAll(".immutable");
+existingBikeModel.addEventListener("change", () => {
+    if (existingBikeModel.value === "0") {
+        // SHOW: Remove hidden, then animate in
+        immutableFields.forEach(el => {
+            el.classList.remove("hidden");
+            // Force reflow so animation can trigger
+            void el.offsetWidth;
+            el.classList.remove("opacity-0", "scale-95");
+            el.classList.add("opacity-100", "scale-100");
+        });
+            newBikeFormGrid.classList.remove("justify-items-center");
+            newBikeFormGrid.classList.add("md:grid-cols-3");
     } else {
-        immutableFields.map(el => el.classList.add("d-none"))
+        // HIDE: Animate out, then apply hidden after transition
+        immutableFields.forEach(el => {
+            el.classList.remove("opacity-100", "scale-100");
+            el.classList.add("opacity-0", "scale-95");
+
+            setTimeout(() => {
+                el.classList.add("hidden");
+            }, 500); // Match your CSS transition duration
+        });
+
+
+
+        setTimeout(() => {
+            newBikeFormGrid.classList.add("justify-items-center");
+            newBikeFormGrid.classList.remove("md:grid-cols-3");
+        },500)
     }
-})
+});
 
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -67,6 +81,7 @@ form.addEventListener("submit", async function (e) {
             jsonData["enginePowerMax"] = selectedModel.enginePowerMax;
             jsonData["enginePowerNominal"] = selectedModel.enginePowerNominal;
             jsonData["engineTorque"] = selectedModel.engineTorque;
+            jsonData["bikeModelId"] = selectedModelId;
         }
     }
 
@@ -84,7 +99,7 @@ form.addEventListener("submit", async function (e) {
 
     if (response.ok) {
         console.log("Bike successfully saved");
-        const bikeModalCloseButton = document.getElementById("close-modal-bike-creation");
+        const bikeModalCloseButton = document.getElementById("closeNewBikeModal");
         bikeModalCloseButton.click();
 
         clearAllInputsFromForm();
@@ -98,7 +113,11 @@ function clearAllInputsFromForm() {
     // Clear all input elements (text, number, etc.) and select elements
     const elements = document.querySelectorAll('input, select');
     elements.forEach(element => {
-        element.value = '';  // Clear the value of the element
+        if (element.id != "emailCustomer") {
+            if (element.id != "bikeOwnerId-form") {
+                element.value = '';  // Clear the value of the element
+            }
+        }
     });
 }
 

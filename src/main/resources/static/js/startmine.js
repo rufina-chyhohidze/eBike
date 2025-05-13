@@ -12,10 +12,16 @@ const noRegisteredBikes = document.getElementById("bikes-not-found");
 const startTestButton = document.getElementById("startTestBtn");
 const closeStartTestModalButton = document.getElementById("close-start-test-button");
 const testTypeInput = document.getElementById("testType");
+const closeNewBikeModal = document.getElementById("closeNewBikeModal");
 const testBenchNumberInput = document.getElementById("testBenchNumber");
+const newBikeForm = document.getElementById("newBikeForm");
 const loadingDiv = document.getElementById("loading");
 const mainStartTestPage = document.getElementById("test-start-page-main");
 const customerNotFoundSection = document.getElementById("customer-not-found");
+const visualCheckCheckbox = document.getElementById("checkbox-visual-check");
+const functionalCheckCheckbox = document.getElementById("checkbox-functional-check");
+
+
 bikeSection.classList.add("bike-section-hide");
 noRegisteredBikes.style.display = "none";
 customerNotFoundSection.style.display = "none";
@@ -26,16 +32,30 @@ let customerFound;
 let bikeFrameOfBikeSelected;
 let customerFoundItem;
 
+
 setButtonSearch();
 emailInput.addEventListener('input', setButtonSearch);
 searchButton.addEventListener('click', fetchCustomer);
 startTestButton.addEventListener('click', startTest);
 closeStartTestModalButton.addEventListener("click", closeTestModal);
+newBikeForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+})
+closeNewBikeModal.addEventListener("click", function () {
+    document.getElementById("newBikeModal").classList.add("hidden");
+});
 
 document.getElementById("add-new-bike-btn").addEventListener("click", function () {
     document.getElementById("newBikeModal").classList.remove("hidden");
 });
 
+document.getElementById('emailCustomer').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter' && !customerSearchArea.classList.contains("search-customer-title-area-up")) {
+        event.preventDefault(); // Prevent default form submission if inside a form
+        document.getElementById('searchBtn').click();
+    }
+});
 
 
 function setButtonSearch() {
@@ -47,6 +67,7 @@ function setButtonSearch() {
         searchButton.style.opacity = "100%";
     }
 }
+
 async function fetchCustomer() {
     const response = await fetch(`/api/customers?email=${emailInput.value}`,
         {
@@ -144,7 +165,7 @@ function displayBikes(bikes) {
 
     for (let bike of bikes) {
         const bikeCard = `
-        <div class="p-5 border border-gray-200 rounded-2xl shadow hover:bg-purple-50 transition cursor-pointer">
+        <div class="p-5 border border-gray-200 rounded-2xl shadow hover:bg-purple-50 transition cursor-pointer m-3">
             <h3 class="text-xl font-bold text-gray-700">Bike Model: ${bike.brand} ${bike.type}</h3>
             <p class="text-sm text-gray-500">Frame No: ${bike.frameNumber}</p>
             <button id="${bike.frameNumber}" type="button" data-bs-target="#start-test-modal" data-bs-toggle="modal"
@@ -156,158 +177,6 @@ function displayBikes(bikes) {
 
     setBikeSelectedButtons(); // make buttons clickable
 }
-
-// document.querySelector("#newBikeModal form").addEventListener("submit", async function(event) {
-//     event.preventDefault();  // Prevent form from submitting the traditional way
-//
-//     const formData = new FormData(event.target);
-//     const newBikeData = {
-//         bikeOwnerId: formData.get('bikeOwnerId'),
-//         frameNumber: formData.get('frameNumber'),
-//         brand: formData.get('brand'),
-//         productionDate: formData.get('productionDate'),
-//         maxSupport: formData.get('maxSupport'),
-//         bikeSize: formData.get('bikeSize'),
-//         type: formData.get('type'),
-//         powertrain: formData.get('powertrain'),
-//         enginePowerMax: formData.get('enginePowerMax'),
-//         engineTorque: formData.get('engineTorque'),
-//         milleage: formData.get('milleage'),
-//         accCapacity: formData.get('accCapacity'),
-//         enginePowerNominal: formData.get('enginePowerNominal'),
-//         gearType: formData.get('gearType'),
-//         engineType: formData.get('engineType')
-//     };
-//
-//     // Send the data to the server to create the bike
-//     const response = await fetch(`/api/customers/${customerFound.id}/bikes`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             [csrfHeader]: csrfToken  // Ensure CSRF token is passed
-//         },
-//         body: JSON.stringify(newBikeData)
-//     });
-//
-//     if (response.status === 200) {
-//         // Successfully created the bike, close the modal
-//         closeTestModal();
-//
-//         // Re-fetch the bikes for this customer and update the list
-//         await showCustomerBikes(customerFound.id);
-//     } else {
-//         console.error("Failed to create bike: ", response.status);
-//         alert("There was an issue creating the bike. Please try again.");
-//     }
-// });
-
-// function displayBikes(bikes) {
-//     console.log("Displaying Bikes:")
-//     console.log(bikes);
-//
-//     bikeItemsSection.innerHTML = "";
-//
-//     /**
-//      * @typedef {Object} BikeDTO
-//      * @property {number} bikeOwnerId
-//      * @property {string} frameNumber
-//      * @property {string} type
-//      * @property {string} brand
-//      * @property {string} registrationDate - Format: YYYY-MM-DD
-//      * @property {string} productionDate - Format: YYYY-MM-DD
-//      * @property {string} bikeSize
-//      * @property {number} milleage
-//      * @property {string} gearType
-//      * @property {string} engineType
-//      * @property {string} powertrain
-//      * @property {number} accCapacity
-//      * @property {number} maxSupport
-//      * @property {number} enginePowerMax
-//      * @property {number} enginePowerNominal
-//      * @property {number} engineTorque
-//      */
-//
-//     for (let bike of bikes) {
-//         bikeItemsSection.innerHTML += `
-//         <!-- Bike Card -->
-//            <div class="col bike-item">
-//               <div class="card h-100 bike-card">
-//                 <div class="text-center">
-//                     <img class="bike-img" src="/img/ebike.png" alt="ebike">
-//                 </div>
-//                 <div class="card-body pricing-features">
-//                     <ol class="list-unstyled">
-//                         <li class="mb-3">
-//                             <strong>Frame Nr: </strong> <span>${bike.frameNumber}</span>
-//                         </li>
-//                     </ol>
-//                     <div class="text-center mt-4">
-//                       <button id="${bike.frameNumber}" type="button" data-bs-target="#start-test-modal" data-bs-toggle="modal" class="btn btn-outline-primary btn-custom select-bike-button">Select</button>
-//                       </div>
-//                   </div>
-//               </div>
-//               <div class="card bike-info">
-//                     <h5 class="bike-detail-title">BIKE DETAILS</h5>
-//                     <table>
-//                       <thead>
-//                         <th></th>
-//                         <th></th>
-//                         <th></th>
-//                         <th></th>
-//                       </thead>
-//                       <tbody>
-//                         <tr>
-//                           <td><strong>Brand:</strong></td>
-//                           <td>${bike.brand}</td>
-//                           <td><strong>Type:</strong></td>
-//                           <td>${bike.type}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Engine Torque:</strong></td>
-//                           <td>${bike.engineTorque}</td>
-//                           <td><strong>Registration Date:</strong></td>
-//                           <td>${bike.registrationDate}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Size:</strong></td>
-//                           <td>${bike.bikeSize}</td>
-//                           <td><strong>Production Date:</strong></td>
-//                           <td>${bike.productionDate}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Mileage:</strong></td>
-//                           <td>${bike.milleage}</td>
-//                           <td><strong>Gear Type:</strong></td>
-//                           <td>${bike.gearType}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Engine Type:</strong></td>
-//                           <td>${bike.engineType}</td>
-//                           <td><strong>Power Train:</strong></td>
-//                           <td>${bike.powertrain}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Acc. Capacity:</strong></td>
-//                           <td>${bike.accCapacity}</td>
-//                           <td><strong>Max. Support:</strong></td>
-//                           <td>${bike.maxSupport}</td>
-//                         </tr>
-//                         <tr>
-//                           <td><strong>Max. Engine Power:</strong></td>
-//                           <td>${bike.enginePowerMax}</td>
-//                           <td><strong>Nominal Engine Power:</strong></td>
-//                           <td>${bike.enginePowerMax}</td>
-//                         </tr>
-//                       </tbody>
-//                     </table>
-//               </div>
-//            </div>
-//         <!-- END - Bike Card -->
-//         `;
-//     }
-//
-//     setBikeSelectedButtons();
-// }
 
 function setBikeSelectedButtons() {
     const bikeSelectedButtons = [...document.getElementsByClassName("select-bike-button")];
@@ -327,6 +196,26 @@ function displayTestFormWithBikeSelected(e) {
 }
 
 async function startTest() {
+    const inspection = {};
+    const functionalTest = {};
+    document.querySelectorAll(".inspection-component").forEach(select => {
+        const componentType = select.getAttribute("data-component-type");
+        const componentName = select.getAttribute("data-component-name");
+        const value = select.value;
+
+        if (!componentName || !value) return;
+
+        // For visual components (visual inspection)
+        if (componentType === "visual" && visualCheckCheckbox.checked) {
+            inspection[componentName] = value;  // Use the exact component name without toLowerCase()
+        }
+        // For functional components (functional test)
+        else if (componentType === "functional" && functionalCheckCheckbox.checked) {
+            functionalTest[componentName] = value;  // Same, use the exact component name
+        }
+    });
+
+
     const response = await fetch("/api/reports",
         {
             method: "POST",
@@ -335,11 +224,13 @@ async function startTest() {
                 "Accept": "application/json",
                 [csrfHeader]: csrfToken
             },
-            body : JSON.stringify({
-                "emailBikeOwner" : customerFound.email,
-                "testBenchNumber" : testBenchNumberInput.value,
-                "testType" : testTypeInput.value,
-                "frameNumber" : bikeFrameOfBikeSelected,
+            body: JSON.stringify({
+                "emailBikeOwner": customerFound.email,
+                "testBenchNumber": testBenchNumberInput.value,
+                "testType": testTypeInput.value,
+                "frameNumber": bikeFrameOfBikeSelected,
+                visualInspection: inspection,
+                functionalTest: functionalTest,
             })
         }
     );
@@ -366,4 +257,4 @@ function closeTestModal() {
     testModal.classList.add("hidden");
 }
 
-export { customerFound, showCustomerBikes }
+export {customerFound, showCustomerBikes}
