@@ -159,7 +159,7 @@
 
                             <select th:id="'inspectionComponent' + ${iterStat.index}"
                                     th:name="'inspectionComponent' + ${iterStat.index}"
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                                    class="inspection-component w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
                                     th:attr="data-component-name=${component.name()}, data-component-type='visual'"
                                     required>
                                 <option value="" disabled selected>Select condition</option>
@@ -182,7 +182,7 @@
 
                             <select th:id="'functionalComponent' + ${iterStat.index}"
                                     th:name="'functionalComponent' + ${iterStat.index}"
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                                    class="inspection-component w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
                                     th:attr="data-component-name=${component.name()}, data-component-type='functional'"
                                     required>
                                 <option value="" disabled selected>Select condition</option>
