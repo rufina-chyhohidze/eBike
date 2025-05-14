@@ -48,256 +48,270 @@
       <i class="ph ph-download"></i> Download as PDF
     </button>
   </div>
-
   <div id="reportContent">
-    <div class="bg-gray-100 rounded-3xl shadow-md p-6 border border-gray-200 mb-6">
-      <p class="text-lg text-gray-700 mb-2">
-        <strong>Chassis Number:</strong> <span th:text="${bike.getFrameNumber()}"></span>
-      </p>
-    </div>
+  <div>
 
-    <div class="bg-white rounded-3xl shadow-md p-6 border border-gray-200 mb-6">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Average Values</h2>
-      <table class="min-w-full text-sm text-left border border-gray-200 rounded-xl overflow-hidden">
-        <thead class="bg-gray-200 text-gray-700">
-        <tr>
-          <th class="px-4 py-3">Metric</th>
-          <th class="px-4 py-3">Average</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th class="text-start">Brand</th>
-          <td th:text="${bike.getBikeModel().brand}">Brand</td>
-        </tr>
-        <tr>
-          <th class="text-start">Frame Number</th>
-          <td th:text="${bike.frameNumber}">Frame Number</td>
-        </tr>
-        <tr>
-          <th class="text-start">Type</th>
-          <td th:text="${bike.getBikeModel().type}">Type</td>
-        </tr>
-        <tr>
-          <th class="text-start">Registration Date</th>
-          <td th:text="${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Size</th>
-          <td th:text="${bike.bikeSize}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Acc Capacity</th>
-          <td th:text="${bike.accCapacity}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Engine Type</th>
-          <td th:text="${bike.bikeModel.engineType}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Gear Type</th>
-          <td th:text="${bike.bikeModel.gearType}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Accu Capacity</th>
-          <td th:text="${bike.accCapacity}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Max Support</th>
-          <td th:text="${bike.bikeModel.maxSupport}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Max Engine Power</th>
-          <td th:text="${bike.bikeModel.enginePowerMax}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Nominal Engine Power</th>
-          <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
-        </tr>
-        <tr>
-          <th class="text-start">Engine Torque</th>
-          <td th:text="${bike.bikeModel.engineTorque}"></td>
-        </tr>
-        </tbody>
-      </table>
-
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Visual Inspection</h5>
-        <table class="table table-sm table-bordered text-center align-middle">
-          <thead class="table-light">
-          <tr>
-            <th class="text-start">Component</th>
-            <th>Very Bad</th>
-            <th>Bad</th>
-            <th>Neutral</th>
-            <th>Good</th>
-            <th>Very Good</th>
-            <th>N/A</th>
-          </tr>
-          </thead>
+    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+      <h2 class="text-purple-700 text-2xl font-semibold px-6 pt-4">Bike Information</h2>
+      <div class="bg-white rounded-b-2xl mt-3">
+        <table class="min-w-full text-sm text-left overflow-hidden rounded-b-2xl">
+          <thead class="bg-purple-100">
           <tbody>
-          <tr th:each="entry : ${bikeReport.visualInspection}">
-            <td class="text-start" th:text="${entry.key.displayName}">Component</td>
-            <td th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'VERY_GOOD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Brand</th>
+            <td th:text="${bike.getBikeModel().brand}">Brand</td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Frame Number</th>
+            <td th:text="${bike.frameNumber}">Frame Number</td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Type</th>
+            <td th:text="${bike.getBikeModel().type}">Type</td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Registration Date</th>
+            <td th:text="${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Size</th>
+            <td th:text="${bike.bikeSize}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Acc Capacity</th>
+            <td th:text="${bike.accCapacity}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Engine Type</th>
+            <td th:text="${bike.bikeModel.engineType}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Gear Type</th>
+            <td th:text="${bike.bikeModel.gearType}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Accu Capacity</th>
+            <td th:text="${bike.accCapacity}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Max Support</th>
+            <td th:text="${bike.bikeModel.maxSupport}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Max Engine Power</th>
+            <td th:text="${bike.bikeModel.enginePowerMax}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Nominal Engine Power</th>
+            <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
+          </tr>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <th class="px-6 py-3 text-start">Engine Torque</th>
+            <td th:text="${bike.bikeModel.engineTorque}"></td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Test Summary</h5>
-        <table class="table table-sm table-bordered text-center align-middle">
-          <thead class="table-light">
+
+    </div>
+    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+      <!-- Title -->
+      <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">
+        Visual Inspection
+      </h5>
+
+      <!-- Table with white background and rounded corners -->
+      <div class="bg-white rounded-b-2xl mt-3">
+        <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+          <thead class="bg-purple-100">
           <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Deviation</th>
-            <th>Unit</th>
+            <th class="px-6 py-3 text-left">Component</th>
+            <th class="px-4 py-3">Very Bad</th>
+            <th class="px-4 py-3">Bad</th>
+            <th class="px-4 py-3">Neutral</th>
+            <th class="px-4 py-3">Good</th>
+            <th class="px-4 py-3">Very Good</th>
+            <th class="px-4 py-3">N/A</th>
           </tr>
           </thead>
           <tbody>
+          <tr th:each="entry : ${bikeReport.visualInspection}" class="even:bg-purple-100 odd:bg-purple-50">
+            <td class="px-6 py-3 text-left rounded-l-xl" th:text="${entry.key.displayName}">Component</td>
+            <td class="px-4 py-3" th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
+            <td class="px-4 py-3" th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+            <td class="px-4 py-3" th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>
+            <td class="px-4 py-3" th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+            <td class="px-4 py-3" th:text="${entry.value.name() == 'VERY_GOOD' ? '✔' : ''}"></td>
+            <td class="px-4 py-3 rounded-r-xl" th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <div class="col-md-6">
+    <!-- Test Summary Table -->
+    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+      <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Test Summary</h5>
+      <div class="bg-white rounded-b-2xl mt-3">
+        <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+          <thead class="bg-purple-100">
           <tr>
-            <td>Max Motor Power</td>
+            <th class="px-6 py-3 text-left">Test</th>
+            <th class="px-6 py-3 text-left">Result</th>
+            <th class="px-6 py-3 text-left">Deviation</th>
+            <th class="px-6 py-3 text-left">Unit</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Max Motor Power</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.maxMotorPower, 0, 'COMMA', 2, 'POINT')}">Max Motor Power</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.motorPowerDeviation, 0, 'COMMA', 2, 'POINT')}">Motor Power Deviation</td>
             <td>W</td>
           </tr>
-          <tr>
-            <td>Max Torque</td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Max Torque</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.maxTorque, 0, 'COMMA', 2, 'POINT')}">Max Torque</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.torqueDeviation, 0, 'COMMA', 2, 'POINT')}">Torque Deviation</td>
             <td>Nm</td>
           </tr>
-          <tr>
-            <td>Max Support</td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Max Support</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.maxSupport, 0, 'COMMA', 2, 'POINT')}">Max Support</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.supportDeviation, 0, 'COMMA', 2, 'POINT')}">Support Deviation</td>
             <td>%</td>
           </tr>
-          <tr>
-            <td>Max Wheel Power</td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Max Wheel Power</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.maxWheelPower, 0, 'COMMA', 2, 'POINT')}">Max Wheel Power</td>
             <td th:text="${#numbers.formatDecimal(overviewTest.wheelPowerDeviation, 0, 'COMMA', 2, 'POINT')}">Wheel Power Deviation</td>
             <td>W</td>
           </tr>
-          <tr>
-            <td><strong>Score</strong></td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3"><strong>Score</strong></td>
             <td th:text="${#numbers.formatDecimal(overviewTest.score, 0, 'COMMA', 2, 'POINT')}">Score</td>
             <td colspan="2"></td>
           </tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Nominal Load Test</h5>
-        <table class="table table-sm text-center">
-          <thead class="table-light">
+    <!-- Nominal Load Test Table -->
+    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+      <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Nominal Load Test</h5>
+      <div class="bg-white rounded-b-2xl mt-3">
+        <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+          <thead class="bg-purple-100">
           <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Unit</th>
+            <th class="px-6 py-3 text-left">Test</th>
+            <th class="px-6 py-3 text-left">Result</th>
+            <th class="px-6 py-3 text-left">Unit</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>Continuous Load</td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Continuous Load</td>
             <td th:text="${#numbers.formatDecimal(nominalLoadTest.continuousLoad, 0, 'COMMA', 2, 'POINT')}">Continuous Load</td>
             <td>W</td>
           </tr>
-          <tr>
-            <td>Temperature Rise</td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3">Temperature Rise</td>
             <td th:text="${#numbers.formatDecimal(nominalLoadTest.temperatureIncrease, 0, 'COMMA', 2, 'POINT')}">Temperature Rise</td>
             <td>°C/Wh</td>
           </tr>
-          <tr>
-            <td><strong>Score</strong></td>
+          <tr class="even:bg-purple-50 odd:bg-purple-100">
+            <td class="px-6 py-3"><strong>Score</strong></td>
             <td th:text="${#numbers.formatDecimal(nominalLoadTest.score, 0, 'COMMA', 2, 'POINT')}">Score</td>
             <td></td>
           </tr>
           </tbody>
         </table>
       </div>
-
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Battery Test</h5>
-        <table class="table table-sm text-center">
-          <thead class="table-light">
-          <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Unit</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Capacity</td>
-            <td th:text="${#numbers.formatDecimal(batteryTest.availableCapacity, 0, 'COMMA', 2, 'POINT')}">Capacity</td>
-            <td>Wh</td>
-          </tr>
-          <tr>
-            <td>BatteryHealth</td>
-            <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Charge Cycles</td>
-            <td>%</td>
-          </tr>
-          <tr>
-            <td><strong>Score</strong></td>
-            <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Score</td>
-            <td></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Bearing Health</h5>
-        <div class="text-center fs-5">
-          <span th:text="${bearingHealth.bearingStatus} == true ? '✔ Good' : '✖ Bad'">✔ Good</span>
-        </div>
-      </div>
-
-      <div class="mb-4 border p-3">
-        <h5 class="bg-light p-2">Functional Test</h5>
-        <table class="table table-sm table-bordered text-center align-middle">
-          <thead class="table-light">
-          <tr>
-            <th class="text-start">Component</th>
-            <th>-</th><th>+</th><th>N/A</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="entry : ${bikeReport.functionalTest}">
-            <td class="text-start" th:text="${entry.key.displayName}">Component</td>
-            <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
-            <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-    <div>
+  </div>
 
-      <div class="text-center mt-4">
-        <a th:href="@{/report-comparison/{id}(id=${id})}" class="btn btn-outline-secondary">Compare with another report</a>
-      </div>
 
-      <div class="text-center mb-4">
-        <button class="btn btn-primary" onclick="downloadPDF()">Download as PDF</button>
+  <!-- Battery Test -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Battery Test</h5>
+    <div class="bg-white rounded-b-2xl mt-3">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
+        <tr>
+          <th class="px-6 py-3 text-left">Test</th>
+          <th class="px-6 py-3">Result</th>
+          <th class="px-6 py-3">Unit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3">Capacity</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.availableCapacity, 0, 'COMMA', 2, 'POINT')}">Capacity</td>
+          <td>Wh</td>
+        </tr>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3">Battery Health</td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Charge Cycles</td>
+          <td>%</td>
+        </tr>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3"><strong>Score</strong></td>
+          <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 0, 'COMMA', 2, 'POINT')}">Score</td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bearing Health -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Bearing Health</h5>
+    <div class="bg-white rounded-b-2xl mt-3">
+      <div class="text-center fs-5 px-6 py-3">
+        <span th:text="${bearingHealth.bearingStatus} == true ? '✔ Good' : '✖ Bad'">✔ Good</span>
       </div>
     </div>
   </div>
 
+  <!-- Functional Test -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Functional Test</h5>
+    <div class="bg-white rounded-b-2xl mt-3">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
+        <tr>
+          <th class="px-6 py-3 text-left">Component</th>
+          <th class="px-4 py-3">-</th>
+          <th class="px-4 py-3">+</th>
+          <th class="px-4 py-3">N/A</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${bikeReport.functionalTest}" class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left rounded-l-xl" th:text="${entry.key.displayName}">Component</td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3 rounded-r-xl" th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+
+
   <div class="flex flex-col sm:flex-row gap-4 mt-6">
     <a th:href="@{/report/{id}/detailed(id=${id})}" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
       <i class="ph ph-chart-bar"></i> View Detailed Report
+    </a>
+    <a th:href="@{/report-comparison/{id}(id=${id})}" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
+      <i class="ph ph-chart-bar"></i> Compare with another report
     </a>
     <a href="/technician/dashboard" class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
       <i class="ph ph-arrow-left"></i> Back to Dashboard
