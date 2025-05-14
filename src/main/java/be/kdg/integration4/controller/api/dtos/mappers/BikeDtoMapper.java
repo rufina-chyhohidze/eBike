@@ -56,7 +56,7 @@ public class BikeDtoMapper {
             registrationDate = bike.getRegistrationDate().toLocalDate();
         }
         productionDate = bike.getProductionDate();
-        bikeSize = bike.getBikeModel().getBikeSize();
+        bikeSize = bike.getBikeSize();
         milleage = bike.getMilleage();
         gearType = bike.getBikeModel().getGearType();
         engineType = bike.getBikeModel().getEngineType();

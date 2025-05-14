@@ -73,7 +73,6 @@ form.addEventListener("submit", async function (e) {
         if (selectedModel) {
             jsonData["type"] = selectedModel.type;
             jsonData["brand"] = selectedModel.brand;
-            jsonData["bikeSize"] = selectedModel.bikeSize;
             jsonData["gearType"] = selectedModel.gearType;
             jsonData["engineType"] = selectedModel.engineType;
             jsonData["powertrain"] = selectedModel.powertrain;

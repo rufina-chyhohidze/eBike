@@ -27,12 +27,15 @@ public class Bike implements Comparable<Bike> {
 
     private int milleage;
 
+    private BikeSize bikeSize;
+
+
     private int accCapacity;
 
     @ManyToOne
     private BikeModel bikeModel;
 
-    public Bike(String frameNumber, Customer bikeOwner, int milleage, int accCapacity, LocalDate productionDate,  BikeModel bikeModel) {
+    public Bike(String frameNumber, Customer bikeOwner,BikeSize bikeSize, int milleage, int accCapacity, LocalDate productionDate,  BikeModel bikeModel) {
         this.frameNumber = frameNumber;
         this.bikeOwner = bikeOwner;
         this.milleage = milleage;
@@ -40,6 +43,7 @@ public class Bike implements Comparable<Bike> {
         this.productionDate = productionDate;
         this.bikeModel = bikeModel;
         this.registrationDate = LocalDateTime.now();
+        this.bikeSize = bikeSize;
     }
 
     public Bike(String frameNumber, Customer bikeOwner, String type, String brand, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
@@ -50,7 +54,7 @@ public class Bike implements Comparable<Bike> {
         bikeModel.setBrand(brand);
         this.registrationDate = LocalDateTime.now();
         this.productionDate = productionDate;
-        bikeModel.setBikeSize(bikeSize);
+        this.bikeSize = bikeSize;
         this.milleage = milleage;
         bikeModel.setGearType(gearType);
         bikeModel.setEngineType(engineType);
