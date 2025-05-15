@@ -12,9 +12,7 @@ docker run --rm --name azure_setup -dit \
   -w /terraform \
   anir333/team18-int4:latest
 
-docker exec az group exists --name rg-team18
-
-docker exec azure_setup bash  "/terraform/azure_login.sh"
+docker exec azure_setup bash "/terraform/azure_login.sh"
 
 
 function resourceGroupExists() {
@@ -31,6 +29,7 @@ if resourceGroupExists ; then
     echo "Resource group doesn't exist, initializing setup..."
     docker exec azure_setup tofu init
     docker exec azure_setup tofu apply --auto-approve
+    docker exec azure_setup "/terraform/setup_runner.sh"
     docker kill azure_setup
 fi
 
