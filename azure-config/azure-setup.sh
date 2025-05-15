@@ -1,7 +1,14 @@
 command -v docker >/dev/null 2>&1 || { echo "Docker is not installed. Aborting."; exit 1; }
+command -v ssh >/dev/null 2>&1 || { echo "SSH (openssh-clients) is not installed. Aborting."; exit 1; }
+
+if [ ! -f ~/.ssh/azure ] ; then
+  echo "Creating ssh key (in host)"
+  ssh-keygen -t ed25519 -f ~/.ssh/azure -N ""
+fi
 
 docker run --rm --name azure_setup -dit \
   -v "./terraform:/terraform" \
+  -v "$HOME/.ssh:/root/.ssh/" \
   -w /terraform \
   anir333/team18-int4:latest
 
