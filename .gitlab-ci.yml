@@ -21,30 +21,30 @@ build_application:
     paths:
       - build/libs/*.jar
 
-#test_application:
-#  stage: test
-#  services:
-#    - name: postgres:17.2-alpine
-#      alias: db
-#  variables:
-#    POSTGRES_DB: $DB_NAME
-#    POSTGRES_USER: $DB_USER
-#    POSTGRES_PASSWORD: $DB_PASSWORD
-#    SPRING_PROFILES_ACTIVE: test
-#    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
-#    SPRING_DATASOURCE_USERNAME: $DB_USER
-#    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
-#  script:
-#    - echo "========== TEST STAGE =========="
-#    - echo "Waiting 15s for Postgres to be ready..."
-#    - sleep 15
-#    - echo "Testing with DB URL"
-#    - echo "$SPRING_DATASOURCE_URL"
-#    - gradle test
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: build/test-results/test/TEST-*.xml
+test_application:
+  stage: test
+  services:
+    - name: postgres:17.2-alpine
+      alias: db
+  variables:
+    POSTGRES_DB: $DB_NAME
+    POSTGRES_USER: $DB_USER
+    POSTGRES_PASSWORD: $DB_PASSWORD
+    SPRING_PROFILES_ACTIVE: test
+    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
+    SPRING_DATASOURCE_USERNAME: $DB_USER
+    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
+  script:
+    - echo "========== TEST STAGE =========="
+    - echo "Waiting 15s for Postgres to be ready..."
+    - sleep 15
+    - echo "Testing with DB URL"
+    - echo "$SPRING_DATASOURCE_URL"
+    - gradle test
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/TEST-*.xml
 
 deploy_application:
   stage: deploy

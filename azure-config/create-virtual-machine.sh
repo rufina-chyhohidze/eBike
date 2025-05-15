@@ -19,6 +19,7 @@ echo "Finished setting up ssh keys"
 
 function deletePreviousProjectInVm() {
 
+# TODO: EOF CAN LITERALLY BE ANYTHING YOU WANNA CALL IT AND DOESNT HAVE TO BE IN QUOTES I THINK, AND ITS A STANDARD SO IT'S FINE TO DO
 ssh -i ~/.ssh/azure "team18@$VM_IP" << 'EOF'
   sudo su
   rm -r /home/team18/libs/
@@ -27,6 +28,7 @@ EOF
   return 0
 }
 
+# TODO SET TO STANDARD IP NOT BASIC IN END
 if az vm list --resource-group rg-team18-integration4 --query "[].name" -o tsv | grep vm-team18-integration4 ; then
   echo "VM exists"
   deletePreviousProjectInVm
@@ -38,7 +40,7 @@ else
   --accept-term \
   --image 'almalinux:almalinux-x86_64:9-gen1:latest' \
   --admin-username team18 \
-  --public-ip-sku Standard \
+  --public-ip-sku Basic \
   --public-ip-address pip-vm-team18-integration4 \
   --storage-sku Standard_LRS \
   --os-disk-name osdisk-vm-team18-integration4 \
@@ -71,8 +73,9 @@ scp -i ~/.ssh/azure -r "$CI_PROJECT_DIR/certificatestosend/" "team18@$VM_IP":/ho
 
 echo "Opening port"
 #az vm open-port --port 8080 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
-az vm open-port --port 80 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
-az vm open-port --port 443 --resource-group rg-team18-integration4 --name vm-team18-integration4 >/dev/null
+az vm open-port --port 80 --resource-group rg-team18-integration4 --name vm-team18-integration4 --priority 1010 >/dev/null
+az vm open-port --port 443 --resource-group rg-team18-integration4 --name vm-team18-integration4 --priority 1020 >/dev/null
+
 echo "Port opened"
 
 
