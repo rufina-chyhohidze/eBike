@@ -14,7 +14,6 @@ variables:
 
 build_application:
   stage: build
-  volume:
   script:
     - echo "========== BUILD STAGE =========="
     - gradle clean build -x test
