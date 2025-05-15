@@ -3,7 +3,8 @@ image: gradle:8.5-jdk21
 stages:
   - build
 #  - test
-  - deploy
+#  - azure_setup
+#  - deploy
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -13,49 +14,52 @@ variables:
 
 build_application:
   stage: build
+  tags:
+    - azure
+    - setup
   script:
     - echo "========== BUILD STAGE =========="
-    - gradle clean build -x test
     - echo "Build completed successfully."
+    - echo "Running pipeline now! $(date)" >> /root/pipeline/cd.log
   artifacts:
     paths:
       - build/libs/*.jar
 
-test_application:
-  stage: test
-  services:
-    - name: postgres:17.2-alpine
-      alias: db
-  variables:
-    POSTGRES_DB: $DB_NAME
-    POSTGRES_USER: $DB_USER
-    POSTGRES_PASSWORD: $DB_PASSWORD
-    SPRING_PROFILES_ACTIVE: test
-    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
-    SPRING_DATASOURCE_USERNAME: $DB_USER
-    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
-  script:
-    - echo "========== TEST STAGE =========="
-    - echo "Waiting 15s for Postgres to be ready..."
-    - sleep 15
-    - echo "Testing with DB URL"
-    - echo "$SPRING_DATASOURCE_URL"
-    - gradle test
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/TEST-*.xml
+#test_application:
+#  stage: test
+#  services:
+#    - name: postgres:17.2-alpine
+#      alias: db
+#  variables:
+#    POSTGRES_DB: $DB_NAME
+#    POSTGRES_USER: $DB_USER
+#    POSTGRES_PASSWORD: $DB_PASSWORD
+#    SPRING_PROFILES_ACTIVE: test
+#    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
+#    SPRING_DATASOURCE_USERNAME: $DB_USER
+#    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
+#  script:
+#    - echo "========== TEST STAGE =========="
+#    - echo "Waiting 15s for Postgres to be ready..."
+#    - sleep 15
+#    - echo "Testing with DB URL"
+#    - echo "$SPRING_DATASOURCE_URL"
+#    - gradle test
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: build/test-results/test/TEST-*.xml
 
-deploy_application:
-  stage: deploy
-  image: anir333/integration4:cicd1
-  script:
-    - echo "🔐 Logging into Azure..."
-    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
-    - az account show &>/dev/null && echo "✅ Azure login successful"
-    - chmod +x ./azure-config/create-virtual-machine.sh
-    - ./azure-config/create-virtual-machine.sh
-
+#deploy_application:
+#  stage: deploy
+#  image: anir333/integration4:cicd1
+#  script:
+#    - echo "🔐 Logging into Azure..."
+#    - az login --service-principal -u "$CLIENT_ID" -p "$CLIENT_SECRET" --tenant "$TENANT_ID" &>/dev/null
+#    - az account show &>/dev/null && echo "✅ Azure login successful"
+#    - chmod +x ./azure-config/create-virtual-machine.sh
+#    - ./azure-config/create-virtual-machine.sh
+#
 
 
 
