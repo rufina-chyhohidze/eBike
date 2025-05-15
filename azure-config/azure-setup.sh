@@ -18,7 +18,7 @@ docker exec azure_setup bash  "/terraform/azure_login.sh"
 
 
 function resourceGroupExists() {
-  if "$(docker exec az group exists --name rg-team18)" ; then
+  if "$(docker exec azure_setup az group exists --name rg-team18)" ; then
     return 0
     else return 1
   fi
