@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Exits script immediately if a command fails
 #set -e
 

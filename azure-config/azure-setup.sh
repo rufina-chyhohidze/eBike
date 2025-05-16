@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Can only run with sudo
 [ "$(id -u)" -eq 0 ] || { echo "Script must be executed as root user, otherwise script to setup_runner.sh won't work." ; exit 1 ; }
 
 if [ ! -f ./terraform/main.tf ] || [ ! -f ./terraform/variables.tf ] || [ ! -f ./terraform/outputs.tf ] ; then

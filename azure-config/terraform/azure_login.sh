@@ -1,3 +1,5 @@
+#!/bin/bash
+
 az login --service-principal \
 -u 83665159-87d3-4463-a3ef-53fd62b8b4aa \
 -p _p28Q~ZZSuenVgMJU2VbmjpmScCfpw1dSoZS4a~y \
