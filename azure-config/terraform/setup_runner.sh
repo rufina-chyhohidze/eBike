@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exits script immediately if a command fails
-#set -e
-
 echo "Getting VM public ip address..."
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 echo "VM public ip address: $VM_IP"
@@ -11,9 +8,6 @@ echo "VM public ip address: $VM_IP"
 echo "Adding VM IP to known hosts..."
 ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 echo "VM IP added to known hosts"
-
-
-# sudo dnf upgrade -y
 
 echo "Initiating connection with VM to setup runner..."
 ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
