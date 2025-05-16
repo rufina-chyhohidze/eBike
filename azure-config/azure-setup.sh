@@ -21,7 +21,9 @@ docker run --rm --name azure_setup -dit \
   -w /terraform \
   anir333/team18-int4:latest
 
+echo "Logging into azure"
 docker exec azure_setup bash "/terraform/azure_login.sh"
+echo "Logged into azure successfully"
 
 
 function resourceGroupExists() {
