@@ -1,3 +1,12 @@
+if [ ! -f ./terraform/main.tf ] || [ ! -f ./terraform/variables.tf ] || [ ! -f ./terraform/outputs.tf ] ; then
+  echo "You must execute this script in the '(ROOT_PROJECT_DIR)/azure-config' directory!" >&2
+  exit 1;
+fi
+
+if ! grep -q "f44abeef-ada7-4fd1-a6dc-6173b9d786bd" "./terraform/variables.tf" ; then
+  echo "This is not the correct directory, this script can only be executed in the '/ebiketeam18/azure-config/' project directory"
+fi
+
 command -v docker >/dev/null 2>&1 || { echo "Docker is not installed. Aborting."; exit 1; }
 command -v ssh >/dev/null 2>&1 || { echo "SSH (openssh-clients) is not installed. Aborting."; exit 1; }
 
