@@ -56,6 +56,7 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
 
   sudo touch /var/log/cd-gitlab-pipeline.log
   sudo chmod 777 /var/log/cd-gitlab-pipeline.log
+  echo "alias cl='clear'" >> ~/.bashrc
 
   echo "Restarting virtual machine..."
 
