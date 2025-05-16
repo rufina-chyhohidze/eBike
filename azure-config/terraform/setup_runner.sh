@@ -54,6 +54,7 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
   # Start and enable the service
   sudo systemctl restart gitlab-runner
 
+  sudo touch /var/log/cd-gitlab-pipeline.log
   sudo chmod 777 /var/log/cd-gitlab-pipeline.log
 
   echo "Restarting virtual machine..."
