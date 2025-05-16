@@ -20,6 +20,7 @@ build_application:
   script:
     - echo "========== BUILD STAGE =========="
 #    - #gradle clean build -x test
+    - docker run -dit ubuntu:22.04
     - echo "Build completed successfully."
 #    - #echo "Running pipeline now! $(date)" >> /root/pipeline/cd.log
 #  artifacts:

@@ -29,6 +29,7 @@ if resourceGroupExists ; then
     echo "Resource group doesn't exist, initializing setup..."
     docker exec azure_setup tofu init
     docker exec azure_setup tofu apply --auto-approve
+    docker exec azure_setup chmod +x "/terraform/setup_runner.sh"
     docker exec azure_setup "/terraform/setup_runner.sh"
     docker kill azure_setup
 fi

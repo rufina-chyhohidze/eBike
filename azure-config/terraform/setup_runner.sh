@@ -53,5 +53,7 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
   # Start and enable the service
   sudo systemctl restart gitlab-runner
 
+  echo "Restarting virtual machine..."
+
   sudo reboot
 SetupInput
