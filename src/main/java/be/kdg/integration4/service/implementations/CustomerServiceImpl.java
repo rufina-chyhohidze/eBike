@@ -4,6 +4,8 @@ import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerServiceImpl(CustomerRepository repository) {
+    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -41,5 +45,25 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Optional<Customer> getByEmailIgnoreCase(String email) {
         return this.repository.findByEmailIgnoreCase(email);
+    }
+
+    @Override
+    public Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber) {
+        if (!loggedInId.equals(pathId)) {
+            throw new AccessDeniedException("You are not authorized to access this resource.");
+        }
+        Customer customer = repository.findById(loggedInId).orElseThrow();
+        customer.setPhoneNumber(phoneNumber);
+        return repository.save(customer);
+    }
+
+    @Override
+    public Customer updatePassword(Long loggedInId, Long pathId, String password) {
+        if (!loggedInId.equals(pathId)) {
+            throw new AccessDeniedException("You are not authorized to access this resource.");
+        }
+        Customer customer = repository.findById(loggedInId).orElseThrow();
+        customer.setPassword(passwordEncoder.encode(password));
+        return repository.save(customer);
     }
 }

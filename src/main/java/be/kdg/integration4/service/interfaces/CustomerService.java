@@ -16,4 +16,7 @@ public interface CustomerService {
     void deleteById(Long id);
 
     Optional<Customer> getByEmailIgnoreCase(String email);
+
+    Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber);
+    Customer updatePassword(Long loggedInId, Long pathId, String password);
 }
