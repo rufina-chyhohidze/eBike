@@ -45,8 +45,7 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
   sudo gitlab-runner register --non-interactive \
     --url "https://gitlab.com" \
     --registration-token "glrt-rfSqO6W5DJ5ItOpsN-OMlm86MQpwOjEzcjA5NQp0OjMKdTpiNGRiaBg.01.1j08f83qv" \
-    --executor "docker" \
-    --docker-image "almalinux:9.5" \
+    --executor "shell" \
     --description "team18-vm" \
     --tag-list "azure,setup" \
     --run-untagged="true" \
