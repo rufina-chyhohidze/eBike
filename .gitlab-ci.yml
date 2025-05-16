@@ -19,6 +19,7 @@ build_application:
     - echo "========== BUILD STAGE =========="
 #    - #gradle clean build -x test
     - docker run -dit ubuntu:22.04
+    - echo "Running in pipeline ${date}" >> /var/log/cd-gitlab-pipeline.log
     - echo "Build completed successfully."
 #    - #echo "Running pipeline now! $(date)" >> /root/pipeline/cd.log
 #  artifacts:

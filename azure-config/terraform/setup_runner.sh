@@ -1,7 +1,6 @@
 # Exits script immediately if a command fails
 set -e
 
-echo "Installing docker in VM (runner)..."
 
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 
@@ -12,6 +11,8 @@ ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 # sudo dnf upgrade -y
 
 ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
+  echo "Installing docker in VM (runner)..."
+
   sudo dnf install -y dnf-plugins-core
 
   sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -36,6 +37,7 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
   sudo dnf install -y gitlab-runner
 
   # Start and enable the service
+  sudo usermod -aG docker gitlab-runner
   sudo systemctl enable --now gitlab-runner
   sudo systemctl start gitlab-runner
 
