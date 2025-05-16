@@ -8,8 +8,10 @@ VM_IP="$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --q
 # Add vm ip to known hosts to be able to ssh into it without prompts
 ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 
+
+# sudo dnf upgrade -y
+
 ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
-  sudo dnf upgrade -y
   sudo dnf install -y dnf-plugins-core
 
   sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
