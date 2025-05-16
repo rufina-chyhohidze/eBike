@@ -1,3 +1,5 @@
+[ "$(id -u)" -eq 0 ] || { echo "Script must be executed as root user, otherwise script to setup_runner.sh won't work." ; exit 1 ; }
+
 if [ ! -f ./terraform/main.tf ] || [ ! -f ./terraform/variables.tf ] || [ ! -f ./terraform/outputs.tf ] ; then
   echo "You must execute this script in the '(ROOT_PROJECT_DIR)/azure-config' directory!" >&2
   exit 1;
@@ -25,22 +27,22 @@ echo "Logging into azure"
 docker exec azure_setup bash "/terraform/azure_login.sh"
 echo "Logged into azure successfully"
 
-
-function resourceGroupExists() {
-  if "$(docker exec azure_setup az group exists --name rg-team18)" ; then
-    return 0
-    else return 1
-  fi
-}
-
-if resourceGroupExists ; then
-  echo "Resource group already exists, skipping setup..."
-  docker kill azure_setup
-  else
+#
+#function resourceGroupExists() {
+#  if "$(docker exec azure_setup az group exists --name rg-team18)" ; then
+#    return 0
+#    else return 1
+#  fi
+#}
+#
+#if resourceGroupExists ; then
+#  echo "Resource group already exists, skipping setup..."
+#  docker kill azure_setup
+#  else
     echo "Resource group doesn't exist, initializing setup..."
     docker exec azure_setup tofu init
     docker exec azure_setup tofu apply --auto-approve
     docker exec azure_setup chmod +x "/terraform/setup_runner.sh"
     docker exec azure_setup bash /terraform/setup_runner.sh
     docker kill azure_setup
-fi
+#fi
