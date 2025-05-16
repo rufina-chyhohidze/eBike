@@ -69,7 +69,7 @@ function setButtonSearch() {
 }
 
 async function fetchCustomer() {
-    const response = await fetch(`/api/customers?email=${emailInput.value}`,
+    const response = await fetch(`/api/customers/${emailInput.value}`,
         {
             method: "GET",
             headers: {

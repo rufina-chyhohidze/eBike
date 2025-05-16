@@ -29,7 +29,6 @@ public class CustomersController {
     private final CustomerDtoMapper customMapper;
     private final BikeDtoMapper bikeMapper;
     private final BikeService bikeService;
-   // private final CustomerDtoMapper customerDtoMapper;
 
     @Autowired
     public CustomersController(CustomerService customerService, BikeService bikeService, CustomerDtoMapper customMapper, BikeDtoMapper bikeMapper) {
@@ -39,9 +38,9 @@ public class CustomersController {
         this.bikeMapper = bikeMapper;
     }
 
-    @GetMapping
+    @GetMapping("/{email}")
     @StaffOnly
-    public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email) {
+    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
         return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
@@ -68,26 +67,21 @@ public class CustomersController {
         return ResponseEntity.ok(bikeMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 
-//    @GetMapping
-//    @TechnicianOnly
-//    public ResponseEntity<List<Customer>> filterCustomers(@RequestParam(required = false) String search) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String loggedInEmail = authentication.getName();
-//        Technician technician = technicianService.getByEmail(loggedInEmail);
-//
-//        List<Customer> customers = customerService.getAll();
-//
-//        if (search != null && !search.isEmpty()) {
-//            String searchLower = search.toLowerCase();
-//            customers = customers.stream()
-//                    .filter(customer ->
-//                            String.valueOf(customer.getId()).contains(searchLower) ||
-//                                    customer.getName().toLowerCase().contains(searchLower) ||
-//                                    customer.getEmail().toLowerCase().contains(searchLower) ||
-//                                    (customer.getPhoneNumber() != null && customer.getPhoneNumber().toLowerCase().contains(searchLower)))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        return ResponseEntity.ok(customers);
-//    }
+    @GetMapping
+    @StaffOnly
+    public ResponseEntity<List<CustomerDto>> filterCustomers(@RequestParam(required = false) String name) {
+
+        if (name != null && !name.isEmpty()) {
+            List<Customer> customers = customerService.getByNameIgnoreCase(name);
+            if (customers.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(customers.stream().map(customMapper::toCustomerDto).toList());
+        }
+        List<Customer> customers = customerService.getAll();
+        if (customers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(customers.stream().map(customMapper::toCustomerDto).toList());
+    }
 }

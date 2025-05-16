@@ -42,4 +42,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<Customer> getByEmailIgnoreCase(String email) {
         return this.repository.findByEmailIgnoreCase(email);
     }
+
+    @Override
+    public List<Customer> getByNameIgnoreCase(String name) {
+        return this.repository.findByNameIgnoreCase(name.toLowerCase());
+    }
 }
