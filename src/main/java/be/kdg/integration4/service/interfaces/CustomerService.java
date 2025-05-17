@@ -16,4 +16,7 @@ public interface CustomerService {
     void deleteById(Long id);
 
     Optional<Customer> getByEmailIgnoreCase(String email);
+    Optional<Customer> getByNameIgnoreCase(String name);
+
+    List<Customer> getAllByNameIgnoreCase(String name);
 }
