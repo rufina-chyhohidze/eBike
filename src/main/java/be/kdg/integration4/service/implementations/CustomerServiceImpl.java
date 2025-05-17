@@ -2,7 +2,11 @@ package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.CustomerRepository;
+import be.kdg.integration4.repository.TechnicianRepository;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +17,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
+    private final TechnicianRepository technicianRepository;
 
-    public CustomerServiceImpl(CustomerRepository repository) {
+    public CustomerServiceImpl(CustomerRepository repository, TechnicianRepository technicianRepository) {
         this.repository = repository;
+        this.technicianRepository = technicianRepository;
     }
 
     @Override
@@ -28,10 +34,10 @@ public class CustomerServiceImpl implements CustomerService {
         return repository.findById(id).orElseThrow();
     }
 
-    @Override
-    public Customer save(String name, String email, String password, UserRole role, String phoneNumber) {
-        return repository.save(new Customer(name, email, password, phoneNumber));
-    }
+//    @Override
+//    public Customer save(String name, String email, String password, UserRole role, String phoneNumber,) {
+//        return repository.save(new Customer(name, email, password, phoneNumber));
+//    }
 
     @Override
     public void deleteById(Long id) {
@@ -41,5 +47,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Optional<Customer> getByEmailIgnoreCase(String email) {
         return this.repository.findByEmailIgnoreCase(email);
+    }
+
+    @Override
+    public List<Customer> getByNameIgnoreCase(String name) {
+        return this.repository.findByNameIgnoreCase(name.toLowerCase());
+    }
+
+    @Override
+    public List<Customer> getCustomersByWorkshop(Long workshopId) {
+        return repository.findAll()
+                .stream()
+                .filter(customer ->
+                        customer.getRegisteredBy().getWorkshop().getWorkshopId().equals(workshopId)).toList();
     }
 }

@@ -16,4 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<Technician> findTechnicianById(@Param("id") Long id);
     @Query("SELECT u FROM User u WHERE u.approved = false AND TYPE(u) IN (be.kdg.integration4.domain.profile.WorkshopAdmin, be.kdg.integration4.domain.profile.Technician)")
     List<User> findUnapprovedUsers();
+
+
+
+    List<User> findAllByNameContainsIgnoreCase(String name);
 }

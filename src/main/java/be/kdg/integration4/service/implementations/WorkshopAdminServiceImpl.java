@@ -38,4 +38,5 @@ public class WorkshopAdminServiceImpl implements WorkshopAdminService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
 }

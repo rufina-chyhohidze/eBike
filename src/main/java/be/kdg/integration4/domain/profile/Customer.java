@@ -19,11 +19,13 @@ import java.util.List;
 @DiscriminatorValue("Customer")
 public class Customer extends User {
     private String phoneNumber;
+    @ManyToOne
+    private Technician registeredBy;
 
-    @OneToMany(mappedBy = "bikeOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bikeOwner", orphanRemoval = true)
     private List<Bike> bikes;
 
-    public Customer(String name, String email, String password, String phoneNumber) {
+    public Customer(String name, String email, String password, String phoneNumber, Technician registeredBy) {
         super(name, email, password, true);
         this.phoneNumber = phoneNumber;
     }
