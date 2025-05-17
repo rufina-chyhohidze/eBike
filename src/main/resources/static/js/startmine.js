@@ -50,6 +50,10 @@ document.getElementById("add-new-bike-btn").addEventListener("click", function (
     document.getElementById("newBikeModal").classList.remove("hidden");
 });
 
+document.getElementById("add-new-bike-btn-2").addEventListener("click", function () {
+    document.getElementById("newBikeModal").classList.remove("hidden");
+});
+
 document.getElementById('emailCustomer').addEventListener('keypress', function (event) {
     if (event.key === 'Enter' && !customerSearchArea.classList.contains("search-customer-title-area-up")) {
         event.preventDefault(); // Prevent default form submission if inside a form

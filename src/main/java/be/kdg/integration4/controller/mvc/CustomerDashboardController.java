@@ -50,7 +50,7 @@ public class CustomerDashboardController {
                 .collect(Collectors.toList());
 
         // Get the customer's bikes
-        Set<Bike> customerBikes = bikeService.getAllByOwnerId(customer.getId());
+        List<Bike> customerBikes = bikeService.getAllByOwnerId(customer.getId());
 
         // Get the latest report date
         String latestReportDate = bikeReports.stream()

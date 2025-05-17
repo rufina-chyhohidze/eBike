@@ -56,14 +56,14 @@ public class CustomersController {
     @GetMapping("{customerId}/bikes")
     @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
+        final List<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);
         if (customerBikes.isEmpty()) {
-            log.debug("Found customer bikes: {}", customerBikes);
+            log.debug("No bikes found for customer with Id: {}", customerId);
             return ResponseEntity.noContent().build();
         }
+        log.debug("Found customer bikes: {}", customerBikes);
         Collections.sort(customerBikesList);
-        log.debug("No bikes found for customer with Id: {}", customerId);
         return ResponseEntity.ok(bikeMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 
