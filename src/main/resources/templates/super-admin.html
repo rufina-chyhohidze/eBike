@@ -7,6 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script th:src="@{/js/userFilter.js}" type="module"></script>
+  <script th:src="@{/js/reportFilter.js}" type="module"></script>
+
 </head>
 <body class="bg-gray-50 h-full flex">
 
@@ -94,91 +97,104 @@
     </table>
   </div>
 
-  <!-- PREVIOUS TEST REPORTS (Now directly under Pending Approvals) -->
-  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
-      <i class="ph ph-clipboard-text"></i> Previous Test Reports
-    </h3>
+  <div class="bg-white shadow-lg rounded-3xl p-6 col-span-4 relative border border-gray-200">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        <i class="ph ph-user-check"></i> User List
+      </h3>
+    </div>
+    <form class="mb-4">
+      <input class="p-2 border border-gray-300 rounded-lg w-full" id="user-filter"
+             type="text" name="filter" placeholder="Enter User Name"
+             th:value="${filter}">
+    </form>
 
-    <!-- REPORTS TABLE -->
-    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl text-sm">
+    <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
       <thead>
-      <tr class="bg-gray-700 text-gray-100">
-        <th class="p-3 text-left">Report ID</th>
-        <th class="p-3 text-left">Bike Frame Number</th>
-        <th class="p-3 text-left">Report Date</th>
-        <th class="p-3 text-left">Score</th>
-        <th class="p-3 text-left">Technician</th>
-        <th class="p-3 text-left">Customer</th>
-        <th class="p-3 text-left">Test Bench</th>
-        <th class="p-3 text-left"></th>
+      <tr class="bg-gray-100 text-gray-700">
+        <th class="p-3 text-left">User ID</th>
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Role</th>
+        <th class="p-3 text-left">Actions</th>
       </tr>
       </thead>
-      <tbody>
-      <tr th:each="report : ${reports}" class="hover:bg-gray-700">
-        <td class="p-3 text-gray-200" th:text="${report.id}"></td>
-        <td class="p-3 text-gray-200" th:text="${report.bike.frameNumber}"></td>
-        <td class="p-3 text-gray-400" th:text="${report.reportDate}"></td>
-        <td class="p-3 text-gray-400" th:text="${report.score}"></td>
-        <td class="p-3 text-gray-400" th:text="${report.technician != null ? report.technician.name : 'N/A'}"></td>
-        <td class="p-3 text-gray-400" th:text="${report.customer != null ? report.customer.name : 'N/A'}"></td>
-        <td class="p-3 text-gray-400" th:text="${report.testBench != null ? report.testBench.benchId : 'N/A'}"></td>
-        <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>
+      <tbody id="user-table-content">
+      <tr th:if="${#lists.isEmpty(customers)}">
+        <td colspan="4" class="text-center text-gray-500 py-4">
+          No users found matching your search.
+        </td>
       </tr>
-      <tr th:if="${#lists.isEmpty(reports)}">
-        <td colspan="7" class="p-3 text-center text-gray-400">No test reports found.</td>
+      <tr th:each="customer : ${customers}" class="bg-white border-b">
+        <td th:text="${customer.id}" class="p-3"></td>
+        <td th:text="${customer.name}" class="p-3"></td>
+        <td th:text="${customer.email}" class="p-3"></td>
+        <td th:text="${customer.role()}" class="p-3"></td>
+        <td class="p-3 flex gap-2">
+          <button class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 text-sm">Reports</button>
+          <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Delete</button>
+        </td>
       </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- TEST BENCH ERRORS -->
-  <div class="bg-gray-100 shadow-lg rounded-3xl p-4 col-span-2 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-3 flex items-center gap-2 text-gray-800">
-      <i class="ph ph-warning"></i> Test Bench Errors
+  <!-- PREVIOUS TEST REPORTS (Now directly under Pending Approvals) -->
+  <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">
+      <i class="ph ph-clipboard-text"></i> Previous Test Reports
     </h3>
-    <div class="flex gap-2 mb-3">
-      <input class="p-2 border border-gray-300 rounded-lg w-3/4" type="text" id="errorSearch" placeholder="Search Error Code">
-      <button id="clearSearch" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 text-sm">Clear</button>
+
+    <!-- Centering the form -->
+    <div class="flex justify-center">
+      <form
+            class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">
+        <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+               name="frameNumber"
+               type="text"
+               placeholder="Frame Number"
+               th:value="${frameNumber}">
+        <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+               name="engineType"
+               type="text"
+               placeholder="Engine Type"
+               th:value="${engineType}">
+
+        <div class="sm:col-span-2 flex justify-center">
+          <button type="submit"
+                  class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+            Search
+          </button>
+        </div>
+      </form>
     </div>
-    <table class="w-full border-collapse bg-white shadow-md rounded-3xl text-sm">
+    <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
       <thead>
-      <tr class="bg-gray-200 text-gray-700">
-        <th class="p-2 text-left">Test ID</th>
-        <th class="p-2 text-left">Bike Model</th>
-        <th class="p-2 text-left">Error Code</th>
-        <th class="p-2 text-left">Error Description</th>
-        <th class="p-2 text-left">Date</th>
+      <tr class="bg-gray-700 text-gray-100">
+        <th class="p-3 text-left">Report ID</th>
+        <th class="p-3 text-left">Report Date</th>
+        <th class="p-3 text-left">Customer ID</th>
+        <th class="p-3 text-left">Frame Number</th>
+        <th class="p-3 text-left">Engine Type</th>
+        <!--                <th class="p-3 text-left">Brand</th>-->
+        <th class="p-3 text-left">Bench ID</th>
+        <th class="p3 text-left"></th>
       </tr>
       </thead>
-      <tbody id="errorList"></tbody>
+      <tbody id="reports-table-content">
+      <tr th:each="report : ${reports}" class="border-b">
+        <td th:text="${report.id}" class="p-3"></td>
+        <td th:text="${report.reportDate}" class="p-3"></td>
+        <td th:text="${report.customer.id}" class="p-3"></td>
+        <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+        <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
+        <!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
+        <td th:text="${report.testBench.benchId}" class="p-3"></td>
+        <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>
+      </tr>
+      </tbody>
     </table>
   </div>
-
-  <!-- PIE CHART -->
-  <div class="bg-white shadow-lg rounded-3xl p-4 col-span-1 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-3 text-gray-800">Test Statistics</h3>
-    <canvas id="pieChart" class="h-32"></canvas>
-  </div>
-
-  <!-- LINE CHART -->
-  <div class="bg-white shadow-lg rounded-3xl p-4 col-span-1 border border-gray-200">
-    <h3 class="text-xl font-semibold mb-3 text-gray-800">Monthly Performance</h3>
-    <canvas id="lineChart" class="h-32"></canvas>
-  </div>
-<!--    &lt;!&ndash; SEARCH FILTERS &ndash;&gt;-->
-<!--    <form th:action="@{/superadmin/reports}" method="get" class="grid grid-cols-3 gap-4 mb-4">-->
-<!--      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm"-->
-<!--             type="text" name="frameNumber" placeholder="Frame Number">-->
-
-<!--      <input class="p-2 border border-gray-300 rounded-lg w-full text-sm"-->
-<!--             type="text" name="customerName" placeholder="Customer Name">-->
-
-<!--      <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm">-->
-<!--        Search-->
-<!--      </button>-->
-<!--    </form>-->
-
 </main>
 
 <script src="/js/super-admin.js"></script>

@@ -51,4 +51,9 @@ public interface BikeReportService {
     FullTestReportDTO getFullTestReport(Long reportId);
     List<BikeReport> getReportsWithDetailsForTechnician(Long techId);
 
+    List<BikeReport> getReportsByWorkshop(Long workshopId);
+
+    List<BikeReport> getReportsAccessibleByUserWithId(Long userId);
+
+    List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType);
 }
