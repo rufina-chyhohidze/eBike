@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Customer Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script th:src="@{/js/customer-update.js}" type="module"></script>
+    <script th:src="@{/js/techNavbar.js}" type="module"></script>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="bg-gray-50 h-full flex">
+
+<div th:replace="fragments/customerNavbar :: navbar"></div>
+<!-- MAIN -->
+<main class="flex-1 p-10 bg-white">
+    <div class="max-w-xl mx-auto bg-gray-100 shadow-lg rounded-3xl p-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <i class="ph ph-user-gear text-purple-600 text-2xl"></i> Edit Profile
+        </h2>
+        <!-- PHONE NUMBER FORM -->
+        <form id="phoneForm" class="space-y-6 mb-10">
+            <input type="hidden" id="id" name="id" th:value="${customer.id}">
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" th:value="${customer.phoneNumber}"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" />
+            </div>
+
+            <div id="phoneMessage" class="text-sm mt-2"></div>
+
+            <button type="submit"
+                    class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition w-full">
+                Update Phone Number
+            </button>
+        </form>
+
+        <!-- PASSWORD FORM -->
+        <form id="passwordForm" class="space-y-6">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">New Password</label>
+                <input type="password" id="newPassword" name="newPassword"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" />
+            </div>
+
+            <div id="passwordMessage" class="text-sm mt-2"></div>
+
+            <button type="submit"
+                    class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition w-full">
+                Update Password
+            </button>
+        </form>
+
+    </div>
+</main>
+
+</body>
+</html>
