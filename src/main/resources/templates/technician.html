@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="../static/js/technician.js" th:src="@{/js/technician.js}" type="module"></script>
+    <script th:src="@{/js/customerFilter.js}" type="module"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body class="bg-gray-50 h-full flex">
 
@@ -82,7 +85,7 @@
         </div>
         <form method="get" th:action="@{/technician/dashboard}" class="mb-4">
             <input class="p-2 border border-gray-300 rounded-lg w-full"
-                   type="text" name="filter" placeholder="Enter Customer ID or Name"
+                   type="text" name="filter" id="customer-filter" placeholder="Enter Customer Name"
                    th:value="${filter}">
         </form>
 
@@ -95,7 +98,7 @@
                 <th class="p-3 text-left">Phone</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="customer-table-content">
             <tr th:if="${#lists.isEmpty(customers)}">
                 <td colspan="4" class="text-center text-gray-500 py-4">
                     No customers found matching your search.

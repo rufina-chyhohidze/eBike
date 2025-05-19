@@ -3,12 +3,12 @@ package be.kdg.integration4.controller.mvc;
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
+import be.kdg.integration4.domain.profile.WorkshopAdmin;
 import be.kdg.integration4.domain.report.BikeReport;
-import be.kdg.integration4.service.interfaces.BikeReportService;
-import be.kdg.integration4.service.interfaces.CustomerService;
-import be.kdg.integration4.service.interfaces.ReportSettingService;
-import be.kdg.integration4.service.interfaces.TechnicianService;
+import be.kdg.integration4.service.interfaces.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,36 +25,37 @@ public class WorkshopAdminController {
     private final TechnicianService technicianService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
+    private final WorkshopAdminService workshopAdminService;
 
-    public WorkshopAdminController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService) {
+    public WorkshopAdminController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, WorkshopAdminService workshopAdminService) {
         this.technicianService = technicianService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
+        this.workshopAdminService = workshopAdminService;
     }
 
     @GetMapping("/dashboard")
     @StaffOnly
-    public String dashboard(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String dashboard(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        String loggedInEmail = authentication.getName();
-
-        Technician technician = technicianService.getByEmail(loggedInEmail);
+        WorkshopAdmin workshopAdmin = workshopAdminService.getById(userDetails.getUserId());
 
 
-        int totalReports = technicianService.getTotalReportsByTechnician(technician.getId());
-
-        List<Customer> customers = customerService.getAll();
-        List<BikeReport> bikeReports = bikeReportService.getAll()
-                .stream()
-                .filter(report -> report.getTechnician().getId().equals(technician.getId()))
-                .collect(Collectors.toList());
-
+        List<Customer> customers = customerService.getCustomersByWorkshop(workshopAdmin.getWorkshop().getWorkshopId());
+        List<BikeReport> bikeReports = bikeReportService.getReportsByWorkshop(workshopAdmin.getWorkshop().getWorkshopId());
+        int totalReports =bikeReports.size();
         model.addAttribute("totalReports", totalReports);
         model.addAttribute("totalClients", customers.size());
-        model.addAttribute("technician", technician);
+        model.addAttribute("technician", workshopAdmin);
         model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);
         return "admin";
+    }
+
+    @GetMapping("/dashboard/update")
+    @StaffOnly
+    public String updateDashboard(Model model, @AuthenticationPrincipal UserDetailsImpl principal) {
+        model.addAttribute("accountId", principal.getUserId());
+        return "password-change";
     }
 }

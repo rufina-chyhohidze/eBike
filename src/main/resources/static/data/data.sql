@@ -10,18 +10,18 @@ VALUES ( '1'),
 INSERT INTO profile (name,workshop_workshop_id, email, password, approved, dtype)
 VALUES ('Admin User',2, 'admin@example.com', '$2a$12$2NJZ9z4jPfozboAh9nk1ceIIG9e726l4.bFdCmHdkSw3bfSGrEoey', false, 'WorkshopAdmin');
 
-INSERT INTO profile (name, email, password, approved, dtype, workshop_workshop_id)
-VALUES ('Technician User', 'tech@example.com', '$2a$12$x2HHytbC0J3GZkbYGgKgJuBVtQP9C2r/XLLVDzZkcsCsEjrFXBeDO', true, 'Technician',1);
+INSERT INTO profile (id,name, email, password, approved, dtype, workshop_workshop_id)
+VALUES (1000000,'Technician User', 'tech@example.com', '$2a$12$x2HHytbC0J3GZkbYGgKgJuBVtQP9C2r/XLLVDzZkcsCsEjrFXBeDO', true, 'Technician',1);
 
-INSERT INTO profile (name, email, password, approved, dtype, phone_number)
-VALUES ('John Doe', 'customer@email.com', '$2a$12$8kZmT8ZhlW9v3BH8azVAFOYitx65Szf5vRSWTDHWCJJGZ0xEJACF2', true, 'Customer', '+32456789444'),
-        ('Carla Dupont',   'carla.dupont@example.be',   '$2a$12$Zhq6ORJmmjvwAYlB30PcZOTRWaj1vymdmQC6l8R.SP.UDfAfaWNwe', true, 'Customer', '+32472345678'),
-        ('Bob Johnson',    'bob.johnson@example.com', '$2a$12$VeI2dwxNGThkQN.pdVtauesYD7iTJJdQuArsMIgxWLfTxcE85nQYS', true, 'Customer', '+32471234567'),
-        ('Alice Smith',    'alice.smith@example.com', '$2a$12$MH0FOjaHkavCf5Llgecr9OUQI21nfeQ2qQOEZTMCaYuywU29VJenO', true, 'Customer', '+32470123456'),
-        ('David Vermeulen',   'david.vermeulen@example.com',   '$2a$12$mqMwA4.CifWAQEgWuAPp5.ioIOezMHPYxhwu2jO.JeNHW3.Ii9TBm', true, 'Customer', '+32474567890'),
-        ('Eva Janssens',      'eva.janssens@example.be',       '$2a$12$4w4pGx69Sr5AYxkENCS6u.7haYlAiG1GfpMX619xNKY3SFA7UlGtG', true, 'Customer', '+32475678901'),
-        ('Frederick Peeters', 'frederick.peeters@example.net', '$2a$12$vGHGZahp8KEuQgopdmrXpub9q8CbyTR3P2M3uA3k6JYnKCs0goKZS', true, 'Customer', '+32476789012'),
-       ('Gisele De Smet',    'gisele.desmet@example.eu',      '$2a$12$i95HAdiaQ3NS9wedFd/B4.foQWCOTWUbtJrgIREd18GEfDTk3/iZy', true, 'Customer', '+32477890123');
+INSERT INTO profile (name, email, password, approved, dtype, phone_number, registered_by_id)
+VALUES ('John Doe', 'customer@email.com', '$2a$12$8kZmT8ZhlW9v3BH8azVAFOYitx65Szf5vRSWTDHWCJJGZ0xEJACF2', true, 'Customer', '+32456789444', 1000000),
+        ('Carla Dupont',   'carla.dupont@example.be',   '$2a$12$Zhq6ORJmmjvwAYlB30PcZOTRWaj1vymdmQC6l8R.SP.UDfAfaWNwe', true, 'Customer', '+32472345678',1000000),
+        ('Bob Johnson',    'bob.johnson@example.com', '$2a$12$VeI2dwxNGThkQN.pdVtauesYD7iTJJdQuArsMIgxWLfTxcE85nQYS', true, 'Customer', '+32471234567',1000000),
+        ('Alice Smith',    'alice.smith@example.com', '$2a$12$MH0FOjaHkavCf5Llgecr9OUQI21nfeQ2qQOEZTMCaYuywU29VJenO', true, 'Customer', '+32470123456',1000000),
+        ('David Vermeulen',   'david.vermeulen@example.com',   '$2a$12$mqMwA4.CifWAQEgWuAPp5.ioIOezMHPYxhwu2jO.JeNHW3.Ii9TBm', true, 'Customer', '+32474567890',1000000),
+        ('Eva Janssens',      'eva.janssens@example.be',       '$2a$12$4w4pGx69Sr5AYxkENCS6u.7haYlAiG1GfpMX619xNKY3SFA7UlGtG', true, 'Customer', '+32475678901',1000000),
+        ('Frederick Peeters', 'frederick.peeters@example.net', '$2a$12$vGHGZahp8KEuQgopdmrXpub9q8CbyTR3P2M3uA3k6JYnKCs0goKZS', true, 'Customer', '+32476789012',1000000),
+       ('Gisele De Smet',    'gisele.desmet@example.eu',      '$2a$12$i95HAdiaQ3NS9wedFd/B4.foQWCOTWUbtJrgIREd18GEfDTk3/iZy', true, 'Customer', '+32477890123',1000000);
 
 --pass123
 
@@ -52,7 +52,7 @@ INSERT INTO bike (
     milleage, acc_capacity, bike_model_id
 )
 VALUES (
-           'X45FERF', 3, 1,'2024-01-01 10:00:00', '2024-01-01',
+           'X45FERF', 2, 1,'2024-01-01 10:00:00', '2024-01-01',
            1234, 250, 1000000
        );
 INSERT INTO bike (
@@ -60,7 +60,7 @@ INSERT INTO bike (
     milleage, acc_capacity, bike_model_id
 )
 VALUES (
-           'R123456', 3,1, '2024-01-01 10:00:00', '2024-01-01',
+           'R123456', 2,1, '2024-01-01 10:00:00', '2024-01-01',
            1234, 250, 1000001
        );
 
