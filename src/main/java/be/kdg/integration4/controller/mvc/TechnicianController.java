@@ -6,6 +6,7 @@ import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.ReportSetting;
 import be.kdg.integration4.service.implementations.ReportSettingServiceImpl;
@@ -124,4 +125,26 @@ public class TechnicianController {
     public String testRegisterCustomer(Model model) {
         return "register-customer";
     }
+
+    @GetMapping("/bikes")
+    @TechnicianOnly
+    public String viewTechnicianBikes(@RequestParam(required = false) String search, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        Technician technician = technicianService.getByEmail(email);
+
+        List<Bike> bikes = customerService.getCustomersRegisteredBy(technician.getId()).stream()
+                .flatMap(c -> c.getBikes().stream())
+                .filter(bike -> search == null || search.isBlank() ||
+                        bike.getFrameNumber().toLowerCase().contains(search.toLowerCase()) ||
+                        bike.getBikeModel().getBrand().toLowerCase().contains(search.toLowerCase()) ||
+                        bike.getBikeModel().getType().toLowerCase().contains(search.toLowerCase()))
+                .toList();
+
+        model.addAttribute("bikes", bikes);
+        model.addAttribute("search", search);
+        return "technician-bikes";
+    }
+
 }

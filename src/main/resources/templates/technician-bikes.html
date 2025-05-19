@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="../static/js/technician.js" th:src="@{/js/technician.js}" type="module"></script>
+  <script th:src="@{/js/customerFilter.js}" type="module"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<body>
+<section class="p-6">
+  <h2 class="text-2xl font-semibold mb-4">Bikes Registered by Your Customers</h2>
+
+  <form method="get" th:action="@{/technician/bikes}" class="mb-6">
+    <input type="text" name="search" placeholder="Search bikes..."
+           th:value="${search}" class="p-2 border rounded-lg w-full max-w-lg">
+  </form>
+
+  <table class="w-full table-auto bg-white rounded-lg shadow">
+    <thead class="bg-gray-100">
+    <tr>
+      <th class="p-3 text-left">Frame Number</th>
+      <th class="p-3 text-left">Type</th>
+      <th class="p-3 text-left">Brand</th>
+      <th class="p-3 text-left">Customer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bike : ${bikes}" class="border-b">
+      <td th:text="${bike.frameNumber}" class="p-3"></td>
+      <td th:text="${bike.bikeModel.type}" class="p-3"></td>
+      <td th:text="${bike.bikeModel.brand}" class="p-3"></td>
+      <td th:text="${bike.bikeOwner.name}" class="p-3"></td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(bikes)}">
+      <td colspan="4" class="text-center text-gray-500 p-4">No matching bikes found.</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+
+</body>
+</html>

@@ -8,6 +8,8 @@ import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +19,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
-    private final TechnicianRepository technicianRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerServiceImpl(CustomerRepository repository, TechnicianRepository technicianRepository) {
+    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
-        this.technicianRepository = technicianRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -60,5 +62,10 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .filter(customer ->
                         customer.getRegisteredBy().getWorkshop().getWorkshopId().equals(workshopId)).toList();
+    }
+
+    @Override
+    public List<Customer> getCustomersRegisteredBy(Long technicianId) {
+        return repository.findByRegisteredBy_Id(technicianId);
     }
 }

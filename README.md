@@ -44,7 +44,15 @@ It will add four users to the database:
   - Password: password123
 
   - Approved: true
+-----------------------------
+- Technician2
 
+  - Email: tech2@example.com
+  
+  - Password: tech2
+  
+  - Approved: True
+-----------------------------
 - Workshop Admin
 
   - Email: admin@example.com
@@ -52,13 +60,13 @@ It will add four users to the database:
   - Password: admin123
 
   - Approved: false
-
+----------------------------
 - Customer
 
   - Email: customer@email.com
 
   - Password: customer123
-
+----------------------------
 - System Admin
 
   - Email: superadmin@email.com

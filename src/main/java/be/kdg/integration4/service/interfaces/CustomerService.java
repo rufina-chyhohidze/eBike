@@ -19,4 +19,6 @@ public interface CustomerService {
     List<Customer> getByNameIgnoreCase(String name);
 
     List<Customer> getCustomersByWorkshop(Long workshopId);
+
+    List<Customer> getCustomersRegisteredBy(Long technicianId);
 }
