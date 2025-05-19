@@ -18,4 +18,6 @@ public interface BikeService {
 
     List<BikeModel> getAllBikeModels();
     List<Bike> getAllByOwnerId(Long ownerId);
+
+    void unlinkBikeFromCustomer(String frameNumber, Long customerId);
 }

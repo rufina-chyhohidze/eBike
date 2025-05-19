@@ -18,7 +18,7 @@ public class Bike implements Comparable<Bike> {
     private String frameNumber;
 
     @ManyToOne
-    @JoinColumn(name = "bike_owner_id", nullable = false)
+    @JoinColumn(name = "bike_owner_id")
     private Customer bikeOwner;
 
     private LocalDateTime registrationDate;

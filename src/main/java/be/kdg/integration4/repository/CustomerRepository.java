@@ -16,5 +16,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE Lower(c.name) LIKE %:name%")
     List<Customer> findAllByNameIgnoreCase(String name);
 
+    @Query("SELECT c FROM Customer c JOIN FETCH c.bikes WHERE c.id = :id")
+    Optional<Customer> findByIdWithBikes(Long id);
+
     Optional<Customer> findByNameIgnoreCase(String name);
 }
