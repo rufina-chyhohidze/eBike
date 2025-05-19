@@ -89,7 +89,7 @@ public class TechnicianController {
         model.addAttribute("conditions", conditions);
         model.addAttribute("visualComponents", VisualInspectionComponents.values());
         model.addAttribute("functionalComponents", FunctionalTestComponents.values());
-        return "start-test";
+        return "technician-start-test";
     }
 
     @GetMapping("/test/success/{id}")
@@ -111,12 +111,12 @@ public class TechnicianController {
 
         model.addAttribute("reportSetting", reportSetting);
 
-        return "report-settings"; // This is the Thymeleaf template for the settings page
+        return "technician-report-settings"; // This is the Thymeleaf template for the settings page
     }
 
     @GetMapping("/register-customer")
     @TechnicianOnly
     public String testRegisterCustomer(Model model) {
-        return "register-customer";
+        return "technician-register-customer";
     }
 }

@@ -17,65 +17,190 @@
 <div th:replace="fragments/technicianNavbar"></div>
 
 <!-- DASHBOARD -->
-<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
+<!--<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">-->
+<!--    &lt;!&ndash; TECHNICIAN INFO &ndash;&gt;-->
+<!--    <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">-->
+<!--        <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Technician" class="w-24 h-24 rounded-full border-2 border-gray-300">-->
+<!--        <div>-->
+<!--            <h2 class="text-2xl font-semibold text-gray-800" th:text="${technician.name}"></h2>-->
+<!--            <p class="text-gray-600">Certified Bike Technician</p>-->
+<!--&lt;!&ndash;            <p class="text-gray-500">Workshop: <span class="font-semibold" th:text="${technician.workshop.workshopName}"></span></p>&ndash;&gt;-->
+<!--            <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>-->
+<!--            <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; TECHNICIAN STATS &ndash;&gt;-->
+<!--    <div class="col-span-2 grid grid-cols-2 gap-6">-->
+<!--        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">-->
+<!--            <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Tests</h3>-->
+<!--            <p class="text-3xl font-bold text-purple-500" th:text="${totalReports}"></p>-->
+<!--            <p class="text-gray-300 text-sm">+15% from last month</p>-->
+<!--&lt;!&ndash;            <canvas id="testsChart" class="mt-4"></canvas>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">-->
+<!--            <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Clients</h3>-->
+<!--            <p class="text-3xl font-bold text-purple-500" th:text="${totalClients}"></p>-->
+<!--            <p class="text-gray-300 text-sm">+10% from last month</p>-->
+<!--&lt;!&ndash;            <canvas id="clientsChart" class="mt-4"></canvas>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; START A TEST &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="bg-gray-100 shadow-lg rounded-3xl p-6 col-span-1 border border-gray-200">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-800">&ndash;&gt;-->
+<!--&lt;!&ndash;            <i class="ph ph-play-circle"></i> Start a Test&ndash;&gt;-->
+<!--&lt;!&ndash;        </h3>&ndash;&gt;-->
+<!--&lt;!&ndash;        <p class="mb-2 text-gray-600">Perform a visual bike inspection before starting the test.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul class="pl-0 mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;            <li class="flex items-center gap-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="checkbox" id="tireCondition" class="mr-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                Check tire condition&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li class="flex items-center gap-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="checkbox" id="brakeFunction" class="mr-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                Ensure brakes are functioning&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li class="flex items-center gap-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="checkbox" id="batteryConnections" class="mr-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                Verify battery and electrical connections&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li class="flex items-center gap-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="checkbox" id="bikeStability" class="mr-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                Confirm bike stability&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:href="@{/technician/start-test}" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--    &lt;!&ndash; CUSTOMER VERIFICATION &ndash;&gt;-->
+<!--    <div class="bg-white shadow-lg rounded-3xl p-6 col-span-4 relative border border-gray-200">-->
+<!--        <div class="flex justify-between items-center mb-4">-->
+<!--            <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">-->
+<!--                <i class="ph ph-user-check"></i> Customer List-->
+<!--            </h3>-->
+<!--            <a href="/technician/register-customer" class="border border-purple-500 text-purple-500 px-4 py-2 rounded-lg hover:bg-purple-100 flex items-center gap-2">-->
+<!--                <i class="ph ph-user-plus"></i> Register a customer-->
+<!--            </a>-->
+<!--        </div>-->
+<!--        <form method="get" th:action="@{/technician/dashboard}" class="mb-4">-->
+<!--            <input class="p-2 border border-gray-300 rounded-lg w-full"-->
+<!--                   type="text" name="filter" id="customer-filter" placeholder="Enter Customer Name"-->
+<!--                   th:value="${filter}">-->
+<!--        </form>-->
+
+<!--        <table class="w-full border-collapse bg-white shadow-md rounded-3xl">-->
+<!--            <thead>-->
+<!--            <tr class="bg-gray-100 text-gray-700">-->
+<!--                <th class="p-3 text-left">Customer ID</th>-->
+<!--                <th class="p-3 text-left">Name</th>-->
+<!--                <th class="p-3 text-left">Email</th>-->
+<!--                <th class="p-3 text-left">Phone</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody id="customer-table-content">-->
+<!--            <tr th:if="${#lists.isEmpty(customers)}">-->
+<!--                <td colspan="4" class="text-center text-gray-500 py-4">-->
+<!--                    No customers found matching your search.-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr th:each="customer : ${customers}" class="bg-white border-b">-->
+<!--                <td th:text="${customer.id}" class="p-3"></td>-->
+<!--                <td th:text="${customer.name}" class="p-3"></td>-->
+<!--                <td th:text="${customer.email}" class="p-3"></td>-->
+<!--                <td th:text="${customer.phoneNumber}" class="p-3"></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; TEST REPORTS &ndash;&gt;-->
+<!--    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">-->
+<!--        <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">-->
+<!--            <i class="ph ph-clipboard-text"></i> Previous Test Reports-->
+<!--        </h3>-->
+
+<!--        &lt;!&ndash; Centering the form &ndash;&gt;-->
+<!--        <div class="flex justify-center">-->
+<!--            <form method="get" th:action="@{/technician/dashboard}"-->
+<!--                  class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">-->
+<!--                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"-->
+<!--                       name="frameNumber"-->
+<!--                       type="text"-->
+<!--                       placeholder="Frame Number"-->
+<!--                       th:value="${frameNumber}">-->
+<!--                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"-->
+<!--                       name="engineType"-->
+<!--                       type="text"-->
+<!--                       placeholder="Engine Type"-->
+<!--                       th:value="${engineType}">-->
+
+<!--                <div class="sm:col-span-2 flex justify-center">-->
+<!--                    <button type="submit"-->
+<!--                            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">-->
+<!--                        Search-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--        <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">-->
+<!--            <thead>-->
+<!--            <tr class="bg-gray-700 text-gray-100">-->
+<!--                <th class="p-3 text-left">Report ID</th>-->
+<!--                <th class="p-3 text-left">Report Date</th>-->
+<!--                <th class="p-3 text-left">Customer ID</th>-->
+<!--                <th class="p-3 text-left">Frame Number</th>-->
+<!--                <th class="p-3 text-left">Engine Type</th>-->
+<!--                &lt;!&ndash;                <th class="p-3 text-left">Brand</th>&ndash;&gt;-->
+<!--                <th class="p-3 text-left">Bench ID</th>-->
+<!--                <th class="p3 text-left"></th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="report : ${bikeReports}" class="border-b">-->
+<!--                <td th:text="${report.id}" class="p-3"></td>-->
+<!--                <td th:text="${report.reportDate}" class="p-3"></td>-->
+<!--                <td th:text="${report.customer.id}" class="p-3"></td>-->
+<!--                <td th:text="${report.bike.frameNumber}" class="p-3"></td>-->
+<!--                <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>-->
+<!--&lt;!&ndash;                <td th:text="${report.bike.brand}" class="p-3"></td>&ndash;&gt;-->
+<!--                <td th:text="${report.testBench.benchId}" class="p-3"></td>-->
+<!--                <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</main>-->
+<main class="flex-1 p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white">
+
     <!-- TECHNICIAN INFO -->
-    <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
+    <div class="bg-white shadow-lg rounded-3xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-6 sm:col-span-2 border border-gray-200">
         <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Technician" class="w-24 h-24 rounded-full border-2 border-gray-300">
-        <div>
+        <div class="text-center sm:text-left">
             <h2 class="text-2xl font-semibold text-gray-800" th:text="${technician.name}"></h2>
             <p class="text-gray-600">Certified Bike Technician</p>
-<!--            <p class="text-gray-500">Workshop: <span class="font-semibold" th:text="${technician.workshop.workshopName}"></span></p>-->
             <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>
             <button class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</button>
         </div>
     </div>
 
     <!-- TECHNICIAN STATS -->
-    <div class="col-span-2 grid grid-cols-2 gap-6">
-        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+    <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
             <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Tests</h3>
             <p class="text-3xl font-bold text-purple-500" th:text="${totalReports}"></p>
             <p class="text-gray-300 text-sm">+15% from last month</p>
-<!--            <canvas id="testsChart" class="mt-4"></canvas>-->
         </div>
-        <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
+        <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
             <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Clients</h3>
             <p class="text-3xl font-bold text-purple-500" th:text="${totalClients}"></p>
             <p class="text-gray-300 text-sm">+10% from last month</p>
-<!--            <canvas id="clientsChart" class="mt-4"></canvas>-->
         </div>
     </div>
 
-    <!-- START A TEST -->
-<!--    <div class="bg-gray-100 shadow-lg rounded-3xl p-6 col-span-1 border border-gray-200">-->
-<!--        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-800">-->
-<!--            <i class="ph ph-play-circle"></i> Start a Test-->
-<!--        </h3>-->
-<!--        <p class="mb-2 text-gray-600">Perform a visual bike inspection before starting the test.</p>-->
-<!--        <ul class="pl-0 mb-4">-->
-<!--            <li class="flex items-center gap-2">-->
-<!--                <input type="checkbox" id="tireCondition" class="mr-2">-->
-<!--                Check tire condition-->
-<!--            </li>-->
-<!--            <li class="flex items-center gap-2">-->
-<!--                <input type="checkbox" id="brakeFunction" class="mr-2">-->
-<!--                Ensure brakes are functioning-->
-<!--            </li>-->
-<!--            <li class="flex items-center gap-2">-->
-<!--                <input type="checkbox" id="batteryConnections" class="mr-2">-->
-<!--                Verify battery and electrical connections-->
-<!--            </li>-->
-<!--            <li class="flex items-center gap-2">-->
-<!--                <input type="checkbox" id="bikeStability" class="mr-2">-->
-<!--                Confirm bike stability-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--        <a th:href="@{/technician/start-test}" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Proceed to Automatic Test</a>-->
-<!--    </div>-->
-
     <!-- CUSTOMER VERIFICATION -->
-    <div class="bg-white shadow-lg rounded-3xl p-6 col-span-4 relative border border-gray-200">
-        <div class="flex justify-between items-center mb-4">
+    <div class="bg-white shadow-lg rounded-3xl p-4 sm:p-6 col-span-1 sm:col-span-2 lg:col-span-4 border border-gray-200 overflow-x-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
             <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
                 <i class="ph ph-user-check"></i> Customer List
             </h3>
@@ -89,52 +214,48 @@
                    th:value="${filter}">
         </form>
 
-        <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
-            <thead>
-            <tr class="bg-gray-100 text-gray-700">
-                <th class="p-3 text-left">Customer ID</th>
-                <th class="p-3 text-left">Name</th>
-                <th class="p-3 text-left">Email</th>
-                <th class="p-3 text-left">Phone</th>
-            </tr>
-            </thead>
-            <tbody id="customer-table-content">
-            <tr th:if="${#lists.isEmpty(customers)}">
-                <td colspan="4" class="text-center text-gray-500 py-4">
-                    No customers found matching your search.
-                </td>
-            </tr>
-            <tr th:each="customer : ${customers}" class="bg-white border-b">
-                <td th:text="${customer.id}" class="p-3"></td>
-                <td th:text="${customer.name}" class="p-3"></td>
-                <td th:text="${customer.email}" class="p-3"></td>
-                <td th:text="${customer.phoneNumber}" class="p-3"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[600px] border-collapse bg-white shadow-md rounded-3xl">
+                <thead>
+                <tr class="bg-gray-100 text-gray-700">
+                    <th class="p-3 text-left">Customer ID</th>
+                    <th class="p-3 text-left">Name</th>
+                    <th class="p-3 text-left">Email</th>
+                    <th class="p-3 text-left">Phone</th>
+                </tr>
+                </thead>
+                <tbody id="customer-table-content">
+                <tr th:if="${#lists.isEmpty(customers)}">
+                    <td colspan="4" class="text-center text-gray-500 py-4">
+                        No customers found matching your search.
+                    </td>
+                </tr>
+                <tr th:each="customer : ${customers}" class="bg-white border-b">
+                    <td th:text="${customer.id}" class="p-3"></td>
+                    <td th:text="${customer.name}" class="p-3"></td>
+                    <td th:text="${customer.email}" class="p-3"></td>
+                    <td th:text="${customer.phoneNumber}" class="p-3"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- TEST REPORTS -->
-    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-4 sm:p-6 col-span-1 sm:col-span-2 lg:col-span-4 border border-gray-200">
         <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">
             <i class="ph ph-clipboard-text"></i> Previous Test Reports
         </h3>
 
-        <!-- Centering the form -->
         <div class="flex justify-center">
             <form method="get" th:action="@{/technician/dashboard}"
                   class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">
                 <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
-                       name="frameNumber"
-                       type="text"
-                       placeholder="Frame Number"
+                       name="frameNumber" type="text" placeholder="Frame Number"
                        th:value="${frameNumber}">
                 <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
-                       name="engineType"
-                       type="text"
-                       placeholder="Engine Type"
+                       name="engineType" type="text" placeholder="Engine Type"
                        th:value="${engineType}">
-
                 <div class="sm:col-span-2 flex justify-center">
                     <button type="submit"
                             class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
@@ -143,34 +264,39 @@
                 </div>
             </form>
         </div>
-        <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
-            <thead>
-            <tr class="bg-gray-700 text-gray-100">
-                <th class="p-3 text-left">Report ID</th>
-                <th class="p-3 text-left">Report Date</th>
-                <th class="p-3 text-left">Customer ID</th>
-                <th class="p-3 text-left">Frame Number</th>
-                <th class="p-3 text-left">Engine Type</th>
-                <!--                <th class="p-3 text-left">Brand</th>-->
-                <th class="p-3 text-left">Bench ID</th>
-                <th class="p3 text-left"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="report : ${bikeReports}" class="border-b">
-                <td th:text="${report.id}" class="p-3"></td>
-                <td th:text="${report.reportDate}" class="p-3"></td>
-                <td th:text="${report.customer.id}" class="p-3"></td>
-                <td th:text="${report.bike.frameNumber}" class="p-3"></td>
-                <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
-<!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
-                <td th:text="${report.testBench.benchId}" class="p-3"></td>
-                <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[800px] border-collapse bg-gray-800 shadow-md rounded-3xl">
+                <thead>
+                <tr class="bg-gray-700 text-gray-100">
+                    <th class="p-3 text-left">Report ID</th>
+                    <th class="p-3 text-left">Report Date</th>
+                    <th class="p-3 text-left">Customer ID</th>
+                    <th class="p-3 text-left">Frame Number</th>
+                    <th class="p-3 text-left">Engine Type</th>
+                    <th class="p-3 text-left">Bench ID</th>
+                    <th class="p3 text-left"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="report : ${bikeReports}" class="border-b">
+                    <td th:text="${report.id}" class="p-3"></td>
+                    <td th:text="${report.reportDate}" class="p-3"></td>
+                    <td th:text="${report.customer.id}" class="p-3"></td>
+                    <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+                    <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
+                    <td th:text="${report.testBench.benchId}" class="p-3"></td>
+                    <td class="p-3">
+                        <a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full"
+                           th:href="@{/report/{id}(id=${report.id})}">Report</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
+
 
 </body>
 </html>
