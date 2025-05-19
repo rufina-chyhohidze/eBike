@@ -144,6 +144,7 @@ public class TechnicianController {
 
         model.addAttribute("bikes", bikes);
         model.addAttribute("search", search);
+        model.addAttribute("technician", technician);
         return "technician-bikes";
     }
 
