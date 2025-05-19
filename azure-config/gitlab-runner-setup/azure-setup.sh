@@ -16,7 +16,7 @@ command -v docker >/dev/null 2>&1 || { echo "Docker is not installed. Aborting."
 command -v ssh >/dev/null 2>&1 || { echo "SSH (openssh-clients) is not installed. Aborting."; exit 1; }
 
 if [ ! -f ~/.ssh/azure ] ; then
-  echo "Creating ssh key (in host)"
+  echo "Creating ssh key (in host root)"
   ssh-keygen -t ed25519 -f ~/.ssh/azure -N ""
 fi
 

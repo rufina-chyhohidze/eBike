@@ -1,5 +1,15 @@
 #!/bin/bash
 
+#########################################################
+#########################################################
+### THIS SCRIPT MUST ONLY BE EXECUTED BY THE PIPELINE ###
+#########################################################
+#########################################################
+
+#########################################################
+##### TEAM 18 - INTEGRATION 4 - ACS 202 - 2024/2025 #####
+#########################################################
+
 echo "Getting VM public ip address..."
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 echo "VM public ip address: $VM_IP"
