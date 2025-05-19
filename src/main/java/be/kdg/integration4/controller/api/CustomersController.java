@@ -2,7 +2,6 @@ package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.CustomerOnly;
 import be.kdg.integration4.config.security.annotations.StaffOnly;
-import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
 import be.kdg.integration4.controller.api.dtos.UpdateRequest;
@@ -27,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -44,6 +42,13 @@ public class CustomersController {
         this.customMapper = customMapper;
         this.bikeService = bikeService;
         this.bikeMapper = bikeMapper;
+    }
+
+    @GetMapping("/{name}")
+    @StaffOnly
+    public ResponseEntity<CustomerDto> getCustomerByName(@PathVariable String name) {
+        Customer customer = this.customerService.getByNameIgnoreCase(name);
+        return ResponseEntity.ok(new CustomerDto(customer.getId(),customer.getName(),customer.getEmail(), customer.getPhoneNumber()));
     }
 
     @ExceptionHandler({NoSuchElementException.class})
@@ -81,20 +86,20 @@ public class CustomersController {
         return ResponseEntity.ok(new UserOutputDto(customer.getId(),customer.getName(), customer.getEmail()));
     }
 
-    @GetMapping("/{email}")
-    @StaffOnly
-    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
-        return this.customerService.getByEmailIgnoreCase(email)
-                .map(customer -> {
-                    log.info("Found customer: {}", customer);
-                    return ResponseEntity.ok(
-                        customMapper.toCustomerDto(customer)
-                    );
-                }).orElseGet(() -> {
-                    log.error("Customer with email {} not found", email);
-                    return ResponseEntity.noContent().build();
-                });
-    }
+//    @GetMapping("/{email}")
+//    @StaffOnly
+//    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
+//        return this.customerService.getByEmailIgnoreCase(email)
+//                .map(customer -> {
+//                    log.info("Found customer: {}", customer);
+//                    return ResponseEntity.ok(
+//                        customMapper.toCustomerDto(customer)
+//                    );
+//                }).orElseGet(() -> {
+//                    log.error("Customer with name {} not found", name);
+//                    return ResponseEntity.noContent().build();
+//                });
+//    }
 
     @GetMapping("{customerId}/bikes")
     @StaffOnly
@@ -115,7 +120,7 @@ public class CustomersController {
     public ResponseEntity<List<CustomerDto>> filterCustomers(@RequestParam(required = false) String name) {
 
         if (name != null && !name.isEmpty()) {
-            List<Customer> customers = customerService.getByNameIgnoreCase(name);
+            List<Customer> customers = customerService.getAllByNameIgnoreCase(name);
             if (customers.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
