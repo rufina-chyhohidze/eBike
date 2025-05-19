@@ -7,18 +7,13 @@ import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
-import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.UserService;
-import jakarta.mail.MessagingException;
-import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -65,7 +60,7 @@ public class SystemAdminController {
                         new UserWithRolesDto(usr.getId(),usr.getName(),usr.getEmail(),
                                 usr.getClass().getSimpleName().toUpperCase()))
                 .toList());
-        return "super-admin";
+        return "super-admin-dashboard";
     }
 
     @GetMapping("/profile/update")
