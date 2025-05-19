@@ -76,9 +76,12 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
     --run-untagged="false" \
     --locked="false"
 
+  # Need to add a volume mount for ssh keys for the pre-deployment stage, so that it uses the public key of the host user that created the runner in the first place to create the virtual machine for deployment
+  sudo sed -i '/^\s*volumes = \[/ s/\]/, "\/home\/team18\/.ssh:\/root\/.ssh"]/' /etc/gitlab-runner/config.toml
 
   # Start and enable the service
   sudo systemctl restart gitlab-runner
+
 
   sudo touch /var/log/cd-gitlab-pipeline.log
   sudo chmod 777 /var/log/cd-gitlab-pipeline.log
