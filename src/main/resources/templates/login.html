@@ -6,13 +6,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full">
+<div class="bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col-reverse md:flex-row w-full max-w-4xl">
 
     <!-- Login Form -->
-    <div class="p-8 md:w-1/2 flex flex-col justify-center">
-        <h2 class="text-3xl font-bold text-center mb-6">Login</h2>
+    <div class="p-6 sm:p-8 md:w-1/2 flex flex-col justify-center">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6">Login</h2>
 
         <!-- Alert: Pending Approval -->
         <div th:if="${param.approval}" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4 text-sm">
@@ -61,7 +61,7 @@
     </div>
 
     <!-- Image -->
-    <div class="md:w-1/2 h-64 md:h-auto">
+    <div class="md:w-1/2 w-full h-80 sm:h-96 md:h-auto flex items-center justify-center bg-gray-100">
         <img th:src="@{/img/bikee.png}" alt="Sample image" class="w-full h-full object-cover" />
     </div>
 
