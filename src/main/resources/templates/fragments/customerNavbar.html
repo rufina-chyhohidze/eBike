@@ -1,0 +1,27 @@
+<script th:src="@{/js/techNavbar.js}" type="module"></script>
+<!-- SIDEBAR -->
+<aside th:fragment="navbar" class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+    <div class="flex items-center mb-6">
+        <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+        <h1 class="text-2xl font-semibold">eVALeBike</h1>
+    </div>
+
+    <ul class="space-y-6 flex-1">
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <i class="ph ph-house"></i><a href="/customer/dashboard">Dashboard</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <i class="ph ph-clipboard-text"></i><a href="/customer/reports">My Reports</a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <i class="ph ph-user-circle"></i><a href="/customer/edit-profile">Edit Profile</a>
+        </li>
+        <li class="mt-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</aside>

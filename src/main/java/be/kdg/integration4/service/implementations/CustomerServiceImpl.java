@@ -8,6 +8,8 @@ import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.repository.TechnicianRepository;
 import be.kdg.integration4.service.interfaces.CustomerService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +19,12 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
+    private final PasswordEncoder passwordEncoder;
     private final TechnicianRepository technicianRepository;
 
-    public CustomerServiceImpl(CustomerRepository repository, TechnicianRepository technicianRepository) {
+    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder, TechnicianRepository technicianRepository) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
         this.technicianRepository = technicianRepository;
     }
 
@@ -48,6 +52,25 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<Customer> getByEmailIgnoreCase(String email) {
         return this.repository.findByEmailIgnoreCase(email);
     }
+
+    @Override
+    public Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber) {
+        if (!loggedInId.equals(pathId)) {
+            throw new AccessDeniedException("You are not authorized to access this resource.");
+        }
+        Customer customer = repository.findById(loggedInId).orElseThrow();
+        customer.setPhoneNumber(phoneNumber);
+        return repository.save(customer);
+    }
+
+    @Override
+    public Customer updatePassword(Long loggedInId, Long pathId, String password) {
+        if (!loggedInId.equals(pathId)) {
+            throw new AccessDeniedException("You are not authorized to access this resource.");
+        }
+        Customer customer = repository.findById(loggedInId).orElseThrow();
+        customer.setPassword(passwordEncoder.encode(password));
+        return repository.save(customer);
 
     @Override
     public List<Customer> getByNameIgnoreCase(String name) {
