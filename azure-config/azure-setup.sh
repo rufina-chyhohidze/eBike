@@ -50,4 +50,7 @@ if resourceGroupExists ; then
     docker exec azure_setup chmod +x /azure-config/terraform/setup_runner.sh
     docker exec azure_setup bash /azure-config/terraform/setup_runner.sh
     docker kill azure_setup
+    echo "You can now access the virtual machine using the .ssh/azure private key of your ROOT user at the following IP address: $(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
+    echo "Command to log into VM:"
+    echo "sudo ssh -i /root/.ssh/azure team18@$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 fi

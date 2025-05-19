@@ -42,3 +42,8 @@ out/
 .env
 azure-config/terraform/.*
 azure-config/terraform/terraform.tfstate
+/azure-config/terraform/.terraform
+/azure-config/terraform/.terraform.lock.hcl
+/azure-config/terraform/terraform.tfstate.backup
+/azure-config/terraform/terraform.tfstate
+/certificatestosend
