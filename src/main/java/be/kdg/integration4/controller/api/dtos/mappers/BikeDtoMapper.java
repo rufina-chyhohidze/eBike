@@ -56,7 +56,7 @@ public class BikeDtoMapper {
             registrationDate = bike.getRegistrationDate().toLocalDate();
         }
         productionDate = bike.getProductionDate();
-        bikeSize = bike.getBikeModel().getBikeSize();
+        bikeSize = bike.getBikeSize();
         milleage = bike.getMilleage();
         gearType = bike.getBikeModel().getGearType();
         engineType = bike.getBikeModel().getEngineType();
@@ -67,7 +67,7 @@ public class BikeDtoMapper {
         enginePowerNominal = bike.getBikeModel().getEnginePowerNominal();
         engineTorque = bike.getBikeModel().getEngineTorque();
 
-        BikeDto bikeDto = new BikeDto( bikeOwnerId, frameNumber, type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque );
+        BikeDto bikeDto = new BikeDto( bikeOwnerId, frameNumber, type, brand,productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque,null);
 
         return bikeDto;
     }

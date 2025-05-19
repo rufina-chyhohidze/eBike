@@ -1,22 +1,27 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
+import be.kdg.integration4.controller.api.dtos.ShortBikeReportDto;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
+import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.email.EmailService;
-import be.kdg.integration4.service.interfaces.BikeReportService;
-import be.kdg.integration4.service.interfaces.BikeService;
-import be.kdg.integration4.service.interfaces.TechnicianService;
-import be.kdg.integration4.service.interfaces.TestbenchApiService;
+import be.kdg.integration4.service.implementations.BikeReportServiceImpl;
+import be.kdg.integration4.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,19 +37,16 @@ public class ReportsController {
     private final BikeService bikeService;
     private final TestbenchApiService testbenchApiService;
     private final EmailService emailService;
-    private final TechnicianService technicianService;
 
     public ReportsController(
             BikeReportService bikeReportService,
             BikeService bikeService,
             TestbenchApiService testbenchApiService,
-            EmailService emailService, TechnicianService technicianService
-    ) {
+            EmailService emailService) {
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
         this.testbenchApiService = testbenchApiService;
         this.emailService = emailService;
-        this.technicianService = technicianService;
     }
 
     @GetMapping("/{id}")
@@ -126,44 +128,24 @@ public class ReportsController {
 
 
 
-//    @GetMapping()
-//    @TechnicianOnly
-//    public ResponseEntity<List<BikeReport>> filterReports(
-//            @RequestParam(required = false) String frameNumber,
-//            @RequestParam(required = false) String bikeModel,
-//            @RequestParam(required = false) String brand) {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String loggedInEmail = authentication.getName();
-//        Technician technician = technicianService.getByEmail(loggedInEmail);
-//
-//        List<BikeReport> bikeReports = bikeReportService.getAll()
-//                .stream()
-//                .filter(report -> report.getTechnician().getId().equals(technician.getId()))
-//                .collect(Collectors.toList());
-//
-//        if (frameNumber != null && !frameNumber.isEmpty()) {
-//            String frameNumberLower = frameNumber.toLowerCase();
-//            bikeReports = bikeReports.stream()
-//                    .filter(report -> report.getBike().getFrameNumber().toLowerCase().contains(frameNumberLower))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        if (bikeModel != null && !bikeModel.isEmpty()) {
-//            String bikeModelLower = bikeModel.toLowerCase();
-//            bikeReports = bikeReports.stream()
-//                    .filter(report -> report.getBike().getType().toLowerCase().contains(bikeModelLower))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        if (brand != null && !brand.isEmpty()) {
-//            String brandLower = brand.toLowerCase();
-//            bikeReports = bikeReports.stream()
-//                    .filter(report -> report.getBike().getBrand().toLowerCase().contains(brandLower))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        return ResponseEntity.ok(bikeReports);
-//    }
+    @GetMapping
+    public ResponseEntity<List<ShortBikeReportDto>> filterReports(
+            @RequestParam(required = false) String frameNumber,
+            @RequestParam(required = false) String engineType,
+            @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        List<BikeReport> reports = bikeReportService.getReportsAccessibleByUserWithId(principal.getUserId());
+        log.debug("Reports found: {}", reports.size());
+        List<BikeReport> filteredReports = bikeReportService.filterReports(reports, frameNumber, engineType);
+        log.debug("Filtered reports found: {}", filteredReports.size());
+        return ResponseEntity.ok(filteredReports.stream().map(report -> new ShortBikeReportDto(
+                report.getId(),
+                report.getReportDate(),
+                report.getCustomer().getId(),
+                report.getBike().getFrameNumber(),
+                report.getBike().getBikeModel().getEngineType(),
+                report.getTestBench().getBenchId()
+        )).toList());
+    }
 
 }

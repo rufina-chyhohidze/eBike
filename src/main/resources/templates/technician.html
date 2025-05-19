@@ -7,52 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="../static/js/technician.js" th:src="@{/js/technician.js}" type="module"></script>
+    <script th:src="@{/js/customerFilter.js}" type="module"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body class="bg-gray-50 h-full flex">
 
 <!-- SIDEBAR -->
-<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
-    <!-- LOGO -->
-    <div class="flex items-center mb-6">
-        <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
-        <h1 class="text-2xl font-semibold">eVALeBike</h1>
-    </div>
-
-    <ul class="space-y-6 flex-1">
-        <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
-            <i class="ph ph-wrench"></i><a href="/technician/dashboard">Dashboard</a>
-        </li>
-<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
-<!--            <i class="ph ph-house"></i> Home-->
-<!--        </li>-->
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-                <i class="ph ph-play-circle"></i><a href="/technician/start-test"> Start Test </a>
-        </li>
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-user-plus"></i> <a href="/technician/register-customer">Register Customer</a>
-        </li>
-<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
-<!--            <i class="ph ph-user-check"></i> Customer Verification-->
-<!--        </li>-->
-<!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
-<!--            <i class="ph ph-clipboard-text"></i> Test Reports-->
-<!--        </li>-->
-        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-            <i class="ph ph-clipboard-text"></i><a href="/technician/report-settings">Report settings</a>
-        </li>
-
-        <!--        <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">-->
-<!--            <i class="ph ph-user"></i> Account Settings-->
-<!--        </li>-->
-        <li class="mt-auto">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-                    <i class="ph ph-sign-out"></i> Logout
-                </button>
-            </form>
-        </li>
-    </ul>
-</aside>
+<div th:replace="fragments/technicianNavbar"></div>
 
 <!-- DASHBOARD -->
 <main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
@@ -121,7 +83,12 @@
                 <i class="ph ph-user-plus"></i> Register a customer
             </a>
         </div>
-        <input class="p-2 border border-gray-300 rounded-lg w-full mb-4" type="text" id="searchCustomerInput" placeholder="Enter Customer ID or Name">
+        <form method="get" th:action="@{/technician/dashboard}" class="mb-4">
+            <input class="p-2 border border-gray-300 rounded-lg w-full"
+                   type="text" name="filter" id="customer-filter" placeholder="Enter Customer Name"
+                   th:value="${filter}">
+        </form>
+
         <table class="w-full border-collapse bg-white shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-100 text-gray-700">
@@ -131,7 +98,12 @@
                 <th class="p-3 text-left">Phone</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="customer-table-content">
+            <tr th:if="${#lists.isEmpty(customers)}">
+                <td colspan="4" class="text-center text-gray-500 py-4">
+                    No customers found matching your search.
+                </td>
+            </tr>
             <tr th:each="customer : ${customers}" class="bg-white border-b">
                 <td th:text="${customer.id}" class="p-3"></td>
                 <td th:text="${customer.name}" class="p-3"></td>
@@ -144,13 +116,32 @@
 
     <!-- TEST REPORTS -->
     <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
+        <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">
             <i class="ph ph-clipboard-text"></i> Previous Test Reports
         </h3>
-        <div class="grid grid-cols-3 gap-4 mb-4">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="frameNumberSearch" type="text" placeholder="Frame Number">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="bikeModelSearch" type="text" placeholder="Bike Model">
-            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" id="reportDateSearch" type="text" placeholder="Brand">
+
+        <!-- Centering the form -->
+        <div class="flex justify-center">
+            <form method="get" th:action="@{/technician/dashboard}"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">
+                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                       name="frameNumber"
+                       type="text"
+                       placeholder="Frame Number"
+                       th:value="${frameNumber}">
+                <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                       name="engineType"
+                       type="text"
+                       placeholder="Engine Type"
+                       th:value="${engineType}">
+
+                <div class="sm:col-span-2 flex justify-center">
+                    <button type="submit"
+                            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                        Search
+                    </button>
+                </div>
+            </form>
         </div>
         <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
             <thead>
@@ -159,7 +150,8 @@
                 <th class="p-3 text-left">Report Date</th>
                 <th class="p-3 text-left">Customer ID</th>
                 <th class="p-3 text-left">Frame Number</th>
-<!--                <th class="p-3 text-left">Brand</th>-->
+                <th class="p-3 text-left">Engine Type</th>
+                <!--                <th class="p-3 text-left">Brand</th>-->
                 <th class="p-3 text-left">Bench ID</th>
                 <th class="p3 text-left"></th>
             </tr>
@@ -170,6 +162,7 @@
                 <td th:text="${report.reportDate}" class="p-3"></td>
                 <td th:text="${report.customer.id}" class="p-3"></td>
                 <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+                <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
 <!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
                 <td th:text="${report.testBench.benchId}" class="p-3"></td>
                 <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>

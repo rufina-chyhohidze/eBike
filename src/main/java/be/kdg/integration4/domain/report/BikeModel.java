@@ -20,7 +20,6 @@ public class BikeModel {
 
     private String brand;
 
-    private BikeSize bikeSize;
 
     private String gearType;
 

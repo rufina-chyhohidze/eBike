@@ -3,6 +3,7 @@ package be.kdg.integration4.controller.mvc;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.service.interfaces.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -30,13 +32,14 @@ public class HomeController {
                     .map(role -> role.replace("ROLE_", "")) // Remove "ROLE_" prefix
                     .collect(Collectors.joining(", "));
 
+            log.debug("User role: {}", userRole);
             model.addAttribute("userRole", userRole);
 //            model.addAttribute("user", userService.getById(authentication.getUserId()));
             if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.TECHNICIAN))) {
                 return "redirect:/technician/dashboard";
             } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.SYSTEMADMIN))) {
                 return "redirect:/superadmin/profile";
-            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.WORSHOPADMIN))) {
+            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.WORKSHOPADMIN))) {
                 return "redirect:/workshopadmin/dashboard";
             } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + UserRole.CUSTOMER))) {
                 return "redirect:/customer/dashboard";
@@ -44,9 +47,6 @@ public class HomeController {
         } else {
             model.addAttribute("userRole", "GUEST");
         }
-
-
-
         return "home"; // Loads home.html
     }
 }

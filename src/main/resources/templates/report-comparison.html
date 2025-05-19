@@ -3,14 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Bike Inspection Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="/js/report-comparison.js"></script>
 
 
 </head>
-<body>
+<body class="bg-gray-50 h-full flex">
+<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
+  <div class="flex items-center mb-6">
+    <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
+    <h1 class="text-2xl font-semibold">eVALeBike</h1>
+  </div>
+  <ul class="space-y-6 flex-1">
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-wrench"></i> <a href="/technician/dashboard">Dashboard</a>
+    </li>
+    <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
+      <i class="ph ph-clipboard-text"></i> Test Report
+    </li>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
+      <i class="ph ph-chart-bar"></i> <a href="/technician/reports">Detailed Reports</a>
+    </li>
+    <li class="mt-auto">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+          <i class="ph ph-sign-out"></i> Logout
+        </button>
+      </form>
+    </li>
+  </ul>
+</aside>
+
+<main class="flex-1 p-8 bg-white overflow-y-auto">
 <div class="container mt-4 mb-5" >
   <h2 class="text-center mb-4">Bike Inspection Report</h2>
 
@@ -38,365 +66,364 @@
   </div>
 
 
-  <div class="row">
-    <div class="col-md-6">
-      <h5 class="bg-light p-2">Identification</h5>
-      <table class="table table-sm table-bordered text-center align-middle">
-        <thead class="table-light">
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h2 class="text-purple-700 text-2xl font-semibold px-6 pt-4">Bike Information</h2>
+    <div class="bg-white rounded-b-2xl mt-3">
+      <table class="min-w-full text-sm text-left overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
         <tr>
-          <th class="text-start">Field</th>
+          <th class="bg-purple-100">Field</th>
           <th>Main</th>
-          <th th:if="${compareReport != null}">Comparison</th>
+          <th class="text-blue-700" th:if="${compareReport != null}">Comparison</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <th class="text-start">Brand</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Brand</th>
           <td th:text="${bike.getBikeModel().brand}">Brand</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().brand}"
-              th:classappend="${bike.getBikeModel().brand != compareReport.bike.getBikeModel().brand} ? 'table-warning' : ''">Brand</td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().brand}"
+              th:classappend="${bike.getBikeModel().brand != compareReport.bike.getBikeModel().brand} ? 'bg-blue-200' : ''">Brand</td>
         </tr>
         <tr>
-          <th class="text-start">Frame Number</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Frame Number</th>
           <td th:text="${bike.frameNumber}">Frame Number</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.frameNumber}"
-              th:classappend="${bike.frameNumber != compareReport.bike.frameNumber} ? 'table-warning' : ''">Frame Number</td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.frameNumber}"
+              th:classappend="${bike.frameNumber != compareReport.bike.frameNumber} ? 'bg-blue-200' : ''">Frame Number</td>
         </tr>
         <tr>
-          <th class="text-start">Type</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Type</th>
           <td th:text="${bike.getBikeModel().type}">Type</td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().type}"
-              th:classappend="${bike.getBikeModel().type != compareReport.bike.getBikeModel().type} ? 'table-warning' : ''">Type</td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.getBikeModel().type}"
+              th:classappend="${bike.getBikeModel().type != compareReport.bike.getBikeModel().type} ? 'bg-blue-200' : ''">Type</td>
         </tr>
         <tr>
-          <th class="text-start">Registration Date</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Registration Date</th>
           <td th:text="${bike.registrationDate != null} ? ${bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"></td>
-          <td th:if="${compareReport != null}"
+          <td class="text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.bike.registrationDate != null} ? ${compareReport.bike.registrationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd MMM yyyy'))} : ''"
-              th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'table-warning' : ''">Date</td>
+              th:classappend="${bike.registrationDate != compareReport.bike.registrationDate} ? 'bg-blue-200' : ''">Date</td>
         </tr>
         <tr>
-          <th class="text-start">Size</th>
-          <td th:text="${bike.bikeModel.bikeSize}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.bikeSize}"
-              th:classappend="${bike.bikeModel.bikeSize != compareReport.bike.bikeModel.bikeSize} ? 'table-warning' : ''"></td>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Size</th>
+          <td th:text="${bike.bikeSize}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeSize}"
+              th:classappend="${bike.bikeSize != compareReport.bike.bikeSize} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Acc Capacity</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Acc Capacity</th>
           <td th:text="${bike.accCapacity}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
-              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Engine Type</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Engine Type</th>
           <td th:text="${bike.bikeModel.engineType}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineType}"
-              th:classappend="${bike.bikeModel.engineType != compareReport.bike.bikeModel.engineType} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineType}"
+              th:classappend="${bike.bikeModel.engineType != compareReport.bike.bikeModel.engineType} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Gear Type</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Gear Type</th>
           <td th:text="${bike.bikeModel.gearType}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.gearType}"
-              th:classappend="${bike.bikeModel.gearType != compareReport.bike.bikeModel.gearType} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.gearType}"
+              th:classappend="${bike.bikeModel.gearType != compareReport.bike.bikeModel.gearType} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Accu Capacity</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Accu Capacity</th>
           <td th:text="${bike.accCapacity}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
-              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.accCapacity}"
+              th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Max Support</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Max Support</th>
           <td th:text="${bike.bikeModel.maxSupport}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.maxSupport}"
-              th:classappend="${bike.bikeModel.maxSupport != compareReport.bike.bikeModel.maxSupport} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.maxSupport}"
+              th:classappend="${bike.bikeModel.maxSupport != compareReport.bike.bikeModel.maxSupport} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Max Engine Power</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Max Engine Power</th>
           <td th:text="${bike.bikeModel.enginePowerMax}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerMax}"
-              th:classappend="${bike.bikeModel.enginePowerMax != compareReport.bike.bikeModel.enginePowerMax} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerMax}"
+              th:classappend="${bike.bikeModel.enginePowerMax != compareReport.bike.bikeModel.enginePowerMax} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Nominal Engine Power</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Nominal Engine Power</th>
           <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerNominal}"
-              th:classappend="${bike.bikeModel.enginePowerNominal != compareReport.bike.bikeModel.enginePowerNominal} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.enginePowerNominal}"
+              th:classappend="${bike.bikeModel.enginePowerNominal != compareReport.bike.bikeModel.enginePowerNominal} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr>
-          <th class="text-start">Engine Torque</th>
+          <th class="even:bg-purple-50 odd:bg-purple-100">Engine Torque</th>
           <td th:text="${bike.bikeModel.engineTorque}"></td>
-          <td th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineType}"
-              th:classappend="${bike.bikeModel.engineTorque != compareReport.bike.bikeModel.engineTorque} ? 'table-warning' : ''"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${compareReport.bike.bikeModel.engineTorque}"
+              th:classappend="${bike.bikeModel.engineTorque != compareReport.bike.bikeModel.engineTorque} ? 'bg-blue-200' : ''"></td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-    <div class="mb-4 border p-3">
-      <h5 class="bg-light p-2">Visual Inspection</h5>
-      <table class="table table-sm table-bordered text-center align-middle">
-        <thead class="table-light">
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Visual Inspection</h5>
+    <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
         <tr>
-          <th rowspan="2" class="text-start">Component</th>
-          <th colspan="6">Main</th>
-          <th th:if="${compareReport != null}" colspan="6">Comparison</th>
+          <th rowspan="2" class="px-6 py-3 text-left">Component</th>
+          <th colspan="6" class="px-4 py-2">Main</th>
+          <th colspan="6" class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Comparison</th>
         </tr>
         <tr>
-          <th>Very Bad</th>
-          <th>Bad</th>
-          <th>Neutral</th>
-          <th>Good</th>
-          <th>Very Good</th>
-          <th>N/A</th>
-          <th th:if="${compareReport != null}">Very Bad</th>
-          <th th:if="${compareReport != null}">Bad</th>
-          <th th:if="${compareReport != null}">Neutral</th>
-          <th th:if="${compareReport != null}">Good</th>
-          <th th:if="${compareReport != null}">Very Good</th>
-          <th th:if="${compareReport != null}">N/A</th>
+          <th class="px-4 py-2">Very Bad</th>
+          <th class="px-4 py-2">Bad</th>
+          <th class="px-4 py-2">Neutral</th>
+          <th class="px-4 py-2">Good</th>
+          <th class="px-4 py-2">Very Good</th>
+          <th class="px-4 py-2">N/A</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Very Bad</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Bad</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Neutral</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Good</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Very Good</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">N/A</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${bikeReport.visualInspection}">
-          <td class="text-start" th:text="${entry.key.displayName}">Component</td>
+        <tr th:each="entry : ${bikeReport.visualInspection}" class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left font-medium rounded-l-xl" th:text="${entry.key.displayName}">Component</td>
 
-          <!-- Main report columns -->
-          <td th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'VERY_GOOD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+          <!-- Main ratings -->
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'VERY_GOOD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
 
-          <!-- Compare report columns -->
-          <td th:if="${compareReport != null}"
+          <!-- Comparison ratings -->
+          <td class="px-4 py-3 text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'VERY_BAD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td class="px-4 py-3 text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'BAD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td class="px-4 py-3text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'NEUTRAL' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td class="px-4 py-3 text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'GOOD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td class="px-4 py-3 text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'VERY_GOOD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td class="px-4 py-3 rounded-r-xl text-blue-700" th:if="${compareReport != null}"
               th:text="${compareReport.visualInspection[entry.key]?.name() == 'NOT_APPLICABLE' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'table-warning' : ''"></td>
+              th:classappend="${entry.value.name() != compareReport.visualInspection[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <div class="col-md-6">
 
-    <!-- Test Summary -->
-    <div class="mb-4 border p-3">
-      <h5 class="bg-light p-2">Test Summary</h5>
-      <table class="table table-sm table-bordered text-center align-middle">
-        <thead class="table-light">
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Test Summary</h5>
+    <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+      <table class="min-w-full text-sm text-center table-fixed rounded-b-2xl">
+        <thead class="bg-purple-100 text-purple-800">
         <tr>
-          <th rowspan="2">Test</th>
-          <th colspan="2">Result</th>
-          <th colspan="2">Deviation</th>
-          <th rowspan="2">Unit</th>
+          <th rowspan="2" class="px-6 py-3 text-left">Test</th>
+
+          <th colspan="2" class="px-4 py-2" th:if="${compareReport != null}">Result</th>
+          <th class="px-4 py-2" th:if="${compareReport == null}">Result</th>
+
+          <th colspan="2" class="px-4 py-2" th:if="${compareReport != null}">Deviation</th>
+          <th class="px-4 py-2" th:if="${compareReport == null}">Deviation</th>
+
+          <th rowspan="2" class="px-4 py-2">Unit</th>
         </tr>
-        <tr>
-          <th>Main</th>
-          <th th:if="${compareReport != null}">Comparison</th>
-          <th>Main</th>
-          <th th:if="${compareReport != null}">Comparison</th>
+        <tr th:if="${compareReport != null}">
+          <th class="px-4 py-2">Main</th>
+          <th class="px-4 py-2 text-blue-700">Comparison</th>
+          <th class="px-4 py-2">Main</th>
+          <th class="px-4 py-2 text-blue-700">Comparison</th>
         </tr>
         </thead>
+
         <tbody>
-        <tr>
-          <td>Max Motor Power</td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.maxMotorPower, 1, 2)}">Max</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxMotorPower, 1, 2)}"
-              th:classappend="${overviewTest.maxMotorPower != overviewTestCo.maxMotorPower} ? 'table-warning' : ''"></td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.motorPowerDeviation, 1, 2)}">Dev</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.motorPowerDeviation, 1, 2)}"
-              th:classappend="${overviewTest.motorPowerDeviation != overviewTestCo.motorPowerDeviation} ? 'table-warning' : ''"></td>
+        <tr class="even:bg-purple-50 odd:bg-purple-100">
+          <td class="px-6 py-3 text-left">Max Motor Power</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxMotorPower, 0, 'COMMA', 2, 'POINT')}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxMotorPower, 0, 'COMMA', 2, 'POINT')}"></td>
+
+          <td th:text="${#numbers.formatDecimal(overviewTest.motorPowerDeviation, 0, 'COMMA', 2, 'POINT')}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.motorPowerDeviation, 0, 'COMMA', 2, 'POINT')}"></td>
+
           <td>W</td>
         </tr>
-        <tr>
-          <td>Max Torque</td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.maxTorque, 1, 2)}">Max</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxTorque, 1, 2)}"
-              th:classappend="${overviewTest.maxTorque != overviewTestCo.maxTorque} ? 'table-warning' : ''"></td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.torqueDeviation, 1, 2)}">Dev</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.torqueDeviation, 1, 2)}"
-              th:classappend="${overviewTest.torqueDeviation != overviewTestCo.torqueDeviation} ? 'table-warning' : ''"></td>
+
+        <tr class="even:bg-purple-50 odd:bg-purple-100">
+          <td class="px-6 py-3 text-left">Max Torque</td>
+          <td th:text="${#numbers.formatDecimal(overviewTest.maxTorque, 0, 'COMMA', 2, 'POINT')}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxTorque, 0, 'COMMA', 2, 'POINT')}"></td>
+
+          <td th:text="${#numbers.formatDecimal(overviewTest.torqueDeviation, 0, 'COMMA', 2, 'POINT')}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.torqueDeviation, 0, 'COMMA', 2, 'POINT')}"></td>
+
           <td>Nm</td>
         </tr>
+
+        <!-- Add additional rows similarly -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Nominal Load Test in same card style -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Nominal Load Test</h5>
+    <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
         <tr>
-          <td>Max Support</td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.maxSupport, 1, 2)}">Max</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxSupport, 1, 2)}"
-              th:classappend="${overviewTest.maxSupport != overviewTestCo.maxSupport} ? 'table-warning' : ''"></td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.supportDeviation, 1, 2)}">Dev</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.supportDeviation, 1, 2)}"
-              th:classappend="${overviewTest.supportDeviation != overviewTestCo.supportDeviation} ? 'table-warning' : ''"></td>
-          <td>%</td>
+          <th class="px-6 py-3 text-left">Test</th>
+          <th class="px-4 py-2">Main</th>
+          <th class="px-4 py-2 text-blue-700" th:if="${compareReport != null}">Comparison</th>
+          <th class="px-4 py-2">Unit</th>
         </tr>
-        <tr>
-          <td>Max Wheel Power</td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.maxWheelPower, 1, 2)}">Max</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.maxWheelPower, 1, 2)}"
-              th:classappend="${overviewTest.maxWheelPower != overviewTestCo.maxWheelPower} ? 'table-warning' : ''"></td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.wheelPowerDeviation, 1, 2)}">Dev</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.wheelPowerDeviation, 1, 2)}"
-              th:classappend="${overviewTest.wheelPowerDeviation != overviewTestCo.wheelPowerDeviation} ? 'table-warning' : ''"></td>
-          <td>W</td>
+        </thead>
+        <tbody>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left font-medium rounded-l-xl">Continuous Load</td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.continuousLoad, 1, 2)}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.continuousLoad, 1, 2)}"
+              th:classappend="${nominalLoadTest.continuousLoad != nominalLoadTestCo.continuousLoad} ? 'bg-yellow-200' : ''"></td>
+          <td class="rounded-r-xl">W</td>
         </tr>
-        <tr>
-          <td><strong>Score</strong></td>
-          <td th:text="${#numbers.formatDecimal(overviewTest.score, 1, 2)}">Score</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(overviewTestCo.score, 1, 2)}"
-              th:classappend="${overviewTest.score != overviewTestCo.score} ? 'table-warning' : ''"></td>
-          <td colspan="2"></td>
-          <td></td>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left font-medium rounded-l-xl">Temperature Rise</td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.temperatureIncrease, 1, 2)}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.temperatureIncrease, 1, 2)}"
+              th:classappend="${nominalLoadTest.temperatureIncrease != nominalLoadTestCo.temperatureIncrease} ? 'bg-yellow-200' : ''"></td>
+          <td class="rounded-r-xl">°C/Wh</td>
+        </tr>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left font-medium rounded-l-xl"><strong>Score</strong></td>
+          <td th:text="${#numbers.formatDecimal(nominalLoadTest.score, 1, 2)}"></td>
+          <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.score, 1, 2)}"
+              th:classappend="${nominalLoadTest.score != nominalLoadTestCo.score} ? 'bg-yellow-200' : ''" ></td>
+          <td class="rounded-r-xl"></td>
         </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Nominal Load Test -->
-    <div class="mb-4 border p-3">
-      <h5 class="bg-light p-2">Nominal Load Test</h5>
-      <table class="table table-sm text-center">
-        <thead class="table-light">
+  </div>
+  <!-- Battery Test -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">🔋 Battery Test</h5>
+    <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
         <tr>
-          <th>Test</th>
-          <th>Main</th>
-          <th th:if="${compareReport != null}">Comparison</th>
-          <th>Unit</th>
+          <th class="px-6 py-3">Test</th>
+          <th class="px-4 py-2">Main Result</th>
+          <th class="px-4 py-2 text-blue-700">Comparison</th>
+          <th class="px-4 py-2">Unit</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Continuous Load</td>
-          <td th:text="${#numbers.formatDecimal(nominalLoadTest.continuousLoad, 1, 2)}">Load</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.continuousLoad, 1, 2)}"
-              th:classappend="${nominalLoadTest.continuousLoad != nominalLoadTestCo.continuousLoad} ? 'table-warning' : ''"></td>
-          <td>W</td>
-        </tr>
-        <tr>
-          <td>Temperature Rise</td>
-          <td th:text="${#numbers.formatDecimal(nominalLoadTest.temperatureIncrease, 1, 2)}">Temp</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.temperatureIncrease, 1, 2)}"
-              th:classappend="${nominalLoadTest.temperatureIncrease != nominalLoadTestCo.temperatureIncrease} ? 'table-warning' : ''"></td>
-          <td>°C/Wh</td>
-        </tr>
-        <tr>
-          <td><strong>Score</strong></td>
-          <td th:text="${#numbers.formatDecimal(nominalLoadTest.score, 1, 2)}">Score</td>
-          <td th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.score, 1, 2)}"
-              th:classappend="${nominalLoadTest.score != nominalLoadTestCo.score} ? 'table-warning' : ''"></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Battery Test -->
-    <div class="mb-4 border rounded shadow-sm p-3">
-      <h5 class="bg-light px-3 py-2 rounded">🔋 Battery Test</h5>
-      <table class="table table-sm text-center mt-3">
-        <thead class="table-light">
-        <tr>
-          <th>Test</th>
-          <th>Main Result</th>
-          <th>Comparison</th>
-          <th>Unit</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Capacity</td>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left">Capacity</td>
           <td th:text="${#numbers.formatDecimal(batteryTest.availableCapacity, 1, 2)}">Cap</td>
-          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.availableCapacity, 1, 2) : '-'}">Co Cap</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.availableCapacity, 1, 2) : '-'}"
+              th:classappend="${batteryTestCo != null && batteryTest.availableCapacity != batteryTestCo.availableCapacity} ? 'bg-blue-200' : ''"
+              class="text-blue-700">Co Cap</td>
           <td>Wh</td>
         </tr>
-        <tr>
-          <td>Battery Health</td>
+        <tr class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left">Battery Health</td>
           <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Health</td>
-          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Health</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}"
+              th:classappend="${batteryTestCo != null && batteryTest.batteryHealth != batteryTestCo.batteryHealth} ? 'bg-blue-200' : ''"
+              class="text-blue-700">Co Health</td>
           <td>%</td>
         </tr>
-        <tr class="fw-bold">
-          <td>Score</td>
+        <tr class="even:bg-purple-100 odd:bg-purple-50 font-semibold">
+          <td class="px-6 py-3 text-left">Score</td>
           <td th:text="${#numbers.formatDecimal(batteryTest.batteryHealth, 1, 2)}">Score</td>
-          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}">Co Score</td>
+          <td th:text="${batteryTestCo != null ? #numbers.formatDecimal(batteryTestCo.batteryHealth, 1, 2) : '-'}"
+              th:classappend="${batteryTestCo != null && batteryTest.batteryHealth != batteryTestCo.batteryHealth} ? 'bg-blue-200' : ''"
+              class="text-blue-700">Co Score</td>
           <td></td>
         </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-
-    <!-- Bearing Health -->
-    <div class="mb-4 border rounded shadow-sm p-3">
-      <h5 class="bg-light px-3 py-2 rounded">⚙️ Bearing Health</h5>
-      <div class="row text-center fs-5 mt-3">
+  <!-- Bearing Health -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">⚙️ Bearing Health</h5>
+    <div class="bg-white rounded-b-2xl mt-3 p-4">
+      <div class="row text-center fs-5">
         <div class="col">
           <div class="text-muted">Main</div>
-          <div th:text="${bearingHealth.bearingStatus} == true ? '✔ Good' : '✖ Bad'" class="fw-semibold text-success">✔ Good</div>
+          <div th:text="${bearingHealth.bearingStatus} == true ? '✔ Good' : '✖ Bad'"
+               class="fw-semibold text-success">✔ Good</div>
         </div>
         <div class="col">
-          <div class="text-muted">Comparison</div>
+          <div class="text-muted text-blue-700">Comparison</div>
           <div th:if="${bearingHealthCo != null}"
                th:text="${bearingHealthCo.bearingStatus} == true ? '✔ Good' : '✖ Bad'"
-               class="fw-semibold text-success">✔ Good</div>
+               th:classappend="${bearingHealth.bearingStatus != bearingHealthCo.bearingStatus} ? 'bg-blue-200 rounded' : ''"
+               class="fw-semibold text-blue-700 px-2 py-1">✔ Good</div>
           <div th:if="${bearingHealthCo == null}" class="text-muted">-</div>
         </div>
       </div>
     </div>
+  </div>
 
-
-
-    <div class="mb-4 border p-3">
-      <h5 class="bg-light p-2">Functional Test</h5>
-      <table class="table table-sm table-bordered text-center align-middle">
-        <thead class="table-light">
+  <!-- Functional Test -->
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Functional Test</h5>
+    <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+      <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+        <thead class="bg-purple-100">
         <tr>
-          <th rowspan="2" class="text-start">Component</th>
-          <th colspan="3">Main</th>
-          <th th:if="${compareReport != null}" colspan="3">Comparison</th>
+          <th rowspan="2" class="px-6 py-3 text-left">Component</th>
+          <th colspan="3" class="px-4 py-2">Main</th>
+          <th th:if="${compareReport != null}" colspan="3" class="px-4 py-2 text-blue-700">Comparison</th>
         </tr>
         <tr>
-          <th>-</th><th>+</th><th>N/A</th>
-          <th th:if="${compareReport != null}">-</th>
-          <th th:if="${compareReport != null}">+</th>
-          <th th:if="${compareReport != null}">N/A</th>
+          <th class="px-4 py-2">-</th>
+          <th class="px-4 py-2">+</th>
+          <th class="px-4 py-2">N/A</th>
+          <th th:if="${compareReport != null}" class="px-4 py-2 text-blue-700">-</th>
+          <th th:if="${compareReport != null}" class="px-4 py-2 text-blue-700">+</th>
+          <th th:if="${compareReport != null}" class="px-4 py-2 text-blue-700">N/A</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${bikeReport.functionalTest}">
-          <td class="text-start" th:text="${entry.key.displayName}">Component</td>
-          <td th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
-          <td th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
-          <td th:if="${compareReport != null}"
+        <tr th:each="entry : ${bikeReport.functionalTest}" class="even:bg-purple-100 odd:bg-purple-50">
+          <td class="px-6 py-3 text-left font-medium" th:text="${entry.key.displayName}">Component</td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'GOOD' ? '✔' : ''}"></td>
+          <td class="px-4 py-3" th:text="${entry.value.name() == 'NOT_APPLICABLE' ? '✔' : ''}"></td>
+
+          <td th:if="${compareReport != null}" class="px-4 py-3 text-blue-700"
               th:text="${compareReport.functionalTest[entry.key]?.name() == 'BAD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td th:if="${compareReport != null}" class="px-4 py-3 text-blue-700"
               th:text="${compareReport.functionalTest[entry.key]?.name() == 'GOOD' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
-          <td th:if="${compareReport != null}"
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
+          <td th:if="${compareReport != null}" class="px-4 py-3 text-blue-700"
               th:text="${compareReport.functionalTest[entry.key]?.name() == 'NOT_APPLICABLE' ? '✔' : ''}"
-              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'table-warning' : ''"></td>
+              th:classappend="${entry.value.name() != compareReport.functionalTest[entry.key]?.name()} ? 'bg-blue-200' : ''"></td>
         </tr>
         </tbody>
       </table>
     </div>
+  </div>
+
     <div class="text-center mt-4">
       <a th:href="@{/report/{id}/detailed(id=${id})}" class="btn btn-outline-secondary">View Visual Report</a>
     </div>
@@ -404,6 +431,6 @@
 
 
   </div>
-</div>
+</main>
 </body>
 </html>

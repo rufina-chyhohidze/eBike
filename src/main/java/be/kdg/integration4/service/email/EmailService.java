@@ -20,6 +20,9 @@ public class EmailService {
     @Value("${MAIL_USERNAME}")
     private String originMail;
 
+    @Value("${spring.baseurl}")
+    private String url;
+
     @Autowired
     public EmailService(JavaMailSender mailSender, BikeReportRepository bikeReportRepository) {
         this.mailSender = mailSender;
@@ -53,7 +56,8 @@ public class EmailService {
         message.setTo(to);
         message.setSubject("Customer Registration Confirmation");
         message.setText("Dear " + name + ", one of our technicians created an account for you. You can use this email " +
-                "and password: " + password + ". We recommend you to change password as soon as you login.");
+                "and password: " + password + ". We recommend you to change password as soon as you login. " +
+                "You can access your dashboard with this link: " + url + "/customer/dashboard");
         message.setFrom(originMail);
         mailSender.send(message);
     }

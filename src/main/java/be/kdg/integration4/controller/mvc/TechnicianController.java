@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,26 +49,40 @@ public class TechnicianController {
 
     @GetMapping("/dashboard")
     @TechnicianOnly
-    public String dashboard(Model model) {
+    public String dashboard(@RequestParam(required = false) String filter, @RequestParam(required = false) String frameNumber,
+                            @RequestParam(required = false) String engineType,Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String loggedInEmail = authentication.getName();
 
         Technician technician = technicianService.getByEmail(loggedInEmail);
-
         int totalReports = technicianService.getTotalReportsByTechnician(technician.getId());
 
         List<Customer> customers = customerService.getAll();
-        List<BikeReport> bikeReports = bikeReportService.getAll()
+        if (filter != null && !filter.isBlank()) {
+            customers = customers.stream()
+                    .filter(c -> String.valueOf(c.getId()).contains(filter) ||
+                            c.getName().toLowerCase().contains(filter.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        List<BikeReport> bikeReports = bikeReportService
+                .getReportsWithDetailsForTechnician(technician.getId())
                 .stream()
                 .filter(report -> report.getTechnician().getId().equals(technician.getId()))
-                .collect(Collectors.toList());
+                .filter(report -> frameNumber == null || frameNumber.isBlank() ||
+                        report.getBike().getFrameNumber().toLowerCase().contains(frameNumber.toLowerCase()))
+                .filter(report -> engineType == null || engineType.isBlank() ||
+                        report.getBike().getBikeModel().getEngineType().toLowerCase().contains(engineType.toLowerCase()))
+                .toList();
 
         model.addAttribute("totalReports", totalReports);
         model.addAttribute("totalClients", customers.size());
         model.addAttribute("technician", technician);
         model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);
+        model.addAttribute("frameNumber", frameNumber);
+        model.addAttribute("engineType", engineType);
+        model.addAttribute("filter", filter);
         return "technician";
     }
 
