@@ -1,12 +1,27 @@
+import activateBtn from "./utils/addEventListenerToSelectButtonsInReportComparison.js";
+
+const removeSelectedReport = document.getElementById('removeSelectedReport');
 const compareButton = document.getElementById('compareButton');
 const mainContent = document.getElementById('main-content');
 const reportsTableContent = document.getElementById('reports-table-content');
 const compareContent = document.getElementById('report-selection');
+const parts = window.location.pathname.split('/');
+const id = parts[parts.length - 1];
+const params = new URLSearchParams(window.location.search);
+
+if (params.has('compareId')) {
+    removeSelectedReport.disabled = false;
+} else {
+    removeSelectedReport.disabled = true;
+}
+
+removeSelectedReport.addEventListener("click", () => {
+    window.location.href = `/report-comparison/${id}`;
+})
 compareButton.addEventListener("click", async () => {
     mainContent.style.display = "none";
     compareContent.classList.remove("d-none");
-    const parts = window.location.pathname.split('/');
-    const id = parts[parts.length - 1];
+
     const res = await fetch(`/api/reports?excludeCurrentReportId=true&currentReportId=${id}`);
     const reports = await res.json();
     reportsTableContent.innerHTML += ``
@@ -23,15 +38,5 @@ compareButton.addEventListener("click", async () => {
             </tr>
         `
     });
-    const selectBtns = document.getElementsByClassName('selectBtn');
-    for (let i = 0; i < selectBtns.length; i++) {
-        selectBtns[i].addEventListener("click",  (e) => {
-            const selectedId = e.target.id
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('compareId', selectedId);
-            window.location.href = currentUrl.toString();
-            compareContent.classList.add("d-none");
-            mainContent.style.display = "block";
-        })
-    }
+    activateBtn();
 })
