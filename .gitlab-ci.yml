@@ -14,7 +14,7 @@ variables:
 #  stage: build
 #  tags:
 #    - azure
-#    - setup
+#    - shell
 #  script:
 #    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
 #    - echo "========== BUILD STAGE =========="
@@ -27,7 +27,7 @@ variables:
 #  stage: deploy
 #  tags:
 #    - azure
-#    - setup
+#    - shell
 #  script:
 #    - echo "Running deploy stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
 #    - echo "========== DEPLOY STAGE =========="
@@ -49,7 +49,7 @@ azure-deployment-setup:
   image: anir333/team18-int4:latest
   tags:
     - azure
-    - setup
+    - docker
   script:
     - echo "========== PRE-DEPLOY STAGE =========="
     - cd ./azure-config/deployment/ || exit 1

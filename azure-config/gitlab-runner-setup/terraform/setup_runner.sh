@@ -51,15 +51,27 @@ ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
   sudo systemctl enable --now gitlab-runner
   sudo systemctl start gitlab-runner
 
-  # Register the runner
+  # Register the runner (as shell runner for some of the stages)
   sudo gitlab-runner register --non-interactive \
     --url "https://gitlab.com" \
     --registration-token "glrt-rfSqO6W5DJ5ItOpsN-OMlm86MQpwOjEzcjA5NQp0OjMKdTpiNGRiaBg.01.1j08f83qv" \
     --executor "shell" \
     --description "team18-vm" \
-    --tag-list "azure,setup" \
+    --tag-list "azure,shell" \
     --run-untagged="true" \
     --locked="false"
+
+  # Register the runner as docker runner for forme of the stages that un on images specified on the gitlab-ci
+  sudo gitlab-runner register --non-interactive \
+    --url "https://gitlab.com" \
+    --registration-token "glrt-K-kTc8wgUv-g4LlfhfJLaG86MQpwOjEzcjA5NQp0OjMKdTpiNGRiaBg.01.1j0bi57a2" \
+    --executor "docker" \
+    --description "team18-vm-docker" \
+    --docker-image "alpine:latest" \
+    --tag-list "azure,docker" \
+    --run-untagged="false" \
+    --locked="false"
+
 
   # Start and enable the service
   sudo systemctl restart gitlab-runner

@@ -23,7 +23,7 @@ fi
 docker run --rm --name azure_setup -dit \
   -v "./:/azure-config/gitlab-runner-setup/" \
   -v "$HOME/.ssh/:/root/.ssh/" \
-  -w /azure-config/terraform/ \
+  -w "/azure-config/gitlab-runner-setup/terraform/" \
   anir333/team18-int4:latest
 
 echo "Logging into azure"
@@ -44,10 +44,11 @@ if resourceGroupExists ; then
     echo "Resource group doesn't exist, initializing setup..."
     docker exec azure_setup tofu init
     docker exec azure_setup tofu apply --auto-approve
+    VM_IP=$(docker exec azure_setup az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)
     docker exec azure_setup chmod +x "/azure-config/gitlab-runner-setup/terraform/setup_runner.sh"
     docker exec azure_setup bash "/azure-config/gitlab-runner-setup/terraform/setup_runner.sh"
-    docker exec echo "You can now access the virtual machine using the .ssh/azure private key of your ROOT user at the following IP address: $(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
-    docker exec echo "Command to log into VM:"
-    docker exec echo "sudo ssh -i /root/.ssh/azure team18@$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
+    echo "You can now access the virtual machine using the .ssh/azure private key of your ROOT user at the following IP address: $VM_IP"
+    echo "Command to log into VM:"
+    echo "sudo ssh -i /root/.ssh/azure team18@$VM_IP"
     docker kill azure_setup
 fi
