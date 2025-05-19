@@ -219,7 +219,8 @@ async function startTest() {
         }
     });
 
-
+    console.log(inspection)
+    console.log(functionalTest)
     const response = await fetch("/api/reports",
         {
             method: "POST",

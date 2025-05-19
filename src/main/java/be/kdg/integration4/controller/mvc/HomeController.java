@@ -47,9 +47,6 @@ public class HomeController {
         } else {
             model.addAttribute("userRole", "GUEST");
         }
-
-
-
         return "home"; // Loads home.html
     }
 }

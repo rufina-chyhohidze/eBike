@@ -2,12 +2,14 @@ package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.config.security.annotations.CustomerOnly;
 import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,15 @@ public class CustomerDashboardController {
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
+    }
+
+    @GetMapping("/edit-profile")
+    @CustomerOnly
+    public String editProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        model.addAttribute("id", userDetails.getUserId());
+        Customer customer = customerService.getById(userDetails.getUserId());
+        model.addAttribute("customer", customer);
+        return "customer-update-account";
     }
 
     @GetMapping("/dashboard")
