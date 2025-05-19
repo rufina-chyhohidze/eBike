@@ -23,5 +23,5 @@ variable "admin_username" {
 }
     
 variable "public_key_path" {
-  default = "~/.ssh/azure.pub"
+  default = "/home/team18/.ssh/azure.pub"
 }
