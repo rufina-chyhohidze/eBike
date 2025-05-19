@@ -8,6 +8,10 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="../static/js/customer.js" th:src="@{/js/customer.js}" type="module"></script>
     <script th:src="@{/js/techNavbar.js}" type="module"></script>
+    <script th:src="@{/js/customer-update.js}" type="module"></script>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 </head>
 <body class="bg-gray-50 h-full flex">
@@ -23,6 +27,10 @@
             <h2 class="text-2xl font-semibold text-gray-800" th:text="${customer.name}"></h2>
             <p class="text-gray-600">Customer</p>
             <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>
+<!--            <a href="/customer/edit-profile" class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</a>-->
+            <button onclick="toggleModal()" class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
+                Update Account Info
+            </button>
         </div>
     </div>
 
@@ -70,6 +78,63 @@
         </table>
     </div>
 </main>
+
+<!-- MODAL BACKDROP -->
+<div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <!-- MODAL CONTENT -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg relative">
+        <button onclick="toggleModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+            <i class="ph ph-x text-2xl"></i>
+        </button>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <i class="ph ph-user-gear text-purple-600 text-2xl"></i> Edit Profile
+        </h2>
+
+        <!-- PHONE UPDATE FORM -->
+        <form id="phoneForm" class="space-y-6 mb-8">
+            <input type="hidden" id="id" name="id" th:value="${customer.id}">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                       th:value="${customer.phoneNumber}" />
+            </div>
+            <div id="phoneMessage" class="text-sm mt-2"></div>
+            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition w-full">
+                Update Phone Number
+            </button>
+        </form>
+
+        <!-- PASSWORD UPDATE FORM -->
+        <form id="passwordForm" class="space-y-6">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">New Password</label>
+                <input type="password" id="newPassword" name="newPassword"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" />
+            </div>
+
+            <div id="passwordMessage" class="text-sm mt-2"></div>
+            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition w-full">
+                Update Password
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function toggleModal() {
+        const modal = document.getElementById('profileModal');
+        modal.classList.toggle('hidden');
+    }
+</script>
+
 
 </body>
 </html>

@@ -36,15 +36,6 @@ public class CustomerDashboardController {
         this.bikeService = bikeService;
     }
 
-    @GetMapping("/edit-profile")
-    @CustomerOnly
-    public String editProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        model.addAttribute("id", userDetails.getUserId());
-        Customer customer = customerService.getById(userDetails.getUserId());
-        model.addAttribute("customer", customer);
-        return "customer-update-account";
-    }
-
     @GetMapping("/dashboard")
     @CustomerOnly
     public String dashboard(Model model) {
