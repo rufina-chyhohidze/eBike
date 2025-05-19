@@ -20,8 +20,6 @@ if [ ! -f ~/.ssh/azure ] ; then
   ssh-keygen -t ed25519 -f ~/.ssh/azure -N ""
 fi
 
-#  -v "./terraform/:/azure-config/terraform/" \
-
 docker run --rm --name azure_setup -dit \
   -v "./:/azure-config/" \
   -v "$HOME/.ssh/:/root/.ssh/" \
@@ -31,7 +29,6 @@ docker run --rm --name azure_setup -dit \
 echo "Logging into azure"
 docker exec azure_setup bash "/azure-config/terraform/azure_login.sh"
 echo "Logged into azure successfully"
-
 
 function resourceGroupExists() {
   if "$(docker exec azure_setup az group exists --name rg-team18)" ; then
@@ -49,8 +46,8 @@ if resourceGroupExists ; then
     docker exec azure_setup tofu apply --auto-approve
     docker exec azure_setup chmod +x /azure-config/terraform/setup_runner.sh
     docker exec azure_setup bash /azure-config/terraform/setup_runner.sh
+    docker exec echo "You can now access the virtual machine using the .ssh/azure private key of your ROOT user at the following IP address: $(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
+    docker exec echo "Command to log into VM:"
+    docker exec echo "sudo ssh -i /root/.ssh/azure team18@$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
     docker kill azure_setup
-    echo "You can now access the virtual machine using the .ssh/azure private key of your ROOT user at the following IP address: $(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
-    echo "Command to log into VM:"
-    echo "sudo ssh -i /root/.ssh/azure team18@$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 fi

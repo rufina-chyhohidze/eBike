@@ -5,9 +5,10 @@ stages:
 #  - deploy
 # - destroy
 
-# for destor ystage: tofu apply -destroy --auto-approve
+# for destory stage: tofu apply -destroy --auto-approve
 
-#variables:
+variables:
+  COMPOSE_BAKE: true # Better build performance
 #  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 #  DB_USER: dev
 #  DB_PASSWORD: bike
