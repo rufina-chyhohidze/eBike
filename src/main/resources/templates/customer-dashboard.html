@@ -12,22 +12,20 @@
 
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
 </head>
-<body class="bg-gray-50 h-full flex">
+<body class="bg-gray-50 h-screen flex flex-row overflow-hidden">
 
 <div th:replace="fragments/customerNavbar :: navbar"></div>
 
 <!-- DASHBOARD -->
-<main class="flex-1 p-6 grid grid-cols-4 gap-6 bg-white">
+<main class="flex-1 p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white">
     <!-- CUSTOMER INFO -->
-    <div class="bg-white shadow-lg rounded-3xl p-6 flex items-center gap-6 col-span-2 border border-gray-200">
+    <div class="bg-white shadow-lg rounded-3xl p-6 flex flex-col sm:flex-row items-center sm:items-center gap-6 col-span-1 sm:col-span-2 border border-gray-200">
         <img src="https://static.vecteezy.com/system/resources/previews/007/469/004/non_2x/graduated-student-in-simple-flat-personal-profile-icon-or-symbol-people-concept-illustration-vector.jpg" alt="Customer" class="w-24 h-24 rounded-full border-2 border-gray-300">
-        <div>
+        <div class="text-center sm:text-left">
             <h2 class="text-2xl font-semibold text-gray-800" th:text="${customer.name}"></h2>
             <p class="text-gray-600">Customer</p>
             <p class="text-gray-500">Total Bike Reports: <span class="font-semibold" th:text="${totalReports}"></span></p>
-<!--            <a href="/customer/edit-profile" class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Update Account Info</a>-->
             <button onclick="toggleModal()" class="mt-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
                 Update Account Info
             </button>
@@ -35,7 +33,7 @@
     </div>
 
     <!-- CUSTOMER STATS -->
-    <div class="col-span-2 grid grid-cols-2 gap-6">
+    <div class="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div class="bg-gray-900 flex flex-col justify-center text-white shadow-lg rounded-3xl p-6 text-center border border-gray-200">
             <h3 class="text-xl font-semibold mb-2 text-gray-200">Total Bikes</h3>
             <p class="text-3xl font-bold text-purple-500" th:text="${totalBikes}"></p>
@@ -47,23 +45,23 @@
     </div>
 
     <!-- TEST REPORTS -->
-    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-1 sm:col-span-2 lg:col-span-4 border border-gray-200 overflow-x-auto">
         <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-200">
             <i class="ph ph-clipboard-text"></i> My Bike Reports
         </h3>
-        <div class="grid grid-cols-3 gap-4 mb-4">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="frameNumberSearch" placeholder="Frame Number">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="bikeModelSearch" placeholder="Bike Model">
-            <input class="p-2 border border-gray-300 rounded-lg w-full" type="text" id="reportDateSearch" placeholder="Report Date">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" type="text" id="frameNumberSearch" placeholder="Frame Number">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" type="text" id="bikeModelSearch" placeholder="Bike Model">
+            <input class="p-2 border border-gray-300 rounded-lg w-full text-black" type="text" id="reportDateSearch" placeholder="Report Date">
         </div>
-        <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
+        <table class="w-full min-w-[600px] border-collapse bg-gray-800 shadow-md rounded-3xl">
             <thead>
             <tr class="bg-gray-700 text-gray-100">
                 <th class="p-3 text-left">Report ID</th>
                 <th class="p-3 text-left">Report Date</th>
                 <th class="p-3 text-left">Frame Number</th>
                 <th class="p-3 text-left">Bench ID</th>
-                <th class="p3 text-left"></th>
+                <th class="p-3 text-left"></th>
             </tr>
             </thead>
             <tbody>
@@ -72,7 +70,10 @@
                 <td th:text="${report.reportDate}" class="p-3"></td>
                 <td th:text="${report.bike.frameNumber}" class="p-3"></td>
                 <td th:text="${report.testBench.benchId}" class="p-3"></td>
-                <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">View Report</a></td>
+                <td class="p-3">
+                    <a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 block text-center"
+                       th:href="@{/report/{id}(id=${report.id})}">View Report</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -82,7 +83,7 @@
 <!-- MODAL BACKDROP -->
 <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <!-- MODAL CONTENT -->
-    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg relative">
+    <div class="bg-white rounded-2xl shadow-xl p-4 sm:p-8 w-full max-w-lg relative mx-4">
         <button onclick="toggleModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
             <i class="ph ph-x text-2xl"></i>
         </button>
@@ -127,14 +128,12 @@
     </div>
 </div>
 
-
 <script>
     function toggleModal() {
         const modal = document.getElementById('profileModal');
         modal.classList.toggle('hidden');
     }
 </script>
-
 
 </body>
 </html>
