@@ -52,7 +52,7 @@ class UserServiceImplTest {
 
         // Assert
         assertEquals(1, unapproved.size());
-        assertFalse(unapproved.getFirst().isApproved());
+        assertFalse(unapproved.get(0).isApproved());
     }
 
     @Test
