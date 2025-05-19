@@ -5,7 +5,9 @@ const compareContent = document.getElementById('report-selection');
 compareButton.addEventListener("click", async () => {
     mainContent.style.display = "none";
     compareContent.classList.remove("d-none");
-    const res = await fetch("/api/reports");
+    const parts = window.location.pathname.split('/');
+    const id = parts[parts.length - 1];
+    const res = await fetch(`/api/reports?excludeCurrentReportId=true&currentReportId=${id}`);
     const reports = await res.json();
     reportsTableContent.innerHTML += ``
     reports.forEach(report => {
