@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = repository.findById(loggedInId).orElseThrow();
         customer.setPassword(passwordEncoder.encode(password));
         return repository.save(customer);
-
+    }
     @Override
     public List<Customer> getByNameIgnoreCase(String name) {
         return this.repository.findByNameIgnoreCase(name.toLowerCase());
