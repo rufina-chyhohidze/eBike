@@ -1,7 +1,8 @@
 stages:
-  - build
-#  - test
+#  - build
+  - test
 #  - azure_setup
+#  - azure-deploy-setup
 #  - deploy
 # - destroy
 
@@ -14,48 +15,47 @@ variables:
 #  DB_PASSWORD: bike
 #  DB_NAME: ebike_test
 
-build_application:
-  stage: build
-  tags:
-    - azure
-    - setup
-  script:
-    - echo "========== BUILD STAGE =========="
-#    - #gradle clean build -x test
-#    - #docker run -dit ubuntu:22.04
-    - docker compose build --no-cache
-    - echo "Running in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-    - echo "Build completed successfully."
-#    - #echo "Running pipeline now! $(date)" >> /root/pipeline/cd.log
+#build_application:
+#  stage: build
+#  tags:
+#    - azure
+#    - setup
+#  script:
+#    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+#    - echo "========== BUILD STAGE =========="
+#    - docker compose build --no-cache
+#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
 #  artifacts:
 #    paths:
 #      - build/libs/*.jar
 
-#test_application:
-#  stage: test
-#  services:
-#    - name: postgres:17.2-alpine
-#      alias: db
-#  variables:
-#    POSTGRES_DB: $DB_NAME
-#    POSTGRES_USER: $DB_USER
-#    POSTGRES_PASSWORD: $DB_PASSWORD
-#    SPRING_PROFILES_ACTIVE: test
-#    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/$DB_NAME
-#    SPRING_DATASOURCE_USERNAME: $DB_USER
-#    SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD
+
+
+#deploy_application:
+#  stage: deploy
+#  tags:
+#    - azure
+#    - setup
 #  script:
-#    - echo "========== TEST STAGE =========="
-#    - echo "Waiting 15s for Postgres to be ready..."
-#    - sleep 15
-#    - echo "Testing with DB URL"
-#    - echo "$SPRING_DATASOURCE_URL"
-#    - gradle test
+#    - echo "Running deploy stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+#    - echo "========== DEPLOY STAGE =========="
+#    - echo "========== DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+
+
+#    - docker compose build --no-cache
+#    - docker compose up -d
+#
+test_application:
+  stage: test
+  script:
+    - echo "========== TEST STAGE =========="
+    - docker compose up team18-integration-test
+    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
 #  artifacts:
 #    when: always
 #    reports:
 #      junit: build/test-results/test/TEST-*.xml
-
+#
 #deploy_application:
 #  stage: deploy
 #  image: anir333/integration4:cicd1

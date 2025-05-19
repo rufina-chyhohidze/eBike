@@ -27,6 +27,21 @@ services:
         networks:
             - team18-network
 
+    team18-integration-test:
+        image: gradle:jdk17
+        container_name: team18-int4-test
+        working_dir: /team18-project
+        volumes:
+            -   "./:/team18-project"
+#        environment:
+#            PROFILE: 'prod'
+#            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
+        command: ./gradlew check
+        networks:
+            - team18-test-network
+        depends_on:
+            - postgres_ebike_test_db
+
     postgres_ebike_test_db:
         image: postgres:17.2-alpine
         container_name: team18-test-db
@@ -39,6 +54,8 @@ services:
             - '5065:5432'
         volumes:
             - ebike-test-db:/var/lib/postgresql/data
+        networks:
+            - team18-test-network
 
 volumes:
     ebike-db:
@@ -47,3 +64,7 @@ volumes:
 networks:
     team18-network:
         driver: bridge
+
+    team18-test-network:
+        driver: bridge
+
