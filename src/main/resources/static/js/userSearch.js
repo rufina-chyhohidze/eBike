@@ -4,37 +4,30 @@ const notFoundAlert = document.getElementById('customer-not-found');
 const notFoundMessage = document.getElementById('customer-email-message');
 const searchBtn = document.getElementById('searchBtn');
 
-let debounceTimeout;
 
-input.addEventListener('input', () => {
+input.addEventListener('input', async () => {
     const query = input.value.trim();
 
-    clearTimeout(debounceTimeout);
     if (query.length < 2) {
         suggestionsBox.innerHTML = '';
         suggestionsBox.classList.add('hidden');
         return;
     }
 
-    debounceTimeout = setTimeout(() => {
-        fetch(`/api/customers?name=${encodeURIComponent(query)}`)
-            .then(response => {
-                if (response.status === 204) {
-                    throw new Error('No customers found');
-                }
-                return response.json();
-            })
-            .then(customers => {
-                showSuggestions(customers);
-                notFoundAlert.classList.add('hidden');
-            })
-            .catch(() => {
-                suggestionsBox.innerHTML = '';
-                suggestionsBox.classList.add('hidden');
-                notFoundMessage.textContent = query;
-                notFoundAlert.classList.remove('hidden');
-            });
-    }, 300);
+    try {
+        const res = await fetch(`/api/customers?name=${encodeURIComponent(query)}`)
+        if (res.status === 204) {
+            throw new Error('No customers found');
+        }
+        const customers = await res.json();
+        showSuggestions(customers);
+        notFoundAlert.classList.add('hidden');
+    } catch (err) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.classList.add('hidden');
+        notFoundMessage.textContent = query;
+        notFoundAlert.classList.remove('hidden');
+    }
 });
 
 function showSuggestions(customers) {

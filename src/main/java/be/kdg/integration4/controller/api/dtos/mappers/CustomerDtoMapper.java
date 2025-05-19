@@ -11,7 +11,7 @@ public class CustomerDtoMapper {
             return null;
         }
         return new CustomerDto(
-                Math.toIntExact(customer.getId()),
+                customer.getId(),
                 customer.getName(),
                 customer.getEmail(),
                 customer.getPhoneNumber()

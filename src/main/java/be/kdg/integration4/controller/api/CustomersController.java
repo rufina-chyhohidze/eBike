@@ -47,7 +47,9 @@ public class CustomersController {
     @GetMapping("/{name}")
     @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByName(@PathVariable String name) {
-        return this.customerService.getByNameIgnoreCase(name)
+        Customer customer = this.customerService.getByNameIgnoreCase(name);
+        return ResponseEntity.ok(new CustomerDto(customer.getId(),customer.getName(),customer.getEmail(), customer.getPhoneNumber()));
+    }
 
     @ExceptionHandler({NoSuchElementException.class})
     public ResponseEntity<List<String>> handleCustomerDoesntExist(NoSuchElementException e) {
@@ -84,20 +86,20 @@ public class CustomersController {
         return ResponseEntity.ok(new UserOutputDto(customer.getId(),customer.getName(), customer.getEmail()));
     }
 
-    @GetMapping("/{email}")
-    @StaffOnly
-    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
-        return this.customerService.getByEmailIgnoreCase(email)
-                .map(customer -> {
-                    log.info("Found customer: {}", customer);
-                    return ResponseEntity.ok(
-                        customMapper.toCustomerDto(customer)
-                    );
-                }).orElseGet(() -> {
-                    log.error("Customer with name {} not found", name);
-                    return ResponseEntity.noContent().build();
-                });
-    }
+//    @GetMapping("/{email}")
+//    @StaffOnly
+//    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
+//        return this.customerService.getByEmailIgnoreCase(email)
+//                .map(customer -> {
+//                    log.info("Found customer: {}", customer);
+//                    return ResponseEntity.ok(
+//                        customMapper.toCustomerDto(customer)
+//                    );
+//                }).orElseGet(() -> {
+//                    log.error("Customer with name {} not found", name);
+//                    return ResponseEntity.noContent().build();
+//                });
+//    }
 
     @GetMapping("{customerId}/bikes")
     @StaffOnly
