@@ -73,8 +73,14 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<BikeReport> getAllReportsWithDetails() {
         return bikeReportRepository.findAllWithDetails();
+    }
+
+    @Override
+    public List<BikeReport> getReportsByBikeFrameNumberWithDetails(String frameNumber) {
+        return bikeReportRepository.findBikeReportsByBikeFrameNumberWithDetails(frameNumber);
     }
 
     @Override
@@ -120,7 +126,6 @@ public class BikeReportServiceImpl implements BikeReportService {
             return null;
         }
 
-        Bike bike = report.getBike();
 
         List<TestLine> testLines = testLineRepository.findByBikeReportId(reportId);
 

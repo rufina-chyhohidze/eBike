@@ -40,6 +40,8 @@ public interface BikeReportService {
     List<BikeReport> getAllReportsWithDetails();
     //List<BikeReport> searchReports(String frameNumber, String customerName);
 
+    List<BikeReport> getReportsByBikeFrameNumberWithDetails(String frameNumber);
+
     OverviewTestDTO calculateOverviewTest(Long reportId);
 
     NominalLoadTestDTO calculateNominalLoadTest(Long reportId);

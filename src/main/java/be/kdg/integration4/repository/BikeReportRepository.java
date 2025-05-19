@@ -20,6 +20,15 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
             "LEFT JOIN FETCH br.testBench")
     List<BikeReport> findAllWithDetails();
 
+    @Query("SELECT br FROM BikeReport br " +
+            "LEFT JOIN FETCH br.bike b " +
+            "LEFT JOIN FETCH br.customer " +
+            "LEFT JOIN FETCH br.technician " +
+            "LEFT JOIN FETCH br.testBench " +
+            "WHERE b.frameNumber = :frameNumber")
+    List<BikeReport> findBikeReportsByBikeFrameNumberWithDetails(String frameNumber);
+
+
     //    @Query("SELECT br FROM BikeReport br " +
 //            "JOIN br.bike b " +
 //            "JOIN br.customer c " +
