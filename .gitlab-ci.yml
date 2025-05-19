@@ -1,7 +1,7 @@
 stages:
 #  - build
-  - test
-#  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
+#  - test
+  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
 #  - deploy
 # - destroy
 
@@ -34,28 +34,30 @@ variables:
 #    - echo "========== DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
 
 
-test_application:
-  stage: test
-  tags:
-    - azure
-    - setup
-  script:
-    - echo "========== TEST STAGE =========="
-    - docker compose up team18-integration-test
-    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-
-#azure-deployment-setup:
-#  stage: pre-deploy
-#  image: anir333/team18-int4:latest
+#test_application:
+#  stage: test
 #  tags:
 #    - azure
-#    - docker
+#    - setup
 #  script:
-#    - echo "========== PRE-DEPLOY STAGE =========="
-#    - cd ./azure-config/deployment/ || exit 1
-#    - chmod +x ./pre-deploy-check.sh
-#    - ./pre-deploy-check.sh
-#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+#    - echo "========== TEST STAGE =========="
+#    - docker compose up team18-integration-test
+#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+
+azure-deployment-setup:
+  stage: pre-deploy
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  script:
+    - echo "========== PRE-DEPLOY STAGE =========="
+    - cd ./azure-config/deployment/ || exit 1
+    - chmod +x ./pre-deploy-check.sh
+    - chmod +x ./azure-login.sh
+    - ./azure-login.sh
+    - ./pre-deploy-check.sh
+    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
 
 
 #deploy_application:
