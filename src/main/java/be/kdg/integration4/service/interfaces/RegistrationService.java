@@ -5,6 +5,6 @@ import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
 
 
 public interface RegistrationService {
-    CustomerAndPasswordServiceDto createCustomer(String name, String email, String phoneNumber);
+    CustomerAndPasswordServiceDto createCustomer(String name, String email, String phoneNumber, Long technicianId);
     User createStaff(String name, String email, String password, String role, Long workshopId);
 }

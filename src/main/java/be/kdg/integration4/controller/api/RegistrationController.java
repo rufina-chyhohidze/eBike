@@ -1,10 +1,12 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.CustomerRegistrationDto;
 import be.kdg.integration4.controller.api.dtos.StaffRegistrationDto;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
 import be.kdg.integration4.service.email.EmailService;
@@ -14,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -53,10 +56,11 @@ public class RegistrationController {
     }
 
     @PostMapping("/customers")
-    @StaffOnly // Because now customer can be registered only by technician
+    @TechnicianOnly // Because now customer can be registered only by technician
     //TODO is there a way to return ResponseEntity<UserOutputDto> and is it a bad practice to use ? sign.
     public ResponseEntity<?> registerCustomer(
             @Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
+            @AuthenticationPrincipal UserDetailsImpl principal,
             BindingResult bindingResult
     ) {
         ResponseEntity<?> errorFields = getErrorFields(bindingResult);
@@ -66,7 +70,8 @@ public class RegistrationController {
 
         CustomerAndPasswordServiceDto customerAndPasswordServiceDto = registrationService.createCustomer(customerRegistrationDto.name(),
                 customerRegistrationDto.email(),
-                customerRegistrationDto.phoneNumber());
+                customerRegistrationDto.phoneNumber(),
+                principal.getUserId());
 
         emailService.sendCustomerRegistrationConfirmationEmail(customerAndPasswordServiceDto.customer().getEmail(), customerAndPasswordServiceDto.customer().getName(), customerAndPasswordServiceDto.password());
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserOutputDto(customerAndPasswordServiceDto.customer().getId(), customerAndPasswordServiceDto.customer().getName(),

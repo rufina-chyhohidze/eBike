@@ -7,6 +7,7 @@ import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.Email;
@@ -59,7 +60,19 @@ public class SystemAdminController {
                 user.getEmail(),
                 user.getClass().getSimpleName().toUpperCase()
         ));
+        model.addAttribute("customers", userService.getAllWithoutLoggedInUser(principal.getUserId()).stream()
+                .map(usr ->
+                        new UserWithRolesDto(usr.getId(),usr.getName(),usr.getEmail(),
+                                usr.getClass().getSimpleName().toUpperCase()))
+                .toList());
         return "super-admin";
+    }
+
+    @GetMapping("/profile/update")
+    @SystemAdminOnly
+    public String updateProfile(Model model, @AuthenticationPrincipal UserDetailsImpl principal) {
+        model.addAttribute("accountId", principal.getUserId());
+        return "password-change";
     }
 
 

@@ -11,10 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class BikeServiceImpl implements BikeService {
@@ -34,7 +32,7 @@ public class BikeServiceImpl implements BikeService {
     }
 
     @Override
-    public Set<Bike> getAllByOwnerId(Long ownerId) {
+    public List<Bike> getAllByOwnerId(Long ownerId) {
         return this.bikeRepository.findBikesWithBikeModelByBikeOwnerId(ownerId);
     }
 

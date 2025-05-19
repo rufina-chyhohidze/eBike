@@ -2,7 +2,11 @@ package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.report.BikeReport;
+import be.kdg.integration4.repository.BikeReportRepository;
 import be.kdg.integration4.repository.CustomerRepository;
+import be.kdg.integration4.repository.TechnicianRepository;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +20,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final TechnicianRepository technicianRepository;
 
-    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder) {
+    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder, TechnicianRepository technicianRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.technicianRepository = technicianRepository;
     }
 
     @Override
@@ -32,10 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
         return repository.findById(id).orElseThrow();
     }
 
-    @Override
-    public Customer save(String name, String email, String password, UserRole role, String phoneNumber) {
-        return repository.save(new Customer(name, email, password, phoneNumber));
-    }
+//    @Override
+//    public Customer save(String name, String email, String password, UserRole role, String phoneNumber,) {
+//        return repository.save(new Customer(name, email, password, phoneNumber));
+//    }
 
     @Override
     public void deleteById(Long id) {
@@ -65,5 +71,17 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = repository.findById(loggedInId).orElseThrow();
         customer.setPassword(passwordEncoder.encode(password));
         return repository.save(customer);
+
+    @Override
+    public List<Customer> getByNameIgnoreCase(String name) {
+        return this.repository.findByNameIgnoreCase(name.toLowerCase());
+    }
+
+    @Override
+    public List<Customer> getCustomersByWorkshop(Long workshopId) {
+        return repository.findAll()
+                .stream()
+                .filter(customer ->
+                        customer.getRegisteredBy().getWorkshop().getWorkshopId().equals(workshopId)).toList();
     }
 }
