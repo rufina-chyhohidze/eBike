@@ -1,17 +1,28 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.CustomerOnly;
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
 import be.kdg.integration4.controller.api.dtos.CustomerDto;
+import be.kdg.integration4.controller.api.dtos.UpdateRequest;
+import be.kdg.integration4.controller.api.dtos.UserOutputDto;
 import be.kdg.integration4.controller.api.dtos.mappers.BikeDtoMapper;
 import be.kdg.integration4.controller.api.dtos.mappers.CustomerDtoMapper;
 import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.Bike;
+import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -37,6 +48,46 @@ public class CustomersController {
     @StaffOnly
     public ResponseEntity<CustomerDto> getCustomerByName(@PathVariable String name) {
         return this.customerService.getByNameIgnoreCase(name)
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<List<String>> handleCustomerDoesntExist(NoSuchElementException e) {
+        List<String> errors = new ArrayList<>();
+        errors.add(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<List<String>> handleIdMismatch(AccessDeniedException e) {
+        List<String> errors = new ArrayList<>();
+        errors.add(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errors);
+    }
+
+    @PatchMapping("/{id}")
+    @CustomerOnly
+    public ResponseEntity<UserOutputDto> updateProfile(
+            @RequestBody UpdateRequest request,
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        Customer customer = null;
+        if (request.phoneNumber() != null && request.password() == null) {
+            customer = customerService.updatePhoneNumber(userDetails.getUserId(), id, request.phoneNumber());
+        }
+        else if (request.phoneNumber() == null && request.password() != null) {
+            customer = customerService.updatePassword(userDetails.getUserId(), id, request.password());
+        }
+        if (customer == null) {
+            log.error("Customer with id {} not found", id);
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(new UserOutputDto(customer.getId(),customer.getName(), customer.getEmail()));
+    }
+
+    @GetMapping("/{email}")
+    @StaffOnly
+    public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email) {
+        return this.customerService.getByEmailIgnoreCase(email)
                 .map(customer -> {
                     log.info("Found customer: {}", customer);
                     return ResponseEntity.ok(
@@ -51,14 +102,14 @@ public class CustomersController {
     @GetMapping("{customerId}/bikes")
     @StaffOnly
     public ResponseEntity<List<BikeDto>> getCustomerBikes(@PathVariable Long customerId) {
-        final Set<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
+        final List<Bike> customerBikes = this.bikeService.getAllByOwnerId(customerId);
         List<Bike> customerBikesList = new LinkedList<>(customerBikes);
         if (customerBikes.isEmpty()) {
-            log.debug("Found customer bikes: {}", customerBikes);
+            log.debug("No bikes found for customer with Id: {}", customerId);
             return ResponseEntity.noContent().build();
         }
+        log.debug("Found customer bikes: {}", customerBikes);
         Collections.sort(customerBikesList);
-        log.debug("No bikes found for customer with Id: {}", customerId);
         return ResponseEntity.ok(bikeMapper.toBikeDtoList(customerBikesList.stream().toList()));
     }
 
