@@ -12,10 +12,6 @@ ssh -i /root/.ssh/azure team18-deploy@"$VM_IP" << 'SetupInput'
   echo "alias cl='clear'" >> ~/.bashrc
   echo "export COMPOSE_BAKE=true" >> ~/.bashrc
   source ~/.bashrc
-
-  echo "Restarting virtual machine..."
-
-  sudo reboot
 SetupInput
 
 #  # Installing dependencies for ansible to communciate with docker
