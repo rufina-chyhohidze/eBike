@@ -23,7 +23,7 @@ variable "admin_username" {
 }
     
 variable "public_key_path" {
-  default = "/root/.ssh/azure.pub"
+  default = "/home/team18/.ssh/azure.pub"
 }
 
 # IN CI CD VARIABLES, THERE ARE THE USER AND PASSWORDS STORED USING TF_VAR convention, so that terraform reads them from the environment since terraform does not read variables that don't start with TF_VAR_...
