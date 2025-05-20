@@ -26,6 +26,7 @@ if deploymentResourceGroupExists ; then
     echo "Resource group already exists, skipping setup..."
   else
     echo "Resource group doesn't exist, initializing setup..."
+    ls /root/.ssh/
     tofu init
     tofu apply --auto-approve
 fi
