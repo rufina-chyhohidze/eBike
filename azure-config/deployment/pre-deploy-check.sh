@@ -16,7 +16,7 @@ chmod +x ./azure-login.sh
 cd ./terraform/ || exit 1
 
 function deploymentResourceGroupExists() {
-  if "$(docker exec azure_setup az group exists --name rg-team18-deploy)" ; then
+  if "$(az group exists --name rg-team18-deploy)" ; then
     return 0
     else return 1
   fi
