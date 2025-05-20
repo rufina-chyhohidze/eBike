@@ -26,7 +26,7 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @SystemAdminOnly
+//    @SystemAdminOnly
     @GetMapping
     public ResponseEntity<List<UserWithRolesDto>> filterUsers(@RequestParam(required = false) String name,
                                                               @AuthenticationPrincipal UserDetailsImpl principal) {
