@@ -24,6 +24,8 @@ function deploymentResourceGroupExists() {
 
 if deploymentResourceGroupExists ; then
     echo "Resource group already exists, skipping setup..."
+    chmod +x ./setup-deploy-vm.sh
+    ./setup-deploy-vm.sh
   else
     echo "Resource group doesn't exist, initializing setup..."
     ls /root/.ssh/
