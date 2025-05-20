@@ -13,8 +13,6 @@
 chmod +x ./azure-login.sh
 ./azure-login.sh
 
-cd ./terraform/ || exit 1
-
 function deploymentResourceGroupExists() {
   if "$(az group exists --name rg-team18-deploy)" ; then
     return 0
@@ -24,13 +22,14 @@ function deploymentResourceGroupExists() {
 
 if deploymentResourceGroupExists ; then
     echo "Resource group already exists, skipping setup..."
-    chmod +x ./setup-deploy-vm.sh
-    ./setup-deploy-vm.sh
+        chmod +x ./setup-deploy-vm.sh
+        ./setup-deploy-vm.sh
   else
     echo "Resource group doesn't exist, initializing setup..."
-    ls /root/.ssh/
+    cd ./terraform/ || exit 1
     tofu init
     tofu apply --auto-approve
+    cd ../
     chmod +x ./setup-deploy-vm.sh
     ./setup-deploy-vm.sh
 fi
