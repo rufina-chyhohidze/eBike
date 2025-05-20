@@ -55,6 +55,10 @@ deploy_application:
     - cd ansible/
     - chmod +x setup-ansible-inventory.sh
     - ./setup-ansible-inventory.sh
+    - ls
+    - ls /root/.ssh/
+    - ls ~/.ssh/
+    - pwd
     - ansible-playbook -i inventory.ini playbook.yml
 
 
