@@ -3,68 +3,68 @@ services:
         build: .
         container_name: team18-int4-javaapp
         ports:
-            -   "8080:8080"
-        environment:
-            PROFILE: 'prod'
-            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        networks:
-            - team18-network
-        depends_on:
-            -   postgres_ebike_db
-
-    postgres_ebike_db:
-        image: postgres:17.2-alpine
-        container_name: team18-prod-db
-        restart: always
-        environment:
-            POSTGRES_DB: 'ebike'
-            POSTGRES_USER: 'dev'
-            POSTGRES_PASSWORD: 'bike'
-        ports:
-            - '5055:5432'
-        volumes:
-            - ebike-db:/var/lib/postgresql/data
-        networks:
-            - team18-network
-
-    team18-integration-test:
-        image: gradle:jdk17
-        container_name: team18-int4-test
-        working_dir: /team18-project
-        volumes:
-            -   "./:/team18-project"
+            -   "80:80"
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        command: ./gradlew check
-        networks:
-            - team18-test-network
-        depends_on:
-            - postgres_ebike_test_db
+#        networks:
+##            - team18-network
+#        depends_on:
+#            -   postgres_ebike_db
 
-    postgres_ebike_test_db:
-        image: postgres:17.2-alpine
-        container_name: team18-test-db
-        restart: always
-        environment:
-            POSTGRES_DB: 'ebike_test'
-            POSTGRES_USER: 'dev'
-            POSTGRES_PASSWORD: 'bike'
-        ports:
-            - '5065:5432'
-        volumes:
-            - ebike-test-db:/var/lib/postgresql/data
-        networks:
-            - team18-test-network
+#    postgres_ebike_db:
+#        image: postgres:17.2-alpine
+#        container_name: team18-prod-db
+#        restart: always
+#        environment:
+#            POSTGRES_DB: 'ebike'
+#            POSTGRES_USER: 'dev'
+#            POSTGRES_PASSWORD: 'bike'
+#        ports:
+#            - '5055:5432'
+#        volumes:
+#            - ebike-db:/var/lib/postgresql/data
+#        networks:
+#            - team18-network
 
-volumes:
-    ebike-db:
-    ebike-test-db:
+#    team18-integration-test:
+#        image: gradle:jdk17
+#        container_name: team18-int4-test
+#        working_dir: /team18-project
+#        volumes:
+#            -   "./:/team18-project"
+##        environment:
+##            PROFILE: 'prod'
+##            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
+#        command: ./gradlew check
+#        networks:
+#            - team18-test-network
+#        depends_on:
+#            - postgres_ebike_test_db
 
-networks:
-    team18-network:
-        driver: bridge
+#    postgres_ebike_test_db:
+#        image: postgres:17.2-alpine
+#        container_name: team18-test-db
+#        restart: always
+#        environment:
+#            POSTGRES_DB: 'ebike_test'
+#            POSTGRES_USER: 'dev'
+#            POSTGRES_PASSWORD: 'bike'
+#        ports:
+#            - '5065:5432'
+#        volumes:
+#            - ebike-test-db:/var/lib/postgresql/data
+#        networks:
+#            - team18-test-network
 
-    team18-test-network:
-        driver: bridge
+#volumes:
+#    ebike-db:
+#    ebike-test-db:
+
+#networks:
+#    team18-network:
+#        driver: bridge
+#
+#    team18-test-network:
+#        driver: bridge
 

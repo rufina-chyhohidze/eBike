@@ -29,4 +29,6 @@ if deploymentResourceGroupExists ; then
     ls /root/.ssh/
     tofu init
     tofu apply --auto-approve
+    chmod +x ./setup-deploy-vm.sh
+    ./setup-deploy-vm.sh
 fi

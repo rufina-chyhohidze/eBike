@@ -21,6 +21,12 @@ RUN ./install-opentofu.sh --install-method rpm
 RUN rm -f install-opentofu.sh
 
 # Install sshd
+RUN dnf clean all
+RUN dnf makecache
 RUN dnf install -y openssh-clients
+
+# Install ansible
+RUN dnf install -y python3-pip
+RUN pip3 install ansible
 
 CMD ["/bin/bash"]

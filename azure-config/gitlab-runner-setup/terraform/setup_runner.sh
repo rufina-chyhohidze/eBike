@@ -19,9 +19,10 @@ echo "Adding VM IP to known hosts..."
 ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
 echo "VM IP added to known hosts"
 
-echo "Adding public key to runner .ssh keys"
+echo "Adding key to runner .ssh keys"
 scp -i /root/.ssh/azure /root/.ssh/azure.pub team18@"$VM_IP":/home/team18/.ssh/
-echo "Added public key to runner .ssh keys"
+scp -i /root/.ssh/azure /root/.ssh/azure team18@"$VM_IP":/home/team18/.ssh/
+echo "Added key to runner .ssh keys"
 
 echo "Initiating connection with VM to setup runner..."
 ssh -i ~/.ssh/azure team18@"$VM_IP" << 'SetupInput'
