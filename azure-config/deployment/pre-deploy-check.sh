@@ -10,7 +10,22 @@
 ##### TEAM 18 - INTEGRATION 4 - ACS 202 - 2024/2025 #####
 #########################################################
 
+chmod +x ./azure-login.sh
+./azure-login.sh
+
 cd ./terraform/ || exit 1
 
-tofu init
-tofu apply --auto-approve
+function deploymentResourceGroupExists() {
+  if "$(docker exec azure_setup az group exists --name rg-team18-deploy)" ; then
+    return 0
+    else return 1
+  fi
+}
+
+if deploymentResourceGroupExists ; then
+    echo "Resource group already exists, skipping setup..."
+  else
+    echo "Resource group doesn't exist, initializing setup..."
+    tofu init
+    tofu apply --auto-approve
+fi

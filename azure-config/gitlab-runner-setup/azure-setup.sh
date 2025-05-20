@@ -13,18 +13,18 @@ if ! grep -q "f44abeef-ada7-4fd1-a6dc-6173b9d786bd" "./terraform/variables.tf" ;
 fi
 
 command -v docker >/dev/null 2>&1 || { echo "Docker is not installed. Aborting."; exit 1; }
-command -v ssh >/dev/null 2>&1 || { echo "SSH (openssh-clients) is not installed. Aborting."; exit 1; }
-
-if [ ! -f ~/.ssh/azure ] ; then
-  echo "Creating ssh key (in host root)"
-  ssh-keygen -t ed25519 -f ~/.ssh/azure -N ""
-fi
+#command -v ssh >/dev/null 2>&1 || { echo "SSH (openssh-clients) is not installed. Aborting."; exit 1; }
 
 docker run --rm --name azure_setup -dit \
   -v "./:/azure-config/gitlab-runner-setup/" \
-  -v "$HOME/.ssh/:/root/.ssh/" \
+  -v "/root/.ssh/:/root/.ssh/" \
   -w "/azure-config/gitlab-runner-setup/terraform/" \
   anir333/team18-int4:latest
+
+if [ ! -f /root/.ssh/azure ] ; then
+  echo "Creating ssh key (in host root)"
+  docker exec azure_setup ssh-keygen -t ed25519 -f /root/.ssh/azure -N ""
+fi
 
 echo "Logging into azure"
 docker exec azure_setup bash "/azure-config/gitlab-runner-setup/terraform/azure_login.sh"
@@ -38,8 +38,8 @@ function resourceGroupExists() {
 }
 
 if resourceGroupExists ; then
-  echo "Resource group already exists, skipping setup..."
-  docker kill azure_setup
+    echo "Resource group already exists, skipping setup..."
+    docker kill azure_setup
   else
     echo "Resource group doesn't exist, initializing setup..."
     docker exec azure_setup tofu init

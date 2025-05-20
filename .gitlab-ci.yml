@@ -54,10 +54,6 @@ azure-deployment-setup:
     - echo "========== PRE-DEPLOY STAGE =========="
     - cd ./azure-config/deployment/ || exit 1
     - chmod +x ./pre-deploy-check.sh
-    - chmod +x ./azure-login.sh
-    - pwd
-    - ls
-    - ./azure-login.sh
     - ./pre-deploy-check.sh
     - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
 
