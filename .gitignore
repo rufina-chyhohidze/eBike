@@ -46,4 +46,9 @@ azure-config/gitlab-runner-setup/terraform/terraform.tfstate
 /azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
 /azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
 /azure-config/gitlab-runner-setup/terraform/terraform.tfstate
+azure-config/deployment/terraform/.terraform.lock.hcl
+azure-config/deployment/terraform/.terraform
+azure-config/deployment/terraform/terraform.tfstate
+azure-config/deployment/terraform/terraform.tfstate.backup
+
 /certificatestosend

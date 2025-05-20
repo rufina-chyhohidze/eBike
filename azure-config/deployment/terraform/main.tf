@@ -107,30 +107,32 @@ resource "azurerm_network_interface_security_group_association" "vm_nic_nsg" {
 # Azure SQL DB
 resource "azurerm_postgresql_flexible_server" "db" {
   name                   = "team18sqldb"
-  resource_group_name    = azurerm_resource_group.rg.name
-  location               = azurerm_resource_group.rg.location
+  resource_group_name     = azurerm_resource_group.rg.name
+  location               = "France Central"
   version                = "13"
   administrator_login    = var.postgres_admin_user
   administrator_password = var.postgres_admin_password
-  sku_name               = "B1ms"
+  sku_name               = "B_Standard_B1ms"
   storage_mb             = 32768
   zone                   = "1"
-  delegated_subnet_id    = null
-  private_dns_zone_id    = null
-
-  high_availability {
-    mode = "Disabled"
-  }
 
   authentication {
     password_auth_enabled = true
   }
 }
 
+
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vm_ip" {
-  name                = "AllowDeploymentVM"
-  server_name         = azurerm_postgresql_flexible_server.db.name
-  resource_group_name = azurerm_resource_group.rg.name
-  start_ip_address    = azurerm_public_ip.pip.ip_address
-  end_ip_address      = azurerm_public_ip.pip.ip_address
+  name        = "AllowDeploymentVM"
+  server_id   = azurerm_postgresql_flexible_server.db.id
+  start_ip_address = azurerm_public_ip.pip.ip_address
+  end_ip_address   = azurerm_public_ip.pip.ip_address
 }
+
+# resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vm_ip" {
+#   name                = "AllowDeploymentVM"
+#   server_name         = azurerm_postgresql_flexible_server.db.name
+#   resource_group_name = azurerm_resource_group.rg.name
+#   start_ip_address    = azurerm_public_ip.pip.ip_address
+#   end_ip_address      = azurerm_public_ip.pip.ip_address
+# }
