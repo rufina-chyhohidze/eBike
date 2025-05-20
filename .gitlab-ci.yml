@@ -47,7 +47,7 @@ variables:
 
 deploy_application:
   stage: deploy
-  image: anir333/integration4:latest
+  image: anir333/team18-int4:latest
   script:
     - cd azure-config/deployment/
     - chmod +x azure-login.sh
