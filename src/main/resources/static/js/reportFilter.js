@@ -15,7 +15,7 @@ const fetchReports = async () => {
 
     if (excludeCurrentReportId) {
         const parts = window.location.pathname.split('/');
-        const id = parts[parts.length - 1];
+        const id = parts.findLast(part => /^\d+$/.test(part));
         params.append("excludeCurrentReportId", excludeCurrentReportId.checked);
         params.append("currentReportId", id);
     }

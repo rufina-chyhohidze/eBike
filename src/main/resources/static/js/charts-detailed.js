@@ -32,7 +32,8 @@ function init() {
 
     function draw() {
         const urls = [`/api/reports/${reportId}`];
-        if (compareSel.value) urls.push(`/api/reports/${compareSel.value}`);
+        const searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.has("compareId")) urls.push(`/api/reports/${searchParams.get("compareId")}`);
         Promise.all(urls.map(u => fetch(u).then(r=>r.ok?r.json():[])))
             .then(([dataA,dataB]) => plot(dataA,dataB||[]))
             .catch(err => console.error(err));
