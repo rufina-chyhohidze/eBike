@@ -22,4 +22,6 @@ public interface CustomerService {
     Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber);
     Customer updatePassword(Long loggedInId, Long pathId, String password);
     List<Customer> getCustomersByWorkshop(Long workshopId);
+
+    List<Customer> getCustomersRegisteredBy(Long technicianId);
 }
