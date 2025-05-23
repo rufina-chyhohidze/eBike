@@ -11,7 +11,7 @@ az account set -s "$(az account show --query id --output tsv)"
 #Command to get ssl certificates:
 
 # First build certduck image with Dockerfile in nginx directory:
-docker build -t certduck {dir of dockerfile}
+#docker build -t certduck {dir of dockerfile}
 
 #docker run \
 #-v "./letsencrypt:/etc/letsencrypt" \
