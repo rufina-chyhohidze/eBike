@@ -15,7 +15,7 @@ if [[ "${DESTROY_ALL:-false}" == "true" ]]; then
 elif [[ "${DESTROY_DEPLOY:-false}" == "true" ]]; then
   destroyRg "rg-team18-deploy"
 elif [[ "${DESTROY_RUNNER:-false}" == "true" ]]; then
-  destroy_infra "rg-team18"
+  destroyRg "rg-team18"
 else
   echo "❌ Error: No DESTROY_* variable set."
   exit 1
