@@ -29,13 +29,16 @@ services:
         image: gradle:jdk17
         user: "gitlab-runner"
         container_name: team18-int4-test
-        working_dir: /team18-project
+        working_dir: /team18-project/
         volumes:
-            -   "./:/team18-project"
+            -   "./:/team18-project/"
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        command: gradle wrapper --gradle-version 8.13 && ./gradlew check
+        command: ./gradlew check
+#            - ls
+#            - gradle wrapper --gradle-version 8.13
+#            - ./gradlew check
         depends_on:
             - postgres_ebike_test_db
         networks:
