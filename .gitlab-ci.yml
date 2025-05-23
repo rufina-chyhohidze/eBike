@@ -1,41 +1,38 @@
 stages:
-#  - build
-#  - test
+  - build
+  - test
   - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
   - deploy
 # - destroy
 
 # for destory stage: tofu apply -destroy --auto-approve
 
-variables:
-  COMPOSE_BAKE: true # Better build performance
+build_application:
+  stage: build
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== BUILD STAGE =========="
+    - docker compose build --no-cache
+    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
 
-#build_application:
-#  stage: build
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== BUILD STAGE =========="
-#    - docker compose build --no-cache
-#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
-
-#test_application:
-#  stage: test
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "========== TEST STAGE =========="
-#    - cat src/test/resources/application-test.properties
-#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration-test
-#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-##  artifacts:
-##    when: always
-##    reports:
-##      junit: build/test-results/test/**/TEST-*.xml
-##  --abort-on-container-exit --exit-code-from
+test_application:
+  stage: test
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "========== TEST STAGE =========="
+    - cat src/test/resources/application-test.properties
+    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration-test
+    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: build/test-results/test/**/TEST-*.xml
+#  --abort-on-container-exit --exit-code-from
 
 
 azure-deployment-setup:
