@@ -1,6 +1,6 @@
 stages:
 #  - build
-#  - test
+  - test
   - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
   - deploy
 # - destroy
