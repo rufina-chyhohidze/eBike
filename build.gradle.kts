@@ -17,6 +17,14 @@ tasks.bootJar {
     archiveFileName.set("Team18-Integration4-Application.jar")
 }
 
+tasks.test {
+    reports {
+        junitXml.required.set(true)
+        junitXml.outputLocation.set(file("$buildDir/test-results/test"))
+    }
+}
+
+
 repositories {
     mavenCentral()
 }

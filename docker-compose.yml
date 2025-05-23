@@ -34,7 +34,8 @@ services:
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        command: ./gradlew check
+#        command: ./gradlew check
+        command: ./gradlew --no-daemon -p /team18-project check
         depends_on:
             - postgres_ebike_test_db
 
