@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Test Report</title>
@@ -8,6 +8,9 @@
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script type="module" src="/js/downloadPdf.js"></script>
+  <script type="module" th:src="@{/js/sendEmailWithReport.js}"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body class="bg-gray-50 h-full flex">
@@ -313,6 +316,9 @@
     <a th:href="@{/report-comparison/{id}(id=${id})}" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
       <i class="ph ph-chart-bar"></i> Compare with another report
     </a>
+    <button sec:authorize="hasRole('CUSTOMER')" id="getReportEmailBtn" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
+      <i class="ph ph-envelope"></i> Get report in email
+    </button>
     <a href="/technician/dashboard" class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
       <i class="ph ph-arrow-left"></i> Back to Dashboard
     </a>
