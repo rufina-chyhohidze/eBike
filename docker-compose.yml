@@ -34,8 +34,7 @@ services:
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-#        command: ./gradlew check
-        command: ./gradlew --no-daemon -p /team18-project check
+        command: ./gradlew check
         depends_on:
             - postgres_ebike_test_db
 
@@ -49,7 +48,10 @@ services:
             POSTGRES_PASSWORD: 'bike'
         ports:
             - '5065:5432'
+        volumes:
+            - ebike-test-db:/var/lib/postgresql/data
 
 volumes:
     ebike-db:
+    ebike-test-db:
 
