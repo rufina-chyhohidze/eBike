@@ -27,7 +27,6 @@ services:
 
     team18-integration-test:
         image: gradle:jdk17
-        user: "gitlab-runner"
         container_name: team18-int4-test
         working_dir: /team18-project/
         volumes:
