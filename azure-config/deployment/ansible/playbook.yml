@@ -117,6 +117,6 @@
     # 6) START NEW DOCKER-COMPOSE STACK (via CLI)
     ####################################################################
     - name: Launch application via docker-compose
-      shell: docker compose up -d --build
+      shell: docker compose up -d --build nginx
       args:
         chdir: "{{ app_dir }}"
