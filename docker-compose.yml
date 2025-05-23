@@ -1,9 +1,28 @@
 services:
-#    team18-integration-javaapp:
-#        build: .
-#        container_name: team18-int4-javaapp
-#        ports:
-#            -   "80:80"
+    nginx:
+        image: nginx:latest
+        container_name: nginx-reverse-proxy
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./azure-config/nginx/templates:/etc/nginx/templates
+            - ./azure-config/nginx/letsencrypt:/etc/letsencrypt
+#        environment:
+#            - ANIR_DNS=${SERV_ADDRESS}
+#        networks:
+#            - anir-backend-container-communication-network
+        depends_on:
+            team18-int4-java-app:
+                condition: service_started
+
+
+    team18-int4-java-app:
+        build: .
+        container_name: team18-int4-java-app
+        ports:
+            -   "8080:8080"
+
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
@@ -25,34 +44,34 @@ services:
 #        volumes:
 #            - ebike-db:/var/lib/postgresql/data
 
-    team18-integration-test:
-        image: gradle:jdk17
-        container_name: team18-int4-test
-        working_dir: /team18-project/
-        volumes:
-            -   "./:/team18-project/"
+#    team18-integration-test:
+#        image: gradle:jdk17
+#        container_name: team18-int4-test
+#        working_dir: /team18-project/
+#        volumes:
+#            -   "./:/team18-project/"
+##        environment:
+##            PROFILE: 'prod'
+##            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
+#        command: ./gradlew check
+#        depends_on:
+#            - postgres_ebike_test_db
+#        networks:
+#            - ebike-test-network
+#
+#    postgres_ebike_test_db:
+#        image: postgres:17.2-alpine
+#        container_name: team18-test-db
 #        environment:
-#            PROFILE: 'prod'
-#            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        command: ./gradlew check
-        depends_on:
-            - postgres_ebike_test_db
-        networks:
-            - ebike-test-network
-
-    postgres_ebike_test_db:
-        image: postgres:17.2-alpine
-        container_name: team18-test-db
-        environment:
-            POSTGRES_DB: 'ebike_test'
-            POSTGRES_USER: 'dev'
-            POSTGRES_PASSWORD: 'bike'
-        ports:
-            - '5065:5432'
-        volumes:
-            - ebike-test-db:/var/lib/postgresql/data
-        networks:
-            - ebike-test-network
+#            POSTGRES_DB: 'ebike_test'
+#            POSTGRES_USER: 'dev'
+#            POSTGRES_PASSWORD: 'bike'
+#        ports:
+#            - '5065:5432'
+#        volumes:
+#            - ebike-test-db:/var/lib/postgresql/data
+#        networks:
+#            - ebike-test-network
 
 networks:
     ebike-test-network:
