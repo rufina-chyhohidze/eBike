@@ -28,7 +28,7 @@ test_application:
     - shell
   script:
     - echo "========== TEST STAGE =========="
-    - docker compose up team18-integration-test
+    - docker compose up --abort-on-container-exit --exit-code-from team18-integration-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
     when: always
