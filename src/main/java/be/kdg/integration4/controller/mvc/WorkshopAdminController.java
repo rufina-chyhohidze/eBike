@@ -2,21 +2,17 @@ package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.domain.profile.Customer;
-import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.profile.WorkshopAdmin;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/workshopadmin")
@@ -46,10 +42,10 @@ public class WorkshopAdminController {
         int totalReports =bikeReports.size();
         model.addAttribute("totalReports", totalReports);
         model.addAttribute("totalClients", customers.size());
-        model.addAttribute("technician", workshopAdmin);
+        model.addAttribute("admin", workshopAdmin);
         model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);
-        return "admin";
+        return "admin-dashboard";
     }
 
     @GetMapping("/dashboard/update")

@@ -80,6 +80,7 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
                     SELECT br FROM BikeReport br
                     LEFT JOIN FETCH br.technician t
                     LEFT JOIN FETCH t.workshop ws
+                    LEFT JOIN FETCH br.bike b
                     WHERE ws.workshopId = :workshopId
                     """
     )

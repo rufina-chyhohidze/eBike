@@ -1,6 +1,5 @@
 package be.kdg.integration4.controller.mvc;
 
-import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
@@ -9,14 +8,11 @@ import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.ReportSetting;
-import be.kdg.integration4.service.implementations.ReportSettingServiceImpl;
-import be.kdg.integration4.service.implementations.TechnicianServiceImpl;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.ReportSettingService;
 import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,7 +80,7 @@ public class TechnicianController {
         model.addAttribute("frameNumber", frameNumber);
         model.addAttribute("engineType", engineType);
         model.addAttribute("filter", filter);
-        return "technician";
+        return "technician-dashboard";
     }
 
     @GetMapping("/start-test")
@@ -95,7 +91,7 @@ public class TechnicianController {
         model.addAttribute("conditions", conditions);
         model.addAttribute("visualComponents", VisualInspectionComponents.values());
         model.addAttribute("functionalComponents", FunctionalTestComponents.values());
-        return "start-test";
+        return "technician-start-test";
     }
 
     @GetMapping("/test/success/{id}")
@@ -117,13 +113,13 @@ public class TechnicianController {
 
         model.addAttribute("reportSetting", reportSetting);
 
-        return "report-settings"; // This is the Thymeleaf template for the settings page
+        return "technician-report-settings"; // This is the Thymeleaf template for the settings page
     }
 
     @GetMapping("/register-customer")
     @TechnicianOnly
     public String testRegisterCustomer(Model model) {
-        return "register-customer";
+        return "technician-register-customer";
     }
 
     @GetMapping("/bikes")
