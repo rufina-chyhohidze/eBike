@@ -1,9 +1,9 @@
 services:
-    team18-integration-javaapp:
-        build: .
-        container_name: team18-int4-javaapp
-        ports:
-            -   "80:80"
+#    team18-integration-javaapp:
+#        build: .
+#        container_name: team18-int4-javaapp
+#        ports:
+#            -   "80:80"
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
@@ -12,18 +12,18 @@ services:
 #        depends_on:
 #            -   postgres_ebike_db
 
-    postgres_ebike_db:
-        image: postgres:17.2-alpine
-        container_name: team18-prod-db
-        restart: always
-        environment:
-            POSTGRES_DB: 'ebike'
-            POSTGRES_USER: 'dev'
-            POSTGRES_PASSWORD: 'bike'
-        ports:
-            - '5055:5432'
-        volumes:
-            - ebike-db:/var/lib/postgresql/data
+#    postgres_ebike_db:
+#        image: postgres:17.2-alpine
+#        container_name: team18-prod-db
+#        restart: always
+#        environment:
+#            POSTGRES_DB: 'ebike'
+#            POSTGRES_USER: 'dev'
+#            POSTGRES_PASSWORD: 'bike'
+#        ports:
+#            - '5055:5432'
+#        volumes:
+#            - ebike-db:/var/lib/postgresql/data
 
     team18-integration-test:
         image: gradle:jdk17
