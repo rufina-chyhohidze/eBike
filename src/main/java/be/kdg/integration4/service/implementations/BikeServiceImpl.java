@@ -1,5 +1,6 @@
 package be.kdg.integration4.service.implementations;
 
+import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.report.BikeModel;
@@ -62,6 +63,17 @@ public class BikeServiceImpl implements BikeService {
     @Override
     public List<BikeModel> getAllBikeModels() {
         return bikeModelRepository.findAll();
+    }
+
+    @Override
+    public void unlinkBikeFromCustomer(String frameNumber, Long customerId){
+        Bike bike = bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber).orElse(null);
+        Customer customer = customerRepository.findByIdWithBikes(customerId).orElse(null);
+        bike.setBikeOwner(null);
+        customer.getBikes().remove(bike);
+        bikeRepository.save(bike);
+        customerRepository.save(customer);
+        System.out.println(customer.getBikes());
     }
 
 

@@ -20,12 +20,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final TechnicianRepository technicianRepository;
 
-    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder, TechnicianRepository technicianRepository) {
+    public CustomerServiceImpl(CustomerRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
-        this.technicianRepository = technicianRepository;
     }
 
     @Override
@@ -54,6 +52,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer getByNameIgnoreCase(String name) {
+        return this.repository.findByNameIgnoreCase(name).orElseThrow();
+    }
+
+    @Override
+    public List<Customer> getAllByNameIgnoreCase(String name) {
+        return this.repository.findAllByNameIgnoreCase(name.toLowerCase());
+    }
+    @Override
     public Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber) {
         if (!loggedInId.equals(pathId)) {
             throw new AccessDeniedException("You are not authorized to access this resource.");
@@ -72,10 +79,6 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPassword(passwordEncoder.encode(password));
         return repository.save(customer);
     }
-    @Override
-    public List<Customer> getByNameIgnoreCase(String name) {
-        return this.repository.findByNameIgnoreCase(name.toLowerCase());
-    }
 
     @Override
     public List<Customer> getCustomersByWorkshop(Long workshopId) {
@@ -83,5 +86,10 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .filter(customer ->
                         customer.getRegisteredBy().getWorkshop().getWorkshopId().equals(workshopId)).toList();
+    }
+
+    @Override
+    public List<Customer> getCustomersRegisteredBy(Long technicianId) {
+        return repository.findByRegisteredBy_Id(technicianId);
     }
 }

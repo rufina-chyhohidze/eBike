@@ -28,6 +28,7 @@ public class Customer extends User {
     public Customer(String name, String email, String password, String phoneNumber, Technician registeredBy) {
         super(name, email, password, true);
         this.phoneNumber = phoneNumber;
+        this.registeredBy = registeredBy;
     }
 
     @Override
