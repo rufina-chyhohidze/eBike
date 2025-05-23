@@ -1,52 +1,62 @@
 stages:
   - build
   - test
-  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
+  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't already exist
   - deploy
-# - destroy
+  - destroy-deployment
+  - destroy-runner
+  - destroy-all
 
-# for destory stage: tofu apply -destroy --auto-approve
+build-application:
+  stage: build
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "========== BUILD STAGE =========="
+    - docker compose build --no-cache
+    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - ci-cd
+    - dev
+    - main
 
-#build-application:
-#  stage: build
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "========== BUILD STAGE =========="
-#    - docker compose build --no-cache
-#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
-#
-#
-#test-application:
-#  stage: test
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== TEST STAGE =========="
-#    - bash ./set-env.sh
-#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
-#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: build/test-results/test/**/TEST-*.xml
-#
-#
-#azure-pre-deployment-setup:
-#  stage: pre-deploy
-#  image: anir333/team18-int4:latest
-#  tags:
-#    - azure
-#    - docker
-#  script:
-#    - echo "========== PRE-DEPLOY STAGE =========="
-#    - cd ./azure-config/deployment/ || exit 1
-#    - bash ./pre-deploy-check.sh
-#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
 
+test-application:
+  stage: test
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== TEST STAGE =========="
+    - bash ./set-env.sh
+    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+  only:
+    - ci-cd
+    - dev
+    - main
+
+
+azure-pre-deployment-setup:
+  stage: pre-deploy
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  script:
+    - echo "========== PRE-DEPLOY STAGE =========="
+    - cd ./azure-config/deployment/ || exit 1
+    - bash ./pre-deploy-check.sh
+    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - ci-cd
+    - main
 
 deploy-application:
   stage: deploy
@@ -55,3 +65,54 @@ deploy-application:
     - azure
     - docker
   script: bash ./azure-config/stages/deploy-application.sh
+  only:
+    - ci-cd
+    - main
+
+destroy-deployment-infrastructure:
+  stage: destroy-deployment
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  when: manual
+  variables:
+    DESTROY_DEPLOY: "true"
+  script:
+    - bash ./azure-config/deployment/azure-login.sh
+    - bash ./azure-config/stages/destroy-infrastructure.sh
+  only:
+    - ci-cd
+    - main
+
+destroy-gitlab-runner-infrastructure:
+  stage: destroy-runner
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  when: manual
+  variables:
+    DESTROY_RUNNER: 0
+  script:
+    - bash ./azure-config/deployment/azure-login.sh
+    - bash ./azure-config/stages/destroy-infrastructure.sh
+  only:
+    - ci-cd
+    - main
+
+destroy-all-infrastructure:
+  stage: destroy-all
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  when: manual
+  variables:
+    DESTROY_ALL: 0
+  script:
+    - bash ./azure-config/deployment/azure-login.sh
+    - bash ./azure-config/stages/destroy-infrastructure.sh
+  only:
+    - ci-cd
+    - main
