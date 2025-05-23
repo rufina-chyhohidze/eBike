@@ -14,7 +14,7 @@ build_application:
     - shell
   script:
     # Make the script executable
-#    - #chmod +x azure-config/stages/build.sh
+    - chmod +x ./azure-config/stages/build.sh
     # Run it
     - ./azure-config/stages/build.sh
 #
