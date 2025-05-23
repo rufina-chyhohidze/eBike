@@ -73,6 +73,7 @@ destroy-deployment-infrastructure:
   stage: destroy-deployment
   image: anir333/team18-int4:latest
   when: manual
+  allow_failure: true
   variables:
     DESTROY_DEPLOY: "true"
   script:
@@ -86,6 +87,7 @@ destroy-gitlab-runner-infrastructure:
   stage: destroy-runner
   image: anir333/team18-int4:latest
   when: manual
+  allow_failure: true
   variables:
     DESTROY_RUNNER: "true"
   script:
@@ -99,6 +101,7 @@ destroy-all-infrastructure:
   stage: destroy-all
   image: anir333/team18-int4:latest
   when: manual
+  allow_failure: true
   variables:
     DESTROY_ALL: "true"
   script:
