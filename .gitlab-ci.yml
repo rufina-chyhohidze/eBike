@@ -28,8 +28,8 @@ test_application:
     - shell
   before_script:
     - echo "Cleaning up old Gradle files..."
-    - sudo rm -rf .gradle || true
-    - sudo rm -rf gradle/wrapper || true
+#    - sudo rm -rf .gradle || true
+#    - sudo rm -rf gradle/wrapper || true
   script:
     - echo "========== TEST STAGE =========="
     - docker container prune -f
