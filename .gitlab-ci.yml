@@ -72,9 +72,6 @@ stages:
 destroy-deployment-infrastructure:
   stage: destroy-deployment
   image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
   when: manual
   variables:
     DESTROY_DEPLOY: "true"
@@ -88,9 +85,6 @@ destroy-deployment-infrastructure:
 destroy-gitlab-runner-infrastructure:
   stage: destroy-runner
   image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
   when: manual
   variables:
     DESTROY_RUNNER: "true"
@@ -104,9 +98,6 @@ destroy-gitlab-runner-infrastructure:
 destroy-all-infrastructure:
   stage: destroy-all
   image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
   when: manual
   variables:
     DESTROY_ALL: "true"
