@@ -34,9 +34,9 @@ services:
 #        environment:
 #            PROFILE: 'prod'
 #            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-        command: ./gradlew check
+        command: gradle wrapper --gradle-version 8.13 && ./gradlew check
 #            - ls
-#            - gradle wrapper --gradle-version 8.13
+#            -
 #            - ./gradlew check
         depends_on:
             - postgres_ebike_test_db
