@@ -30,12 +30,13 @@ test_application:
     - echo "========== TEST STAGE =========="
     - docker container prune -f
     - docker image prune -af
+    - docker volume prune -af
     - docker compose run --user "$(id -u):$(id -g)" team18-integration-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: build/test-results/test/**/TEST-*.xml
 #  --abort-on-container-exit --exit-code-from
 
 #azure-deployment-setup:
