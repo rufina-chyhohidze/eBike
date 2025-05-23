@@ -30,8 +30,8 @@ test_application:
     - echo "========== TEST STAGE =========="
     - docker container prune -f
     - docker image prune -af
-    - docker compose up team18-integration-test
-#    - docker compose up --abort-on-container-exit --exit-code-from team18-integration-test
+    - docker compose up  team18-integration-test
+#    - docker compose up team18-integration-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
 #  artifacts:
 #    when: always
