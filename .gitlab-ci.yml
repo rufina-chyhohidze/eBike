@@ -31,6 +31,7 @@ test_application:
     - docker container prune -f
     - docker image prune -af
     - docker volume prune -af
+    - cat src/test/resources/application-test.properties
     - docker compose run --user "$(id -u):$(id -g)" team18-integration-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
 #  artifacts:
