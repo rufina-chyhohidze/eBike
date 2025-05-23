@@ -1,10 +1,9 @@
 import {csrfHeader, csrfToken} from "./utils/csrf.js";
 
 const btn = document.getElementById('getReportEmailBtn');
-const pathParts     = window.location.pathname.split('/');
-const reportId      = pathParts[pathParts.indexOf('report') + 1];
 
 btn.addEventListener('click', async () => {
+    const reportId      = document.getElementById("testId").value;
     const res = await fetch(`/api/reports/${reportId}/email`, {
         method: "POST",
         headers: {

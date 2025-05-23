@@ -58,7 +58,13 @@ public interface BikeReportRepository extends JpaRepository<BikeReport, Long> {
 
     @Query("""
                 SELECT br FROM BikeReport br
-                LEFT JOIN FETCH br.customer
+                LEFT JOIN FETCH br.bike b
+                LEFT JOIN FETCH b.bikeModel m
+                LEFT JOIN FETCH br.technician t
+                LEFT JOIN FETCH br.customer c
+                LEFT JOIN FETCH br.testBench tb
+                LEFT JOIN FETCH br.visualInspection
+                LEFT JOIN FETCH br.functionalTest
                 WHERE br.id = :id
             """
     )
