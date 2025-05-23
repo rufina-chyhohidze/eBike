@@ -37,6 +37,8 @@ services:
         command: ./gradlew check
         depends_on:
             - postgres_ebike_test_db
+        networks:
+            - ebike-test-network
 
     postgres_ebike_test_db:
         image: postgres:17.2-alpine
@@ -50,6 +52,12 @@ services:
             - '5065:5432'
         volumes:
             - ebike-test-db:/var/lib/postgresql/data
+        networks:
+            - ebike-test-network
+
+networks:
+    ebike-test-network:
+        driver: bridge
 
 volumes:
     ebike-db:
