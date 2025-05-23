@@ -23,16 +23,9 @@ variables:
 
 test_application:
   stage: test
-#  tags:
-#    - azure
-#    - shell
-  services:
-    - postgres:17.2-alpine
-  variables:
-    POSTGRES_DB: 'ebike_test'
-    POSTGRES_USER: 'dev'
-    POSTGRES_PASSWORD: 'bike'
-    CI_DB_HOST_PORT: 'postgres:5432'
+  tags:
+    - azure
+    - shell
   script:
     - echo "========== TEST STAGE =========="
     - docker compose up team18-integration-test
