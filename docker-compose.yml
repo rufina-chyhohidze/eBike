@@ -62,7 +62,7 @@ services:
 
     postgres_ebike_test_db:
         image: postgres:17.2-alpine
-        container_name: team18-test-db
+        container_name: postgres_ebike_test_db
         environment:
             POSTGRES_DB: 'ebike_test'
             POSTGRES_USER: 'dev'
