@@ -26,7 +26,8 @@ test_application:
   script:
     - echo "========== TEST STAGE =========="
     - cat src/test/resources/application-test.properties
-    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+    - docker compose up team18-integration4-test
+    - sudo chown -R gitlab-runner:gitlab-runner /home/gitlab-runner/
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
 #  artifacts:
 #    when: always
