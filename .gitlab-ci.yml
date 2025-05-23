@@ -23,9 +23,9 @@ variables:
 
 test_application:
   stage: test
-  tags:
-    - azure
-    - shell
+#  tags:
+#    - azure
+#    - shell
   script:
     - echo "========== TEST STAGE =========="
     - docker compose up team18-integration-test
