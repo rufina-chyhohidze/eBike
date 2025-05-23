@@ -1,8 +1,8 @@
 stages:
-#  - build
+  - build
   - test
-#  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
-#  - deploy
+  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
+  - deploy
 # - destroy
 
 # for destory stage: tofu apply -destroy --auto-approve
@@ -28,16 +28,15 @@ test_application:
     - cat src/test/resources/application-test.properties
     - chmod +x set-env.sh
     - ./set-env.sh
-    - cat .env
     - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: build/test-results/test/**/TEST-*.xml
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
 #  --abort-on-container-exit --exit-code-from
 
-
+#
 #azure-pre-deployment-setup:
 #  stage: pre-deploy
 #  image: anir333/team18-int4:latest
