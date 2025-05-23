@@ -26,10 +26,15 @@ test_application:
   tags:
     - azure
     - shell
+#  script:
+#    - echo "========== TEST STAGE =========="
+#    - docker compose up team18-integration-test
+#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
   script:
-    - echo "========== TEST STAGE =========="
     - docker compose up team18-integration-test
-    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+    - echo "✅ Listing test results:"
+    - find build/test-results || echo "❌ No test results found"
+    - find . -name "TEST-*.xml" || echo "❌ No XML files found"
   artifacts:
     when: always
     reports:
