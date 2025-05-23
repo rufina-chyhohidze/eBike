@@ -1,7 +1,7 @@
 stages:
 #  - build
 #  - test
-#  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
+  - pre-deploy # Creates resource group, virtual machine and SQL DataBase for deployment using terraform (OpenTofu) if they don't exist
   - deploy
 # - destroy
 
@@ -37,20 +37,20 @@ variables:
 ##      junit: build/test-results/test/**/TEST-*.xml
 ##  --abort-on-container-exit --exit-code-from
 
-#
-#azure-deployment-setup:
-#  stage: pre-deploy
-#  image: anir333/team18-int4:latest
-#  tags:
-#    - azure
-#    - docker
-#  script:
-#    - echo "========== PRE-DEPLOY STAGE =========="
-#    - cd ./azure-config/deployment/ || exit 1
-#    - chmod +x ./pre-deploy-check.sh
-#    - ./pre-deploy-check.sh
-#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
-#
+
+azure-deployment-setup:
+  stage: pre-deploy
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  script:
+    - echo "========== PRE-DEPLOY STAGE =========="
+    - cd ./azure-config/deployment/ || exit 1
+    - chmod +x ./pre-deploy-check.sh
+    - ./pre-deploy-check.sh
+    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+
 
 deploy_application:
   stage: deploy

@@ -31,3 +31,7 @@ if deploymentResourceGroupExists ; then
     chmod +x ./setup-deploy-vm.sh
     ./setup-deploy-vm.sh
 fi
+
+VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-deploy --name vm-team18-deploy --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
+
+curl "https://www.duckdns.org/update?domains=team18-int4.duckdns.org&token=b4bb4460-f9d0-42fc-a063-e1dbadd11014&ip=${VM_IP}"
