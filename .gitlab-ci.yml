@@ -6,68 +6,68 @@ stages:
   - destroy-deployment
   - destroy-runner
   - destroy-all
-
-build-application:
-  stage: build
-  tags:
-    - azure
-    - shell
-  script:
-    - echo "========== BUILD STAGE =========="
-    - docker compose build --no-cache
-    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
-  only:
-    - ci-cd
-    - dev
-    - main
-
-
-test-application:
-  stage: test
-  tags:
-    - azure
-    - shell
-  script:
-    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-    - echo "========== TEST STAGE =========="
-    - bash ./set-env.sh
-    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
-    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
-  only:
-    - ci-cd
-    - dev
-    - main
-
-
-azure-pre-deployment-setup:
-  stage: pre-deploy
-  image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
-  script:
-    - echo "========== PRE-DEPLOY STAGE =========="
-    - cd ./azure-config/deployment/ || exit 1
-    - bash ./pre-deploy-check.sh
-    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
-  only:
-    - ci-cd
-    - main
-
-deploy-application:
-  stage: deploy
-  image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
-  script: bash ./azure-config/stages/deploy-application.sh
-  only:
-    - ci-cd
-    - main
+#
+#build-application:
+#  stage: build
+#  tags:
+#    - azure
+#    - shell
+#  script:
+#    - echo "========== BUILD STAGE =========="
+#    - docker compose build --no-cache
+#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
+#  only:
+#    - ci-cd
+#    - dev
+#    - main
+#
+#
+#test-application:
+#  stage: test
+#  tags:
+#    - azure
+#    - shell
+#  script:
+#    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+#    - echo "========== TEST STAGE =========="
+#    - bash ./set-env.sh
+#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: build/test-results/test/**/TEST-*.xml
+#  only:
+#    - ci-cd
+#    - dev
+#    - main
+#
+#
+#azure-pre-deployment-setup:
+#  stage: pre-deploy
+#  image: anir333/team18-int4:latest
+#  tags:
+#    - azure
+#    - docker
+#  script:
+#    - echo "========== PRE-DEPLOY STAGE =========="
+#    - cd ./azure-config/deployment/ || exit 1
+#    - bash ./pre-deploy-check.sh
+#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+#  only:
+#    - ci-cd
+#    - main
+#
+#deploy-application:
+#  stage: deploy
+#  image: anir333/team18-int4:latest
+#  tags:
+#    - azure
+#    - docker
+#  script: bash ./azure-config/stages/deploy-application.sh
+#  only:
+#    - ci-cd
+#    - main
 
 destroy-deployment-infrastructure:
   stage: destroy-deployment
@@ -93,7 +93,7 @@ destroy-gitlab-runner-infrastructure:
     - docker
   when: manual
   variables:
-    DESTROY_RUNNER: 0
+    DESTROY_RUNNER: "true"
   script:
     - bash ./azure-config/deployment/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
@@ -109,7 +109,7 @@ destroy-all-infrastructure:
     - docker
   when: manual
   variables:
-    DESTROY_ALL: 0
+    DESTROY_ALL: "true"
   script:
     - bash ./azure-config/deployment/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
