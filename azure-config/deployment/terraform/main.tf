@@ -97,6 +97,18 @@ resource "azurerm_network_security_group" "vm_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+    security_rule {
+      name                       = "Allow-HTTPS"
+      priority                   = 1003
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "443"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
 }
 
 resource "azurerm_network_interface_security_group_association" "vm_nic_nsg" {
@@ -128,11 +140,3 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vm_ip" {
   start_ip_address = azurerm_public_ip.pip.ip_address
   end_ip_address   = azurerm_public_ip.pip.ip_address
 }
-
-# resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vm_ip" {
-#   name                = "AllowDeploymentVM"
-#   server_name         = azurerm_postgresql_flexible_server.db.name
-#   resource_group_name = azurerm_resource_group.rg.name
-#   start_ip_address    = azurerm_public_ip.pip.ip_address
-#   end_ip_address      = azurerm_public_ip.pip.ip_address
-# }
