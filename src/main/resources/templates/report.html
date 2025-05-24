@@ -15,25 +15,37 @@
 <body class="bg-gray-50 h-full flex">
 
 <!-- SIDEBAR -->
-<aside class="w-64 bg-gray-900 text-white shadow-md p-6 flex flex-col min-h-screen space-y-8">
-  <div class="flex items-center mb-6">
-    <i class="ph ph-bicycle text-purple-500 text-3xl mr-2"></i>
-    <h1 class="text-2xl font-semibold">eVALeBike</h1>
+<aside class="bg-gray-900 text-white shadow-md p-4 sm:p-6 flex flex-col min-h-screen space-y-8 w-16 sm:w-64 transition-all duration-300">
+  <!-- LOGO -->
+  <div class="flex items-center justify-center sm:justify-start mb-6">
+    <i class="ph ph-bicycle text-purple-500 text-3xl mr-0 sm:mr-2"></i>
+    <h1 class="text-xl font-semibold hidden sm:inline">eVALeBike</h1>
   </div>
+
   <ul class="space-y-6 flex-1">
-    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-      <i class="ph ph-wrench"></i> <a href="/technician/dashboard">Dashboard</a>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+      <a href="/technician/dashboard" class="flex items-center gap-3 w-full">
+        <i class="ph ph-house text-xl"></i>
+        <span class="hidden sm:inline">Dashboard</span>
+      </a>
     </li>
-    <li class="flex items-center gap-3 text-purple-500 hover:text-white cursor-pointer">
-      <i class="ph ph-clipboard-text"></i> Test Report
+    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+      <a th:href="@{'/report/' + ${bikeReport.id}}" class="flex items-center gap-3 w-full">
+        <i class="ph ph-clipboard-text text-xl"></i>
+        <span class="hidden sm:inline">Report</span>
+      </a>
     </li>
-    <li class="flex items-center gap-3 text-gray-400 hover:text-white cursor-pointer">
-      <i class="ph ph-chart-bar"></i> <a href="/technician/reports">Detailed Reports</a>
+    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+      <a th:href="@{'/report/' + ${bikeReport.id} + '/detailed'}" class="flex items-center gap-3 w-full">
+        <i class="ph ph-chart-bar text-xl"></i>
+        <span class="hidden sm:inline">Detailed Report</span>
+      </a>
     </li>
     <li class="mt-auto">
       <form th:action="@{/logout}" method="post">
-        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-          <i class="ph ph-sign-out"></i> Logout
+        <button type="submit" class="bg-purple-600 text-white px-2 sm:px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+          <i class="ph ph-sign-out text-xl"></i>
+          <span class="hidden sm:inline">Logout</span>
         </button>
       </form>
     </li>
@@ -119,28 +131,26 @@
 
     </div>
     <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
-      <!-- Title -->
       <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">
         Visual Inspection
       </h5>
 
-      <!-- Table with white background and rounded corners -->
-      <div class="bg-white rounded-b-2xl mt-3">
-        <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
+      <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
+        <table class="min-w-full text-sm text-center">
           <thead class="bg-purple-100">
           <tr>
-            <th class="px-6 py-3 text-left">Component</th>
-            <th class="px-4 py-3">Very Bad</th>
-            <th class="px-4 py-3">Bad</th>
-            <th class="px-4 py-3">Neutral</th>
-            <th class="px-4 py-3">Good</th>
-            <th class="px-4 py-3">Very Good</th>
-            <th class="px-4 py-3">N/A</th>
+            <th class="px-6 py-3 text-left whitespace-nowrap">Component</th>
+            <th class="px-4 py-3 whitespace-nowrap">Very Bad</th>
+            <th class="px-4 py-3 whitespace-nowrap">Bad</th>
+            <th class="px-4 py-3 whitespace-nowrap">Neutral</th>
+            <th class="px-4 py-3 whitespace-nowrap">Good</th>
+            <th class="px-4 py-3 whitespace-nowrap">Very Good</th>
+            <th class="px-4 py-3 whitespace-nowrap">N/A</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="entry : ${bikeReport.visualInspection}" class="even:bg-purple-100 odd:bg-purple-50">
-            <td class="px-6 py-3 text-left rounded-l-xl" th:text="${entry.key.displayName}">Component</td>
+            <td class="px-6 py-3 text-left rounded-l-xl whitespace-nowrap" th:text="${entry.key.displayName}">Component</td>
             <td class="px-4 py-3" th:text="${entry.value.name() == 'VERY_BAD' ? '✔' : ''}"></td>
             <td class="px-4 py-3" th:text="${entry.value.name() == 'BAD' ? '✔' : ''}"></td>
             <td class="px-4 py-3" th:text="${entry.value.name() == 'NEUTRAL' ? '✔' : ''}"></td>

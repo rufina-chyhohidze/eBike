@@ -152,6 +152,7 @@ async function showCustomerBikes(customerId) {
     } else {
         bikeSection.classList.remove("bike-section-show");
         noRegisteredBikes.style.display = "none";
+        document.getElementById("bikeList").classList.add("hidden");
         console.log("Error while retrieving bikes")
     }
 }
