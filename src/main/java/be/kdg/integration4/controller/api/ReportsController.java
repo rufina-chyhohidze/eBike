@@ -148,4 +148,10 @@ public class ReportsController {
         )).toList());
     }
 
+
+    @PostMapping("/{id}/email")
+    public ResponseEntity<Void> sendReportToCustomer(@PathVariable("id") Long id) {
+        emailService.sendReportURLToCustomer(id);
+        return ResponseEntity.ok().build();
+    }
 }

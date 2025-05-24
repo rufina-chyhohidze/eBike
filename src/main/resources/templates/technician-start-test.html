@@ -21,6 +21,8 @@
     <script type="module" th:src="@{/js/startTestCheckboxes.js}"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script type="module" th:src="@{/js/sendEmailWithReport.js}"></script>
+
 </head>
 
 <!--<body class="bg-gray h-full flex min-h-screen">-->
@@ -60,6 +62,9 @@
                     View Detailed Report →
                 </a>
             </div>
+            <button id="getReportEmailBtn" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
+                <i class="ph ph-envelope"></i> Get report in email
+            </button>
 <!--            <button id="customerEmailBtnElement" />-->
         </div>
     </div>
