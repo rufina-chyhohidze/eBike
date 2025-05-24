@@ -6,8 +6,10 @@ document.getElementById('passwordForm').addEventListener('submit', async (e) => 
     e.preventDefault();
 
     const id = document.getElementById('id').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+    const newPasswordEl = document.getElementById('newPassword');
+    const confirmPasswordEl = document.getElementById('confirmPassword');
+    const newPassword = newPasswordEl.value;
+    const confirmPassword = confirmPasswordEl.value;
     const messageEl = document.getElementById('passwordMessage');
 
     messageEl.textContent = '';
@@ -20,6 +22,11 @@ document.getElementById('passwordForm').addEventListener('submit', async (e) => 
         messageEl.classList.add('text-red-600');
 
         console.log("IN PASSWORD UPDATEEEEE IF NOT THE SAME")
+
+        newPasswordEl.value = '';
+        confirmPasswordEl.value = '';
+
+        return;
 
         return;
     }
@@ -53,5 +60,8 @@ document.getElementById('passwordForm').addEventListener('submit', async (e) => 
         messageEl.classList.add('text-red-600');
 
         console.log("IN PASSWORD UPDATEEEEE IN CATCH ERROR")
+    } finally {
+        newPasswordEl.value = '';
+        confirmPasswordEl.value = '';
     }
 });
