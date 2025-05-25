@@ -132,11 +132,13 @@ public class ReportsController {
     public ResponseEntity<List<ShortBikeReportDto>> filterReports(
             @RequestParam(required = false) String frameNumber,
             @RequestParam(required = false) String engineType,
+            @RequestParam(required = false) Boolean excludeCurrentReportId,
+            @RequestParam(required = false) Long currentReportId,
             @AuthenticationPrincipal UserDetailsImpl principal
     ) {
         List<BikeReport> reports = bikeReportService.getReportsAccessibleByUserWithId(principal.getUserId());
         log.debug("Reports found: {}", reports.size());
-        List<BikeReport> filteredReports = bikeReportService.filterReports(reports, frameNumber, engineType);
+        List<BikeReport> filteredReports = bikeReportService.filterReports(reports, frameNumber, engineType, excludeCurrentReportId, currentReportId);
         log.debug("Filtered reports found: {}", filteredReports.size());
         return ResponseEntity.ok(filteredReports.stream().map(report -> new ShortBikeReportDto(
                 report.getId(),

@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -329,9 +330,11 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Override
-    public List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType) {
+    public List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType, Boolean excludeCurrentReportId, Long currentReportId) {
         Predicate<BikeReport> predicate = report -> true;
-
+        if(excludeCurrentReportId != null && excludeCurrentReportId) {
+            predicate = predicate.and(report -> !Objects.equals(report.getId(), currentReportId));
+        }
         if (frameNumber != null && !frameNumber.isBlank()) {
             String frameFilter = frameNumber.toLowerCase();
             predicate = predicate.and(report ->

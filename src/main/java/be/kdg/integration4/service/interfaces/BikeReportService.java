@@ -57,5 +57,5 @@ public interface BikeReportService {
 
     List<BikeReport> getReportsAccessibleByUserWithId(Long userId);
 
-    List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType);
+    List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType, Boolean excludeCurrentReportId, Long currentReportId);
 }

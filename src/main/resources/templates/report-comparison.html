@@ -8,7 +8,8 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="/js/report-comparison.js"></script>
+  <script src="/js/report-comparison.js" type="module"></script>
+  <script th:src="@{/js/reportFilter.js}" type="module"></script>
 
 
 </head>
@@ -54,19 +55,82 @@
 
 <!--MAIN CONTENT-->
 <main class="flex-1 p-8 bg-white overflow-y-auto">
-<div class="container mt-4 mb-5" >
+  <div id="report-selection" class="d-none">
+    <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-6 col-span-4 border border-gray-200">
+      <h3 class="text-xl font-semibold mb-4 flex justify-center items-center gap-2 text-center text-gray-200">
+        <i class="ph ph-clipboard-text"></i> Previous Test Reports
+      </h3>
+
+      <!-- Centering the form -->
+      <div class="flex justify-center">
+        <form
+                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 w-full max-w-2xl">
+          <input type="hidden" id="excludeCurrentReportId" checked>
+          <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                 name="frameNumber"
+                 type="text"
+                 placeholder="Frame Number"
+                 th:value="${frameNumber}">
+          <input class="p-2 border border-gray-300 rounded-lg w-full text-black"
+                 name="engineType"
+                 type="text"
+                 placeholder="Engine Type"
+                 th:value="${engineType}">
+
+          <div class="sm:col-span-2 flex justify-center">
+            <button type="submit"
+                    class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+      <table class="w-full border-collapse bg-gray-800 shadow-md rounded-3xl">
+        <thead>
+        <tr class="bg-gray-700 text-gray-100">
+          <th class="p-3 text-left">Report ID</th>
+          <th class="p-3 text-left">Report Date</th>
+          <th class="p-3 text-left">Customer ID</th>
+          <th class="p-3 text-left">Frame Number</th>
+          <th class="p-3 text-left">Engine Type</th>
+          <!--                <th class="p-3 text-left">Brand</th>-->
+          <th class="p-3 text-left">Bench ID</th>
+          <th class="p3 text-left"></th>
+        </tr>
+        </thead>
+        <tbody id="reports-table-content">
+        <tr th:each="report : ${reports}" class="border-b">
+          <td th:text="${report.id}" class="p-3"></td>
+          <td th:text="${report.reportDate}" class="p-3"></td>
+          <td th:text="${report.customer.id}" class="p-3"></td>
+          <td th:text="${report.bike.frameNumber}" class="p-3"></td>
+          <td th:text="${report.bike.bikeModel.engineType}" class="p-3"></td>
+          <!--                <td th:text="${report.bike.brand}" class="p-3"></td>-->
+          <td th:text="${report.testBench.benchId}" class="p-3"></td>
+<!--          <td class="p-3"><a class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full" th:href="@{/report/{id}(id=${report.id})}">Report</a></td>-->
+          <td><button class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full">Select</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<div class="container mt-4 mb-5" id="main-content" >
   <h2 class="text-center mb-4">Bike Inspection Report</h2>
 
-  <div class="text-center mb-4">
-    <label for="compareId" class="form-label fw-bold">Compare With Report:</label>
-    <select id="compareId" name="compareId" class="form-select">
-      <option value="">–– None ––</option>
-      <option th:each="r : ${allReports}"
-              th:value="${r.id}"
-              th:text="${r.bike.frameNumber + ' – ' + r.reportDate}">
-      </option>
-    </select>
-    <button id="compareButton" class="btn btn-primary mt-3" disabled>Compare</button>
+  <div class="text-center mb-4 flex flex-col items-center">
+    <label class="form-label fw-bold">Select report for comparison</label>
+    <div class="flex flex-row gap-4">
+      <button id="compareButton" class="rounded-xl py-2 px-4 bg-purple-600 text-white mt-3">Select Report</button>
+      <button id="removeSelectedReport" class="rounded-xl disabled:border-gray-400 disabled:text-gray-500 py-2 px-4 border-2 border-purple-500 text-purple-500 mt-3" disabled>Remove selected</button>
+    </div>
+<!--    <select id="compareId" name="compareId" class="form-select">-->
+<!--      <option value="">–– None ––</option>-->
+<!--      <option th:each="r : ${allReports}"-->
+<!--              th:value="${r.id}"-->
+<!--              th:text="${r.bike.frameNumber + ' – ' + r.reportDate}">-->
+<!--      </option>-->
+<!--    </select>-->
+<!--    <button id="compareButton" class="btn btn-primary mt-3" disabled>Compare</button>-->
   </div>
 
   <form id="compareForm" th:action="@{/report/{id}(id=${id})}" method="get">
