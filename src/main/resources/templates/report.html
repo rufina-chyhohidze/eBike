@@ -24,11 +24,28 @@
 
   <ul class="space-y-6 flex-1">
     <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a href="/technician/dashboard" class="flex items-center gap-3 w-full">
+      <a th:if="${#authorization.expression('hasRole(''WORKSHOPADMIN'')')}"
+         th:href="@{/workshopadmin/dashboard}"
+         class="flex items-center gap-3 w-full">
+        <i class="ph ph-house text-xl"></i>
+        <span class="hidden sm:inline">Dashboard</span>
+      </a>
+
+      <a th:if="${#authorization.expression('hasRole(''TECHNICIAN'')')}"
+         th:href="@{/technician/dashboard}"
+         class="flex items-center gap-3 w-full">
+        <i class="ph ph-house text-xl"></i>
+        <span class="hidden sm:inline">Dashboard</span>
+      </a>
+
+      <a th:if="${#authorization.expression('hasRole(''CUSTOMER'')')}"
+         th:href="@{/customer/dashboard}"
+         class="flex items-center gap-3 w-full">
         <i class="ph ph-house text-xl"></i>
         <span class="hidden sm:inline">Dashboard</span>
       </a>
     </li>
+
     <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
       <a th:href="@{'/report/' + ${bikeReport.id}}" class="flex items-center gap-3 w-full">
         <i class="ph ph-clipboard-text text-xl"></i>
@@ -325,7 +342,21 @@
     <a th:href="@{/report-comparison/{id}(id=${id})}" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
       <i class="ph ph-chart-bar"></i> Compare with another report
     </a>
-    <a href="/technician/dashboard" class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
+    <a th:if="${#authorization.expression('hasRole(''WORKSHOPADMIN'')')}"
+       th:href="@{/workshopadmin/dashboard}"
+       class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
+      <i class="ph ph-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <a th:if="${#authorization.expression('hasRole(''TECHNICIAN'')')}"
+       th:href="@{/technician/dashboard}"
+       class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
+      <i class="ph ph-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <a th:if="${#authorization.expression('hasRole(''CUSTOMER'')')}"
+       th:href="@{/customer/dashboard}"
+       class="bg-purple-500 text-white px-5 py-3 rounded-lg hover:bg-purple-600 inline-flex items-center gap-2">
       <i class="ph ph-arrow-left"></i> Back to Dashboard
     </a>
   </div>
