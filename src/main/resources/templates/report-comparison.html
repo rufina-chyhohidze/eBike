@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Bike Inspection Report</title>
@@ -504,10 +504,10 @@
   </div>
 
     <div class="text-center mt-4">
-      <a th:href="@{/report/{id}/detailed(id=${id})}" class="btn btn-outline-secondary">View Visual Report</a>
+      <a sec:authorize="hasAnyRole('SYSTEMADMIN', 'WORKSHOPADMIN', 'TECHNICIAN')" th:href="@{/report/{id}/detailed(id=${id})}" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
+        <i class="ph ph-chart-bar"></i> View Detailed Report
+      </a>
     </div>
-
-
 
   </div>
 </main>
