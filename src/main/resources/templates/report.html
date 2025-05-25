@@ -130,7 +130,7 @@
 
 
     </div>
-    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+    <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden" th:if="${!bikeReport.visualInspection.isEmpty()}">
       <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">
         Visual Inspection
       </h5>
@@ -291,7 +291,7 @@
   </div>
 
   <!-- Functional Test -->
-  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
+  <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden" th:if="${!bikeReport.visualInspection.isEmpty()}">
     <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Functional Test</h5>
     <div class="bg-white rounded-b-2xl mt-3">
       <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
