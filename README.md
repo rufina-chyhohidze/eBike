@@ -57,7 +57,7 @@ It will add four users to the database:
 
   - Email: admin@example.com
 
-    - Password: admin123
+  - Password: admin123
 
   - Approved: false
 ----------------------------
