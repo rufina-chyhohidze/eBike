@@ -10,72 +10,73 @@ stages:
   # Uses ansible to log into deployment virtual machine, setup project dependendencies and runs the project using docker compose
   - deploy
 
-  # If you run it (manually) it destroy the resources for the deployment (deployment virtual machine, rg, sql database, etc.)
-  - destroy-deployment
+#   If you run it (manually) it destroy the resources for the deployment (deployment virtual machine, rg, sql database, etc.)
+#  - destroy-deployment
+  - destroy
 
   # If you run it (manually) it destroys the custom azure gitlab-runner resources (rg and vm), to run the pipeline you would have to execute manually the (ROOT_PROJ_DIR)/azure-config/gitlab-runner-setup/azure-setup.sh script to create and set up the runner
-  - destroy-runner
+#  - destroy-runner
 
   # When ran (manually), it destroys all azure resources, (including runner and deployment)
-  - destroy-all
+#  - destroy-all
 
 # Runs un custom azure runner in shell mode, make a simple build
-#build-application:
-#  stage: build
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== BUILD STAGE =========="
-#    - docker compose build --no-cache
-#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
-#  only:
-#    - ci-cd
-#    - dev
-#    - main
+build-application:
+  stage: build
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== BUILD STAGE =========="
+    - docker compose build --no-cache
+    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - ci-cd
+    - dev
+    - main
 
 # Runs in our custom azure runner in shell mode, so it needs to remove previously existing containers (--remove-orphans) for this stage
 # Tests the app using the docker compose configuration
 # We need to specify user (gitlab-runner user), because otherwise docker uses the default user (root) to execute the command, which means that the files created with the build won't be able to be deleted by gitlab on the next test stage pipeline execution
-#test-application:
-#  stage: test
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== TEST STAGE =========="
-#    # Need to create .env file (from CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
-#    - bash ./set-env.sh
-#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
-#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: build/test-results/test/**/TEST-*.xml
-#  only:
-#    - ci-cd
-#    - dev
-#    - main
+test-application:
+  stage: test
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== TEST STAGE =========="
+    # Need to create .env file (from CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
+    - bash ./set-env.sh
+    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+  only:
+    - ci-cd
+    - dev
+    - main
 
 # Runs in our custom docker container (contains all dependencies) in our custom azure runner
 # Checks if deployment environment exists or no
 # If it doesn't exist it creates the deployment RG, VM & SQL DB with the correct firewall rules
-#azure-pre-deployment-setup:
-#  stage: pre-deploy
-#  image: anir333/team18-int4:latest
-#  tags:
-#    - azure
-#    - docker
-#  script:
-#    - echo "========== PRE-DEPLOY STAGE =========="
-#    - cd ./azure-config/deployment/ || exit 1
-#    - bash ./pre-deploy-check.sh
-#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
-#  only:
-#    - ci-cd
-#    - main
+azure-pre-deployment-setup:
+  stage: pre-deploy
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  script:
+    - echo "========== PRE-DEPLOY STAGE =========="
+    - cd ./azure-config/deployment/ || exit 1
+    - bash ./pre-deploy-check.sh
+    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - ci-cd
+    - main
 
 # Runs in our custom azure runner in our custom docker image
 # Uses ansible to connect to deployment VM, set up dependencies, delete previous app and run the new one
@@ -96,7 +97,7 @@ deploy-application:
 # Only runs when manually triggered
 #  Deletes only the deployment infrastructure (Deployment RG, VM & SQL DB)
 destroy-deployment-infrastructure:
-  stage: destroy-deployment
+  stage: destroy
   image: anir333/team18-int4:latest
   when: manual
   allow_failure: true
@@ -112,7 +113,7 @@ destroy-deployment-infrastructure:
 # Only runs when manually triggered
 #  Deletes gitlab runner infrastructure (RG & VM)
 destroy-gitlab-runner-infrastructure:
-  stage: destroy-runner
+  stage: destroy
   image: anir333/team18-int4:latest
   when: manual
   allow_failure: true
@@ -128,7 +129,7 @@ destroy-gitlab-runner-infrastructure:
 # Only runs when manually triggered
 # Destroys all azure infra, (Runner: RG & VM) (Deployment: RG, VM & SQL DB)
 destroy-all-infrastructure:
-  stage: destroy-all
+  stage: destroy
   image: anir333/team18-int4:latest
   when: manual
   allow_failure: true

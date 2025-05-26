@@ -15,8 +15,6 @@ cd ./azure-config/deployment/ || exit
 bash ./azure-login.sh
 echo "Logged into azure."
 
-cat /root/.ssh/azure
-
 
 echo "Setting up ansible inventory..."
 cd ./ansible/ || exit

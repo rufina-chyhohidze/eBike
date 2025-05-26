@@ -14,7 +14,7 @@
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18 --name vm-team18 --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 
 # Add vm ip to known hosts to be able to ssh into it without prompts
-ssh-keyscan -H "$VM_IP" >> ~/.ssh/known_hosts
+ssh-keyscan -H "$VM_IP" >> /root/.ssh/known_hosts
 
 # Adding key to runner .ssh keys so that when creating the deploy VM form runner
 # It is necessary to add both the public and the private key to the runner because:
