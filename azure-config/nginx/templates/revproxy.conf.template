@@ -1,9 +1,10 @@
 upstream java-app {
+    # Using Contianer name, no ports exposed, containers (nginx and java app) communicate between custom bridge network
     server team18-int4-java-app:8080;
 }
 server {
     listen 80;
-    server_name team18-int4.duckdns.org;
+    server_name $SUB_DOMAIN.duckdns.org;
 
     location / {
         return 301 https://$host$request_uri;
@@ -12,10 +13,10 @@ server {
 
 server {
     listen 443 ssl;
-    server_name team18-int4.duckdns.org;
+    server_name $SUB_DOMAIN.duckdns.org;
 
-    ssl_certificate /etc/letsencrypt/live/team18-int4.duckdns.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/team18-int4.duckdns.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/$SUB_DOMAIN.duckdns.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$SUB_DOMAIN.duckdns.org/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
     ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";

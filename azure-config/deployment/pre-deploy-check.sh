@@ -37,6 +37,6 @@ if deploymentResourceGroupExists ; then
     tofu apply --auto-approve'
 fi
 
-# Update our dns with the deployment IP
+# Update our dns with the deployment VM IP
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-deploy --name vm-team18-deploy --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
 curl "https://www.duckdns.org/update?domains=team18-int4.duckdns.org&token=${DUCK_DNS_TOKEN}&ip=${VM_IP}" # env file already sourced in login phase, no need to re-sourc it for duck dns token
