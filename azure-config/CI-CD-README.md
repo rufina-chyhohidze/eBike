@@ -130,6 +130,9 @@ These stages are manual and only run on the main branch:
 
 All destroy jobs run outside the custom runner to avoid deleting themselves. After destroying the runner, you must re-run `azure-setup.sh` to recreate it before the next pipeline execution.
 
+- **Note:** It may seem sometimes that the destroy job failed, but it still deletes the resource group. 
+  - This happens because when running the destroy all infrastructure stage, if one of the resources doesn't exist, the pipeline displays that the job failed, even though it did correctly delete the other ones.
+
 ## Custom Docker Image
 
 To simplify the deployment process, a custom Docker image is used for the pre-deployment and deployment stages. This image contains all necessary dependencies:
