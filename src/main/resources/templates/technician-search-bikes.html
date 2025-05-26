@@ -6,10 +6,7 @@
   <title>Bikes Registered</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <script src="../static/js/technician.js" th:src="@{/js/technician.js}" type="module"></script>
-  <script th:src="@{/js/customerFilter.js}" type="module"></script>
-  <meta name="_csrf" th:content="${_csrf.token}" />
-  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <script th:src="@{/js/technician-search-bikes.js}" type="module"></script>
 </head>
 
 <body class="bg-gray-50 min-h-screen flex flex-row">
@@ -30,11 +27,10 @@
     </h2>
 
     <!-- Search -->
-    <form method="get" th:action="@{/technician/bikes}" class="mb-6">
-      <input type="text" name="search" placeholder="Search bikes..."
-             th:value="${search}"
+    <div class="mb-6">
+      <input id="bikeSearchInput" type="text" placeholder="Search bikes..."
              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-    </form>
+    </div>
 
     <!-- Table -->
     <div class="overflow-x-auto rounded-lg">
@@ -47,16 +43,8 @@
           <th class="p-3 text-left whitespace-nowrap">Customer</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="bike : ${bikes}" class="border-b">
-          <td th:text="${bike.frameNumber}" class="p-3"></td>
-          <td th:text="${bike.bikeModel.type}" class="p-3"></td>
-          <td th:text="${bike.bikeModel.brand}" class="p-3"></td>
-          <td th:text="${bike.bikeOwner.name}" class="p-3"></td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(bikes)}">
-          <td colspan="4" class="text-center text-gray-500 p-4">No matching bikes found.</td>
-        </tr>
+        <tbody id="bikeTableBody">
+        <!-- JS will insert rows here -->
         </tbody>
       </table>
     </div>

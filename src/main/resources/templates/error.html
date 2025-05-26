@@ -16,7 +16,21 @@
     <h1 class="text-3xl font-bold text-gray-800 mb-4">Oops! Something went wrong.</h1>
     <p class="text-gray-600 mb-6">The page you are looking for might have been removed or is temporarily unavailable.</p>
 
-    <a th:href="@{/technician/dashboard}" class="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all">
+    <a th:if="${#authorization.expression('hasRole(''WORKSHOPADMIN'')')}"
+       th:href="@{/workshopadmin/dashboard}"
+       class="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all">
+        <i class="ph ph-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <a th:if="${#authorization.expression('hasRole(''TECHNICIAN'')')}"
+       th:href="@{/technician/dashboard}"
+       class="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all">
+        <i class="ph ph-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <a th:if="${#authorization.expression('hasRole(''CUSTOMER'')')}"
+       th:href="@{/customer/dashboard}"
+       class="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all">
         <i class="ph ph-arrow-left"></i> Back to Dashboard
     </a>
 </div>

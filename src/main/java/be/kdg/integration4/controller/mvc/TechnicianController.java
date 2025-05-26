@@ -4,7 +4,6 @@ import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
-import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.ReportSetting;
@@ -113,7 +112,7 @@ public class TechnicianController {
 
         model.addAttribute("reportSetting", reportSetting);
 
-        return "technician-report-settings"; // This is the Thymeleaf template for the settings page
+        return "technician-report-settings";
     }
 
     @GetMapping("/register-customer")
@@ -130,18 +129,8 @@ public class TechnicianController {
 
         Technician technician = technicianService.getByEmail(email);
 
-        List<Bike> bikes = customerService.getCustomersRegisteredBy(technician.getId()).stream()
-                .flatMap(c -> c.getBikes().stream())
-                .filter(bike -> search == null || search.isBlank() ||
-                        bike.getFrameNumber().toLowerCase().contains(search.toLowerCase()) ||
-                        bike.getBikeModel().getBrand().toLowerCase().contains(search.toLowerCase()) ||
-                        bike.getBikeModel().getType().toLowerCase().contains(search.toLowerCase()))
-                .toList();
-
-        model.addAttribute("bikes", bikes);
-        model.addAttribute("search", search);
         model.addAttribute("technician", technician);
-        return "technician-bikes";
+        return "technician-search-bikes";
     }
 
 }
