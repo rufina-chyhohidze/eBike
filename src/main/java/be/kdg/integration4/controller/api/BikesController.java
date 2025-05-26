@@ -29,6 +29,7 @@ public class BikesController {
 
     @PostMapping
     @TechnicianOnly
+    // TODO: Shouldn't it be BikeDto?
     public ResponseEntity<Void> createNewBike(
             @RequestBody @Valid BikeDto bikeDto,
             BindingResult bindingResult
@@ -43,8 +44,7 @@ public class BikesController {
                 bikeDto.bikeOwnerId(),
                 bikeDto.type(),
                 bikeDto.brand(),
-                LocalDateTime.now(),
-                LocalDate.of(bikeDto.productionDate().getYear(), 1, 1),
+                bikeDto.productionDate(),
                 bikeDto.bikeSize(),
                 bikeDto.milleage(),
                 bikeDto.gearType(),
@@ -54,10 +54,12 @@ public class BikesController {
                 bikeDto.maxSupport(),
                 bikeDto.enginePowerMax(),
                 bikeDto.enginePowerNominal(),
-                bikeDto.engineTorque()
+                bikeDto.engineTorque(),
+                bikeDto.bikeModelId()
         );
 
         if (bikeService.getByFrameNumber(bikeDto.frameNumber()).isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 }

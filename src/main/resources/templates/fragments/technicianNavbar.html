@@ -1,0 +1,61 @@
+<script th:src="@{/js/techNavbar.js}" type="module"></script>
+<aside th:fragment="navbar" class="bg-gray-900 text-white shadow-md p-4 sm:p-6 flex flex-col min-h-screen space-y-8 w-16 sm:w-64 transition-all duration-300"
+       xmlns:th="http://www.thymeleaf.org">
+
+    <!-- LOGO -->
+    <div class="flex items-center justify-center sm:justify-start mb-6">
+        <i class="ph ph-bicycle text-purple-500 text-3xl mr-0 sm:mr-2"></i>
+        <h1 class="text-xl font-semibold hidden sm:inline">eVALeBike</h1>
+    </div>
+
+    <ul class="space-y-6 flex-1">
+
+        <!-- Dashboard -->
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <a href="/technician/dashboard" class="flex items-center gap-3 w-full">
+                <i class="ph ph-house text-xl"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <a href="/technician/start-test" class="flex items-center gap-3 w-full">
+                <i class="ph ph-play-circle text-xl"></i>
+                <span class="hidden sm:inline">Start Test</span>
+            </a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <a href="/technician/register-customer" class="flex items-center gap-3 w-full">
+                <i class="ph ph-user-plus text-xl"></i>
+                <span class="hidden sm:inline">Register Customer</span>
+            </a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <a href="/technician/report-settings" class="flex items-center gap-3 w-full">
+                <i class="ph ph-clipboard-text text-xl"></i>
+                <span class="hidden sm:inline">Report Settings</span>
+            </a>
+        </li>
+        <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
+            <a href="/technician/bikes" class="flex items-center gap-3 w-full">
+                <i class="ph ph-user text-xl"></i>
+                <span class="hidden sm:inline">Search Bikes</span>
+            </a>
+        </li>
+
+<!--        <li class="flex items-center gap-3 hover:text-white cursor-pointer text-gray-400">-->
+<!--            <i class="ph ph-user"></i>-->
+<!--            <a href="/technician/bikes"> Search Bikes </a>-->
+<!--        </li>-->
+
+        <!-- Logout -->
+        <li class="mt-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-purple-600 text-white px-2 sm:px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out text-xl"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
+            </form>
+        </li>
+    </ul>
+
+</aside>

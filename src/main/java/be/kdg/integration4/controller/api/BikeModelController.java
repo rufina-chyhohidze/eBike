@@ -33,7 +33,6 @@ public class BikeModelController {
                     model.getId(),
                         model.getType(),
                         model.getBrand(),
-                        model.getBikeSize(),
                         model.getGearType(),
                         model.getEngineType(),
                         model.getPowertrain(),

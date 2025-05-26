@@ -19,10 +19,6 @@ public record BikeDto(
         @NotBlank(message = "Brand is required")
         String brand,
 
-//        @NotNull(message = "Registration date is required")
-        @PastOrPresent(message = "Registration date must be in the past or present")
-        LocalDate registrationDate,
-
         @NotNull(message = "Production date is required")
         @Past(message = "Production date must be in the past")
         LocalDate productionDate,
@@ -61,6 +57,9 @@ public record BikeDto(
 
         @NotNull(message = "Engine torque is required")
         @Min(value = 0, message = "Engine torque must be a positive number")
-        Integer engineTorque
+        Integer engineTorque,
+
+        @Positive
+        Long bikeModelId
 ) {
 }

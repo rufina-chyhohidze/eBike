@@ -5,7 +5,7 @@ import be.kdg.integration4.domain.enums.FunctionalTestComponents;
 import be.kdg.integration4.domain.enums.InspectionCondition;
 import be.kdg.integration4.domain.enums.TestType;
 import be.kdg.integration4.domain.enums.VisualInspectionComponents;
-import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.*;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.TestLine;
@@ -23,6 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -38,8 +40,9 @@ public class BikeReportServiceImpl implements BikeReportService {
     private final TestLineRepository testLineRepository;
     private final TechnicianRepository technicianRepository;
     private final ReportSettingService reportSettingService;
+    private final UserRepository userRepository;
 
-    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TestLineRepository testLineRepository, TechnicianRepository technicianRepository, ReportSettingService reportSettingService) {
+    public BikeReportServiceImpl(BikeReportRepository bikeReportRepository, TestBenchRepository testBenchRepository, CustomerRepository customerRepository, BikeService bikeService, BikeRepository bikeRepository, TestLineRepository testLineRepository, TechnicianRepository technicianRepository, ReportSettingService reportSettingService, UserRepository userRepository) {
         this.bikeReportRepository = bikeReportRepository;
         this.testBenchRepository = testBenchRepository;
         this.customerRepository = customerRepository;
@@ -47,6 +50,7 @@ public class BikeReportServiceImpl implements BikeReportService {
         this.testLineRepository = testLineRepository;
         this.technicianRepository = technicianRepository;
         this.reportSettingService = reportSettingService;
+        this.userRepository = userRepository;
     }
 
 
@@ -70,8 +74,14 @@ public class BikeReportServiceImpl implements BikeReportService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<BikeReport> getAllReportsWithDetails() {
         return bikeReportRepository.findAllWithDetails();
+    }
+
+    @Override
+    public List<BikeReport> getReportsByBikeFrameNumberWithDetails(String frameNumber) {
+        return bikeReportRepository.findBikeReportsByBikeFrameNumberWithDetails(frameNumber);
     }
 
     @Override
@@ -117,7 +127,6 @@ public class BikeReportServiceImpl implements BikeReportService {
             return null;
         }
 
-        Bike bike = report.getBike();
 
         List<TestLine> testLines = testLineRepository.findByBikeReportId(reportId);
 
@@ -295,4 +304,52 @@ public class BikeReportServiceImpl implements BikeReportService {
     public List<BikeReport> getByCustomerId(Long customerId) {
         return this.bikeReportRepository.getBikeReportByCustomerId(customerId);
     }
+    public List<BikeReport> getReportsWithDetailsForTechnician(Long techId) {
+        return bikeReportRepository.findAllByTechnicianWithDetails(techId);
+    }
+
+    @Override
+    public List<BikeReport> getReportsByWorkshop(Long workshopId) {
+        return bikeReportRepository.findBikeReportByWorkshopId(workshopId);
+    }
+
+    @Override
+    public List<BikeReport> getReportsAccessibleByUserWithId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        log.debug("User with id {} is trying to access reports", userId);
+        log.debug("User is of type {}", user.getClass().isInstance(SystemAdmin.class) ? "SystemAdmin" : user.getClass().getSimpleName());
+
+        return switch (user) {
+            case Technician technician -> getReportsWithDetailsForTechnician(technician.getId());
+            case Customer customer -> getByCustomerId(customer.getId());
+            case SystemAdmin systemAdmin -> bikeReportRepository.findAll();
+            case WorkshopAdmin workshopAdmin ->
+                    bikeReportRepository.findBikeReportByWorkshopId(workshopAdmin.getWorkshop().getWorkshopId());
+            default -> List.of();
+        };
+    }
+
+    @Override
+    public List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType, Boolean excludeCurrentReportId, Long currentReportId) {
+        Predicate<BikeReport> predicate = report -> true;
+        if(excludeCurrentReportId != null && excludeCurrentReportId) {
+            predicate = predicate.and(report -> !Objects.equals(report.getId(), currentReportId));
+        }
+        if (frameNumber != null && !frameNumber.isBlank()) {
+            String frameFilter = frameNumber.toLowerCase();
+            predicate = predicate.and(report ->
+                    report.getBike().getFrameNumber().toLowerCase().contains(frameFilter));
+        }
+
+        if (engineType != null && !engineType.isBlank()) {
+            String engineFilter = engineType.toLowerCase();
+            predicate = predicate.and(report ->
+                    report.getBike().getBikeModel().getEngineType().toLowerCase().contains(engineFilter));
+        }
+
+        return reports.stream()
+                .filter(predicate)
+                .toList();
+    }
+
 }

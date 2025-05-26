@@ -1,6 +1,7 @@
 package be.kdg.integration4.controller.api;
 
 import be.kdg.integration4.config.security.SecurityUtil;
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.UpdateSettingsDto;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.repository.CustomerRepository;
@@ -28,6 +29,7 @@ public class ReportSettingsController {
     }
 
     @PatchMapping("")
+    @TechnicianOnly
     public ResponseEntity<Void> updateReportSetting(@RequestBody List<UpdateSettingsDto> settingsDtos) {
 
         Technician user = technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername());

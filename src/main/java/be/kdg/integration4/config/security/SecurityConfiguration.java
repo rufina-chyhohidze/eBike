@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/static/**", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers("/","/static/**", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/staff").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/workshops").permitAll()
                                 .anyRequest().authenticated()
