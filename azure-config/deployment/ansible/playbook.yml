@@ -114,9 +114,10 @@
 
     ####################################################################
     # 6) START NEW DOCKER-COMPOSE STACK (via CLI)
-    #  (by doing nginx, since it depends only on the necessary containers,
-    #  we can keep in the docker compose file other containers like the test one
-    #  without being ran in the deployment stage
+    #  (by doing compose up nginx specifically, since it depends only on the
+    # necessary containers, we can keep in the docker compose file
+    # other containers like the test one without being ran in the deployment stage
+    # We also export the variable from gitlab ci/cd vars for nginx config template
     ####################################################################
     - name: Launch application via docker-compose
       shell: |

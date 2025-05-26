@@ -22,7 +22,7 @@ cd ./ansible/ || exit
 bash ./setup-ansible-inventory.sh
 echo "Finished setting up ansible inventory."
 
-# Runs ansible playbook config
+# Runs ansible playbook config (we export subdomain var from gitlab variables so that ansible exports it to the deployment vm)
 ansible-playbook -i inventory.ini playbook.yml --extra-vars "proxy_host=$SUB_DOMAIN" || exit 1
 
 echo "============= Finished Deployment Stage =================="
