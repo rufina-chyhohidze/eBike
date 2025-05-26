@@ -5,7 +5,7 @@
 rm inventory.ini
 
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-deploy --name vm-team18-deploy --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
-
+echo "INISDE SetupINV: $VM_IP"
 # Write to inventory file
 cat <<SetupINV >> inventory.ini
 [web]
