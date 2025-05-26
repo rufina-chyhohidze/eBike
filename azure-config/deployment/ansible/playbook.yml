@@ -119,6 +119,8 @@
     #  without being ran in the deployment stage
     ####################################################################
     - name: Launch application via docker-compose
-      shell: docker compose up -d --build nginx
+      shell: |
+        cd {{ app_dir }}
+        SUB_DOMAIN={{ proxy_host }} docker compose up -d --build nginx
       args:
         chdir: "{{ app_dir }}"

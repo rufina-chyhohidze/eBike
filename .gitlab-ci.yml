@@ -22,66 +22,66 @@ stages:
   - destroy
 
 
-## ─────────────────────────────────────────────────────────────────────────────
-## Runs in custom azure runner in shell mode, make a simple build
-#build-application:
-#  stage: build
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== BUILD STAGE =========="
-#    - docker compose build --no-cache
-#    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
-#  only:
-#    - dev
-#    - main
-## ─────────────────────────────────────────────────────────────────────────────
-#
-## ─────────────────────────────────────────────────────────────────────────────
-## Runs in our custom azure runner in shell mode, so it needs to remove previously existing containers (--remove-orphans) for this stage
-## Tests the app using the docker compose configuration
-## We need to specify user (gitlab-runner user), because otherwise docker uses the default user (root) to execute the command, which means that the files created with the build won't be able to be deleted by gitlab on the next test stage pipeline execution
-#test-application:
-#  stage: test
-#  tags:
-#    - azure
-#    - shell
-#  script:
-#    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-#    - echo "========== TEST STAGE =========="
-#    # Need to create .env file (using CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
-#    - bash ./set-env.sh
-#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
-#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: build/test-results/test/**/TEST-*.xml
-#  only:
-#    - dev
-#    - main
-## ─────────────────────────────────────────────────────────────────────────────
-#
-## ─────────────────────────────────────────────────────────────────────────────
-## Runs in our custom docker container (contains all dependencies) in our custom azure runner
-## Checks if deployment environment exists or no
-## If it doesn't exist it creates the deployment RG, VM & SQL DB with the correct firewall rules
-#azure-pre-deployment-setup:
-#  stage: pre-deploy
-#  image: anir333/team18-int4:latest
-#  tags:
-#    - azure
-#    - docker
-#  script:
-#    - echo "========== PRE-DEPLOY STAGE =========="
-#    - cd ./azure-config/deployment/ || exit 1
-#    - bash ./pre-deploy-check.sh
-#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
-#  only:
-#    - main
-## ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# Runs in custom azure runner in shell mode, make a simple build
+build-application:
+  stage: build
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== BUILD STAGE =========="
+    - docker compose build --no-cache
+    - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - dev
+    - main
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Runs in our custom azure runner in shell mode, so it needs to remove previously existing containers (--remove-orphans) for this stage
+# Tests the app using the docker compose configuration
+# We need to specify user (gitlab-runner user), because otherwise docker uses the default user (root) to execute the command, which means that the files created with the build won't be able to be deleted by gitlab on the next test stage pipeline execution
+test-application:
+  stage: test
+  tags:
+    - azure
+    - shell
+  script:
+    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+    - echo "========== TEST STAGE =========="
+    # Need to create .env file (using CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
+    - bash ./set-env.sh
+    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+  only:
+    - dev
+    - main
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Runs in our custom docker container (contains all dependencies) in our custom azure runner
+# Checks if deployment environment exists or no
+# If it doesn't exist it creates the deployment RG, VM & SQL DB with the correct firewall rules
+azure-pre-deployment-setup:
+  stage: pre-deploy
+  image: anir333/team18-int4:latest
+  tags:
+    - azure
+    - docker
+  script:
+    - echo "========== PRE-DEPLOY STAGE =========="
+    - cd ./azure-config/deployment/ || exit 1
+    - bash ./pre-deploy-check.sh
+    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+  only:
+    - main
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -95,7 +95,6 @@ deploy-application:
     - docker
   script: bash ./azure-config/stages/deploy-application.sh
   only:
-    - ci-cd
     - main
 # ─────────────────────────────────────────────────────────────────────────────
 

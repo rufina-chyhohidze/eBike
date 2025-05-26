@@ -5,6 +5,8 @@ services:
         ports:
             - "80:80"
             - "443:443"
+        environment:
+            - SUB_DOMAIN=${SUB_DOMAIN}
         volumes:
             - ./azure-config/nginx/templates:/etc/nginx/templates
             - ./azure-config/nginx/letsencrypt:/etc/letsencrypt
