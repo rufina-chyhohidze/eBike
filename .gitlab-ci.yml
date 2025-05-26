@@ -46,6 +46,8 @@ test-application:
   script:
     - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
     - echo "========== TEST STAGE =========="
+    # Need to create .env file (from CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
+    - bash ./set-env.sh
     - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
