@@ -3,14 +3,13 @@
   become: yes
 
   vars:
-    # 1) Where on the VM to unpack your application
+    # 1) Where on the VM to unpack the application
     app_dir: /home/team18-deploy/project
 
-    # 2) Temp tarball path (on both control machine and VM)
+    # 2) Temp tarball path (on both runner and VM)
     tarball: /tmp/myapp.tar.gz
 
-    # 3) Path from ansible/ back to your project root:
-    #    ansible/ → gitlab-runner-setup/ → azure-config/ → ebiketeam18/
+    # 3) Path from ansible/ back to project root dir:
     project_root: "{{ playbook_dir }}/../../../"
 
   tasks:
@@ -71,7 +70,7 @@
       delegate_to: localhost
 
     ####################################################################
-    # 4) COPY & UNPACK ON VM
+    # 4) COPY & UNPACK ON DEPLOYMENT VM
     ####################################################################
     - name: Copy tarball to VM
       copy:
@@ -115,6 +114,9 @@
 
     ####################################################################
     # 6) START NEW DOCKER-COMPOSE STACK (via CLI)
+    #  (by doing nginx, since it depends only on the necessary containers,
+    #  we can keep in the docker compose file other containers like the test one
+    #  without being ran in the deployment stage
     ####################################################################
     - name: Launch application via docker-compose
       shell: docker compose up -d --build nginx

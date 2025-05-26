@@ -1,3 +1,18 @@
+"""
+ This dockerfile was used to build a custom docker image which is used in multiple stages in the pipeline
+ The image is almalinux based, and it contains necessary tools to run the pipeline:
+    - Installs:
+        1. OpenTofu (open source version of terraform) -> to set up azure resources
+        2. Azure CLI (needed by OpenTofu)
+        3. Openssh clients for generating ssh-keys
+        4. Ansible -> to set up the deployment environment and run the application in dpeloyment stage
+
+- We decided to make our own image and publish it to docker hub so that we don't need to constantly set up all the dependencies
+   in the runner or the deployment VM. With this implementation, all the VM's need is docker installed to execute all the steps needed.
+
+   You can pull the image doing: docker pull anir333/team18-int4:latest
+"""
+
 FROM almalinux:9.5
 
 # Download the installer script:

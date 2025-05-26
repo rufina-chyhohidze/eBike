@@ -3,6 +3,7 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
+# Creating Runner RG
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
@@ -43,6 +44,7 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
 }
 
+# Creating runner VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = azurerm_resource_group.rg.name
@@ -61,15 +63,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     storage_account_type = "Standard_LRS"
   }
 
-## Search images with the following command:
-# az vm image list --publisher {almalinux|Canonical|...} [--all]
-
-#  source_image_reference {
-#    publisher = "Canonical"
-#    offer     = "UbuntuServer"
-#    sku       = "18.04-LTS"
-#    version   = "latest"
-#  }
   source_image_reference {
     publisher = "almalinux"
     offer     = "almalinux-x86_64"
@@ -112,4 +105,3 @@ resource "azurerm_network_interface_security_group_association" "vm_nic_nsg" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.vm_nsg.id
 }
-

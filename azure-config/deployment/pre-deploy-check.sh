@@ -10,9 +10,16 @@
 ##### TEAM 18 - INTEGRATION 4 - ACS 202 - 2024/2025 #####
 #########################################################
 
-chmod +x ./azure-login.sh
-./azure-login.sh
+# In the pipeline, this script runs in the azure runner we set up
+# It runs in docker mode using our custom image
+# The purpose of the script is to set up the deployment dependecies (Azure Deployment RG, VM & SQL Database with correct firewall rules)
 
+source ../helper.sh
+
+# Log into azure
+run_with_progress "Logging into azure" bash -c bash ./azure-login.sh
+
+# Func to check if the deployment RG exists or not
 function deploymentResourceGroupExists() {
   if "$(az group exists --name rg-team18-deploy)" ; then
     return 0
@@ -23,15 +30,13 @@ function deploymentResourceGroupExists() {
 if deploymentResourceGroupExists ; then
     echo "Resource group already exists, skipping setup..."
   else
-    echo "Resource group doesn't exist, initializing setup..."
+    # Uses Terraform configuration files to create deployment RG, VM & SQL DB with a firewall rule for the DB that allows connection to the SQL DB only to the Deployment VM
+    run_with_progress "Resource group doesn't exist, initializing setup" bash -c '
     cd ./terraform/ || exit 1
     tofu init
-    tofu apply --auto-approve
-    cd ../
-    chmod +x ./setup-deploy-vm.sh
-    ./setup-deploy-vm.sh
+    tofu apply --auto-approve'
 fi
 
+# Update our dns with the deployment IP
 VM_IP="$(az vm list-ip-addresses --resource-group rg-team18-deploy --name vm-team18-deploy --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" -o tsv)"
-
-curl "https://www.duckdns.org/update?domains=team18-int4.duckdns.org&token=b4bb4460-f9d0-42fc-a063-e1dbadd11014&ip=${VM_IP}"
+curl "https://www.duckdns.org/update?domains=team18-int4.duckdns.org&token=${DUCK_DNS_TOKEN}&ip=${VM_IP}" # env file already sourced in login phase, no need to re-sourc it for duck dns token

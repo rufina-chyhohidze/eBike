@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cat <<SetupENV >> .env
-MAIL_USERNAME=team18int4@gmail.com
-WORKBENCH_API_KEY=${API_KEY}
-MAIL_PASSWORD=${MAIL_GOOGLE_APP_PASSWORD}
-SetupENV

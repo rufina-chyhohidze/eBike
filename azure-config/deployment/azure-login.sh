@@ -1,14 +1,14 @@
 #!/bin/bash
 
+# Uses variable from gitlab CI/CD Variables
 az login --service-principal \
--u 83665159-87d3-4463-a3ef-53fd62b8b4aa \
--p _p28Q~ZZSuenVgMJU2VbmjpmScCfpw1dSoZS4a~y \
---tenant ed1fc57f-8a97-47e7-9de1-9302dfd786ae
+         --username "$AZURE_CLIENT_ID" \
+         --password "$AZURE_CLIENT_SECRET" \
+         --tenant "$AZURE_TENANT_ID" > /dev/null
 
-az account set -s "$(az account show --query id --output tsv)"
+az account set --subscription "$AZURE_SUBSCRIPTION_ID" > /dev/null
 
-
-#Command to get ssl certificates:
+#Command used to get ssl certificates:
 
 # First build certduck image with Dockerfile in nginx directory:
 #docker build -t certduck {dir of dockerfile}

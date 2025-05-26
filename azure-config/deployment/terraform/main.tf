@@ -3,6 +3,7 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
+# Creating deployment RG...
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
@@ -43,6 +44,7 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
 }
 
+# Creating deployment VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = azurerm_resource_group.rg.name
@@ -98,17 +100,18 @@ resource "azurerm_network_security_group" "vm_nsg" {
     destination_address_prefix = "*"
   }
 
-    security_rule {
-      name                       = "Allow-HTTPS"
-      priority                   = 1003
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "443"
-      source_address_prefix      = "*"
-      destination_address_prefix = "*"
-    }
+  # Allowing port 443 for HTTPS
+  security_rule {
+    name                       = "Allow-HTTPS"
+    priority                   = 1003
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_network_interface_security_group_association" "vm_nic_nsg" {
@@ -133,7 +136,7 @@ resource "azurerm_postgresql_flexible_server" "db" {
   }
 }
 
-
+# This firewall rule ensures only the Deployment virtual machine can access the SQL DB
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vm_ip" {
   name        = "AllowDeploymentVM"
   server_id   = azurerm_postgresql_flexible_server.db.id

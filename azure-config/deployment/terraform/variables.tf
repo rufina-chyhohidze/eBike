@@ -1,5 +1,7 @@
-variable "subscription_id" {   
-  default = "f44abeef-ada7-4fd1-a6dc-6173b9d786bd"
+# In CI CD vars its declared
+variable "subscription_id" {
+  description = "Azure subscription id"
+  sensitive   = true
 }
 
 variable "resource_group_name" {
