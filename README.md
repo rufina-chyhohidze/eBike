@@ -6,6 +6,7 @@
 **Academic Year**: 2024/2025 - ACS202
 
 ---
+#### The CI/CD Pipeline README can be found in the `azure-config/` directory.
 
 ### Setup Instructions
 

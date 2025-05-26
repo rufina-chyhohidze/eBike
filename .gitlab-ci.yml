@@ -117,6 +117,7 @@ destroy-deployment-infrastructure:
     - bash ./azure-config/deployment/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
+    - ci-cd
     - main
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -134,6 +135,7 @@ destroy-gitlab-runner-infrastructure:
     - bash ./azure-config/deployment/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
+    - ci-cd
     - main
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -151,5 +153,6 @@ destroy-all-infrastructure:
     - bash ./azure-config/deployment/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
+    - ci-cd
     - main
 # ─────────────────────────────────────────────────────────────────────────────
