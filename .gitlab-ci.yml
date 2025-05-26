@@ -95,6 +95,7 @@ deploy-application:
     - docker
   script: bash ./azure-config/stages/deploy-application.sh
   only:
+    - ci-cd
     - main
 # ─────────────────────────────────────────────────────────────────────────────
 
