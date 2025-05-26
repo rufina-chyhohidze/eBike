@@ -62,20 +62,20 @@ stages:
 # Runs in our custom docker container (contains all dependencies) in our custom azure runner
 # Checks if deployment environment exists or no
 # If it doesn't exist it creates the deployment RG, VM & SQL DB with the correct firewall rules
-azure-pre-deployment-setup:
-  stage: pre-deploy
-  image: anir333/team18-int4:latest
-  tags:
-    - azure
-    - docker
-  script:
-    - echo "========== PRE-DEPLOY STAGE =========="
-    - cd ./azure-config/deployment/ || exit 1
-    - bash ./pre-deploy-check.sh
-    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
-  only:
-    - ci-cd
-    - main
+#azure-pre-deployment-setup:
+#  stage: pre-deploy
+#  image: anir333/team18-int4:latest
+#  tags:
+#    - azure
+#    - docker
+#  script:
+#    - echo "========== PRE-DEPLOY STAGE =========="
+#    - cd ./azure-config/deployment/ || exit 1
+#    - bash ./pre-deploy-check.sh
+#    - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
+#  only:
+#    - ci-cd
+#    - main
 
 # Runs in our custom azure runner in our custom docker image
 # Uses ansible to connect to deployment VM, set up dependencies, delete previous app and run the new one

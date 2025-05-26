@@ -31,7 +31,7 @@ if deploymentResourceGroupExists ; then
     echo "Resource group already exists, skipping setup..."
   else
     # Uses Terraform configuration files to create deployment RG, VM & SQL DB with a firewall rule for the DB that allows connection to the SQL DB only to the Deployment VM
-    run_with_progress "Resource group doesn't exist, initializing setup" bash -c '
+    run_with_progress "Resource group doesn't exist, initializing setup - (This might take around 7 minutes - it creates the deployment RG, VM & SQL DB with correct firewall rules) ." bash -c '
     cd ./terraform/ || exit 1
     tofu init
     tofu apply --auto-approve'
