@@ -17,7 +17,7 @@
 source ../helper.sh
 
 # Log into azure
-run_with_progress "Logging into azure" bash -c bash ./azure-login.sh
+run_with_progress "Logging into azure" bash -c ./azure-login.sh
 
 # Func to check if the deployment RG exists or not
 function deploymentResourceGroupExists() {

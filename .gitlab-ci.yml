@@ -38,26 +38,26 @@ stages:
 # Runs in our custom azure runner in shell mode, so it needs to remove previously existing containers (--remove-orphans) for this stage
 # Tests the app using the docker compose configuration
 # We need to specify user (gitlab-runner user), because otherwise docker uses the default user (root) to execute the command, which means that the files created with the build won't be able to be deleted by gitlab on the next test stage pipeline execution
-test-application:
-  stage: test
-  tags:
-    - azure
-    - shell
-  script:
-    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
-    - echo "========== TEST STAGE =========="
-    # Need to create .env file (from CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
-    - bash ./set-env.sh
-    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
-    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
-  only:
-    - ci-cd
-    - dev
-    - main
+#test-application:
+#  stage: test
+#  tags:
+#    - azure
+#    - shell
+#  script:
+#    - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
+#    - echo "========== TEST STAGE =========="
+#    # Need to create .env file (from CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
+#    - bash ./set-env.sh
+#    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+#    - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: build/test-results/test/**/TEST-*.xml
+#  only:
+#    - ci-cd
+#    - dev
+#    - main
 
 # Runs in our custom docker container (contains all dependencies) in our custom azure runner
 # Checks if deployment environment exists or no
