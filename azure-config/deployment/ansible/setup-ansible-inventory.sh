@@ -11,3 +11,5 @@ cat <<SetupINV >> inventory.ini
 [web]
 $VM_IP ansible_user=team18-deploy ansible_ssh_private_key_file=/root/.ssh/azure
 SetupINV
+
+ssh-keyscan -H "$VM_IP" >> /root/.ssh/known_hosts

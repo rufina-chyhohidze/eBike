@@ -25,6 +25,6 @@ bash ./setup-ansible-inventory.sh
 echo "Finished setting up ansible inventory."
 
 # Runs ansible playbook config
-ansible-playbook -i inventory.ini playbook.yml
+ansible-playbook -i inventory playbook.yml || exit 1
 
 echo "============= Finished Deployment Stage =================="
