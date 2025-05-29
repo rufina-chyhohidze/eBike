@@ -2,11 +2,13 @@ package be.kdg.integration4.controller.mvc;
 
 import be.kdg.integration4.config.security.annotations.SystemAdminOnly;
 import be.kdg.integration4.controller.api.dtos.UserWithRolesDto;
+import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,10 +25,12 @@ public class SystemAdminController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final CustomerService customerService;
     private final BikeReportService bikeReportService;
 
-    public SystemAdminController(UserService userService, EmailService emailService, BikeReportService bikeReportService) {
+    public SystemAdminController(UserService userService, EmailService emailService, CustomerService customerService, BikeReportService bikeReportService) {
         this.userService = userService;
+        this.customerService = customerService;
         this.bikeReportService = bikeReportService;
         this.emailService = emailService;
     }
@@ -55,11 +59,11 @@ public class SystemAdminController {
                 user.getEmail(),
                 user.getClass().getSimpleName().toUpperCase()
         ));
-        model.addAttribute("customers", userService.getAllWithoutLoggedInUser(principal.getUserId()).stream()
-                .map(usr ->
-                        new UserWithRolesDto(usr.getId(),usr.getName(),usr.getEmail(),
-                                usr.getClass().getSimpleName().toUpperCase()))
-                .toList());
+//        model.addAttribute("customers", userService.getAllWithoutLoggedInUser(principal.getUserId()).stream()
+//                .map(usr ->
+//                        new UserWithRolesDto(usr.getId(),usr.getName(),usr.getEmail(),
+//                                usr.getClass().getSimpleName().toUpperCase()))
+//                .toList());
         return "super-admin-dashboard";
     }
 
@@ -97,4 +101,14 @@ public class SystemAdminController {
         return "redirect:/superadmin/profile";
     }
 
+    @GetMapping("/reports")
+    @SystemAdminOnly
+    public String reports(@RequestParam Long customerId,Model model, @AuthenticationPrincipal UserDetailsImpl principal) {
+        List<BikeReport> reports = bikeReportService.getAllReportsWithDetails().stream().filter(report ->
+                report.getCustomer().getId().equals(customerId)).toList();
+        Customer customer = customerService.getById(customerId);
+        model.addAttribute("reports", reports);
+        model.addAttribute("customer", customer);
+        return "superadmin-reports";
+    }
 }
