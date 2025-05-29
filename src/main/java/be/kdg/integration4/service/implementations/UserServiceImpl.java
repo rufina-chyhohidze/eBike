@@ -1,21 +1,26 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.*;
 import be.kdg.integration4.repository.UserRepository;
 import be.kdg.integration4.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static be.kdg.integration4.service.utils.RoleBasedUtils.filterUsersForTechnician;
+import static be.kdg.integration4.service.utils.RoleBasedUtils.filterUsersForWorkshopAdmin;
 
 @Service
 @RequiredArgsConstructor
-//@Slf4j
 public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
@@ -69,6 +74,39 @@ public class UserServiceImpl implements UserService {
         customer.setPassword(passwordEncoder.encode(password));
         return userRepository.save(customer);
 
+    }
+
+    @Override
+    public List<User> getAvailableWithoutLoggedInUser(UserDetailsImpl principal) {
+        return this.getAvailableUsersHelper(principal, null);
+    }
+
+    @Override
+    public List<User> getAvailableFilteredByName(String name, UserDetailsImpl principal) {
+        return this.getAvailableUsersHelper(principal, name);
+    }
+
+    private List<User> getAvailableUsersHelper(UserDetailsImpl principal, String name) {
+        Long loggedInUserId = principal.getUserId();
+        User loggedInUser = userRepository.findById(loggedInUserId).orElseThrow();
+        UserRole role = UserRole.valueOf(loggedInUser.getClass().getSimpleName().toUpperCase());
+
+        List<User> users = new ArrayList<>();
+        users.addAll(userRepository.findAllCustomersWithTechnicianAndWorkshop());
+        users.addAll(userRepository.findAllTechniciansWithWorkshop());
+        users.addAll(userRepository.findAllWorkshopAdminsWithWorkshop());
+
+        if (name != null) {
+            users = users.stream().filter(user -> user.getName().toLowerCase().contains(name.toLowerCase())).toList();
+        } else {
+            users.removeIf(u -> u.getId().equals(loggedInUserId));
+        }
+        return switch (role) {
+            case SYSTEMADMIN -> users;
+            case TECHNICIAN -> filterUsersForTechnician(loggedInUser, users);
+            case WORKSHOPADMIN -> filterUsersForWorkshopAdmin(loggedInUser, users);
+            default -> throw new AccessDeniedException("You are not authorized to access this resource.");
+        };
     }
 
     @Override

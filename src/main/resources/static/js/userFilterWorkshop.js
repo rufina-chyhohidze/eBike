@@ -1,5 +1,4 @@
-document.getElementById("user-filter").addEventListener("input",async function (e) {
-    const name = e.target.value.toLowerCase();
+const search = async (name) => {
     const res = await fetch(`/api/users?name=${name}`);
     const tableContent = document.getElementById("user-table-content");
 
@@ -18,4 +17,10 @@ document.getElementById("user-filter").addEventListener("input",async function (
     } else {
         tableContent.innerHTML = ``
     }
+}
+await search("")
+
+document.getElementById("user-filter").addEventListener("input",async function (e) {
+    const name = e.target.value.toLowerCase();
+    await search(name);
 })
