@@ -4,23 +4,21 @@ import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
-import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.ReportSetting;
-import be.kdg.integration4.service.implementations.ReportSettingServiceImpl;
-import be.kdg.integration4.service.implementations.TechnicianServiceImpl;
 import be.kdg.integration4.service.interfaces.BikeReportService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.ReportSettingService;
 import be.kdg.integration4.service.interfaces.TechnicianService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,26 +45,41 @@ public class TechnicianController {
 
     @GetMapping("/dashboard")
     @TechnicianOnly
-    public String dashboard(Model model) {
+    public String dashboard(@RequestParam(required = false) String filter, @RequestParam(required = false) String frameNumber,
+                            @RequestParam(required = false) String engineType,Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String loggedInEmail = authentication.getName();
 
         Technician technician = technicianService.getByEmail(loggedInEmail);
-
         int totalReports = technicianService.getTotalReportsByTechnician(technician.getId());
 
         List<Customer> customers = customerService.getAll();
-        List<BikeReport> bikeReports = bikeReportService.getAll()
+        if (filter != null && !filter.isBlank()) {
+            customers = customers.stream()
+                    .filter(c -> String.valueOf(c.getId()).contains(filter) ||
+                            c.getName().toLowerCase().contains(filter.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        List<BikeReport> bikeReports = bikeReportService
+                .getReportsWithDetailsForTechnician(technician.getId())
                 .stream()
                 .filter(report -> report.getTechnician().getId().equals(technician.getId()))
-                .collect(Collectors.toList());
+                .filter(report -> frameNumber == null || frameNumber.isBlank() ||
+                        report.getBike().getFrameNumber().toLowerCase().contains(frameNumber.toLowerCase()))
+                .filter(report -> engineType == null || engineType.isBlank() ||
+                        report.getBike().getBikeModel().getEngineType().toLowerCase().contains(engineType.toLowerCase()))
+                .toList();
 
         model.addAttribute("totalReports", totalReports);
+        model.addAttribute("totalClients", customers.size());
         model.addAttribute("technician", technician);
         model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);
-        return "technician";
+        model.addAttribute("frameNumber", frameNumber);
+        model.addAttribute("engineType", engineType);
+        model.addAttribute("filter", filter);
+        return "technician-dashboard";
     }
 
     @GetMapping("/start-test")
@@ -77,7 +90,7 @@ public class TechnicianController {
         model.addAttribute("conditions", conditions);
         model.addAttribute("visualComponents", VisualInspectionComponents.values());
         model.addAttribute("functionalComponents", FunctionalTestComponents.values());
-        return "start-test";
+        return "technician-start-test";
     }
 
     @GetMapping("/test/success/{id}")
@@ -99,12 +112,25 @@ public class TechnicianController {
 
         model.addAttribute("reportSetting", reportSetting);
 
-        return "report-settings"; // This is the Thymeleaf template for the settings page
+        return "technician-report-settings";
     }
 
     @GetMapping("/register-customer")
     @TechnicianOnly
     public String testRegisterCustomer(Model model) {
-        return "register-customer";
+        return "technician-register-customer";
     }
+
+    @GetMapping("/bikes")
+    @TechnicianOnly
+    public String viewTechnicianBikes(@RequestParam(required = false) String search, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        Technician technician = technicianService.getByEmail(email);
+
+        model.addAttribute("technician", technician);
+        return "technician-search-bikes";
+    }
+
 }

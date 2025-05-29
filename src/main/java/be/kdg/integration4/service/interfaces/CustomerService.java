@@ -11,9 +11,17 @@ public interface CustomerService {
 
     Customer getById(Long id);
 
-    Customer save(String name, String email, String password, UserRole role, String phoneNumber);
 
     void deleteById(Long id);
 
     Optional<Customer> getByEmailIgnoreCase(String email);
+    Customer getByNameIgnoreCase(String name);
+
+    List<Customer> getAllByNameIgnoreCase(String name);
+
+    Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber);
+    Customer updatePassword(Long loggedInId, Long pathId, String password);
+    List<Customer> getCustomersByWorkshop(Long workshopId);
+
+    List<Customer> getCustomersRegisteredBy(Long technicianId);
 }

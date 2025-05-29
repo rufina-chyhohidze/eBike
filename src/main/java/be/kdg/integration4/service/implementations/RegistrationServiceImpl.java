@@ -43,11 +43,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 
     @Override
-    public CustomerAndPasswordServiceDto createCustomer(String name, String email, String phoneNumber) {
+    public CustomerAndPasswordServiceDto createCustomer(String name, String email, String phoneNumber, Long technicianId) {
         this.checkIfUserExists(email);
+        Technician technician = technicianRepository.findById(technicianId).orElseThrow();
         String password = PasswordGenerationUtil.generatePassword(12);
         return new CustomerAndPasswordServiceDto(customerRepository.save(new Customer(name, email,
-                passwordEncoder.encode(password), phoneNumber)), password);
+                passwordEncoder.encode(password), phoneNumber, technician)), password);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         return switch (userRole) {
-            case WORSHOPADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
+            case WORKSHOPADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
             case TECHNICIAN -> technicianRepository.save(new Technician(name, email, passwordEncoder.encode(password), workshop));
             default -> throw new IllegalArgumentException("Invalid role: " + role);
         };

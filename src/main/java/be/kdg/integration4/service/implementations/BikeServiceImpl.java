@@ -1,5 +1,6 @@
 package be.kdg.integration4.service.implementations;
 
+import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.report.BikeModel;
@@ -11,10 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class BikeServiceImpl implements BikeService {
@@ -34,7 +33,7 @@ public class BikeServiceImpl implements BikeService {
     }
 
     @Override
-    public Set<Bike> getAllByOwnerId(Long ownerId) {
+    public List<Bike> getAllByOwnerId(Long ownerId) {
         return this.bikeRepository.findBikesWithBikeModelByBikeOwnerId(ownerId);
     }
 
@@ -44,10 +43,16 @@ public class BikeServiceImpl implements BikeService {
     }
 
     @Override
-    public void save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
-        Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
+    public Bike save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque, Long bikeModelId) {
+        if (bikeModelId != null) {
+            Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), bikeSize, milleage, accCapacity, productionDate, bikeModelRepository.findById(bikeModelId).orElseThrow());
+            bikeRepository.save(bike);
+            return bike;
+        }
+        Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), type, brand, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
         bikeModelRepository.save(bike.getBikeModel());
         bikeRepository.save(bike);
+        return bike;
     }
 
     @Override
@@ -58,6 +63,17 @@ public class BikeServiceImpl implements BikeService {
     @Override
     public List<BikeModel> getAllBikeModels() {
         return bikeModelRepository.findAll();
+    }
+
+    @Override
+    public void unlinkBikeFromCustomer(String frameNumber, Long customerId){
+        Bike bike = bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber).orElse(null);
+        Customer customer = customerRepository.findByIdWithBikes(customerId).orElse(null);
+        bike.setBikeOwner(null);
+        customer.getBikes().remove(bike);
+        bikeRepository.save(bike);
+        customerRepository.save(customer);
+        System.out.println(customer.getBikes());
     }
 
 

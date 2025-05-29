@@ -1,21 +1,32 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
+import be.kdg.integration4.controller.api.dtos.ShortBikeReportDto;
 import be.kdg.integration4.controller.api.dtos.TestDto;
 import be.kdg.integration4.controller.api.dtos.TestIdDto;
 import be.kdg.integration4.controller.api.dtos.TestLineDto;
+import be.kdg.integration4.domain.enums.UserRole;
+import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.email.EmailService;
-import be.kdg.integration4.service.interfaces.BikeReportService;
-import be.kdg.integration4.service.interfaces.BikeService;
-import be.kdg.integration4.service.interfaces.TestbenchApiService;
+import be.kdg.integration4.service.implementations.BikeReportServiceImpl;
+import be.kdg.integration4.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -31,8 +42,7 @@ public class ReportsController {
             BikeReportService bikeReportService,
             BikeService bikeService,
             TestbenchApiService testbenchApiService,
-            EmailService emailService
-    ) {
+            EmailService emailService) {
         this.bikeReportService = bikeReportService;
         this.bikeService = bikeService;
         this.testbenchApiService = testbenchApiService;
@@ -116,4 +126,34 @@ public class ReportsController {
         return ResponseEntity.ok().build();
     }
 
+
+
+    @GetMapping
+    public ResponseEntity<List<ShortBikeReportDto>> filterReports(
+            @RequestParam(required = false) String frameNumber,
+            @RequestParam(required = false) String engineType,
+            @RequestParam(required = false) Boolean excludeCurrentReportId,
+            @RequestParam(required = false) Long currentReportId,
+            @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        List<BikeReport> reports = bikeReportService.getReportsAccessibleByUserWithId(principal.getUserId());
+        log.debug("Reports found: {}", reports.size());
+        List<BikeReport> filteredReports = bikeReportService.filterReports(reports, frameNumber, engineType, excludeCurrentReportId, currentReportId);
+        log.debug("Filtered reports found: {}", filteredReports.size());
+        return ResponseEntity.ok(filteredReports.stream().map(report -> new ShortBikeReportDto(
+                report.getId(),
+                report.getReportDate(),
+                report.getCustomer().getId(),
+                report.getBike().getFrameNumber(),
+                report.getBike().getBikeModel().getEngineType(),
+                report.getTestBench().getBenchId()
+        )).toList());
+    }
+
+
+    @PostMapping("/{id}/email")
+    public ResponseEntity<Void> sendReportToCustomer(@PathVariable("id") Long id) {
+        emailService.sendReportURLToCustomer(id);
+        return ResponseEntity.ok().build();
+    }
 }

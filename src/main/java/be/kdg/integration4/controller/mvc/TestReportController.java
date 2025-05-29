@@ -1,5 +1,7 @@
 package be.kdg.integration4.controller.mvc;
 
+import be.kdg.integration4.config.security.annotations.StaffOnly;
+import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.Metric;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.report.BikeReport;
@@ -87,14 +89,13 @@ public class TestReportController {
 
 
     @GetMapping("/report/{id}/detailed")
+    @StaffOnly
     public String showDetailedReport(@PathVariable Long id,
                                      Model model) {
         BikeReport bikeReport = bikeReportService.findByIdWithTestlinesAndBike(id);
         model.addAttribute("report", bikeReport);
         model.addAttribute("bike", bikeReport.getBike());
         model.addAttribute("metrics", Metric.values());
-
-
 
         List<BikeReport> allReports = bikeReportService.getAll();
         model.addAttribute("allReports", allReports);

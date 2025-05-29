@@ -40,6 +40,8 @@ public interface BikeReportService {
     List<BikeReport> getAllReportsWithDetails();
     //List<BikeReport> searchReports(String frameNumber, String customerName);
 
+    List<BikeReport> getReportsByBikeFrameNumberWithDetails(String frameNumber);
+
     OverviewTestDTO calculateOverviewTest(Long reportId);
 
     NominalLoadTestDTO calculateNominalLoadTest(Long reportId);
@@ -49,5 +51,11 @@ public interface BikeReportService {
     BearingHealthDTO calculateBearingHealth(Long reportId, Technician user);
 
     FullTestReportDTO getFullTestReport(Long reportId);
+    List<BikeReport> getReportsWithDetailsForTechnician(Long techId);
 
+    List<BikeReport> getReportsByWorkshop(Long workshopId);
+
+    List<BikeReport> getReportsAccessibleByUserWithId(Long userId);
+
+    List<BikeReport> filterReports(List<BikeReport> reports, String frameNumber, String engineType, Boolean excludeCurrentReportId, Long currentReportId);
 }
