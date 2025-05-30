@@ -47,7 +47,7 @@ services:
             - ebike-db:/var/lib/postgresql/data
 
     team18-integration4-test:
-        image: gradle:jdk17
+        image: timbru31/java-node:21-alpine-jdk-22
         container_name: team18-integration4-test
         working_dir: /team18-project/
         volumes:
