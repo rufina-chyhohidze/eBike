@@ -32,7 +32,8 @@ public class ReportSettingsController {
     @TechnicianOnly
     public ResponseEntity<Void> updateReportSetting(@RequestBody List<UpdateSettingsDto> settingsDtos) {
 
-        Technician user = technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername());
+        Technician user = technicianRepository.findByEmail(SecurityUtil.getLoggedInUsername())
+                .orElseThrow(() -> new RuntimeException("Technician not found"));
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
