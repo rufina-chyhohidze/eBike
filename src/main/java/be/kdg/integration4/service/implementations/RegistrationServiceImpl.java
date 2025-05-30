@@ -5,6 +5,7 @@ import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.profile.WorkshopAdmin;
+import be.kdg.integration4.domain.report.ReportSetting;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.*;
@@ -25,14 +26,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final WorkshopRepository workshopRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ReportSettingRepository reportSettingRepository;
 
-    public RegistrationServiceImpl(CustomerRepository customerRepository, WorkshopAdminRepository workshopAdminRepository, TechnicianRepository technicianRepository, WorkshopRepository workshopRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public RegistrationServiceImpl(CustomerRepository customerRepository, WorkshopAdminRepository workshopAdminRepository, TechnicianRepository technicianRepository, WorkshopRepository workshopRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, ReportSettingRepository reportSettingRepository) {
         this.customerRepository = customerRepository;
         this.workshopAdminRepository = workshopAdminRepository;
         this.technicianRepository = technicianRepository;
         this.workshopRepository = workshopRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.reportSettingRepository = reportSettingRepository;
     }
 
     private void checkIfUserExists(String email) {
@@ -65,10 +68,24 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
 
-        return switch (userRole) {
-            case WORKSHOPADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
-            case TECHNICIAN -> technicianRepository.save(new Technician(name, email, passwordEncoder.encode(password), workshop));
-            default -> throw new IllegalArgumentException("Invalid role: " + role);
-        };
+        if (userRole == UserRole.WORKSHOPADMIN) {
+            return workshopAdminRepository.save(
+                    new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop)
+            );
+        } else if (userRole == UserRole.TECHNICIAN) {
+            Technician technician = new Technician(name, email, passwordEncoder.encode(password), workshop);
+            Technician savedTechnician = technicianRepository.save(technician);
+
+            ReportSetting reportSetting = new ReportSetting(
+                    savedTechnician,
+                    1,
+                    1
+            );
+            reportSettingRepository.save(reportSetting);
+
+            return savedTechnician;
+        } else {
+            throw new IllegalArgumentException("Invalid role: " + userRole);
+        }
     }
 }
