@@ -2,6 +2,7 @@
 FROM timbru31/java-node:21-alpine-jdk-22 AS javaapp-builder
 LABEL author="Team 18 - Integration 4"
 WORKDIR /team18/project
+ENV GRADLE_USER_HOME=/team18/.gradle
 COPY ./ /team18/project
 WORKDIR /team18/project
 #RUN gradle wrapper --gradle-version 8.13
