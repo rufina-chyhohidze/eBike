@@ -16,4 +16,6 @@ public interface UserService  {
     List<User> getAllWithoutLoggedInUser(Long loggedInUser);
     List<User> getAllFilteredByName(String name);
     User updatePassword(Long userId,Long loggedInUserId, String password);
+
+    void delete(Long id);
 }
