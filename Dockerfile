@@ -1,14 +1,14 @@
 # Stage 1: Build your app (optional if you build outside docker)
-FROM gradle:jdk17 AS javaapp-builder
+FROM timbru31/java-node:21-alpine-jdk-22 AS javaapp-builder
 LABEL author="Team 18 - Integration 4"
 WORKDIR /team18/project
 COPY ./ /team18/project
 WORKDIR /team18/project
-RUN gradle wrapper --gradle-version 8.13
+#RUN gradle wrapper --gradle-version 8.13
 RUN ./gradlew bootJar -x test
 
 ## Stage 2: Run the app
-FROM eclipse-temurin:17-jre-alpine
+FROM timbru31/java-node:21-alpine-jdk-22
 LABEL author="Team 18 - Integration 4"
 # Copy jar from build stage
 COPY --from=javaapp-builder /team18/project/build/libs/Team18-Integration4-Application.jar /team18/project/build/libs/
