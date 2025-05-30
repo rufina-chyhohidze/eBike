@@ -28,7 +28,7 @@ public class ReportSettingsController {
         this.technicianRepository = technicianRepository;
     }
 
-    @PatchMapping("")
+    @PatchMapping
     @TechnicianOnly
     public ResponseEntity<Void> updateReportSetting(@RequestBody List<UpdateSettingsDto> settingsDtos) {
 

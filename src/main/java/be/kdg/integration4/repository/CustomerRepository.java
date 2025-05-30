@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmailIgnoreCase(String email);
-    Customer findByEmail(String email);
+    Optional<Customer> findByEmail(String email);
 
     @Query("SELECT c FROM Customer c WHERE Lower(c.name) LIKE %:name%")
     List<Customer> findAllByNameIgnoreCase(String name);
