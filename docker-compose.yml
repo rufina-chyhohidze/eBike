@@ -7,11 +7,10 @@ services:
             - "443:443"
         environment:
             - SUB_DOMAIN=${SUB_DOMAIN}
+            - PROFILE_ACTIVE=prod
         volumes:
             - ./azure-config/nginx/templates:/etc/nginx/templates
             - ./azure-config/nginx/letsencrypt:/etc/letsencrypt
-#        environment:
-#            - ANIR_DNS=${SERV_ADDRESS}
         networks:
             - team18-network
         depends_on:
@@ -24,14 +23,6 @@ services:
         container_name: team18-int4-java-app
         networks:
             - team18-network
-
-
-#        environment:
-#            PROFILE: 'prod'
-#            DB_URL: 'jdbc:postgresql://postgres_ebike_db:5432/ebike'
-
-#        depends_on:
-#            -   postgres_ebike_db
 
     postgres_ebike_db:
         image: postgres:17.2-alpine
@@ -47,7 +38,7 @@ services:
             - ebike-db:/var/lib/postgresql/data
 
     team18-integration4-test:
-        image: timbru31/java-node:21-alpine-jdk-22
+        image: gradle:jdk21
         container_name: team18-integration4-test
         working_dir: /team18-project/
         volumes:
