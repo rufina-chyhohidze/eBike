@@ -40,3 +40,13 @@ out/
 .vscode/
 /.idea/
 .env
+
+azure-config/deployment/terraform/.*
+azure-config/deployment/terraform/.terraform/
+azure-config/deployment/terraform/.terraform
+azure-config/gitlab-runner-setup/terraform/.*
+azure-config/gitlab-runner-setup/terraform/.terraform/
+azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
+azure-config/gitlab-runner-setup/terraform/terraform.tfstate
+azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
+azure-config/deployment/terraform/terraform.tfstate
