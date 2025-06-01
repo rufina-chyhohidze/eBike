@@ -1,12 +1,12 @@
 import { csrfToken, csrfHeader } from './utils/csrf.js';
 
-function getCsrfToken() {
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    return csrfToken;
-}
+// function getCsrfToken() {
+//     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+//     return csrfToken;
+// }
 
 async function changeSettings(settingsArray) {
-    const csrfToken = getCsrfToken(); // Fetch CSRF token just before sending the request
+    // const csrfToken = getCsrfToken(); // Fetch CSRF token just before sending the request
 
     const response = await fetch("/api/report-settings", {
         method: "PATCH",

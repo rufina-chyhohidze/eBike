@@ -13,6 +13,10 @@ java {
     }
 }
 
+tasks.bootJar {
+    archiveFileName.set("Team18-Integration4-Application.jar")
+}
+
 repositories {
     mavenCentral()
 }

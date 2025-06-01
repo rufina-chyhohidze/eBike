@@ -6,7 +6,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-/gradle
 
 ### STS ###
 .apt_generated
@@ -40,13 +39,21 @@ out/
 .vscode/
 /.idea/
 .env
+azure-config/gitlab-runner-setup/terraform/.*
+azure-config/gitlab-runner-setup/terraform/terraform.tfstate
+/azure-config/gitlab-runner-setup/terraform/.terraform
+/azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
+/azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
+/azure-config/gitlab-runner-setup/terraform/terraform.tfstate
+azure-config/deployment/terraform/.terraform.lock.hcl
+azure-config/deployment/terraform/.terraform
+azure-config/deployment/terraform/terraform.tfstate
+azure-config/deployment/terraform/terraform.tfstate.backup
+?/
+azure-config/stages/delete-gitlab-pipelines.sh
 
 azure-config/deployment/terraform/.*
 azure-config/deployment/terraform/.terraform/
-azure-config/deployment/terraform/.terraform
-azure-config/gitlab-runner-setup/terraform/.*
 azure-config/gitlab-runner-setup/terraform/.terraform/
 azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
-azure-config/gitlab-runner-setup/terraform/terraform.tfstate
 azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
-azure-config/deployment/terraform/terraform.tfstate

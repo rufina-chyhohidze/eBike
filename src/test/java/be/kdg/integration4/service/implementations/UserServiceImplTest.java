@@ -2,7 +2,9 @@ package be.kdg.integration4.service.implementations;
 
 import be.kdg.integration4.TestHelper;
 import be.kdg.integration4.config.DotenvInitializer;
+import be.kdg.integration4.domain.enums.Location;
 import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.repository.UserRepository;
 import be.kdg.integration4.service.interfaces.UserService;
 import org.junit.jupiter.api.*;
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceImplTest {
 
     @Autowired
-    private UserService userService;
+    private UserService sut;
 
     @Autowired
     private UserRepository userRepository;
@@ -29,63 +31,63 @@ class UserServiceImplTest {
     @Autowired
     private TestHelper testHelper;
 
-    private User testUser;
+    private User user;
 
     @BeforeEach
-    void setup() {
-        testUser = testHelper.createCustomer("Test User", "test@example.com", "pass", "1234567890");
+    void setUp() {
+        Workshop workshop = this.testHelper.createWorkshop("Workshops1", Location.ANTWERP);
+        user = testHelper.createTechnician("Test User", "test@example.com", "pass", workshop);
     }
-
     @AfterEach
     void cleanUp() {
-//        this.testHelper.cleanUp();
+        this.testHelper.cleanUp();
     }
 
     @Test
     void getUnapprovedUsers_shouldReturnUnapprovedUsers() {
-        // Arrange: testUser is not approved by default
+        // Arrange:
 
         // Act
-        List<User> unapproved = userService.getUnapprovedUsers();
+        List<User> unapproved = sut.getUnapprovedUsers();
 
         // Assert
-//        assertEquals(1, unapproved.size());
-//        assertFalse(unapproved.getFirst().isApproved());
+        assertEquals(1, unapproved.size());
+        assertFalse(unapproved.get(0).isApproved());
     }
 
     @Test
     void approveUser_shouldSetApprovedTrue() {
         // Act
-        userService.approveUser(testUser.getId());
+        sut.approveUser(user.getId());
 
         // Assert
-        User approvedUser = userRepository.findById(testUser.getId()).orElseThrow();
+        User approvedUser = userRepository.findById(user.getId()).orElseThrow();
         assertTrue(approvedUser.isApproved());
     }
 
     @Test
     void rejectUser_shouldDeleteUser() {
         // Act
-        userService.rejectUser(testUser.getId());
+        sut.rejectUser(user.getId());
 
         // Assert
-        assertFalse(userRepository.findById(testUser.getId()).isPresent());
+        assertFalse(userRepository.findById(user.getId()).isPresent());
     }
 
     @Test
     void getUserByEmail_shouldReturnUser() {
         // Act
-        User found = userService.getUserByEmail("test@example.com");
+        User found = sut.getUserByEmail("test@example.com");
 
         // Assert
         assertNotNull(found);
-        assertEquals(testUser.getId(), found.getId());
+        assertEquals(user.getId(), found.getId());
     }
 
     @Test
     void getUserById_shouldReturnUser() {
         // Act
-        User found = userService.getUserById(testUser.getId());
+        User found = sut.getUserById(user.getId());
 
         // Assert
         assertNotNull(found);

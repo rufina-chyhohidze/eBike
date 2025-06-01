@@ -61,5 +61,4 @@ public class BikesController {
         if (bikeService.getByFrameNumber(bikeDto.frameNumber()).isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
 }

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TechnicianRepository extends JpaRepository<Technician, Long> {
-    Technician findByEmail(String email);
+    Optional<Technician> findByEmail(String email);
 
     @Query("""
     SELECT t FROM Technician t
