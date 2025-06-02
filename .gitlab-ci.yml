@@ -91,7 +91,6 @@ azure-pre-deployment-setup:
     - echo "========== PRE-DEPLOY STAGE COMPLETED SUCCESSFULLY =========="
   only:
     - main
-    - dev
 ## ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -107,7 +106,6 @@ deploy-application:
   script: bash ./azure-config/stages/deploy-application.sh
   only:
     - main
-    - dev
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -130,7 +128,6 @@ destroy-deployment-infrastructure:
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
     - main
-    - dev
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -148,7 +145,6 @@ destroy-gitlab-runner-infrastructure:
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
     - main
-    - dev
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -167,5 +163,4 @@ destroy-all-infrastructure:
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
     - main
-    - dev
 # ─────────────────────────────────────────────────────────────────────────────
