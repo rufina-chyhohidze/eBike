@@ -48,7 +48,7 @@ public class WorkshopAdminController {
         model.addAttribute("totalReports", totalReports);
         model.addAttribute("totalClients", customers.size());
         model.addAttribute("admin", workshopAdmin);
-        model.addAttribute("customers", customers);
+//        model.addAttribute("customers", customers);
         model.addAttribute("bikeReports", bikeReports);
         return "admin-dashboard";
     }

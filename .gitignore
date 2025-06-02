@@ -51,3 +51,13 @@ azure-config/deployment/terraform/terraform.tfstate
 azure-config/deployment/terraform/terraform.tfstate.backup
 ?/
 azure-config/stages/delete-gitlab-pipelines.sh
+
+azure-config/deployment/terraform/.*
+azure-config/deployment/terraform/.terraform/
+azure-config/gitlab-runner-setup/terraform/.terraform/
+azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
+azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
+gradle/
+gradle
+./gradle
+./gradle/
