@@ -23,5 +23,5 @@ public interface CustomerService {
     Customer updatePassword(Long loggedInId, Long pathId, String password);
     List<Customer> getCustomersByWorkshop(Long workshopId);
 
-    List<Customer> getCustomersRegisteredBy(Long technicianId);
+    List<Customer> getCustomersRegisteredBy(Long workshopId);
 }

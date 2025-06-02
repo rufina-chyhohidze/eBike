@@ -51,7 +51,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         Technician technician = technicianRepository.findById(technicianId).orElseThrow();
         String password = PasswordGenerationUtil.generatePassword(12);
         return new CustomerAndPasswordServiceDto(customerRepository.save(new Customer(name, email,
-                passwordEncoder.encode(password), phoneNumber, technician)), password);
+                passwordEncoder.encode(password), phoneNumber, technician.getWorkshop())), password);
     }
 
     @Override
