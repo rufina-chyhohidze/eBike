@@ -59,7 +59,7 @@ test-application:
     - echo "========== TEST STAGE =========="
     # Need to create .env file (using CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
     - bash ./set-env.sh
-    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
+    - docker compose run --remove-orphans team18-integration4-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
     when: always
