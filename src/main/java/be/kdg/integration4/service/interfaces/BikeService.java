@@ -20,4 +20,6 @@ public interface BikeService {
     List<Bike> getAllByOwnerId(Long ownerId);
 
     void unlinkBikeFromCustomer(String frameNumber, Long customerId);
+
+    List<Bike> getAllAvailableForUserByFrameNumber(Long customerId, String frameNumber);
 }

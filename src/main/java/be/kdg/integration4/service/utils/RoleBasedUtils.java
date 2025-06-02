@@ -14,7 +14,7 @@ public class RoleBasedUtils {
         return users.stream()
                 .filter(user ->
                         user instanceof Customer customer &&
-                                customer.getRegisteredBy().equals(loggedInUser)
+                                customer.getRegisteredIn().getWorkshopId().equals(((Technician) loggedInUser).getWorkshop().getWorkshopId())
                 ).toList();
     }
 
@@ -23,7 +23,7 @@ public class RoleBasedUtils {
         return users.stream()
                 .filter(user ->
                         (user instanceof Customer customer &&
-                                customer.getRegisteredBy().getWorkshop().equals(workshop))
+                                customer.getRegisteredIn().equals(workshop))
                                 ||
                                 (user instanceof Technician technician &&
                                         technician.getWorkshop().equals(workshop))
