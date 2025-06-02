@@ -13,7 +13,12 @@
 **Build and Run**
 ### 1. To set up the DataBase:
 
-Run the `docker-compose.yml` file
+Run:
+
+```bash
+
+docker compose up -d postgres_ebike_db
+```
 
 ### 2. Add .env file
 
@@ -27,7 +32,6 @@ Run the `docker-compose.yml` file
 
    ```bash
    
-    docker compose up -d
    ./gradlew bootRun
   ```
 
