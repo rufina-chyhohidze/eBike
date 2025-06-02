@@ -25,6 +25,7 @@ services:
 
     build-stage-team18-int4-java-app:
         image: gradle:jdk21
+        user: "${HOST_UID}:${HOST_GID}"
         container_name: build-stage-team18-int4-java-app
         volumes:
             -   "./:/team18-app/"

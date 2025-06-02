@@ -32,7 +32,11 @@ build-application:
   script:
     - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
     - echo "========== BUILD STAGE =========="
+    # export the GitLab Runner’s UID/GID into HOST_UID and HOST_GID (needed in the docker compose for permissions)
+    - export HOST_UID=$(id -u)
+    - export HOST_GID=$(id -g)
     - docker compose up --build build-stage-team18-int4-java-app
+    - sudo chown -R gitlab-runner:gitlab-runner build/
     - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
     paths:
@@ -59,7 +63,7 @@ test-application:
     - echo "========== TEST STAGE =========="
     # Need to create .env file (using CI/CD vars) in order to execute tests succesfully because of the Dotenvinitializer class
     - bash ./set-env.sh
-    - docker compose run --remove-orphans team18-integration4-test
+    - docker compose run --user "$(id -u):$(id -g)" --remove-orphans team18-integration4-test
     - echo "========== TEST STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
     when: always
