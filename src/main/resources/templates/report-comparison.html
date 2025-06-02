@@ -17,7 +17,7 @@
 
 <!-- SIDEBAR -->
 <!-- System Admin Navbar -->
-<div sec:authorize="hasRole('SUPERADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
+<div sec:authorize="hasRole('SYSTEMADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
 
 <!-- Workshop Admin Navbar -->
 <div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: admin-navbar"></div>
