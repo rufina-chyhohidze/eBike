@@ -57,3 +57,7 @@ azure-config/deployment/terraform/.terraform/
 azure-config/gitlab-runner-setup/terraform/.terraform/
 azure-config/gitlab-runner-setup/terraform/terraform.tfstate.backup
 azure-config/gitlab-runner-setup/terraform/.terraform.lock.hcl
+gradle/
+gradle
+./gradle
+./gradle/

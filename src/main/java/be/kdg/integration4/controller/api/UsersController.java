@@ -30,16 +30,16 @@ public class UsersController {
         this.customerService = customerService;
     }
 
-//    @SystemAdminOnly
+    @StaffOnly
     @GetMapping
     public ResponseEntity<List<UserWithRolesDto>> filterUsers(@RequestParam(required = false) String name,
                                                               @AuthenticationPrincipal UserDetailsImpl principal) {
         List<User> users;
 
         if (name != null && !name.isEmpty()) {
-            users = userService.getAllFilteredByName(name);
+            users = userService.getAvailableFilteredByName(name, principal);
         } else {
-            users = userService.getAllWithoutLoggedInUser(principal.getUserId());
+            users = userService.getAvailableWithoutLoggedInUser(principal);
         }
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build();
