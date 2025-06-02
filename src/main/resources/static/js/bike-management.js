@@ -10,12 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentButton = null;
 
-    document.querySelectorAll(".unlink-bike-btn").forEach(button => {
-        button.addEventListener("click", (e) => {
-            e.preventDefault();
-            currentButton = button;
-            confirmModal.classList.remove("hidden");
-        });
+    bikeGrid.addEventListener("click", (e) => {
+        const button = e.target.closest(".unlink-bike-btn");
+        if (!button) return;
+
+        e.preventDefault();
+        currentButton = button;
+        confirmModal.classList.remove("hidden");
     });
 
     cancelBtn.addEventListener("click", () => {
@@ -29,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const frameNumber = currentButton.getAttribute("data-frame");
 
         try {
-            const response = await fetch(`/api/bike-management/${frameNumber}/unlink`, {
-                method: "PATCH",
+            const response = await fetch(`/api/bike-management/${frameNumber}`, {
+                method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     [csrfHeader]: csrfToken

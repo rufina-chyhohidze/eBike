@@ -8,6 +8,7 @@ import be.kdg.integration4.repository.BikeModelRepository;
 import be.kdg.integration4.repository.BikeRepository;
 import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.service.interfaces.BikeService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +83,15 @@ public class BikeServiceImpl implements BikeService {
                 .filter(bike -> bike.getFrameNumber().contains(frameNumber))
                 .toList();
     }
+
+    @Override
+    public void deleteBike(String frameNumber) {
+        Bike bike = bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Bike not found"));
+
+        bikeRepository.delete(bike);
+    }
+
 
 
 }
