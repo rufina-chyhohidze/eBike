@@ -13,6 +13,10 @@ java {
     }
 }
 
+tasks.bootJar {
+    archiveFileName.set("Team18-Integration4-Application.jar")
+}
+
 repositories {
     mavenCentral()
 }
@@ -39,6 +43,7 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-mail") // email service dependency
 }
 
 tasks.withType<Test> {

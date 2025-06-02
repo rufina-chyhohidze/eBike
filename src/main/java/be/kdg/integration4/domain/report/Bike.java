@@ -2,10 +2,7 @@ package be.kdg.integration4.domain.report;
 
 import be.kdg.integration4.domain.enums.BikeSize;
 import be.kdg.integration4.domain.profile.Customer;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,54 +18,53 @@ public class Bike implements Comparable<Bike> {
     private String frameNumber;
 
     @ManyToOne
-    @JoinColumn(name = "bike_owner_id", nullable = false)
+    @JoinColumn(name = "bike_owner_id")
     private Customer bikeOwner;
-
-    private String type;
-
-    private String brand;
 
     private LocalDateTime registrationDate;
 
     private LocalDate productionDate;
 
-    private BikeSize bikeSize;
-
     private int milleage;
 
-    private String gearType;
+    private BikeSize bikeSize;
 
-    private String engineType;
-
-    private String powertrain;
 
     private int accCapacity;
 
-    private double maxSupport;
+    @ManyToOne
+    private BikeModel bikeModel;
 
-    private int enginePowerMax;
-
-    private int enginePowerNominal;
-
-    private int engineTorque;
-
-    public Bike(String frameNumber, Customer bikeOwner, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+    public Bike(String frameNumber, Customer bikeOwner,BikeSize bikeSize, int milleage, int accCapacity, LocalDate productionDate,  BikeModel bikeModel) {
         this.frameNumber = frameNumber;
         this.bikeOwner = bikeOwner;
-        this.type = type;
-        this.brand = brand;
-        this.registrationDate = registrationDate;
+        this.milleage = milleage;
+        this.accCapacity = accCapacity;
+        this.productionDate = productionDate;
+        this.bikeModel = bikeModel;
+        this.registrationDate = LocalDateTime.now();
+        this.bikeSize = bikeSize;
+    }
+
+    public Bike(String frameNumber, Customer bikeOwner, String type, String brand, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+        this.frameNumber = frameNumber;
+        this.bikeOwner = bikeOwner;
+        BikeModel bikeModel = new BikeModel();
+        bikeModel.setType(type);
+        bikeModel.setBrand(brand);
+        this.registrationDate = LocalDateTime.now();
         this.productionDate = productionDate;
         this.bikeSize = bikeSize;
         this.milleage = milleage;
-        this.gearType = gearType;
-        this.engineType = engineType;
-        this.powertrain = powertrain;
+        bikeModel.setGearType(gearType);
+        bikeModel.setEngineType(engineType);
+        bikeModel.setPowertrain(powertrain);
         this.accCapacity = accCapacity;
-        this.maxSupport = maxSupport;
-        this.enginePowerMax = enginePowerMax;
-        this.enginePowerNominal = enginePowerNominal;
-        this.engineTorque = engineTorque;
+        bikeModel.setMaxSupport(maxSupport);
+        bikeModel.setEnginePowerMax(enginePowerMax);
+        bikeModel.setEnginePowerNominal(enginePowerNominal);
+        bikeModel.setEngineTorque(engineTorque);
+        this.bikeModel = bikeModel;
     }
 
     @Override

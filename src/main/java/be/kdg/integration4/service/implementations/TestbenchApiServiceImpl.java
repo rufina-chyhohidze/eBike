@@ -1,51 +1,55 @@
 package be.kdg.integration4.service.implementations;
 
-import be.kdg.integration4.domain.report.ApiRequest;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.enums.TestStatus;
 import be.kdg.integration4.domain.enums.TestType;
-import be.kdg.integration4.repository.ApiRequestRepository;
+import be.kdg.integration4.domain.report.TestLine;
+import be.kdg.integration4.repository.BikeReportRepository;
+import be.kdg.integration4.repository.TestLineRepository;
 import be.kdg.integration4.service.dtos.StartTestDto;
 import be.kdg.integration4.service.dtos.TestDto;
 import be.kdg.integration4.service.interfaces.TestbenchApiService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class TestbenchApiServiceImpl implements TestbenchApiService {
 
     private final RestTemplate restTemplate;
+    private final HttpHeaders headers;
+    private final BikeReportRepository bikeReportRepository;
+    private final TestLineRepository testLineRepository;
 
-    @Value("${workbench.apikey}")
-    private String apiKey;
+    @Value("${workbench.api.url}")
+    private String baseUrl;
 
-    private final ApiRequestRepository apiRequestRepository;
 
-    public TestbenchApiServiceImpl(ApiRequestRepository apiRequestRepository) {
-        this.apiRequestRepository = apiRequestRepository;
-        this.restTemplate = new RestTemplate();
+    public TestbenchApiServiceImpl(RestTemplate restTemplate, HttpHeaders headers, BikeReportRepository bikeReportRepository, TestLineRepository testLineRepository) {
+        this.restTemplate = restTemplate;
+        this.headers = headers;
+        this.bikeReportRepository = bikeReportRepository;
+        this.testLineRepository = testLineRepository;
     }
 
     @Override
-    public TestDto sendStartRequest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
-        String startTestUrl = "https://testbench.raoul.dev/api/test";
+    public TestDto startTest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
+        String startTestUrl = baseUrl + "/api/test";
         StartTestDto startTestDto = new StartTestDto(
                 testType.toString(),
                 batteryCapacity,
                 maxSupport,
                 enginePowerMax,
                 enginePowerNominal,
-                engineTorque
-        );
+                engineTorque);
 
-        // Create headers with API key
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-API-KEY", apiKey); // Add API key to header
 
         HttpEntity<StartTestDto> requestEntity = new HttpEntity<>(startTestDto, headers);
 
@@ -59,9 +63,7 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
     @Override
     public TestStatus checkTestStatus(String id) {
 
-        String statusUrl = "https://testbench.raoul.dev/api/test/" + id;
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", apiKey);
+        String statusUrl = baseUrl + "/api/test/" + id;
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -72,28 +74,27 @@ public class TestbenchApiServiceImpl implements TestbenchApiService {
         return Objects.requireNonNull(response.getBody()).state();
     }
 
-    @Override
-    public String sendReportRequest(String id) {
-        String reportUrl = "https://testbench.raoul.dev/api/test/" + id + "/report";
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", apiKey);
+    public String fetchCsv(String id) {
+        String reportUrl = baseUrl + "/api/test/" + id + "/report";
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(reportUrl, HttpMethod.GET, requestEntity, String.class);
         return Objects.requireNonNull(response.getBody());
     }
 
+
+
     @Override
-    public ApiRequest saveApiRequest(BikeReport bikeReport, String requestId) {
-        return apiRequestRepository.save(new ApiRequest(bikeReport, requestId));
+    public BikeReport saveApiRequest(BikeReport bikeReport, String requestId) {
+        bikeReport.setTestId(requestId);
+        return bikeReportRepository.save(bikeReport);
     }
 
     @Override
-    public void deleteApiRequest(String requestId) {
-        apiRequestRepository.deleteApiRequestByTestId(requestId);
-    }
-
-    @Override
-    public ApiRequest getApiRequest(String requestId) {
-        return apiRequestRepository.findApiRequestByTestId(requestId).orElseThrow();
+    public Long fetchReportId(String testId, List<TestLine> testLines) {
+        BikeReport report = bikeReportRepository.findByTestId(testId);
+        testLineRepository.saveAll(testLines);
+        report.setTestLines(testLines);
+        bikeReportRepository.save(report);
+        return report.getId();
     }
 }

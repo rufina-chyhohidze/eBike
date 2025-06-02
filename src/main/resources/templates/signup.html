@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script th:src="@{/js/registration.js}" src="/static/js/registration.js" type="module"></script>
     <script th:src="@{/js/register.js}" src="/static/js/register.js" type="module"></script>
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<nav th:replace="~{fragments/fragments :: navbar}"></nav>
+<!--<nav th:replace="~{fragments/fragments :: navbar}"></nav>-->
 
-<section class="vh-75" style="background-color: #eee;">
+<section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-8 col-lg-8 col-xl-9">
@@ -71,10 +73,13 @@
                                                 <label class="form-label" for="phoneNumber">Your Phone Number</label>
                                             </div>
                                         </div>
-                                        <div id="workshops-select-field" class="d-flex d-none flex-row align-items-center mb-3">
+                                        <div id="workshops-select-field" class="d-flex flex-row align-items-center mb-3">
                                             <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                            <select id="workshop-select" name="workshop-select" class="form-outline flex-fill mb-0">
+                                            <select id="workshop-select" name="workshop-select" class="form-outline flex-fill mb-0 py-2 rounded-xl bg-white border border-3 px-1">
                                                 <option selected disabled>Select...</option>
+                                                <option th:each="workshop : ${workshops}"
+                                                        th:value="${workshop.workshopId}"
+                                                        th:text="${workshop.workshopName}">
                                             </select>
                                         </div>
 
@@ -83,10 +88,6 @@
                                     <div class="mb-3">
                                         <label class="form-label"><strong>Select Role</strong></label>
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="userRole" id="customer" value="CUSTOMER" required>
-                                            <label class="form-check-label" for="customer">Customer</label>
-                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="userRole" id="workshopAdmin" value="WORKSHOP_ADMIN">
                                             <label class="form-check-label" for="workshopAdmin">Workshop Admin</label>
@@ -105,7 +106,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-center mb-2">
-                                        <button type="button" id="register-button" class="btn btn-primary">Register</button>
+                                        <button type="button" id="register-button" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">Register</button>
                                     </div>
 
                                     <div class="text-center">
@@ -123,7 +124,7 @@
     </div>
 </section>
 
-<footer th:replace="~{fragments/fragments :: footer}"></footer>
+<!--<footer th:replace="~{fragments/fragments :: footer}"></footer>-->
 
 
 </body>

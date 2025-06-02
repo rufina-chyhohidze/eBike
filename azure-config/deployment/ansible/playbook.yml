@@ -1,0 +1,141 @@
+- name: Provision & Deploy Java App
+  hosts: web
+  become: yes
+
+  vars:
+    # 1) Where on the VM to unpack the application
+    app_dir: /home/team18-deploy/project
+
+    # 2) Temp tarball path (on both runner and VM)
+    tarball: /tmp/myapp.tar.gz
+
+    # 3) Path from ansible/ back to project root dir:
+    project_root: "{{ playbook_dir }}/../../../"
+
+  tasks:
+    ####################################################################
+    # 1) INSTALL DOCKER CE
+    ####################################################################
+    - name: Install yum-utils
+      dnf:
+        name: yum-utils
+        state: present
+
+    - name: Add Docker CE repo
+      command: >
+        yum-config-manager
+        --add-repo
+        https://download.docker.com/linux/centos/docker-ce.repo
+      args:
+        creates: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Docker CE packages
+      dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+        update_cache: yes
+
+    - name: Ensure Docker service is running & enabled
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    # ─── Making sure team18-deploy user is in docker group... ─────────────────────────────────────────────────
+    - name: Ensure 'docker' group exists
+      group:
+        name: docker
+        state: present
+
+    - name: Add team18-deploy to the docker group
+      user:
+        name: team18-deploy
+        groups: docker
+        append: yes
+  # ─────────────────────────────────────────────────────────────────────────
+
+
+    ####################################################################
+    # 2) REMOVE ANY OLD APP
+    ####################################################################
+    - name: Remove old application directory if it exists
+      file:
+        path: "{{ app_dir }}"
+        state: absent
+
+    ####################################################################
+    # 3) PACKAGE PROJECT INTO A TARBALL
+    ####################################################################
+    - name: Create project tarball on control machine
+      local_action:
+        module: command
+        argv:
+          - tar
+          - czf
+          - "{{ tarball }}"
+          - -C
+          - "{{ project_root }}"
+          - .
+      run_once: true
+      delegate_to: localhost
+
+    ####################################################################
+    # 4) COPY & UNPACK ON DEPLOYMENT VM
+    ####################################################################
+    - name: Copy tarball to VM
+      copy:
+        src: "{{ tarball }}"
+        dest: "{{ tarball }}"
+        mode: "0644"
+
+    - name: Ensure application directory exists
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Unpack tarball into {{ app_dir }}
+      unarchive:
+        src: "{{ tarball }}"
+        dest: "{{ app_dir }}"
+        remote_src: yes
+
+    - name: Remove tarball from VM
+      file:
+        path: "{{ tarball }}"
+        state: absent
+
+    ####################################################################
+    # 5) TEAR DOWN EXISTING CONTAINERS (via CLI)
+    ####################################################################
+    - name: Bring down any running Docker containers and remove images
+      shell: |
+        CONTAINERS=$(docker ps -aq)
+        IMAGES=$(docker images -aq)
+        if [ -n "$CONTAINERS" ]; then
+          docker rm -f $CONTAINERS
+        fi
+        if [ -n "$IMAGES" ]; then
+          docker rmi -f $IMAGES
+        fi
+      args:
+        chdir: "{{ app_dir }}"
+
+
+    ####################################################################
+    # 6) START NEW DOCKER-COMPOSE STACK (via CLI)
+    #  (by doing compose up nginx specifically, since it depends only on the
+    # necessary containers, we can keep in the docker compose file
+    # other containers like the test one without being ran in the deployment stage
+    # We also export the variable from gitlab ci/cd vars for nginx config template
+    ####################################################################
+    - name: Launch application via docker-compose
+      shell: |
+        cd {{ app_dir }}
+        docker compose up -d --build team18-int4-java-app nginx
+#        SUB_DOMAIN={{ proxy_host }} docker compose up -d --build nginx
+      args:
+        chdir: "{{ app_dir }}"

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Start Test | eVALeBike</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" th:href="@{/css/test-start-screen.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/custom-form-css.css}"/>
+    <script type="module" th:src="@{/js/process-test.js}"></script>
+    <script type="module" th:src="@{/js/userSearch.js}"></script>
+    <script th:src="@{/js/qr-code-generation.js}" type="module"></script>
+    <script type="module" th:src="@{/js/startmine.js}"></script>
+    <script type="module" th:src="@{/js/startTestCheckboxes.js}"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script type="module" th:src="@{/js/sendEmailWithReport.js}"></script>
+
+</head>
+
+<!--<body class="bg-gray h-full flex min-h-screen">-->
+<body class="h-screen flex">
+
+<!-- SIDEBAR -->
+<div th:replace="fragments/technicianNavbar"></div>
+
+<!-- LOADING SECTION -->
+<div id="loading" class="hidden fixed inset-0 bg-white bg-opacity-90 z-[9999] flex flex-col justify-center items-center">
+    <div class="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent"></div>
+    <p class="message mt-3 text-center text-lg text-gray-800">Please don't close this page until the test is done</p>
+</div>
+
+<!-- RESULT SECTION -->
+<section id="result-section" class="hidden fixed inset-0 z-[9998] flex items-center justify-center bg-gray-100">
+    <div class="bg-white shadow-2xl rounded-2xl max-w-4xl w-full px-8 py-12 text-center">
+        <input type="hidden" id="testId"/>
+
+        <div class="flex flex-col items-center space-y-6">
+            <i class="ph ph-check-circle text-green-500 text-6xl"></i>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">
+                Test Result Successfully Saved
+            </h1>
+
+            <!-- QR Code -->
+            <div id="qrcode" class="mx-auto" style="height: 30vh; width: 30vh;"></div>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <a href="/technician/dashboard"
+                   class="inline-block bg-gray-200 text-gray-800 hover:bg-gray-300 font-semibold px-6 py-3 rounded-xl transition shadow">
+                    ← Back to Dashboard
+                </a>
+                <a th:href="@{/report/{id}(id=${id})}" id="report-link"
+                   class="inline-block bg-purple-600 text-white hover:bg-purple-700 font-semibold px-6 py-3 rounded-xl transition shadow">
+                    View Detailed Report →
+                </a>
+            </div>
+            <button id="getReportEmailBtn" class="bg-gray-100 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-200 inline-flex items-center gap-2">
+                <i class="ph ph-envelope"></i> Get report in email
+            </button>
+<!--            <button id="customerEmailBtnElement" />-->
+        </div>
+    </div>
+</section>
+
+
+
+<!-- MAIN CONTENT -->
+<main id="test-start-page-main" class="flex-1 flex items-center justify-center bg-white p-6 h-screen">
+<!--<main id="test-start-page-main" class="flex-1 flex items-center justify-center bg-white p-6">-->
+    <div class="w-full max-w-3xl space-y-10 text-center">
+
+        <!-- Step 1: Start a Test + Email Input -->
+        <div id="emailSection" class="space-y-6">
+            <h1 class="text-5xl font-bold text-gray-800 flex justify-center items-center gap-3 transition delay-150 duration-300 ease-in-out">
+                <i class="ph ph-play-circle text-purple-600 text-6xl"></i> Start a Test
+            </h1>
+
+            <div class="transition delay-150 duration-300 ease-in-out relative">
+                <label for="emailCustomer" class="block text-2xl font-medium text-gray-700 mb-4">Customer Name</label>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <input type="text" id="emailCustomer" placeholder="John Doe"
+                           class="w-full sm:w-96 text-lg p-4 border border-gray-300 rounded-xl focus:ring-purple-500 focus:border-purple-500 autocomplete-input"
+                           autocomplete="off">
+                    <button id="searchBtn"
+                            class="bg-purple-600 text-white px-6 py-4 rounded-xl text-lg hover:bg-purple-700 transition">
+                        Search
+                    </button>
+                </div>
+
+                <!-- Suggestions dropdown -->
+                <div class="relative w-full sm:w-96 mx-auto">
+                    <ul id="customer-suggestions"
+                        class="absolute z-50 top-full left-0 w-full bg-white border border-gray-300 rounded-xl mt-1 hidden max-h-60 overflow-y-auto text-left shadow-lg">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="customer-found-test" id="customer-found-test"></div>
+
+            <div id="customer-not-found" class="alert alert-danger hidden mt-4" role="alert">
+                Customer with name: <span id="customer-email-message"></span> not found.
+            </div>
+
+            <!-- Step 2: Registered Bikes -->
+            <section id="bike-section">
+<!--                <div id="bikeList" class="hidden space-y-6">-->
+<!--                    <h2 class="text-3xl font-semibold text-gray-800">Select a Registered Bike</h2>-->
+                    <div id="bikeList" class="hidden space-y-6">
+                        <h2 class="text-3xl font-semibold text-gray-800">Select Bike</h2>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Bike cards inserted here -->
+                            <div id="bike-items-section"></div>
+
+                            <!-- "Add New Bike" stays outside of JS-wiped area -->
+                            <div id="add-new-bike-btn" class="flex flex-col justify-center items-center p-5 border-2 border-dashed border-purple-300 rounded-2xl text-purple-600 hover:bg-purple-50 cursor-pointer transition">
+                                <i class="ph ph-plus-circle text-4xl mb-2"></i>
+                                <span class="text-lg font-semibold">Add New Bike</span>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <div id="bikes-not-found" class="alert alert-danger" role="alert">
+                <p>
+                    This customer doesn't have any registered bikes.
+                </p>
+                <div id="add-new-bike-btn-2" class="mt-5 flex flex-col justify-center items-center p-5 border-2 border-dashed border-purple-300 rounded-2xl text-purple-600 hover:bg-purple-50 cursor-pointer transition">
+                    <i class="ph ph-plus-circle text-4xl mb-2"></i>
+                    <span class="text-lg font-semibold">Add New Bike</span>
+                </div>
+            </div>
+
+
+
+            <!-- Step 3: Modal to Choose Test Type & Bench -->
+            <div id="testModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative flex flex-col gap-4
+                max-h-[90vh] overflow-y-auto">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Configure Test</h3>
+                    <p id="selectedBike" class="text-gray-500 mb-4"></p>
+
+                    <h4 id="bike-selected-frame-title"></h4>
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Select Test Type</label>
+                    <select required id="testType" class="w-full p-3 mb-4 border border-gray-300 rounded-lg">
+                        <option value="" disabled selected>-- Select --</option>
+                        <option th:each="type : ${testTypes}" th:value="${type}" th:text="${type}"></option>
+                    </select>
+
+                    <label for="testBenchNumber" class="block mb-2 text-sm font-medium text-gray-700">Insert Bench Number</label>
+                    <input name="testBenchNumber" id="testBenchNumber" type="number"
+                           class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                           placeholder="001">
+
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="checkbox-visual-check" /> Include visual check
+                    </label>
+
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="checkbox-functional-check" /> Include functional check
+                    </label>
+
+                    <!-- Visual Inspection Section -->
+                    <div id="visual-check-section" class="hidden space-y-4 mt-4">
+                        <h5 class="text-xl font-semibold text-gray-800">Visual Inspection (Visuele inspectie)</h5>
+                        <p class="text-gray-500">Rate each part's condition:</p>
+
+                        <div th:each="component, iterStat : ${visualComponents}" class="space-y-1">
+                            <label th:for="'inspectionComponent' + ${iterStat.index}"
+                                   th:text="${component.getDisplayName()}"
+                                   class="block text-sm font-medium text-gray-700"></label>
+
+                            <select th:id="'inspectionComponent' + ${iterStat.index}"
+                                    th:name="'inspectionComponent' + ${iterStat.index}"
+                                    class="inspection-component w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                                    th:attr="data-component-name=${component.name()}, data-component-type='visual'"
+                                    required>
+                                <option value="" disabled selected>Select condition</option>
+                                <option th:each="condition : ${conditions}"
+                                        th:value="${condition.name()}"
+                                        th:text="${condition.getLabel()}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Functional Inspection Section -->
+                    <div id="functional-check-section" class="hidden space-y-4 mt-4">
+                        <h5 class="text-xl font-semibold text-gray-800">Functional Inspection (Functionele inspectie)</h5>
+                        <p class="text-gray-500">Rate each part's condition:</p>
+
+                        <div th:each="component, iterStat : ${functionalComponents}" class="space-y-1">
+                            <label th:for="'functionalComponent' + ${iterStat.index}"
+                                   th:text="${component.getDisplayName()}"
+                                   class="block text-sm font-medium text-gray-700"></label>
+
+                            <select th:id="'functionalComponent' + ${iterStat.index}"
+                                    th:name="'functionalComponent' + ${iterStat.index}"
+                                    class="inspection-component w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                                    th:attr="data-component-name=${component.name()}, data-component-type='functional'"
+                                    required>
+                                <option value="" disabled selected>Select condition</option>
+                                <option th:each="condition : ${conditions}"
+                                        th:if="${condition.name() != 'VERY_GOOD' and condition.name() != 'VERY_BAD' and condition.name() != 'NEUTRAL'}"
+                                        th:value="${condition.name()}"
+                                        th:text="${condition.getLabel()}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-4">
+                        <button id="close-start-test-button" class="text-gray-600 hover:text-gray-800">Cancel</button>
+                        <button id="startTestBtn" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Start Test</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+</main>
+
+<!-- New Bike Modal -->
+<div id="newBikeModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-6xl relative overflow-y-auto max-h-[90vh]">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-6">Register New Bike</h3>
+
+        <button id="closeNewBikeModal" class="absolute top-4 right-6 text-gray-500 hover:text-gray-800 text-2xl">
+            &times;
+        </button>
+
+        <form id="newBikeForm">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all ease-in-out duration-500" id="newBikeFormGrid">
+                <!-- Column 1 -->
+                <div class="space-y-4 transform translate-x-0 transition-all duration-500">
+                    <input name="bikeOwnerId" type="hidden" value="-1" id="bikeOwnerId-form">
+
+                    <div>
+                        <label for="existing-bike-model" class="block text-sm font-medium text-gray-700">Select bike model</label>
+                        <select id="existing-bike-model" class="w-full p-3 mb-4 border border-gray-300 rounded-lg">
+                            <option value="0" selected>Create new bike</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Chassis Number</label>
+                        <input name="frameNumber"
+                               class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               type="text" placeholder="VG2304K5111">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Bike Size</label>
+                        <select name="bikeSize" class="w-full p-3 mb-4 border border-gray-300 rounded-lg">
+                            <option value="" selected disabled>Choose size...</option>
+                            <th:block th:each="size : ${bikeSizes}">
+                                <option th:value="${size}" th:text="${size}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Mileage (km)</label>
+                        <input name="milleage" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="850">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Accu Capacity (Wh)</label>
+                        <input name="accCapacity" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Production Date</label>
+                        <input name="productionDate" type="date"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="2020-01-01">
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="space-y-4 immutable transition-all duration-500 ease-in-out opacity-100 scale-100">
+
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Type</label>
+                        <input name="type" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Ultimate C380">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Powertrain</label>
+                        <input name="powertrain" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               value="Belt">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Engine Power - Max (W)</label>
+                        <input name="enginePowerMax" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="600">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Engine Torque (Nm)</label>
+                        <input name="engineTorque" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="85">
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="space-y-4 immutable transition-all duration-500 ease-in-out opacity-100 scale-100">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Bike Brand</label>
+                        <input name="brand" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Gazelle">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Max Support (%)</label>
+                        <input name="maxSupport" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="340">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Engine Power - Nominal (W)</label>
+                        <input name="enginePowerNominal" type="number"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="250">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Gear Type</label>
+                        <input name="gearType" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Enviolo">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Engine Type</label>
+                        <input name="engineType" type="text"                            class="w-full px-4 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-gray-900"
+                               placeholder="Bosch Performance Speed">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button type="submit"
+                        class="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700">
+                    Create Bike
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+
+
+</body>
+</html>

@@ -6,6 +6,7 @@
 **Academic Year**: 2024/2025 - ACS202
 
 ---
+#### The CI/CD Pipeline README can be found in the `azure-config/` directory.
 
 ### Setup Instructions
 
@@ -18,6 +19,8 @@ Run the `docker-compose.yml` file
 
 ```env
     WORKBENCH_API_KEY=YOUR-API-KEY
+    MAIL_USERNAME=team18int4@gmail.com
+    MAIL_PASSWORD=rfxchlbkjwoazmjc
 ```
 
 ### 3. To execute the application, execute the gradlew bootRun command
@@ -42,7 +45,15 @@ It will add four users to the database:
   - Password: password123
 
   - Approved: true
+-----------------------------
+- Technician2
 
+  - Email: tech2@example.com
+  
+  - Password: tech2
+  
+  - Approved: True
+-----------------------------
 - Workshop Admin
 
   - Email: admin@example.com
@@ -50,13 +61,13 @@ It will add four users to the database:
   - Password: admin123
 
   - Approved: false
-
+----------------------------
 - Customer
 
   - Email: customer@email.com
 
   - Password: customer123
-
+----------------------------
 - System Admin
 
   - Email: superadmin@email.com

@@ -1,18 +1,16 @@
+import {csrfHeader, csrfToken} from "./utils/csrf.js";
+
 let roleSelected;
 
-const customerRadio = document.getElementById('customer');
 const workshopAdminRadio = document.getElementById('workshopAdmin');
 const technicianRadio = document.getElementById('technician');
-
 const registerButton = document.getElementById('register-button');
-
 
 
 function getWorkshopInput() {
     return document.getElementById('workshop-select');
 }
 
-customerRadio.addEventListener('click', () => setCustomerRadioSelected("CUSTOMER"));
 workshopAdminRadio.addEventListener('click', () => setCustomerRadioSelected("WORKSHOP_ADMIN"));
 technicianRadio.addEventListener('click', () => setCustomerRadioSelected("TECHNICIAN"));
 
@@ -61,6 +59,7 @@ async function registerCustomer() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
             },
             body: JSON.stringify({
                 name: name,
@@ -76,6 +75,7 @@ async function registerCustomer() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
             },
             body: JSON.stringify({
                 userRole: roleSelected,

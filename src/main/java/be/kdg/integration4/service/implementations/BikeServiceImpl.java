@@ -1,54 +1,97 @@
 package be.kdg.integration4.service.implementations;
 
+import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.enums.BikeSize;
+import be.kdg.integration4.domain.report.BikeModel;
+import be.kdg.integration4.repository.BikeModelRepository;
 import be.kdg.integration4.repository.BikeRepository;
+import be.kdg.integration4.repository.CustomerRepository;
 import be.kdg.integration4.service.interfaces.BikeService;
-import be.kdg.integration4.service.interfaces.CustomerService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class BikeServiceImpl implements BikeService {
     private final BikeRepository bikeRepository;
-    private final CustomerService customerService;
+    private final BikeModelRepository bikeModelRepository;
+    private final CustomerRepository customerRepository;
 
-    public BikeServiceImpl(BikeRepository bikeRepository, CustomerService customerService) {
+    public BikeServiceImpl(BikeRepository bikeRepository, BikeModelRepository bikeModelRepository, CustomerRepository customerRepository) {
         this.bikeRepository = bikeRepository;
-        this.customerService = customerService;
+        this.bikeModelRepository = bikeModelRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
-    public Optional<Bike> findByFrameNumber(String frameNumber) {
-         return bikeRepository.findBikeByFrameNumber(frameNumber);
+    public Optional<Bike> getByFrameNumber(String frameNumber) {
+         return bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber);
     }
 
     @Override
-    public Set<Bike> getBikesByOwnerId(Long ownerId) {
-        return this.bikeRepository.findBikesByBikeOwnerId(ownerId);
+    public List<Bike> getAllByOwnerId(Long ownerId) {
+        return this.bikeRepository.findBikesWithBikeModelByBikeOwnerId(ownerId);
     }
 
     @Override
-    public List<Bike> findAll() {
+    public List<Bike> getAll() {
         return bikeRepository.findAll();
     }
 
     @Override
-    public void save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDateTime registrationDate, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque) {
-        Bike bike = new Bike(frameNumber, this.customerService.findById(bikeOwnerID), type, brand, registrationDate, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
+    public Bike save(String frameNumber, Long bikeOwnerID, String type, String brand, LocalDate productionDate, BikeSize bikeSize, int milleage, String gearType, String engineType, String powertrain, int accCapacity, double maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque, Long bikeModelId) {
+        if (bikeModelId != null) {
+            Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), bikeSize, milleage, accCapacity, productionDate, bikeModelRepository.findById(bikeModelId).orElseThrow());
+            bikeRepository.save(bike);
+            return bike;
+        }
+        Bike bike = new Bike(frameNumber, this.customerRepository.findById(bikeOwnerID).orElseThrow(), type, brand, productionDate, bikeSize, milleage, gearType, engineType, powertrain, accCapacity, maxSupport, enginePowerMax, enginePowerNominal, engineTorque);
+        bikeModelRepository.save(bike.getBikeModel());
         bikeRepository.save(bike);
+        return bike;
     }
 
     @Override
     public void delete(String frameNumber) {
-        bikeRepository.delete(findByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
+        bikeRepository.delete(getByFrameNumber(frameNumber).orElseThrow(() -> new UsernameNotFoundException("Cannot delete non-existing bike")));
     }
+
+    @Override
+    public List<BikeModel> getAllBikeModels() {
+        return bikeModelRepository.findAll();
+    }
+
+    @Override
+    public void unlinkBikeFromCustomer(String frameNumber, Long customerId){
+        Bike bike = bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber).orElse(null);
+        Customer customer = customerRepository.findByIdWithBikes(customerId).orElse(null);
+        bike.setBikeOwner(null);
+        customer.getBikes().remove(bike);
+        bikeRepository.save(bike);
+        customerRepository.save(customer);
+        System.out.println(customer.getBikes());
+    }
+
+    @Override
+    public List<Bike> getAllAvailableForUserByFrameNumber(Long customerId, String frameNumber) {
+        return bikeRepository.findBikesWithBikeModelByBikeOwnerId(customerId).stream()
+                .filter(bike -> bike.getFrameNumber().contains(frameNumber))
+                .toList();
+    }
+
+    @Override
+    public void deleteBike(String frameNumber) {
+        Bike bike = bikeRepository.findBikeByFrameNumberWithBikeModel(frameNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Bike not found"));
+
+        bikeRepository.delete(bike);
+    }
+
 
 
 }

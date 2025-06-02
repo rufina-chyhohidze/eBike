@@ -5,10 +5,13 @@ import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.profile.WorkshopAdmin;
+import be.kdg.integration4.domain.report.ReportSetting;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
 import be.kdg.integration4.repository.*;
+import be.kdg.integration4.service.dtos.CustomerAndPasswordServiceDto;
 import be.kdg.integration4.service.interfaces.RegistrationService;
+import be.kdg.integration4.service.utils.PasswordGenerationUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +26,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final WorkshopRepository workshopRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ReportSettingRepository reportSettingRepository;
 
-    public RegistrationServiceImpl(CustomerRepository customerRepository, WorkshopAdminRepository workshopAdminRepository, TechnicianRepository technicianRepository, WorkshopRepository workshopRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public RegistrationServiceImpl(CustomerRepository customerRepository, WorkshopAdminRepository workshopAdminRepository, TechnicianRepository technicianRepository, WorkshopRepository workshopRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, ReportSettingRepository reportSettingRepository) {
         this.customerRepository = customerRepository;
         this.workshopAdminRepository = workshopAdminRepository;
         this.technicianRepository = technicianRepository;
         this.workshopRepository = workshopRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.reportSettingRepository = reportSettingRepository;
     }
 
     private void checkIfUserExists(String email) {
@@ -41,10 +46,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 
     @Override
-    public Customer createCustomer(String name, String email, String password, String phoneNumber) {
+    public CustomerAndPasswordServiceDto createCustomer(String name, String email, String phoneNumber, Long technicianId) {
         this.checkIfUserExists(email);
-        return customerRepository.save(new Customer(name, email,
-                passwordEncoder.encode(password), phoneNumber));
+        Technician technician = technicianRepository.findById(technicianId).orElseThrow();
+        String password = PasswordGenerationUtil.generatePassword(12);
+        return new CustomerAndPasswordServiceDto(customerRepository.save(new Customer(name, email,
+                passwordEncoder.encode(password), phoneNumber, technician.getWorkshop())), password);
     }
 
     @Override
@@ -61,10 +68,24 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
 
-        return switch (userRole) {
-            case ADMIN -> workshopAdminRepository.save(new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop));
-            case TECHNICIAN -> technicianRepository.save(new Technician(name, email, passwordEncoder.encode(password), workshop));
-            default -> throw new IllegalArgumentException("Invalid role: " + role);
-        };
+        if (userRole == UserRole.WORKSHOPADMIN) {
+            return workshopAdminRepository.save(
+                    new WorkshopAdmin(name, email, passwordEncoder.encode(password), workshop)
+            );
+        } else if (userRole == UserRole.TECHNICIAN) {
+            Technician technician = new Technician(name, email, passwordEncoder.encode(password), workshop);
+            Technician savedTechnician = technicianRepository.save(technician);
+
+            ReportSetting reportSetting = new ReportSetting(
+                    savedTechnician,
+                    1,
+                    1
+            );
+            reportSettingRepository.save(reportSetting);
+
+            return savedTechnician;
+        } else {
+            throw new IllegalArgumentException("Invalid role: " + userRole);
+        }
     }
 }

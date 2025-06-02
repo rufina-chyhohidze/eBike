@@ -7,13 +7,21 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
-    List<Customer> findAll();
+    List<Customer> getAll();
 
-    Customer findById(Long id);
+    Customer getById(Long id);
 
-    Customer save(String name, String email, String password, UserRole role, String phoneNumber);
 
     void deleteById(Long id);
 
-    Optional<Customer> findByEmailIgnoreCase(String email);
+    Optional<Customer> getByEmailIgnoreCase(String email);
+    Customer getByNameIgnoreCase(String name);
+
+    List<Customer> getAllByNameIgnoreCase(String name);
+
+    Customer updatePhoneNumber(Long loggedInId, Long pathId, String phoneNumber);
+    Customer updatePassword(Long loggedInId, Long pathId, String password);
+    List<Customer> getCustomersByWorkshop(Long workshopId);
+
+    List<Customer> getCustomersRegisteredBy(Long workshopId);
 }

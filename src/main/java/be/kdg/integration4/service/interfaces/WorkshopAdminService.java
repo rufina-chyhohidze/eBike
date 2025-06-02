@@ -7,11 +7,12 @@ import be.kdg.integration4.domain.report.Workshop;
 import java.util.List;
 
 public interface WorkshopAdminService {
-    List<WorkshopAdmin> findAll();
+    List<WorkshopAdmin> getAll();
 
-    WorkshopAdmin findById(Long id);
+    WorkshopAdmin getById(Long id);
 
     WorkshopAdmin save(String name, String email, String password, UserRole role, Workshop workshop);
 
     void deleteById(Long id);
+
 }

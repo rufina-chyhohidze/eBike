@@ -1,23 +1,24 @@
 package be.kdg.integration4.service.interfaces;
 
-import be.kdg.integration4.domain.report.ApiRequest;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.enums.TestStatus;
 import be.kdg.integration4.domain.enums.TestType;
+import be.kdg.integration4.domain.report.TestLine;
 import be.kdg.integration4.service.dtos.TestDto;
 
+import java.util.List;
+import java.util.Map;
+
 public interface TestbenchApiService {
-    TestDto sendStartRequest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax,
-                             int enginePowerNominal, int engineTorque);
+
+    TestDto startTest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax, int enginePowerNominal, int engineTorque);
+
     TestStatus checkTestStatus(String id);
-    String sendReportRequest(String id);
 
-    ApiRequest saveApiRequest(BikeReport bikeReport, String requestId);
+    BikeReport saveApiRequest(BikeReport bikeReport, String requestId);
 
-    void deleteApiRequest(String requestId);
+    String fetchCsv(String id);
 
-    ApiRequest getApiRequest(String requestId);
+    Long fetchReportId(String testId, List<TestLine> testLines);
 
-//    MultipartFile sendTestRequest(TestType testType, int batteryCapacity, int maxSupport, int enginePowerMax,
-//                                  int enginePowerNominal, int engineTorque);
 }

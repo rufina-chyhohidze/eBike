@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +17,11 @@ public class CustomErrorController {
 
 
     @ExceptionHandler(Exception.class)
-    public String handleError(HttpServletRequest request, Model model) {
+    public Object handleError(Exception e, HttpServletRequest request, Model model) {
+        final boolean isApi = request.getRequestURI().startsWith("/api");
+        if (isApi) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(e.getMessage()));
+        }
         Object statusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         int errorCode = (statusCode != null) ? Integer.parseInt(statusCode.toString()) : 404;
 
@@ -45,5 +50,8 @@ public class CustomErrorController {
         model.addAttribute("errorDescription", errorDescription);
 
         return "error";
+    }
+
+    private record ErrorDto(String message) {
     }
 }

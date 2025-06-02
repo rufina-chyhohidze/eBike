@@ -1,0 +1,52 @@
+2025-06-02 14:57:05,722:DEBUG:certbot._internal.main:certbot version: 4.0.0
+2025-06-02 14:57:05,724:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/local/bin/certbot
+2025-06-02 14:57:05,724:DEBUG:certbot._internal.main:Arguments: ['--non-interactive', '--agree-tos', '--email', 'team18-int4@student.kdg.be', '--preferred-challenges', 'dns', '--authenticator', 'dns-duckdns', '--dns-duckdns-token', 'b4bb4460-f9d0-42fc-a063-e1dbadd11014', '-d', 'team18-int4.duckdns.org']
+2025-06-02 14:57:05,724:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#dns-duckdns,PluginEntryPoint#manual,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2025-06-02 14:57:05,742:DEBUG:certbot._internal.log:Root logging level set at 30
+2025-06-02 14:57:05,742:DEBUG:certbot._internal.plugins.selection:Requested authenticator dns-duckdns and installer None
+2025-06-02 14:57:05,742:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * dns-duckdns
+Description: Obtain certificates using a DNS TXT record for DuckDNS domains
+Interfaces: Authenticator, Plugin
+Entry point: EntryPoint(name='dns-duckdns', value='certbot_dns_duckdns.cert.client:Authenticator', group='certbot.plugins')
+Initialized: <certbot_dns_duckdns.cert.client.Authenticator object at 0x7cffc9142030>
+Prep: True
+2025-06-02 14:57:05,743:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_dns_duckdns.cert.client.Authenticator object at 0x7cffc9142030> and installer None
+2025-06-02 14:57:05,743:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator dns-duckdns, Installer None
+2025-06-02 14:57:05,798:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/2417224397', new_authzr_uri=None, terms_of_service=None), c72c4f5d9211c6dfd7b34463abb6428e, Meta(creation_dt=datetime.datetime(2025, 5, 23, 15, 1, 33, tzinfo=datetime.timezone.utc), creation_host='c616a168cb8e', register_to_eff=None))>
+2025-06-02 14:57:05,798:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2025-06-02 14:57:06,242:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Mon, 02 Jun 2025 14:57:06 GMT
+Content-Type: application/json
+Content-Length: 1012
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived (not yet generally available)",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.5-February-24-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/draft-ietf-acme-ari-03/renewalInfo",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert",
+  "sIuY_t1i5HM": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417"
+}
+2025-06-02 14:57:06,256:INFO:certbot.ocsp:Cannot extract OCSP URI from /etc/letsencrypt/archive/team18-int4.duckdns.org/cert1.pem
+2025-06-02 14:57:06,265:DEBUG:certbot._internal.display.obj:Notifying user: Certificate not yet due for renewal
+2025-06-02 14:57:06,266:INFO:certbot._internal.main:Keeping the existing certificate
+2025-06-02 14:57:06,267:DEBUG:certbot._internal.display.obj:Notifying user: Certificate not yet due for renewal; no action taken.

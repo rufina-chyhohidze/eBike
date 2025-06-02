@@ -7,5 +7,6 @@ public record StartTestDto(
         int enginePowerMax,
         int enginePowerNominal,
         int engineTorque
+        // Add visual inspection data as a Map of parts and their conditions
 ) {
 }

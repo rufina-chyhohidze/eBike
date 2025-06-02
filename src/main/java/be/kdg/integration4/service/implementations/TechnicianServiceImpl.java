@@ -24,12 +24,12 @@ public class TechnicianServiceImpl implements TechnicianService {
     }
 
     @Override
-    public Technician findById(Long id){
+    public Technician getById(Long id){
         return userRepository.findTechnicianById(id).orElse(null);
     }
 
     @Override
-    public List<Technician> findAll(){
+    public List<Technician> getAll(){
         return technicianRepository.findAll();
     }
 
@@ -47,7 +47,7 @@ public class TechnicianServiceImpl implements TechnicianService {
     }
 
     @Override
-    public Technician findByEmail(String email) {
-        return technicianRepository.findByEmail(email);
+    public Technician getByEmail(String email) {
+        return technicianRepository.findByEmail(email).orElseThrow();
     }
 }

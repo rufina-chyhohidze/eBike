@@ -1,4 +1,5 @@
 import {webSocketCheck} from "./process-test.js";
+import {csrfHeader, csrfToken} from "./utils/csrf.js";
 
 const emailInput = document.getElementById("emailBikeOwner");
 const searchButton = document.getElementById("searchCustomer");
@@ -52,6 +53,7 @@ async function fetchCustomer() {
     if (response.status === 200) {
         bikeSection.classList.remove("bike-section-hide");
         bikeSection.classList.add("bike-section-show");
+        bikeSection.classList.remove("hidden")
         console.log(customerSearchArea)
         customerSearchArea.classList.add("search-customer-title-area-up");
         customerFound = await response.json();
@@ -60,6 +62,7 @@ async function fetchCustomer() {
     } else if (response.status === 204) {
         bikeSection.classList.add("bike-section-hide");
         bikeSection.classList.remove("bike-section-show");
+        bikeSection.classList.add("hidden")
         customerSearchArea.classList.remove("search-customer-title-area-up");
         customerFoundSection.innerHTML = "";
         customerNotFoundSection.style.display = "block";
@@ -109,11 +112,12 @@ async function showCustomerBikes(customerId) {
     if (response.status === 200) {
         bikeSection.classList.add("bike-section-show");
         noRegisteredBikes.style.display = "none";
-
+        bikeSection.classList.remove("hidden")
         displayBikes(await response.json());
     } else if (response.status === 204) {
         bikeSection.classList.remove("bike-section-show");
         noRegisteredBikes.style.display = "block";
+        bikeSection.classList.add("hidden")
         bikeItemsSection.innerHTML = "";
         console.log("No bikes found");
     } else {
@@ -246,31 +250,54 @@ function displayTestFormWithBikeSelected(e) {
 }
 
 async function startTest() {
-    const response = await fetch("/api/reports",
-    {
+    const inspection = {};
+    const functionalTest = {};
+
+    document.querySelectorAll(".inspection-component").forEach(select => {
+        const componentType = select.getAttribute("data-component-type");
+        const componentName = select.getAttribute("data-component-name");
+        const value = select.value;
+
+        if (!componentName || !value) return;
+
+        // For visual components (visual inspection)
+        if (componentType === "visual") {
+            inspection[componentName] = value;  // Use the exact component name without toLowerCase()
+        }
+        // For functional components (functional test)
+        else if (componentType === "functional") {
+            functionalTest[componentName] = value;  // Same, use the exact component name
+        }
+    });
+
+    // Make the POST request to start the test
+    const response = await fetch("/api/reports", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
+            [csrfHeader]: csrfToken,  // Ensure csrfHeader and csrfToken are defined elsewhere in your code
         },
-        body : JSON.stringify({
-            "emailBikeOwner" : customerFound.email,
-            "testBenchNumber" : testBenchNumberInput.value,
-            "testType" : testTypeInput.value,
-            "frameNumber" : bikeFrameOfBikeSelected,
+        body: JSON.stringify({
+            emailBikeOwner: customerFound.email,
+            testBenchNumber: testBenchNumberInput.value,
+            testType: testTypeInput.value,
+            frameNumber: bikeFrameOfBikeSelected,
+            visualInspection: inspection,  // Add the visual inspection data here
+            functionalTest: functionalTest  // Add the functional test data here
         })
-     }
-    );
+    });
+
     if (response.status === 200) {
         const data = await response.json();
-        /**
-         * @type {[{id:string}]}
-         */
         console.log("Id received: " + data.id);
+
+        // Close the modal and show loading screen
         closeStartTestModalButton.click();
         mainStartTestPage.style.display = "none";
         loadingDiv.classList.remove("d-none");
 
+        // Proceed with WebSocket or any other functionality you have after a successful submission
         webSocketCheck(data);
     } else {
         console.log("Error: " + response.status);
