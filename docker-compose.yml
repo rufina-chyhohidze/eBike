@@ -25,7 +25,6 @@ services:
         networks:
             - team18-network
 
-
     build-stage-team18-int4-java-app:
         image: gradle:jdk21
         container_name: build-stage-team18-int4-java-app
@@ -47,15 +46,6 @@ services:
                 gradle wrapper --gradle-version 8.13 \
                   && ./gradlew --build-cache assemble \
                   && chown -R "$HOST_UID":"$HOST_GID" .
-
-#    build-stage-team18-int4-java-app:
-#        image: gradle:jdk21
-#        user: "${HOST_UID}:${HOST_GID}"
-#        container_name: build-stage-team18-int4-java-app
-#        volumes:
-#            -   "./:/team18-app/"
-#        working_dir: "/team18-app/"
-#        command: ["sh", "-c", "gradle wrapper --gradle-version 8.13 && ./gradlew --build-cache assemble"]
 
     postgres_ebike_db:
         image: postgres:17.2-alpine
