@@ -22,4 +22,6 @@ public interface BikeService {
     void unlinkBikeFromCustomer(String frameNumber, Long customerId);
 
     List<Bike> getAllAvailableForUserByFrameNumber(Long customerId, String frameNumber);
+
+    void deleteBike(String frameNumber);
 }

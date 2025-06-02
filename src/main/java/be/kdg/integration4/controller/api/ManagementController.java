@@ -5,10 +5,7 @@ import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.service.interfaces.BikeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/bike-management")
@@ -21,10 +18,10 @@ public class ManagementController {
     }
 
 
-    @PatchMapping("/{frameNumber}/unlink")
-    public ResponseEntity<Void> unlinkBike(@PathVariable String frameNumber,
-                                           @AuthenticationPrincipal UserDetailsImpl customer) {
-        bikeService.unlinkBikeFromCustomer(frameNumber, customer.getUserId());
+    @DeleteMapping("/{frameNumber}")
+    public ResponseEntity<Void> deleteBike(@PathVariable String frameNumber) {
+        bikeService.deleteBike(frameNumber);
         return ResponseEntity.noContent().build();
     }
+
 }
