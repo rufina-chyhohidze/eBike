@@ -19,7 +19,7 @@
 <div sec:authorize="hasRole('SYSTEMADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
 
 <!-- Workshop Admin Navbar -->
-<div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: admin-navbar"></div>
+<div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: adminnavbar"></div>
 
 <!-- Technician Navbar -->
 <div sec:authorize="hasRole('TECHNICIAN')" th:replace="fragments/technicianNavbar :: navbar"></div>
