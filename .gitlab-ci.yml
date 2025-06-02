@@ -150,6 +150,7 @@ destroy-gitlab-runner-infrastructure:
     - dev
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Only runs when manually triggered
 # Destroys all azure infra, (Runner: RG & VM) (Deployment: RG, VM & SQL DB)
