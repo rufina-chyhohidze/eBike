@@ -135,6 +135,7 @@
     - name: Launch application via docker-compose
       shell: |
         cd {{ app_dir }}
-        SUB_DOMAIN={{ proxy_host }} docker compose up -d --build nginx
+        SUB_DOMAIN={{ proxy_host }} docker compose up -d --build team18-int4-java-app nginx
+#        SUB_DOMAIN={{ proxy_host }} docker compose up -d --build nginx
       args:
         chdir: "{{ app_dir }}"
