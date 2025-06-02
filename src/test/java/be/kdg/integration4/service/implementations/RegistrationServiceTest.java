@@ -5,6 +5,7 @@ import be.kdg.integration4.config.DotenvInitializer;
 import be.kdg.integration4.domain.enums.Location;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.Customer;
+import be.kdg.integration4.domain.profile.Technician;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.domain.report.Workshop;
 import be.kdg.integration4.exception.UserAlreadyExistsException;
@@ -37,10 +38,12 @@ class RegistrationServiceTest {
     private TestHelper testHelper;
 
     private Workshop workshop;
+    private Technician technician;
 
     @BeforeEach
     void setUp() {
         this.workshop = testHelper.createWorkshop("Test1", Location.ANTWERP);
+        this.technician = (Technician) testHelper.createTechnician("Tech", "tech@email.com", "abc123", this.workshop);
     }
 
     @AfterEach
@@ -50,7 +53,7 @@ class RegistrationServiceTest {
 
     @Test
     void createCustomerShouldAddCustomerToDatabase() {
-        CustomerAndPasswordServiceDto dto = sut.createCustomer("testName", "test@test.com", "+3233333333");
+        CustomerAndPasswordServiceDto dto = sut.createCustomer("testName", "test@test.com", "+3233333333",technician.getId());
         Customer dbCustomer = customerRepository.findByEmail("test@test.com").orElseThrow();
         assertEquals(dto.customer().getEmail(), dbCustomer.getEmail());
         assertEquals(dto.customer().getId(), dbCustomer.getId());
@@ -61,10 +64,10 @@ class RegistrationServiceTest {
 
     @Test
     void createCustomerShouldNotAddCustomerIfCustomerWithThisEmailAlreadyExists() {
-        testHelper.createCustomer("test", "test@test.com", "pass", "+3233333333");
-        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("test", "test@test.com", "+3233333333"));
-        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("differentName", "test@test.com", "+3233333333"));
-        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("diffName", "test@test.com", "+3255555555"));
+        testHelper.createCustomer("test", "test@test.com", "+3233333333", technician.getId());
+        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("test", "test@test.com", "+3233333333",technician.getId()));
+        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("differentName", "test@test.com", "+3233333333",technician.getId()));
+        assertThrows(UserAlreadyExistsException.class, () -> sut.createCustomer("diffName", "test@test.com", "+3255555555",technician.getId()));
     }
 
     @Test
@@ -79,7 +82,7 @@ class RegistrationServiceTest {
 
     @Test
     void createStaffShouldAddWorkshopAdminToDatabase() {
-        User user = sut.createStaff("WorkshopAdmin", "workshop@test.com", "qwerty", UserRole.WORSHOPADMIN.toString(), this.workshop.getWorkshopId());
+        User user = sut.createStaff("WorkshopAdmin", "workshop@test.com", "qwerty", UserRole.WORKSHOPADMIN.toString(), this.workshop.getWorkshopId());
         User userFromDb = testHelper.userRepository.findByEmail("workshop@test.com").orElseThrow();
         assertEquals(user.getId(), userFromDb.getId());
         assertEquals(user.getName(), userFromDb.getName());
@@ -94,7 +97,7 @@ class RegistrationServiceTest {
         assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("test", "technician@test.com", "pass", UserRole.TECHNICIAN.toString(), this.workshop.getWorkshopId()));
         assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("differentName", "technician@test.com", "pass", UserRole.TECHNICIAN.toString(), this.workshop.getWorkshopId()));
         assertDoesNotThrow(() -> sut.createStaff("diffName", "tech@test.com", "pass", UserRole.TECHNICIAN.toString(), this.workshop.getWorkshopId()));
-        assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("workshopAdmin", "workshop@test.com", "qwerty", UserRole.WORSHOPADMIN.toString(), this.workshop.getWorkshopId()));
+        assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("workshopAdmin", "workshop@test.com", "qwerty", UserRole.WORKSHOPADMIN.toString(), this.workshop.getWorkshopId()));
         assertThrows(UserAlreadyExistsException.class, () -> sut.createStaff("technicianWithWorkshopAdminEmail", "workshop@test.com", "qwerty", UserRole.TECHNICIAN.toString(), this.workshop.getWorkshopId()));
     }
 }

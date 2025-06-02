@@ -11,6 +11,7 @@ import be.kdg.integration4.repository.*;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,8 @@ public class TestHelper {
 
     @Autowired
     public BikeReportRepository bikeReportRepository;
+    @Autowired
+    public PasswordEncoder passwordEncoder;
     @Autowired
     public BikeRepository bikeRepository;
     @Autowired
@@ -38,6 +41,8 @@ public class TestHelper {
     public WorkshopAdminRepository workshopAdminRepository;
     @Autowired
     public CustomerService customerService;
+    @Autowired
+    public ReportSettingRepository reportSettingRepository;
 
     public User createTechnician(String name, String email, String password, Workshop workshop) {
         return this.technicianRepository.save(
@@ -60,14 +65,17 @@ public class TestHelper {
     }
 
 
-    public User createCustomer(String name, String email, String password, String phoneNumber) {
-        return this.customerService.save(
-                name,
-                email,
-                password,
-                UserRole.CUSTOMER,
-                phoneNumber
-        );
+    public User createCustomer(String name, String email, String phoneNumber, Long technicianId) {
+        Customer customer = new Customer(name,email, passwordEncoder.encode("password"), phoneNumber,technicianRepository.findById(technicianId).orElseThrow());
+        return this.customerRepository.save(customer);
+
+//        var result = this.registrationService.createCustomer(
+//                name,
+//                email,
+//                phoneNumber,
+//                technicianId
+//        );
+//        return result.customer();
     }
 
     public User createWorkshopAdmin(String name, String email, String password, Workshop workshop) {
@@ -82,6 +90,7 @@ public class TestHelper {
 
     public void cleanUp() {
         bikeReportRepository.deleteAll();
+        reportSettingRepository.deleteAll();
         bikeRepository.deleteAll();
         customerRepository.deleteAll();
         systemAdminRepository.deleteAll();
