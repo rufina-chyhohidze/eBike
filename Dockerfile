@@ -4,7 +4,7 @@ LABEL author="Team 18 - Integration 4"
 WORKDIR /team18/project
 COPY ./ /team18/project
 WORKDIR /team18/project
-#RUN gradle wrapper --gradle-version 8.13
+RUN gradle wrapper --gradle-version 8.13
 RUN ./gradlew bootJar -x test
 
 ## Stage 2: Run the app

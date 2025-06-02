@@ -32,8 +32,12 @@ build-application:
   script:
     - echo "Running build stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
     - echo "========== BUILD STAGE =========="
-    - docker compose build --no-cache
+    - docker compose up --build build-stage-team18-int4-java-app
     - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
+  artifacts:
+    paths:
+      - gradlew
+      - gradle/wrapper/
   only:
     - dev
     - main
@@ -48,6 +52,8 @@ test-application:
   tags:
     - azure
     - shell
+  dependencies:
+    - build-application
   script:
     - echo "Running test stage in pipeline $(date)" >> /var/log/cd-gitlab-pipeline.log
     - echo "========== TEST STAGE =========="
