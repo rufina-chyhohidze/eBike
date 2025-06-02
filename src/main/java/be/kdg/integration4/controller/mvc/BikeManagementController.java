@@ -27,7 +27,9 @@ public class BikeManagementController {
 
     @GetMapping("/customer/bike-management")
     public String getBikeManagement(@AuthenticationPrincipal UserDetailsImpl customer, Model model) {
+        System.out.println("HELLO");
         List<Bike> bikes = bikeService.getAllByOwnerId(customer.getUserId());
+        System.out.println(bikes);
         model.addAttribute("bikes", bikes != null ? bikes : new ArrayList<>());
         return "bike-management";
     }

@@ -411,21 +411,21 @@
           <td class="px-6 py-3 text-left font-medium rounded-l-xl">Continuous Load</td>
           <td th:text="${#numbers.formatDecimal(nominalLoadTest.continuousLoad, 1, 2)}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.continuousLoad, 1, 2)}"
-              th:classappend="${nominalLoadTest.continuousLoad != nominalLoadTestCo.continuousLoad} ? 'bg-yellow-200' : ''"></td>
+              th:classappend="${nominalLoadTest.continuousLoad != nominalLoadTestCo.continuousLoad} ? 'bg-blue-200' : ''"></td>
           <td class="rounded-r-xl">W</td>
         </tr>
         <tr class="even:bg-purple-100 odd:bg-purple-50">
           <td class="px-6 py-3 text-left font-medium rounded-l-xl">Temperature Rise</td>
           <td th:text="${#numbers.formatDecimal(nominalLoadTest.temperatureIncrease, 1, 2)}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.temperatureIncrease, 1, 2)}"
-              th:classappend="${nominalLoadTest.temperatureIncrease != nominalLoadTestCo.temperatureIncrease} ? 'bg-yellow-200' : ''"></td>
+              th:classappend="${nominalLoadTest.temperatureIncrease != nominalLoadTestCo.temperatureIncrease} ? 'bg-blue-200' : ''"></td>
           <td class="rounded-r-xl">°C/Wh</td>
         </tr>
         <tr class="even:bg-purple-100 odd:bg-purple-50">
           <td class="px-6 py-3 text-left font-medium rounded-l-xl"><strong>Score</strong></td>
           <td th:text="${#numbers.formatDecimal(nominalLoadTest.score, 1, 2)}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}" th:text="${#numbers.formatDecimal(nominalLoadTestCo.score, 1, 2)}"
-              th:classappend="${nominalLoadTest.score != nominalLoadTestCo.score} ? 'bg-yellow-200' : ''" ></td>
+              th:classappend="${nominalLoadTest.score != nominalLoadTestCo.score} ? 'bg-blue-200' : ''" ></td>
           <td class="rounded-r-xl"></td>
         </tr>
         </tbody>
@@ -434,7 +434,7 @@
   </div>
   <!-- Battery Test -->
   <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
-    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">🔋 Battery Test</h5>
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Battery Test</h5>
     <div class="bg-white rounded-b-2xl mt-3 overflow-x-auto">
       <table class="min-w-full text-sm text-center overflow-hidden rounded-b-2xl">
         <thead class="bg-purple-100">
@@ -480,7 +480,7 @@
 
   <!-- Bearing Health -->
   <div class="mb-6 border-2 border-purple-500 rounded-2xl bg-purple-100 shadow-sm overflow-hidden">
-    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">⚙️ Bearing Health</h5>
+    <h5 class="text-purple-700 text-lg font-semibold px-6 pt-4">Bearing Health</h5>
     <div class="bg-white rounded-b-2xl mt-3 p-4">
       <div class="row text-center fs-5">
         <div class="col">
