@@ -6,7 +6,7 @@ services:
             - "80:80"
             - "443:443"
         environment:
-            - SUB_DOMAIN=${SUB_DOMAIN}
+            - SUB_DOMAIN=team18-int4
             - PROFILE_ACTIVE=prod
         volumes:
             - ./azure-config/nginx/templates:/etc/nginx/templates
@@ -20,6 +20,8 @@ services:
     team18-int4-java-app:
         build: .
         container_name: team18-int4-java-app
+        environment:
+            - PROFILE_ACTIVE=prod
         networks:
             - team18-network
 

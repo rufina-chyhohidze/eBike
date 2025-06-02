@@ -19,7 +19,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final BikeReportRepository bikeReportRepository;
 
-    @Value("${MAIL_USERNAME}")
+    @Value("${spring.mail.username}")
     private String originMail;
 
     @Value("${spring.baseurl}")
