@@ -43,7 +43,7 @@ fi'
 
 
 # Logging into azure using service principal credentials (within the container)
-run_with_progress "Logging into azure" docker exec azure_setup bash "/azure-config/gitlab-runner-setup/terraform/azure_login.sh"
+docker exec azure_setup bash "/azure-config/gitlab-runner-setup/terraform/azure_login.sh"
 
 # Function to check if the runner RG exists
 function resourceGroupExists() {

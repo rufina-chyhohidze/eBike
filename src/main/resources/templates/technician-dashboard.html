@@ -80,16 +80,37 @@
                         No customers found matching your search.
                     </td>
                 </tr>
-                <tr th:each="customer : ${customers}" class="bg-white border-b">
-                    <td th:text="${customer.id}" class="p-3"></td>
-                    <td th:text="${customer.name}" class="p-3"></td>
-                    <td th:text="${customer.email}" class="p-3"></td>
-                    <td th:text="${customer.phoneNumber}" class="p-3"></td>
+                <tr th:each="customer : ${customers}" class="bg-white border-b hover:bg-gray-100">
+                    <td class="p-3">
+                        <a th:href="@{/technician/bike-management/{id}(id=${customer.id})}" th:text="${customer.id}" class="block w-full h-full"></a>
+                    </td>
+                    <td class="p-3">
+                        <a th:href="@{/technician/bike-management/{id}(id=${customer.id})}" th:text="${customer.name}" class="block w-full h-full"></a>
+                    </td>
+                    <td class="p-3">
+                        <a th:href="@{/technician/bike-management/{id}(id=${customer.id})}" th:text="${customer.email}" class="block w-full h-full"></a>
+                    </td>
+                    <td class="p-3">
+                        <a th:href="@{/technicinan/bike-management/{id}(id=${customer.id})}" th:text="${customer.phoneNumber}" class="block w-full h-full"></a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
     </div>
+
+    <!-- Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-80 shadow-lg">
+            <p id="delete-message" class="text-gray-800 mb-4">Are you sure?</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-delete" class="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800">Cancel</button>
+                <button id="confirm-delete" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white">Delete</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- TEST REPORTS -->
     <div class="bg-gray-900 text-white shadow-lg rounded-3xl p-4 sm:p-6 col-span-1 sm:col-span-2 lg:col-span-4 border border-gray-200">

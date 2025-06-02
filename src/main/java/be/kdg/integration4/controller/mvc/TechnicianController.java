@@ -4,14 +4,13 @@ import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.domain.enums.*;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.report.ReportSetting;
-import be.kdg.integration4.service.interfaces.BikeReportService;
-import be.kdg.integration4.service.interfaces.CustomerService;
-import be.kdg.integration4.service.interfaces.ReportSettingService;
-import be.kdg.integration4.service.interfaces.TechnicianService;
+import be.kdg.integration4.service.interfaces.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,12 +35,14 @@ public class TechnicianController {
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
     private final ReportSettingService reportSettingService;
+    private final BikeService bikeService;
 
-    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, ReportSettingService reportSettingService) {
+    public TechnicianController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, ReportSettingService reportSettingService, BikeService bikeService) {
         this.technicianService = technicianService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
         this.reportSettingService = reportSettingService;
+        this.bikeService = bikeService;
     }
 
     @GetMapping("/dashboard")
@@ -131,6 +133,13 @@ public class TechnicianController {
 
         model.addAttribute("technician", technician);
         return "technician-search-bikes";
+    }
+
+    @GetMapping("/bike-management/{id}")
+    public String getBikeManagement(@PathVariable long id, Model model) {
+        List<Bike> bikes = bikeService.getAllByOwnerId(id);
+        model.addAttribute("bikes", bikes != null ? bikes : new ArrayList<>());
+        return "bike-management";
     }
 
 }

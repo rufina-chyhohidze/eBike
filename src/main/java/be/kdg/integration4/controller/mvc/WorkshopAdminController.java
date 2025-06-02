@@ -4,14 +4,17 @@ import be.kdg.integration4.config.security.annotations.StaffOnly;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
 import be.kdg.integration4.domain.profile.WorkshopAdmin;
+import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.service.interfaces.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,12 +25,14 @@ public class WorkshopAdminController {
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
     private final WorkshopAdminService workshopAdminService;
+    private final BikeService bikeService;
 
-    public WorkshopAdminController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, WorkshopAdminService workshopAdminService) {
+    public WorkshopAdminController(TechnicianService technicianService, CustomerService customerService, BikeReportService bikeReportService, WorkshopAdminService workshopAdminService, BikeService bikeService) {
         this.technicianService = technicianService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
         this.workshopAdminService = workshopAdminService;
+        this.bikeService = bikeService;
     }
 
     @GetMapping("/dashboard")
@@ -53,5 +58,12 @@ public class WorkshopAdminController {
     public String updateDashboard(Model model, @AuthenticationPrincipal UserDetailsImpl principal) {
         model.addAttribute("accountId", principal.getUserId());
         return "password-change";
+    }
+
+    @GetMapping("/bike-management/{id}")
+    public String getBikeManagement(@PathVariable long id, Model model) {
+        List<Bike> bikes = bikeService.getAllByOwnerId(id);
+        model.addAttribute("bikes", bikes != null ? bikes : new ArrayList<>());
+        return "bike-management";
     }
 }
