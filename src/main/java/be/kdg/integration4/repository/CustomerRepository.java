@@ -21,8 +21,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findByNameIgnoreCase(String name);
 
-    @Query("SELECT DISTINCT c FROM Customer c LEFT JOIN FETCH c.bikes WHERE c.registeredBy.id = :technicianId")
-    List<Customer> findByRegisteredBy_Id(Long technicianId);
+    @Query("SELECT DISTINCT c FROM Customer c LEFT JOIN FETCH c.bikes WHERE c.registeredIn.id = :workshopId")
+    List<Customer> findByRegisteredBy_Id(Long workshopId);
 
 
 }
