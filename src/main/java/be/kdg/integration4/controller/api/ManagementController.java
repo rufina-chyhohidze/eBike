@@ -22,10 +22,9 @@ public class ManagementController {
 
 
     @PatchMapping("/{frameNumber}/unlink")
-    @CustomerOnly
     public ResponseEntity<Void> unlinkBike(@PathVariable String frameNumber,
                                            @AuthenticationPrincipal UserDetailsImpl customer) {
         bikeService.unlinkBikeFromCustomer(frameNumber, customer.getUserId());
         return ResponseEntity.noContent().build();
-    }// 204 No Content
+    }
 }
