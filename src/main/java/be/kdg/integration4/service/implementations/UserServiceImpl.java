@@ -1,5 +1,9 @@
 package be.kdg.integration4.service.implementations;
 
+import be.kdg.integration4.domain.profile.Technician;
+import be.kdg.integration4.domain.profile.User;
+import be.kdg.integration4.domain.report.ReportSetting;
+import be.kdg.integration4.repository.ReportSettingRepository;
 import be.kdg.integration4.domain.enums.UserRole;
 import be.kdg.integration4.domain.profile.*;
 import be.kdg.integration4.repository.UserRepository;
@@ -25,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ReportSettingRepository reportSettingRepository;
 
     public List<User> getUnapprovedUsers() {
         return userRepository.findUnapprovedUsers();
@@ -79,6 +84,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         User user = userRepository.findById(id).orElseThrow();
+        if (user instanceof Technician) {
+            ReportSetting setting = reportSettingRepository.findByTechnician((Technician) user).orElseThrow();
+            reportSettingRepository.delete(setting);
+        }
         userRepository.delete(user);
     }
 

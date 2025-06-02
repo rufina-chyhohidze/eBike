@@ -73,14 +73,14 @@ public class UsersController {
 
         List<Bike> bikes;
         if (search != null && !search.isBlank()) {
-            bikes = customerService.getCustomersRegisteredBy(technician.getId()).stream()
+            bikes = customerService.getCustomersRegisteredBy(((Technician)technician).getWorkshop().getWorkshopId()).stream()
                     .flatMap(c -> c.getBikes().stream())
                     .filter(bike -> bike.getFrameNumber().toLowerCase().contains(search.toLowerCase())
                             || bike.getBikeModel().getBrand().toLowerCase().contains(search.toLowerCase())
                             || bike.getBikeModel().getType().toLowerCase().contains(search.toLowerCase()))
                     .toList();
         } else {
-            bikes = customerService.getCustomersRegisteredBy(technician.getId()).stream()
+            bikes = customerService.getCustomersRegisteredBy(((Technician)technician).getWorkshop().getWorkshopId()).stream()
                     .flatMap(c -> c.getBikes().stream())
                     .toList();
         }

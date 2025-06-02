@@ -85,11 +85,11 @@ public class CustomerServiceImpl implements CustomerService {
         return repository.findAll()
                 .stream()
                 .filter(customer ->
-                        customer.getRegisteredBy().getWorkshop().getWorkshopId().equals(workshopId)).toList();
+                        customer.getRegisteredIn().getWorkshopId().equals(workshopId)).toList();
     }
 
     @Override
-    public List<Customer> getCustomersRegisteredBy(Long technicianId) {
-        return repository.findByRegisteredBy_Id(technicianId);
+    public List<Customer> getCustomersRegisteredBy(Long workshopId) {
+        return repository.findByRegisteredBy_Id(workshopId);
     }
 }
