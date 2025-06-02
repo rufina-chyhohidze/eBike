@@ -44,6 +44,19 @@
         state: started
         enabled: yes
 
+    # ─── Making sure team18-deploy user is in docker group... ─────────────────────────────────────────────────
+    - name: Ensure 'docker' group exists
+      group:
+        name: docker
+        state: present
+
+    - name: Add team18-deploy to the docker group
+      user:
+        name: team18-deploy
+        groups: docker
+        append: yes
+  # ─────────────────────────────────────────────────────────────────────────
+
 
     ####################################################################
     # 2) REMOVE ANY OLD APP

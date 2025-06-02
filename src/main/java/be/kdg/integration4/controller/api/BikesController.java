@@ -1,20 +1,23 @@
 package be.kdg.integration4.controller.api;
 
+import be.kdg.integration4.config.security.annotations.BikeVisibilityCheck;
 import be.kdg.integration4.config.security.annotations.TechnicianOnly;
 import be.kdg.integration4.controller.api.dtos.BikeDto;
+import be.kdg.integration4.controller.api.dtos.BikeSearchTechnicianDto;
+import be.kdg.integration4.domain.profile.UserDetailsImpl;
+import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.service.interfaces.BikeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/bikes")
@@ -25,6 +28,19 @@ public class BikesController {
 
     public BikesController(BikeService bikeService) {
         this.bikeService = bikeService;
+    }
+
+    @GetMapping
+    @BikeVisibilityCheck
+    public ResponseEntity<List<BikeSearchTechnicianDto>> getBikes(@RequestParam(required = false) String frameNumber,
+                                                                  @RequestParam Long customerId) {
+        if (frameNumber == null) {
+            frameNumber = "";
+        }
+        List<Bike> bikes = bikeService.getAllAvailableForUserByFrameNumber(customerId,frameNumber);
+        return ResponseEntity.ok(bikes.stream().map(bike -> new BikeSearchTechnicianDto(
+                bike.getFrameNumber(), bike.getBikeModel().getType(),bike.getBikeModel().getBrand(), bike.getBikeOwner().getName()
+                )).toList());
     }
 
     @PostMapping

@@ -4,10 +4,12 @@ import be.kdg.integration4.config.security.annotations.SystemAdminOnly;
 import be.kdg.integration4.controller.api.dtos.UserWithRolesDto;
 import be.kdg.integration4.domain.profile.Customer;
 import be.kdg.integration4.domain.profile.UserDetailsImpl;
+import be.kdg.integration4.domain.report.Bike;
 import be.kdg.integration4.domain.report.BikeReport;
 import be.kdg.integration4.domain.profile.User;
 import be.kdg.integration4.service.email.EmailService;
 import be.kdg.integration4.service.interfaces.BikeReportService;
+import be.kdg.integration4.service.interfaces.BikeService;
 import be.kdg.integration4.service.interfaces.CustomerService;
 import be.kdg.integration4.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,12 +30,14 @@ public class SystemAdminController {
     private final EmailService emailService;
     private final CustomerService customerService;
     private final BikeReportService bikeReportService;
+    private final BikeService bikeService;
 
-    public SystemAdminController(UserService userService, EmailService emailService, CustomerService customerService, BikeReportService bikeReportService) {
+    public SystemAdminController(UserService userService, EmailService emailService, CustomerService customerService, BikeReportService bikeReportService, BikeService bikeService) {
         this.userService = userService;
         this.customerService = customerService;
         this.bikeReportService = bikeReportService;
         this.emailService = emailService;
+        this.bikeService = bikeService;
     }
 
     @GetMapping("/profile")
@@ -110,5 +115,12 @@ public class SystemAdminController {
         model.addAttribute("reports", reports);
         model.addAttribute("customer", customer);
         return "superadmin-reports";
+    }
+
+    @GetMapping("/bike-management/{id}")
+    public String getBikeManagement(@PathVariable long id, Model model) {
+        List<Bike> bikes = bikeService.getAllByOwnerId(id);
+        model.addAttribute("bikes", bikes != null ? bikes : new ArrayList<>());
+        return "bike-management";
     }
 }
