@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Bikes - eVALeBike</title>
+  <title>Bike Management - eVALeBike</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/bike-management.js" type="module"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -16,7 +16,7 @@
 
 <!-- SIDEBAR -->
 <!-- System Admin Navbar -->
-<div sec:authorize="hasRole('SUPERADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
+<div sec:authorize="hasRole('SYSTEMADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
 
 <!-- Workshop Admin Navbar -->
 <div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: admin-navbar"></div>
@@ -33,7 +33,7 @@
       <i class="ph ph-bicycle text-2xl"></i> Bikes
     </h2>
 
-    <div class="mb-6" sec:authorize="hasAnyRole('SUPERADMIN', 'WORKSHOPADMIN', 'TECHNICIAN')">
+    <div class="mb-6" sec:authorize="hasAnyRole('SYSTEMADMIN', 'WORKSHOPADMIN', 'TECHNICIAN')">
       <input
               id="bikeSearchInput"
               type="text"

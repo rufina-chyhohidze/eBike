@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Detailed Report View</title>
@@ -15,42 +15,16 @@
 
 
 <!-- SIDEBAR -->
-<aside class="bg-gray-900 text-white shadow-md p-4 sm:p-6 flex flex-col min-h-screen space-y-8 w-16 sm:w-64 transition-all duration-300">
-  <!-- LOGO -->
-  <div class="flex items-center justify-center sm:justify-start mb-6">
-    <i class="ph ph-bicycle text-purple-500 text-3xl mr-0 sm:mr-2"></i>
-    <h1 class="text-xl font-semibold hidden sm:inline">eVALeBike</h1>
-  </div>
+<!-- System Admin Navbar -->
+<div sec:authorize="hasRole('SYSTEMADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
 
-  <ul class="space-y-6 flex-1">
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a href="/technician/dashboard" class="flex items-center gap-3 w-full">
-        <i class="ph ph-house text-xl"></i>
-        <span class="hidden sm:inline">Dashboard</span>
-      </a>
-    </li>
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a th:href="@{'/report/' + ${report.id}}" class="flex items-center gap-3 w-full">
-        <i class="ph ph-clipboard-text text-xl"></i>
-        <span class="hidden sm:inline">Report</span>
-      </a>
-    </li>
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a th:href="@{'/report/' + ${report.id} + '/detailed'}" class="flex items-center gap-3 w-full">
-        <i class="ph ph-chart-bar text-xl"></i>
-        <span class="hidden sm:inline">Detailed Report</span>
-      </a>
-    </li>
-    <li class="mt-auto">
-      <form th:action="@{/logout}" method="post">
-        <button type="submit" class="bg-purple-600 text-white px-2 sm:px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-          <i class="ph ph-sign-out text-xl"></i>
-          <span class="hidden sm:inline">Logout</span>
-        </button>
-      </form>
-    </li>
-  </ul>
-</aside>
+<!-- Workshop Admin Navbar -->
+<div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: admin-navbar"></div>
+
+<!-- Technician Navbar -->
+<div sec:authorize="hasRole('TECHNICIAN')" th:replace="fragments/technicianNavbar :: navbar"></div>
+<!-- Technician Navbar -->
+<div sec:authorize="hasRole('CUSTOMER')" th:replace="fragments/customerNavbar :: navbar"></div>
 
 <div id="report-selection" class="flex-1 hidden d-none p-8 bg-white overflow-y-auto">
   <div >
