@@ -36,7 +36,6 @@ build-application:
     - export HOST_UID=$(id -u)
     - export HOST_GID=$(id -g)
     - docker compose up --build build-stage-team18-int4-java-app
-    - sudo chown -R gitlab-runner:gitlab-runner build/
     - echo "========== BUILD STAGE COMPLETED SUCCESSFULLY =========="
   artifacts:
     paths:
