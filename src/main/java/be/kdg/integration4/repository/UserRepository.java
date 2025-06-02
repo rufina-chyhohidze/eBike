@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.approved = false AND TYPE(u) IN (be.kdg.integration4.domain.profile.WorkshopAdmin, be.kdg.integration4.domain.profile.Technician)")
     List<User> findUnapprovedUsers();
 
-    @Query("SELECT c FROM Customer c JOIN FETCH c.registeredBy r JOIN FETCH r.workshop")
+    @Query("SELECT c FROM Customer c JOIN FETCH c.registeredIn")
     List<Customer> findAllCustomersWithTechnicianAndWorkshop();
 
     @Query("SELECT t FROM Technician t JOIN FETCH t.workshop")
