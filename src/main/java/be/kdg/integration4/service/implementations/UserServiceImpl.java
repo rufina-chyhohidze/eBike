@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static be.kdg.integration4.service.utils.RoleBasedUtils.filterUsersForTechnician;
 import static be.kdg.integration4.service.utils.RoleBasedUtils.filterUsersForWorkshopAdmin;
@@ -84,11 +85,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        if (user instanceof Technician) {
-            ReportSetting setting = reportSettingRepository.findByTechnician((Technician) user).orElseThrow();
-            reportSettingRepository.delete(setting);
+        try {
+            if (user instanceof Technician) {
+                ReportSetting setting = reportSettingRepository.findByTechnician((Technician) user).orElseThrow();
+                reportSettingRepository.delete(setting);
+            }
+        } catch(NoSuchElementException e) {
+            log.warn(e.getMessage());
         }
-        userRepository.delete(user);
+        finally {
+            userRepository.delete(user);
+        }
     }
 
     @Override
