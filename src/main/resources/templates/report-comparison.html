@@ -16,42 +16,16 @@
 <body class="bg-gray-50 h-full flex">
 
 <!-- SIDEBAR -->
-<aside class="bg-gray-900 text-white shadow-md p-4 sm:p-6 flex flex-col min-h-screen space-y-8 w-16 sm:w-64 transition-all duration-300">
-  <!-- LOGO -->
-  <div class="flex items-center justify-center sm:justify-start mb-6">
-    <i class="ph ph-bicycle text-purple-500 text-3xl mr-0 sm:mr-2"></i>
-    <h1 class="text-xl font-semibold hidden sm:inline">eVALeBike</h1>
-  </div>
+<!-- System Admin Navbar -->
+<div sec:authorize="hasRole('SUPERADMIN')" th:replace="fragments/superadmin-navbar :: superadmin-navbar"></div>
 
-  <ul class="space-y-6 flex-1">
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a href="/technician/dashboard" class="flex items-center gap-3 w-full">
-        <i class="ph ph-house text-xl"></i>
-        <span class="hidden sm:inline">Dashboard</span>
-      </a>
-    </li>
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a th:href="@{'/report/' + ${bikeReport.id}}" class="flex items-center gap-3 w-full">
-        <i class="ph ph-clipboard-text text-xl"></i>
-        <span class="hidden sm:inline">Test Report</span>
-      </a>
-    </li>
-    <li class="flex items-center gap-3 text-gray-400 hover:text-purple-400 cursor-pointer">
-      <a th:href="@{'/report/' + ${bikeReport.id} + '/detailed'}" class="flex items-center gap-3 w-full">
-        <i class="ph ph-chart-bar text-xl"></i>
-        <span class="hidden sm:inline">Detailed Reports</span>
-      </a>
-    </li>
-    <li class="mt-auto">
-      <form th:action="@{/logout}" method="post">
-        <button type="submit" class="bg-purple-600 text-white px-2 sm:px-4 py-2 rounded-lg w-full hover:bg-purple-700 flex items-center justify-center gap-2">
-          <i class="ph ph-sign-out text-xl"></i>
-          <span class="hidden sm:inline">Logout</span>
-        </button>
-      </form>
-    </li>
-  </ul>
-</aside>
+<!-- Workshop Admin Navbar -->
+<div sec:authorize="hasRole('WORKSHOPADMIN')" th:replace="fragments/admin-navbar :: admin-navbar"></div>
+
+<!-- Technician Navbar -->
+<div sec:authorize="hasRole('TECHNICIAN')" th:replace="fragments/technicianNavbar :: navbar"></div>
+<!-- Technician Navbar -->
+<div sec:authorize="hasRole('CUSTOMER')" th:replace="fragments/customerNavbar :: navbar"></div>
 
 <!--MAIN CONTENT-->
 <main class="flex-1 p-8 bg-white overflow-y-auto">
@@ -194,9 +168,9 @@
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Acc Capacity</td>
-          <td th:text="${bike.accCapacity}"></td>
+          <td th:text="${bike.accCapacity + ' Wh'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.accCapacity}"
+              th:text="${compareReport.bike.accCapacity + ' Wh'}"
               th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
@@ -215,41 +189,42 @@
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Accu Capacity</td>
-          <td th:text="${bike.accCapacity}"></td>
+          <td th:text="${bike.accCapacity + ' Wh'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.accCapacity}"
+              th:text="${compareReport.bike.accCapacity + ' Wh'}"
               th:classappend="${bike.accCapacity != compareReport.bike.accCapacity} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Max Support</td>
-          <td th:text="${bike.bikeModel.maxSupport}"></td>
+          <td th:text="${bike.bikeModel.maxSupport + ' %'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.bikeModel.maxSupport}"
+              th:text="${compareReport.bike.bikeModel.maxSupport + ' %'}"
               th:classappend="${bike.bikeModel.maxSupport != compareReport.bike.bikeModel.maxSupport} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Max Engine Power</td>
-          <td th:text="${bike.bikeModel.enginePowerMax}"></td>
+          <td th:text="${bike.bikeModel.enginePowerMax + ' W'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.bikeModel.enginePowerMax}"
+              th:text="${compareReport.bike.bikeModel.enginePowerMax + ' W'}"
               th:classappend="${bike.bikeModel.enginePowerMax != compareReport.bike.bikeModel.enginePowerMax} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Nominal Engine Power</td>
-          <td th:text="${bike.bikeModel.enginePowerNominal}"></td>
+          <td th:text="${bike.bikeModel.enginePowerNominal + ' W'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.bikeModel.enginePowerNominal}"
+              th:text="${compareReport.bike.bikeModel.enginePowerNominal + ' W'}"
               th:classappend="${bike.bikeModel.enginePowerNominal != compareReport.bike.bikeModel.enginePowerNominal} ? 'bg-blue-200' : ''"></td>
         </tr>
         <tr class="even:bg-purple-50 odd:bg-purple-100">
           <td class="px-6 py-3">Engine Torque</td>
-          <td th:text="${bike.bikeModel.engineTorque}"></td>
+          <td th:text="${bike.bikeModel.engineTorque + ' Nm'}"></td>
           <td class="text-blue-700" th:if="${compareReport != null}"
-              th:text="${compareReport.bike.bikeModel.engineTorque}"
+              th:text="${compareReport.bike.bikeModel.engineTorque + ' Nm'}"
               th:classappend="${bike.bikeModel.engineTorque != compareReport.bike.bikeModel.engineTorque} ? 'bg-blue-200' : ''"></td>
         </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 
@@ -327,7 +302,7 @@
           <th colspan="2" class="px-4 py-2" th:if="${compareReport != null}">Result</th>
           <th class="px-4 py-2" th:if="${compareReport == null}">Result</th>
 
-          <th colspan="2" class="px-4 py-2" th:if="${compareReport != null}">Deviation</th>
+          <th colspan="2" class="px-4 py-2" th:if="${compareReport != null}">Deviation from expected values</th>
           <th class="px-4 py-2" th:if="${compareReport == null}">Deviation</th>
 
           <th rowspan="2" class="px-4 py-2">Unit</th>
