@@ -76,5 +76,12 @@ public class BikeServiceImpl implements BikeService {
         System.out.println(customer.getBikes());
     }
 
+    @Override
+    public List<Bike> getAllAvailableForUserByFrameNumber(Long customerId, String frameNumber) {
+        return bikeRepository.findBikesWithBikeModelByBikeOwnerId(customerId).stream()
+                .filter(bike -> bike.getFrameNumber().contains(frameNumber))
+                .toList();
+    }
+
 
 }
