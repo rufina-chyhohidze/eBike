@@ -77,6 +77,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void delete(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        userRepository.delete(user);
+    }
+
+    @Override
     public List<User> getAvailableWithoutLoggedInUser(UserDetailsImpl principal) {
         return this.getAvailableUsersHelper(principal, null);
     }

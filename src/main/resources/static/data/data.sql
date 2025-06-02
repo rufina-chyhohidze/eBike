@@ -71,4 +71,4 @@ VALUES (
 
 INSERT INTO report_setting (technician_id, horizontal_vibration, vertical_vibration)
 VALUES
-    (2, 1, 1)
+    (1000000, 1, 1)

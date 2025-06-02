@@ -58,6 +58,13 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
+    @SystemAdminOnly
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/bikes")
     @TechnicianOnly
     public ResponseEntity<List<BikeSearchTechnicianDto>> filterBikes(@RequestParam(required = false) String search,
