@@ -66,7 +66,7 @@ public class TestHelper {
 
 
     public User createCustomer(String name, String email, String phoneNumber, Long technicianId) {
-        Customer customer = new Customer(name,email, passwordEncoder.encode("password"), phoneNumber,technicianRepository.findById(technicianId).orElseThrow());
+        Customer customer = new Customer(name,email, passwordEncoder.encode("password"), phoneNumber,technicianRepository.findById(technicianId).orElseThrow().getWorkshop());
         return this.customerRepository.save(customer);
 
 //        var result = this.registrationService.createCustomer(
