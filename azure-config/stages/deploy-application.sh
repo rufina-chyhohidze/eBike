@@ -10,6 +10,8 @@
 
 echo "============= Deployment Stage =================="
 
+bash ./set-env.sh
+
 echo "Logging into azure..."
 cd ./azure-config/deployment/ || exit
 bash ./azure-login.sh

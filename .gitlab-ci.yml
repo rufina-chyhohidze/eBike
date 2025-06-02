@@ -162,7 +162,7 @@ destroy-all-infrastructure:
   variables:
     DESTROY_ALL: "true"
   script:
-    - bash ./azure-config/deployment/azure-login.sh
+    - bash ./azure-config/deploymenhttp://40.68.153.74:8080/t/azure-login.sh
     - bash ./azure-config/stages/destroy-infrastructure.sh
   only:
     - main
