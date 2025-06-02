@@ -2,7 +2,9 @@ import { customerFound, showCustomerBikes } from "./startmine.js";
 import { csrfToken, csrfHeader } from './utils/csrf.js'
 import qrcodeGenerator from "./qr-code-generation.js";
 
-const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
+// doesnt work with https const DOMAIN_NAME = window.location.hostname + (window.location.port ? `:${window.location.port}` : '');
+const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+const wsBaseUrl = `${wsProtocol}://${window.location.host}`;
 
 
 
@@ -121,7 +123,7 @@ function clearAllInputsFromForm() {
 }
 
 function webSocketCheck(data) {
-    const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/status`);
+    const socket = new WebSocket(`${wsBaseUrl}/ws/status`);
     socket.onopen = function () {
         socket.send(data.id); // Replace with actual test ID
     };
@@ -134,35 +136,32 @@ function webSocketCheck(data) {
             retrieveReport(data.id);
         }
     };
-
 }
 
+
 function retrieveReport(id) {
-    const socket = new WebSocket(`ws://${DOMAIN_NAME}/ws/result`);
+    const socket = new WebSocket(`${wsBaseUrl}/ws/result`);
     socket.onopen = function () {
         socket.send(id);
-    }
+    };
 
     socket.onmessage = function (event) {
         console.log("Report saved");
         socket.close();
         const reportId = event.data;
         console.log("Report ID received: " + reportId);
-        const resultSection = document.getElementById("result-section")
-        const loadingSection = document.getElementById("loading")
-        const testIdElement = document.getElementById("testId")
+        const resultSection = document.getElementById("result-section");
+        const loadingSection = document.getElementById("loading");
+        const testIdElement = document.getElementById("testId");
         const reportLinkElement = document.getElementById("report-link");
-        // const customerEmailBtnElement = document.getElementById("customerEmailBtn");
-        // customerEmailBtnElement.id = reportId;
-        reportLinkElement.href= "/report/"+reportId;
-        testIdElement.value = reportId
+        reportLinkElement.href = "/report/" + reportId;
+        testIdElement.value = reportId;
         qrcodeGenerator();
         loadingSection.classList.add("hidden");
         resultSection.classList.remove("hidden");
-    }
-
-
+    };
 }
+
 
 export  {
     webSocketCheck

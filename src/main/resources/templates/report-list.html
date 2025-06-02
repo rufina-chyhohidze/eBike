@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bike Reports - eVALeBike</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/backButton.js" type="module"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
@@ -50,11 +51,12 @@
                 </tbody>
             </table>
         </div>
-        <!-- Back Button --><
-        <button onclick="history.back()" type="button" class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 hover:bg-purple-200 px-4 py-2 rounded-lg text-sm font-medium transition">
-        <i class="ph ph-arrow-left"></i> Back
-    </button>
-
+        <!-- Back Button -->
+        <div class="mb-6">
+            <button id="back" class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 hover:bg-purple-200 px-4 py-2 rounded-lg text-sm font-medium transition">
+                <i class="ph ph-arrow-left"></i> Back to My Bikes
+            </button>
+        </div>
 
     </div>
 </main>

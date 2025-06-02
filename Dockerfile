@@ -12,6 +12,7 @@ FROM eclipse-temurin:21-jre-alpine
 LABEL author="Team 18 - Integration 4"
 # Copy jar from build stage
 COPY --from=javaapp-builder /team18/project/build/libs/Team18-Integration4-Application.jar /team18/project/build/libs/
+COPY --from=javaapp-builder /team18/project/.env /team18/project/build/libs/
 WORKDIR /team18/project/build/libs/
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","Team18-Integration4-Application.jar"]
