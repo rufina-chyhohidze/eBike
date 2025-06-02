@@ -18,4 +18,8 @@ public interface UserService  {
     User updatePassword(Long userId,Long loggedInUserId, String password);
 
     void delete(Long id);
+
+    List<User> getAvailableWithoutLoggedInUser(UserDetailsImpl principal);
+
+    List<User> getAvailableFilteredByName(String name, UserDetailsImpl principal);
 }
